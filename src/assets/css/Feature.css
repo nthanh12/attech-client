@@ -1,0 +1,87 @@
+
+/*******************************/
+/********* Feature CSS *********/
+/*******************************/
+.feature {
+    position: relative;
+}
+.wrap-feature {
+    background-color: #ffffff;
+}
+
+.feature .col-md-12 {
+    background: #ffffff;
+}
+    
+/* .feature .col-md-12:nth-child(2n) {
+    color: #030f27;
+    background: #d8dbdd;
+} */
+
+.feature .feature-item {
+    min-height: 80px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.feature .feature-icon i {
+    font-size: 40px;
+}
+.feature .feature-icon {
+    position: relative;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature .feature-icon::before {
+    content: none;
+}
+
+.feature .feature-icon::after {
+    content: none;
+}
+
+
+.feature .feature-icon [class^="flaticon-"]::before {
+    position: relative;
+    margin: 0;
+    color: #002a5c;
+    font-size: 60px;
+    line-height: 60px;
+    z-index: 3;
+}
+
+.feature .feature-text {
+    align-items: center;
+    margin-top: 10px;
+}
+
+.feature .feature-text h3 {
+    margin: 0 0 10px 0;
+    color: #002a5c;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    height: 24px;
+}
+.feature-item:hover,
+.feature-item:hover h3  {
+    color: #0f9fdb;
+}
+
+.feature .feature-text p {
+    margin: 0;
+    color: #002a5c;
+    font-size: 18px;
+    font-weight: 400;
+}
+.feature .container-fluid {
+    max-width: 1200px;
+    margin: 0 auto;
+}

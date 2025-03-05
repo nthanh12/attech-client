@@ -4,7 +4,7 @@ import Logo from "../../assets/img/logo.png";
 
 const Header = () => {
   return (
-    <>
+    <div className="header-div header-div-fix">
       <div className="top-bar">
         <div className="container-fluid">
           <div className="row align-items-center">
@@ -197,7 +197,7 @@ const Header = () => {
           </nav>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

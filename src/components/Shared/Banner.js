@@ -22,7 +22,7 @@ const Banner = () => {
     }
   };
   return (
-    <>
+    <div className="banner">
       <Swiper
         centeredSlides={true}
         autoplay={{
@@ -30,11 +30,8 @@ const Banner = () => {
           disableOnInteraction: false,
         }}
         loop={true}
-        pagination={{
-          clickable: true,
-        }}
         ref={bannerRef}
-        modules={[Autoplay, Pagination, Navigation]}
+        modules={[Autoplay]}
         className="mySwiper"
       >
         <SwiperSlide>
@@ -43,52 +40,22 @@ const Banner = () => {
               src="https://prd-sc102-cdn.rtx.com/-/media/ca/product-assets/marketing/a/air-traffic-getty-1351088941.jpg?rev=cbbc080bbe804ad4baeb6b87dbe011a1"
               alt="Carousel Image"
             />
-            <div class="carousel-caption">
-              <p class="animated fadeInRight">We Are Professional</p>
-              <h1 class="animated fadeInLeft">For Your Dream Project</h1>
-              <a
-                class="btn animated fadeInUp"
-                href="https://htmlcodex.com/construction-company-website-template"
-              >
-                Get A Quote
-              </a>
-            </div>
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div class="carousel-item active">
             <img
-              src="https://th.bing.com/th/id/OIP.t50cU0nEC7rGaxxMz42DsQHaEO?w=280&h=180&c=7&r=0&o=5&pid=1.7"
+              src="https://vatm.vn/uploads/2024/05/vatm-slide-1.jpg"
               alt="Carousel Image"
             />
-            <div class="carousel-caption">
-              <p class="animated fadeInRight">We Are Professional</p>
-              <h1 class="animated fadeInLeft">For Your Dream Project</h1>
-              <a
-                class="btn animated fadeInUp"
-                href="https://htmlcodex.com/construction-company-website-template"
-              >
-                Get A Quote
-              </a>
-            </div>
           </div>
         </SwiperSlide>
         <SwiperSlide>
           <div class="carousel-item active">
             <img
-              src="https://th.bing.com/th/id/OIP.wQ66CGNwaq2w4X8WgdfB9AHaEK?w=310&h=180&c=7&r=0&o=5&pid=1.7"
+              src="https://vatm.vn/uploads/2024/07/wep-new-5-4.jpg"
               alt="Carousel Image"
             />
-            <div class="carousel-caption">
-              <p class="animated fadeInRight">We Are Professional</p>
-              <h1 class="animated fadeInLeft">For Your Dream Project</h1>
-              <a
-                class="btn animated fadeInUp"
-                href="https://htmlcodex.com/construction-company-website-template"
-              >
-                Get A Quote
-              </a>
-            </div>
           </div>
         </SwiperSlide>
         <button
@@ -116,7 +83,7 @@ const Banner = () => {
           <span class="sr-only">Next</span>
         </button>
       </Swiper>
-    </>
+    </div>
   );
 };
 

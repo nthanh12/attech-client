@@ -4,6 +4,23 @@
     background: #002a5c;
     line-height: 30px;
 }
+.header-div {
+    position: relative;
+}
+.header-div.header-div-fix {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+.nav-bar.nav-bar-fix {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
 
 .top-bar .logo {
     padding: 15px 0;
@@ -112,6 +129,7 @@
     margin-right: 20px;
     display: block;
     transition: all 0.3s;
+    font-size: 20px;
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
