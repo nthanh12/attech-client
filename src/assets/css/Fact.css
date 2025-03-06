@@ -4,12 +4,12 @@
 .fact {
     position: relative;
     width: 100%;
-    padding: 45px 0;
+    margin-bottom: 45px;
 }
 
 .fact .col-6 {
     display: flex;
-    align-items: flex-start;
+    justify-content: center;
 }
 
 .fact .fact-icon {
@@ -21,7 +21,7 @@
     justify-content: center;
 }
 
-.fact .fact-icon [class^="flaticon-"]::before {
+.fact .fact-icon [class^="fa-"]::before {
     margin: 0;
     font-size: 60px;
     line-height: 60px;
@@ -29,8 +29,11 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+.fact-icon i {
+    font-size: 50px;
+}
 
-.fact .fact-right .fact-icon [class^="flaticon-"]::before {
+.fact .fact-right .fact-icon [class^="fa-"]::before {
     background-image: linear-gradient(#ffffff, #030f27);
 }
 
@@ -65,4 +68,8 @@
 
 .fact .fact-left h2 {
     color: #ffffff;
+}
+.counters {
+    justify-content: center;
+    display: flex;
 }

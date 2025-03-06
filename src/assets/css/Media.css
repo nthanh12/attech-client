@@ -1,0 +1,13 @@
+.media-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .media h1 {
+    margin-bottom: 10px;
+    font-size: 40px;
+  }
+  

@@ -5,11 +5,11 @@ const Fact = () => {
       <div class="fact">
         <div class="container-fluid">
           <div class="row counters">
-            <div class="col-md-6 fact-left wow slideInLeft">
+            <div class="col-md-4 fact-left wow slideInLeft">
               <div class="row">
                 <div class="col-6">
                   <div class="fact-icon">
-                    <i class="flaticon-worker"></i>
+                    <i class="fas fa-clock"></i>
                   </div>
                   <div class="fact-text">
                     <h2 data-toggle="counter-up">&gt; 30</h2>
@@ -27,7 +27,7 @@ const Fact = () => {
                 </div>
               </div>
             </div>
-            <div class="col-md-6 fact-right wow slideInRight">
+            <div class="col-md-4 fact-right wow slideInRight">
               <div class="row">
                 <div class="col-6">
                   <div class="fact-icon">
