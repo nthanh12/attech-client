@@ -7,7 +7,6 @@ import Fact from "../components/Shared/Fact";
 import Media from "../components/Shared/Media";
 import Partner from "../components/Shared/Partner";
 import Quotes from "../components/Shared/Quotes";
-import Footer from "../components/Shared/Footer";
 
 const Home = () => {
   return (
@@ -21,7 +20,6 @@ const Home = () => {
       <Media />
       {/* <Partner /> */}
       <Quotes />
-      <Footer />
     </>
   );
 };

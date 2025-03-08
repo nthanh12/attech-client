@@ -5,7 +5,7 @@ const About = () => {
       <div class="about wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
           <div class="row align-items-center">
-            <div class="col-lg-5 col-md-6">
+            <div class="col-12 col-sm-6">
               <div class="about-img">
                 <img
                   src="https://attech.com.vn/wp-content/uploads/2015/05/anh-slide1.jpg"
@@ -13,7 +13,7 @@ const About = () => {
                 />
               </div>
             </div>
-            <div class="col-lg-7 col-md-6">
+            <div class="col-12 col-sm-6">
               <div class="section-header text-left">
                 <p className="intro">Chào mừng đến với ATTECH</p>
               </div>

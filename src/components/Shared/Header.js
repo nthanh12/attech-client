@@ -13,7 +13,7 @@ const Header = () => {
                 <div className="col-6 topbar1">
                   <div className="top-bar-item">
                     <div className="top-bar-icon">
-                      <i className="fa-solid fa-location-dot"></i>
+                      <i className="fa fa-map-marker-alt"></i>
                     </div>
                     <div className="top-bar-text">
                       <p>Số 5/200 Nguyễn Sơn - Long Biên - Hà Nội</p>
@@ -71,7 +71,7 @@ const Header = () => {
 
                 <div className="nav-item dropdown">
                   <Link
-                    to="#"
+                    to="/prod"
                     className="nav-link dropdown-toggle"
                     data-toggle="dropdown"
                   >
@@ -84,7 +84,7 @@ const Header = () => {
                     <Link to="/he-thong-den-hieu" className="dropdown-item">
                       Hệ thống đèn hiệu
                     </Link>
-                    <Link to="/co-khi-che-tao" className="dropdown-item">
+                    <Link to="/co -khi-che-tao" className="dropdown-item">
                       Cơ khí chế tạo
                     </Link>
                   </div>

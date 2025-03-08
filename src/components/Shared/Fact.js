@@ -3,11 +3,11 @@ const Fact = () => {
   return (
     <>
       <div class="fact">
-        <div class="container-fluid">
+        <div class="container">
           <div class="row counters">
-            <div class="col-md-4 fact-left wow slideInLeft">
+            <div class="col-12 col-sm-6 fact-left wow slideInLeft">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="fact-icon">
                     <i class="fas fa-clock"></i>
                   </div>
@@ -16,7 +16,7 @@ const Fact = () => {
                     <p>Năm hoạt động</p>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="fact-icon">
                     <i class="flaticon-building"></i>
                   </div>
@@ -27,9 +27,9 @@ const Fact = () => {
                 </div>
               </div>
             </div>
-            <div class="col-md-4 fact-right wow slideInRight">
+            <div class="col-12 col-sm-6 fact-right wow slideInRight">
               <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="fact-icon">
                     <i class="flaticon-address"></i>
                   </div>
@@ -38,7 +38,7 @@ const Fact = () => {
                     <p>trạm giám sát tự động</p>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-12 col-sm-6">
                   <div class="fact-icon">
                     <i class="flaticon-crane"></i>
                   </div>
