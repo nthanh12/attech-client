@@ -1,8 +1,23 @@
+import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "../../assets/css/Header.css";
 import Logo from "../../assets/img/logo.png";
 
 const Header = () => {
+  const [isDropdownOpen, setDropdownOpen] = useState({
+    products: false,
+    services: false,
+    news: false,
+    companyInfo: false,
+  });
+
+  const toggleDropdown = (menu) => {
+    setDropdownOpen((prevState) => ({
+      ...prevState,
+      [menu]: !prevState[menu],
+    }));
+  };
+
   return (
     <div className="header-div header-div-fix">
       <div className="top-bar">
@@ -69,28 +84,42 @@ const Header = () => {
                   Trang chủ
                 </NavLink>
 
-                <div className="nav-item dropdown">
+                {/* Products Dropdown */}
+                <div
+                  className="nav-item dropdown"
+                  onMouseEnter={() => toggleDropdown("products")}
+                  onMouseLeave={() => toggleDropdown("products")}
+                >
                   <Link
-                    to="/prod"
+                    to="/product"
                     className="nav-link dropdown-toggle"
                     data-toggle="dropdown"
                   >
                     Sản phẩm
                   </Link>
-                  <div className="dropdown-menu">
+                  <div
+                    className={`dropdown-menu ${
+                      isDropdownOpen.products ? "show" : ""
+                    }`}
+                  >
                     <Link to="/cns-atm" className="dropdown-item">
                       CNS/ATM
                     </Link>
                     <Link to="/he-thong-den-hieu" className="dropdown-item">
                       Hệ thống đèn hiệu
                     </Link>
-                    <Link to="/co -khi-che-tao" className="dropdown-item">
+                    <Link to="/co-khi-che-tao" className="dropdown-item">
                       Cơ khí chế tạo
                     </Link>
                   </div>
                 </div>
 
-                <div className="nav-item dropdown">
+                {/* Services Dropdown */}
+                <div
+                  className="nav-item dropdown"
+                  onMouseEnter={() => toggleDropdown("services")}
+                  onMouseLeave={() => toggleDropdown("services")}
+                >
                   <Link
                     to="#"
                     className="nav-link dropdown-toggle"
@@ -98,7 +127,11 @@ const Header = () => {
                   >
                     Dịch vụ
                   </Link>
-                  <div className="dropdown-menu">
+                  <div
+                    className={`dropdown-menu ${
+                      isDropdownOpen.services ? "show" : ""
+                    }`}
+                  >
                     <Link to="/dvkt-cns" className="dropdown-item">
                       DVKT Chuyên ngành CNS
                     </Link>
@@ -123,7 +156,12 @@ const Header = () => {
                   </div>
                 </div>
 
-                <div className="nav-item dropdown">
+                {/* News Dropdown */}
+                <div
+                  className="nav-item dropdown"
+                  onMouseEnter={() => toggleDropdown("news")}
+                  onMouseLeave={() => toggleDropdown("news")}
+                >
                   <Link
                     to="#"
                     className="nav-link dropdown-toggle"
@@ -131,7 +169,11 @@ const Header = () => {
                   >
                     Tin tức & sự kiện
                   </Link>
-                  <div className="dropdown-menu">
+                  <div
+                    className={`dropdown-menu ${
+                      isDropdownOpen.news ? "show" : ""
+                    }`}
+                  >
                     <Link to="/thong-bao" className="dropdown-item">
                       Thông báo
                     </Link>
@@ -153,7 +195,12 @@ const Header = () => {
                   </div>
                 </div>
 
-                <div className="nav-item dropdown">
+                {/* Company Info Dropdown */}
+                <div
+                  className="nav-item dropdown"
+                  onMouseEnter={() => toggleDropdown("companyInfo")}
+                  onMouseLeave={() => toggleDropdown("companyInfo")}
+                >
                   <Link
                     to="#"
                     className="nav-link dropdown-toggle"
@@ -161,7 +208,11 @@ const Header = () => {
                   >
                     Thông tin công ty
                   </Link>
-                  <div className="dropdown-menu">
+                  <div
+                    className={`dropdown-menu ${
+                      isDropdownOpen.companyInfo ? "show" : ""
+                    }`}
+                  >
                     <Link to="/lich-su" className="dropdown-item">
                       Lịch sử ra đời
                     </Link>
@@ -189,6 +240,7 @@ const Header = () => {
                   </div>
                 </div>
 
+                {/* Contact Link */}
                 <Link to="/contact" className="nav-item nav-link">
                   Liên hệ
                 </Link>
