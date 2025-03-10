@@ -8,6 +8,7 @@ import Product from "./pages/Product";
 import Footer from "./components/Shared/Footer";
 import ProductList from "./components/Product/ProductList";
 import Service from "./pages/Service";
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
           <Route path="/service" element={<Service />} />
+          <Route path="/contact" element={<Contact />} />
+
           <Route
             path="/product-category/product-list"
             element={<ProductList />}

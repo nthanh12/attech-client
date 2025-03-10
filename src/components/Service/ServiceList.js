@@ -8,13 +8,13 @@ const ServiceList = () => {
       <div class="service">
         <div class="container">
           <div class="section-header text-center">
-            <h2>Sản phẩm</h2>
+            <h2>Dịch vụ</h2>
             <p className="general-text">
-              Các sản phẩm do ATTECH nghiên cứu, sản xuất, đáp ứng tiêu chuẩn
-              của ICAO, được Cục Hàng không Việt Nam cấp “Giấy chứng nhận đủ
-              điều kiện kỹ thuật đối với thiết bị hàng không, phương tiện hoạt
-              động tại cảng hàng không, sân bay được thiết kế, chế tạo, thử
-              nghiệm và sản xuất tại Việt Nam”.
+              ATTECH, Công ty TNHH Kỹ thuật Quản lý bay, cung cấp dịch vụ thông
+              tin, dẫn đường, giám sát hàng không, dịch vụ bay kiểm tra hiệu
+              chuẩn và sản xuất công nghiệp hàng không. Với đội ngũ chuyên gia
+              và cơ sở hạ tầng hiện đại, ATTECH tự hào là đối tác tin cậy của
+              ngành hàng không Việt Nam.
             </p>
           </div>
           <ServiceFilter />

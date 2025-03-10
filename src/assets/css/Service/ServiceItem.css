@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     height: 60px;
-    background: #030f27;
+    background: #002a5c;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -56,15 +56,19 @@
     margin: 0;
     padding: 0 15px 0 25px;
     width: calc(100% - 60px);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
-    color: #002a5c;
+    color: #ffffff;
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
   
+  .service .service-text i {
+    font-size: 26px;
+    color: #ffffff;
+  }
   .service .service-item a.btn {
     width: 60px;
     height: 60px;
@@ -82,5 +86,5 @@
   }
   
   .service .service-item:hover a.btn {
-    color: #ffffff;
+    color: #000000;
   }
