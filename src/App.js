@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Product from "./pages/Product";
 import Footer from "./components/Shared/Footer";
 import ProductList from "./components/Product/ProductList";
+import Service from "./pages/Service";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/service" element={<Service />} />
           <Route
             path="/product-category/product-list"
             element={<ProductList />}

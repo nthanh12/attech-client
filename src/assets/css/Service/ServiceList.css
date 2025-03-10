@@ -1,9 +1,9 @@
-.product-page {
+.service-page {
     display: flex;
     margin-top: 140px;
   }
 
-  .product {
+  .service {
     margin-left: 270px;
     width: calc(100% - 270px);
     padding: 45px 0 15px 0;

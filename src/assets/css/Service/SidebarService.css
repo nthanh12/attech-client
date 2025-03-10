@@ -1,0 +1,20 @@
+.sidebar {
+  width: 250px;
+  position: fixed;
+  height: 100%;
+}
+
+.sidebar h5 {
+  margin-bottom: 20px;
+}
+
+.sidebar .list-group-item {
+  transition: background-color 0.3s, color 0.3s;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.sidebar .list-group-item:hover {
+  background-color: #eaeaea;
+}

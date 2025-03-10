@@ -1,0 +1,12 @@
+.filter-container {
+    margin-bottom: 20px;
+}
+.service-list {
+    list-style: none;
+    padding: 0;
+}
+.service-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}

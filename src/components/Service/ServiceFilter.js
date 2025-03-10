@@ -1,6 +1,6 @@
-import "../../assets/css/Product/ProductFilter.css";
+import "../../assets/css/Service/ServiceFilter.css";
 
-const ProductFilter = () => {
+const ServiceFilter = () => {
   return (
     <>
       <div className="container my-4">
@@ -18,7 +18,7 @@ const ProductFilter = () => {
               type="text"
               id="search-input"
               className="form-control"
-              placeholder="Tìm kiếm theo tên sản phẩm"
+              placeholder="Tìm kiếm theo tên dịch vụ"
             />
           </div>
           <div className="col-md-4">
@@ -30,4 +30,4 @@ const ProductFilter = () => {
   );
 };
 
-export default ProductFilter;
+export default ServiceFilter;
