@@ -10,6 +10,8 @@ import ProductList from "./components/Product/ProductList";
 import Service from "./pages/Service";
 import News from "./pages/News";
 import Contact from "./pages/Contact";
+import GetAll from "./components/News/Recruitment/GetAll";
+import Detail from "./components/News/Recruitment/Detail";
 
 function App() {
   return (
@@ -22,6 +24,9 @@ function App() {
           <Route path="/service" element={<Service />} />
 
           <Route path="/news" element={<News />} />
+
+          <Route path="/news/recruitment/all" element={<GetAll />} />
+          <Route path="/news/recruitment/detail/:id" element={<Detail />} />
 
           <Route path="/contact" element={<Contact />} />
 

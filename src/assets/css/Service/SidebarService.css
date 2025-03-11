@@ -2,11 +2,15 @@
   width: 250px;
   position: fixed;
   height: 100%;
+  padding: 0 !important;
   margin-top: 20px;
 }
 
 .sidebar h5 {
-  margin-bottom: 20px;
+  margin: 0 !important;
+  padding: 10px 15px;
+  color: #ffffff;
+  background-color: #002a5c;
 }
 
 .sidebar .list-group-item {
@@ -14,8 +18,13 @@
   border: none;
   padding: 10px 15px;
   border-radius: 5px;
+  background-color: transparent;
 }
 
 .sidebar .list-group-item:hover {
   background-color: #eaeaea;
+}
+
+.sidebar .list-group-item:hover a {
+  color: #0f9fdb !important;
 }
