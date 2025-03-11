@@ -192,3 +192,34 @@ li {
 .col2 {
     margin-left: 10px;
 }
+
+.media.wow {
+    background-color: unset !important;
+}
+
+.media.wow:hover {
+    background-color: unset !important;
+}
+
+.media.wow .media-body .catg_title {
+    padding: unset !important;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+    line-height: 1.4; 
+    max-height: 2.8em; 
+} 
+
+.media-content {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+    line-height: 1.4; 
+    max-height: 2.8em; 
+}

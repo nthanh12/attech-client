@@ -114,8 +114,8 @@ const SliderSection = () => {
             </h2>
             <Swiper
               direction="vertical"
-              slidesPerView={5}
-              spaceBetween={10}
+              slidesPerView={6}
+              spaceBetween={0}
               loop={true}
               autoplay={{
                 delay: 2000,
@@ -128,11 +128,11 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2023/07/giai-bong-da1-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 1
+                      Nữ công ATTECH hưởng ứng chuỗi hoạt động chào mừng ngày 8/3
                     </a>
                   </div>
                 </div>
@@ -140,11 +140,11 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 2
+                      Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị đại biểu Người lao động năm 2025
                     </a>
                   </div>
                 </div>
@@ -152,11 +152,11 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 3
+                      Hội nghị tuyên dương điển hình tiên tiến giai đoạn 2020-2024 và phát động phong trào thi đua giai đoạn 2025-2030
                     </a>
                   </div>
                 </div>
@@ -164,11 +164,11 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 4
+                      Đại hội Chi bộ Chi nhánh tại Tp. HCM nhiệm kỳ 2025 – 2027
                     </a>
                   </div>
                 </div>
@@ -176,11 +176,11 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 5
+                      Đại hội Chi bộ Phòng Tổ chức cán bộ – Lao động nhiệm kỳ 2025-2027
                     </a>
                   </div>
                 </div>
@@ -188,11 +188,11 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 6
+                      Hoạt động chào mừng Ngày truyền thống của Công ty TNHH Kỹ thuật Quản lý Bay 22/7 & kỷ niệm 15 năm tiếp nhận cung cấp dịch vụ dẫn đường
                     </a>
                   </div>
                 </div>
@@ -200,11 +200,11 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 7
+                      Ngày hội gia đình ATTECH năm 2023 – We are a family
                     </a>
                   </div>
                 </div>
@@ -212,11 +212,23 @@ const SliderSection = () => {
               <SwiperSlide>
                 <div className="media">
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src={postImg} />
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
                   </a>
                   <div className="media-body">
                     <a href="pages/single_page.html" className="catg_title">
-                      Aliquam malesuada diam eget turpis varius 8
+                      Ngày hội gia đình ATTECH khu vực phía Nam năm 2023
+                    </a>
+                  </div>
+                </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <div className="media">
+                  <a href="pages/single_page.html" className="media-left">
+                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
+                  </a>
+                  <div className="media-body">
+                    <a href="pages/single_page.html" className="catg_title">
+                      Ngày hội gia đình ATTECH khu vực phía Nam năm 2023
                     </a>
                   </div>
                 </div>

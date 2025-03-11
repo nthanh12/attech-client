@@ -18,7 +18,10 @@
     border-bottom: 2px solid #ddd;
     padding: 10px 0;
 }
-.latest_newsarea span {
+.latest_newsarea p {
+    width: 80px;
+    margin: 0;
+    font-weight: 600;
     font-size: 20px;
 }
 

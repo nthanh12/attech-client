@@ -10,49 +10,49 @@ const NewsSection = () => {
           <div class="col-lg-12 col-md-12">
             <div class="latest_newsarea">
               {" "}
-              <span>Latest News</span>
+              <p>Tin tức</p>
               <div id="ticker01">
                 <ul class="news_sticker">
                   <li>
                     <a href="#">
                       <img src={news_thumbnail3} alt="" />
-                      My First News Item
+                      Tin tuyển dụng
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={news_thumbnail3} alt="" />
-                      My Second News Item
+                      Thông báo 
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={news_thumbnail3} alt="" />
-                      My Third News Item
+                      Thông tin tài chính
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={news_thumbnail3} alt="" />
-                      My Fourth News Item
+                      Thông tin công ty
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={news_thumbnail2} alt="" />
-                      My Fifth News Item
+                      Ban lãnh đạo
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={news_thumbnail2} alt="" />
-                      My Sixth News Item
+                      Tin hàng không thế giới
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img src={news_thumbnail2} alt="" />
-                      My Seventh News Item
+                      Tin hàng không trong nước
                     </a>
                   </li>
                 </ul>
