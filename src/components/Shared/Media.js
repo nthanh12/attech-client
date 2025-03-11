@@ -7,8 +7,8 @@ const Media = () => {
   const [playing, setPlaying] = useState(false);
 
   return (
-    <div className="media">
-      <div className="media-container">
+    <div className="media-box">
+      <div className="media-wrap">
         <ReactPlayer
           url="https://www.youtube.com/watch?v=szACf6q5SoM"
           width="60%"

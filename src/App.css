@@ -17,6 +17,7 @@ h6 {
 a {
   color: #666666;
   transition: .3s;
+  text-decoration: none;
 }
 
 a:hover,

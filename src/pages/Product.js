@@ -5,7 +5,7 @@ const Product = () => {
   return (
     <>
       <div>
-        <SidebarProduct />
+        {/* <SidebarProduct /> */}
         <ProductList />
       </div>
     </>

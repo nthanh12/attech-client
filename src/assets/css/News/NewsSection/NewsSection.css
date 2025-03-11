@@ -1,0 +1,116 @@
+/* Tin tức */
+#newsSection {
+    float: left;
+    display: inline;
+    width: 100%;
+    padding: 0 30px;
+    background-color: #ffffff;
+    padding-bottom: 20px;
+    margin-top: 120px;
+}
+
+/* Khu vực tin tức */
+.latest_newsarea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    border-bottom: 2px solid #ddd;
+    padding: 10px 0;
+}
+.latest_newsarea span {
+    font-size: 20px;
+}
+
+/* Vùng chứa ticker */
+#ticker01 {
+    width: 70%;
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+}
+
+/* Danh sách tin tức */
+.news_sticker {
+    display: flex;
+    min-width: 200%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    animation: tickerScroll 25s linear infinite;
+}
+
+/* Các mục tin tức */
+.news_sticker li {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    margin-right: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.news_sticker a {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.news_sticker img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+/* Hiệu ứng trượt */
+@keyframes tickerScroll {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Tạm dừng khi hover */
+#ticker01:hover .news_sticker {
+    animation-play-state: paused;
+}
+
+/* Mạng xã hội */
+.social_area {
+    display: flex;
+    align-items: center;
+}
+
+.social_nav {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.social_nav li {
+    margin-right: 10px;
+}
+
+.social_nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #333;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.social_nav a:hover {
+    background: #007bff;
+    color: #fff;
+}

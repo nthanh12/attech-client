@@ -4,8 +4,9 @@
   }
 
   .product {
-    margin-left: 270px;
-    width: calc(100% - 270px);
+    /* margin-left: 270px; */
+    /* width: calc(100% - 270px); */
+    width: 100%;
     padding: 45px 0 15px 0;
   }
   

@@ -1,4 +1,4 @@
-.media-container {
+.media-wrap {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,7 +6,7 @@
     text-align: center;
   }
 
-  .media h1 {
+  .media-box h1 {
     margin-bottom: 10px;
     font-size: 40px;
   }

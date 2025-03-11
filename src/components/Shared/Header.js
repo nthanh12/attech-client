@@ -102,13 +102,19 @@ const Header = () => {
                       isDropdownOpen.products ? "show" : ""
                     }`}
                   >
-                    <Link to="/cns-atm" className="dropdown-item">
+                    <Link to="/product/cns-atm" className="dropdown-item">
                       CNS/ATM
                     </Link>
-                    <Link to="/he-thong-den-hieu" className="dropdown-item">
+                    <Link
+                      to="/product/he-thong-den-hieu"
+                      className="dropdown-item"
+                    >
                       Hệ thống đèn hiệu
                     </Link>
-                    <Link to="/co-khi-che-tao" className="dropdown-item">
+                    <Link
+                      to="/product/co-khi-che-tao"
+                      className="dropdown-item"
+                    >
                       Cơ khí chế tạo
                     </Link>
                   </div>
@@ -121,7 +127,7 @@ const Header = () => {
                   onMouseLeave={() => toggleDropdown("services")}
                 >
                   <Link
-                    to="#"
+                    to="/service"
                     className="nav-link dropdown-toggle"
                     data-toggle="dropdown"
                   >
@@ -163,7 +169,7 @@ const Header = () => {
                   onMouseLeave={() => toggleDropdown("news")}
                 >
                   <Link
-                    to="#"
+                    to="/news"
                     className="nav-link dropdown-toggle"
                     data-toggle="dropdown"
                   >
@@ -202,7 +208,7 @@ const Header = () => {
                   onMouseLeave={() => toggleDropdown("companyInfo")}
                 >
                   <Link
-                    to="#"
+                    to="/information"
                     className="nav-link dropdown-toggle"
                     data-toggle="dropdown"
                   >

@@ -1,0 +1,194 @@
+/* Cấu trúc chung */
+.left_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 8px;
+}
+
+/* .single_post_content {
+    margin-bottom: 10px;
+} */
+
+h2 {
+    font-size: 1.6rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+h2 span {
+    color: #FF6F61;
+}
+
+.bsbig_fig {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    border-radius: 8px;
+}
+
+.featured_img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+    border-radius: 8px;
+}
+
+.featured_img img {
+    width: 100%;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    border-radius: 8px;
+}
+
+.featured_img:hover .overlay {
+    opacity: 1;
+}
+
+figcaption a {
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+figcaption a:hover {
+    color: #FF6F61;
+}
+
+p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+    margin-top: 10px;
+}
+
+/* Danh sách bài viết bên phải */
+.spost_nav {
+    list-style: none;
+    padding: 0;
+}
+
+.spost_nav .media {
+    display: flex;
+    /* gap: 15px; */
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-left: 30px;
+}
+
+.spost_nav .media img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.spost_nav .media-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.spost_nav .media-body .catg_title {
+    font-size: 1rem;
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.spost_nav .media-body .catg_title:hover {
+    color: #FF6F61;
+}
+
+.media-content {
+    padding: 0;
+    margin: 0;
+}
+/* Chỉnh sửa cho phần ảnh chụp */
+.photograph_nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    padding: 20px;
+}
+
+.photograph_nav li {
+    list-style: none;
+}
+
+.photo_grid {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.effect-layla {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.effect-layla img {
+    width: 100%;
+}
+
+.fancybox-buttons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 50%;
+    display: none;
+}
+
+.effect-layla:hover .fancybox-buttons {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .photograph_nav {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .spost_nav .media img {
+        width: 60px;
+        height: 60px;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+.col2 {
+    margin-left: 10px;
+}

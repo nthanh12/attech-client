@@ -1,0 +1,129 @@
+#sliderSection {
+    padding: 20px 30px;
+    background-color: #f9f9f9;
+  }
+  
+
+  .swiper_slider {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .single_item {
+    margin-top: 0; 
+    position: relative;
+  }
+  
+  .single_item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  
+
+  .slider_article {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+  }
+  
+  .slider_article h2 {
+    font-size: 18px;
+    margin-bottom: 5px;
+  }
+  
+  .slider_article p {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+
+  .latest_post {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .latest_post h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .swiper_latest_post {
+    height: 550px; 
+    overflow: hidden;
+  }
+  
+  
+  .latest_postnav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .latest_postnav li {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .latest_postnav li:last-child {
+    border-bottom: none;
+  }
+  
+  .latest_postnav img {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .catg_title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .catg_title:hover {
+    color: #007bff;
+  }
+  .media {
+    display: flex;
+    align-items: flex-start; 
+    padding: 10px 0; 
+  }
+  
+  .media-left {
+    width: 100px;
+    height: auto; 
+  }
+  
+  .media-left img {
+    width: 100%;
+    height: auto; 
+    border-radius: 5px; 
+  }
+  
+  .media-body {
+    flex: 1; 
+  }
+  
+  .media-body .catg_title {
+    font-size: 16px; 
+    line-height: 1.5; 
+    color: #333;
+  }
