@@ -138,16 +138,16 @@ const Header = () => {
                       isDropdownOpen.services ? "show" : ""
                     }`}
                   >
-                    <Link to="/dvkt-cns" className="dropdown-item">
+                    <Link to="/service/dvktcns" className="dropdown-item">
                       DVKT Chuyên ngành CNS
                     </Link>
-                    <Link to="/bay-kiem-tra" className="dropdown-item">
+                    <Link to="/service/bkthc" className="dropdown-item">
                       Bay kiểm tra hiệu chuẩn
                     </Link>
                     <Link to="/logistics" className="dropdown-item">
                       Logistics
                     </Link>
-                    <Link to="/thu-nghiem-hieu-chuan" className="dropdown-item">
+                    <Link to="/service/tnhc" className="dropdown-item">
                       Thử nghiệm hiệu chuẩn
                     </Link>
                     <Link to="/tu-van-dau-tu" className="dropdown-item">
@@ -180,13 +180,13 @@ const Header = () => {
                       isDropdownOpen.news ? "show" : ""
                     }`}
                   >
-                    <Link to="/thong-bao" className="dropdown-item">
+                    <Link to="/news/notification/all" className="dropdown-item">
                       Thông báo
                     </Link>
-                    <Link to="/tuyen-dung" className="dropdown-item">
+                    <Link to="/news/recruitment/all" className="dropdown-item">
                       Tuyển dụng
                     </Link>
-                    <Link to="/tin-tuc-hoat-dong" className="dropdown-item">
+                    <Link to="/news/activity/all" className="dropdown-item">
                       Tin tức hoạt động
                     </Link>
                     <Link to="/hoat-dong-huan-luyen" className="dropdown-item">
@@ -219,30 +219,39 @@ const Header = () => {
                       isDropdownOpen.companyInfo ? "show" : ""
                     }`}
                   >
-                    <Link to="/lich-su" className="dropdown-item">
+                    <Link
+                      to="/information/company-history"
+                      className="dropdown-item"
+                    >
                       Lịch sử ra đời
                     </Link>
-                    <Link to="/co-cau-to-chuc" className="dropdown-item">
+                    <Link to="/information/structure" className="dropdown-item">
                       Cơ cấu tổ chức
                     </Link>
-                    <Link to="/ban-lanh-dao" className="dropdown-item">
+                    <Link
+                      to="/information/leadership"
+                      className="dropdown-item"
+                    >
                       Ban lãnh đạo
                     </Link>
-                    <Link to="/nganh-nghe" className="dropdown-item">
+                    <Link to="/information/business" className="dropdown-item">
                       Ngành nghề kinh doanh
                     </Link>
-                    <Link to="/nang-luc" className="dropdown-item">
+                    <Link
+                      to="/information/experience"
+                      className="dropdown-item"
+                    >
                       Năng lực, kinh nghiệm
                     </Link>
-                    <Link to="/iso" className="dropdown-item">
+                    <Link to="/information/iso" className="dropdown-item">
                       Hệ thống chứng chỉ ISO
                     </Link>
-                    <Link to="/tai-chinh" className="dropdown-item">
+                    <Link to="/information/financial" className="dropdown-item">
                       Thông tin tài chính
                     </Link>
-                    <Link to="/thong-tin-cong-ty" className="dropdown-item">
+                    {/* <Link to="/thong-tin-cong-ty" className="dropdown-item">
                       Thông tin công ty
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
 

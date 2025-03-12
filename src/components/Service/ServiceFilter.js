@@ -5,7 +5,7 @@ const ServiceFilter = () => {
     <>
       <div className="container my-4">
         <div className="row">
-          <div className="col-md-4">
+          {/* <div className="col-md-4">
             <select id="category-select" className="form-select">
               <option value="">Tất cả danh mục</option>
               <option value="Category A">DVKT Chuyên ngành CNS</option>
@@ -15,8 +15,8 @@ const ServiceFilter = () => {
               <option value="Category E">Tư vấn thiết kế</option>
               <option value="Category F">Đảm bảo kỹ thuật dẫn đường</option>
             </select>
-          </div>
-          <div className="col-md-4">
+          </div> */}
+          <div className="col-md-6">
             <input
               type="text"
               id="search-input"
@@ -24,7 +24,7 @@ const ServiceFilter = () => {
               placeholder="Tìm kiếm theo tên dịch vụ"
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <button className="btn btn-primary">Tìm kiếm</button>
           </div>
         </div>

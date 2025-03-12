@@ -12,9 +12,14 @@ const ServiceItem = () => {
             />
             <div class="service-overlay">
               <p>
-                CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY (ATTECH) LÀ NHÀ CUNG CẤP DỊCH
-                VỤ THÔNG TIN, DẪN ĐƯỜNG, GIÁM SÁT (CNS) CHO NGÀNH HÀNG KHÔNG
-                VIỆT NAM
+                Với đội ngũ nhân viên tinh nhuệ, chuyên nghiệp gồm hàng chục kỹ
+                sư dày dạn kinh nghiệm, được đào tạo bài bản trong và ngoài
+                nước, cộng với đội ngũ bán hàng chuyên nghiệp, Công ty TNHH Kỹ
+                thuật Quản lý bay hiện là đối tác tin cậy cung cấp dịch vụ CNS
+                cho Tổng công ty Quản lý bay Việt Nam, Cục hàng không Singapore
+                và là đối tác cung cấp dịch vụ kỹ thuật cho thiết bị dẫn đường
+                VOR, ILS, DME của hãng SELEX- Hoa Kỳ tại Việt Nam và nhiều nước
+                trên thế giới.
               </p>
             </div>
           </div>
@@ -143,10 +148,11 @@ const ServiceItem = () => {
             />
             <div class="service-overlay">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Phasellus nec pretium mi. Curabitur facilisis ornare velit non
-                vulputate. Aliquam metus tortor, auctor id gravida condimentum,
-                viverra quis sem.
+                Chúng tôi, công ty ATTECH cung cấp bảo dưỡng các thiết bị gia
+                dụng gồm: 1. Bảo dưỡng máy điều hòa nhiệt độ 2. Bảo dưỡng bình
+                nóng lạnh 3. Bảo dưỡng máy giặt, máy bơm, quạt điện, tủ lạnh 4.
+                Kiểm tra, bảo dưỡng hệ thống tủ phân phối nguồn điện gia đình 5.
+                Kiểm tra, bảo dưỡng các thiết bị nước
               </p>
             </div>
           </div>

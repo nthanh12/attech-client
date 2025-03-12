@@ -1,11 +1,12 @@
 .service-page {
     display: flex;
+    justify-content: center;
     margin-top: 90px;
   }
 
   .service {
-    margin-left: 270px;
-    width: calc(100% - 270px);
+    /* margin-left: 270px; */
+    /* width: calc(100% - 270px); */
     padding: 45px 0 15px 0;
   }
   

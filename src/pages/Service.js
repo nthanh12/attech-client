@@ -5,7 +5,7 @@ const Service = () => {
   return (
     <>
       <div>
-        <SidebarService />
+        {/* <SidebarService /> */}
         <ServiceList />
       </div>
     </>

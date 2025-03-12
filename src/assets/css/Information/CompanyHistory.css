@@ -1,0 +1,50 @@
+/* CompanyHistory.css */
+
+.company-history {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 50px;
+}
+
+.company-history h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #002a5c;
+    text-align: center;
+}
+
+.company-history h3 {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #002a5c;
+}
+
+.company-history ul {
+    list-style: none;
+    padding: 0;
+}
+
+.company-history li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.company-history li::before {
+    content: '•';
+    color: #002a5c;
+    font-weight: bold;
+    display: inline-block;
+    width: 20px;
+    margin-left: -20px;
+}
+
+.company-history strong {
+    color: #333;
+}

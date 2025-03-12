@@ -7,6 +7,11 @@ const SidebarProduct = () => {
         <h5>Danh mục sản phẩm</h5>
         <ul className="list-group">
           <li className="list-group-item">
+            <a href="#category0" className="text-decoration-none text-dark">
+              Tất cả sản phẩm
+            </a>
+          </li>
+          <li className="list-group-item">
             <a href="#category1" className="text-decoration-none text-dark">
               CNS/ATM
             </a>

@@ -1,0 +1,31 @@
+.sidebar-information .sidebar {
+    width: 250px;
+    position: fixed;
+    height: 100%;
+    padding: 0 !important;
+    margin-top: 20px;
+  }
+  
+.sidebar-information .sidebar h5 {
+    margin: 0 !important;
+    padding: 10px 15px;
+    color: #ffffff;
+    background-color: #002a5c;
+  }
+  
+.sidebar-information .sidebar .list-group-item {
+    transition: background-color 0.3s, color 0.3s;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: transparent;
+  }
+  
+  .sidebar-information .sidebar .list-group-item:hover {
+    background-color: #eaeaea;
+  }
+  
+  .sidebar-information .sidebar .list-group-item:hover a {
+    color: #0f9fdb !important;
+  }
+  
