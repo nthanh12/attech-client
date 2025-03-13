@@ -38,7 +38,7 @@ const Header = () => {
                 <div className="col-6 topbar2">
                   <div className="top-bar-item">
                     <div className="top-bar-icon">
-                      <i className="flaticon-call"></i>
+                      <i className="fa fa-phone"></i>
                     </div>
                     <div className="top-bar-text">
                       <p>(+84.24) 382.719.14</p>
@@ -46,7 +46,7 @@ const Header = () => {
                   </div>
                   <div className="top-bar-item">
                     <div className="top-bar-icon">
-                      <i className="flaticon-send-mail"></i>
+                      <i className="fa fa-envelope"></i>
                     </div>
                     <div className="top-bar-text">
                       <p>attech@attech.com.vn</p>

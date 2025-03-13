@@ -58,7 +58,11 @@
     margin-right: -10px;
 }
 .top-bar .top-bar-icon i {
+    align-items: center;
+    margin-left: 10px;
     color: #ffffff;
+    padding-right: 5px;
+    margin-top: 3px;
 }
 
 .top-bar .top-bar-icon [class^="flaticon-"]::before {
@@ -69,6 +73,7 @@
 
 .top-bar .top-bar-text {
     padding-left: 15px;
+    padding-right: 20px;
 }
 
 .top-bar .top-bar-text h3 {

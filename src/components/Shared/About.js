@@ -1,4 +1,9 @@
 import "../../assets/css/About.css";
+import { Link } from "react-router-dom";
+
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};
 const About = () => {
   return (
     <>
@@ -30,9 +35,14 @@ const About = () => {
                   thuật hàng đầu, góp phần nâng cao an toàn và hiệu quả trong
                   lĩnh vực hàng không.
                 </p>
-                <a class="btn" href="">
+                <Link
+                  to="/information/company-history"
+                  class="btn"
+                  href=""
+                  onClick={scrollToTop}
+                >
                   Đọc thêm
-                </a>
+                </Link>
               </div>
             </div>
           </div>
