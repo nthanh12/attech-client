@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "../../assets/css/NotificationList.css";
+import { Link } from "react-router-dom";
 
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};
 const NotificationList = ({ notifications }) => {
   // const [notificationItems, setNotificationItems] = useState(notifications);
 
@@ -16,8 +20,12 @@ const NotificationList = ({ notifications }) => {
         <div class="row">
           <div class="col-12 col-sm-6 p-0">
             <p className="notification-category">
-              Thông báo <span>Xem thêm</span>
+              Thông báo{" "}
+              <Link to="/news/notification/all" onClick={scrollToTop}>
+                <span>Xem thêm</span>
+              </Link>
             </p>
+
             <div className="notification-item">
               <img
                 className="notification-img"
@@ -78,7 +86,10 @@ const NotificationList = ({ notifications }) => {
           </div>
           <div class="col-12 col-sm-6 p-0">
             <p className="notification-category">
-              Tin tức hoạt động <span>Xem thêm</span>
+              Tin tức hoạt động{" "}
+              <Link to="/news/activity/all" onClick={scrollToTop}>
+                <span>Xem thêm</span>
+              </Link>
             </p>
             <div className="notification-item">
               <img

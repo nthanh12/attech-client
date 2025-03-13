@@ -5,47 +5,48 @@ import { Link } from "react-router-dom";
 
 const data = [
   {
-    id: 1,
-    category: "Mobile",
-    time: "2 giờ trước",
+    id: 18,
+    category: "Đào tạo",
+    time: "26/11/2024",
     title:
-      "Thiết kế siêu mỏng của Galaxy S25 Edge có thể là một vấn đề nếu Samsung không làm được điều này",
+      "Tổ chức khóa “Đào tạo ban đầu để cấp chứng chỉ chuyên môn Thông tin, Giám sát hàng không” cho đội ngũ nhân viên bảo đảm hoạt động bay của Công ty TNHH Kỹ thuật Quản lý bay",
     description:
-      'Thông tin mới nhất cho thấy Galaxy S25 Edge sẽ sở hữu viên pin dung lượng rất "khiêm tốn".',
+      "Công ty TNHH Kỹ thuật Quản lý bay tổ chức khóa “Đào tạo ban đầu để cấp chứng chỉ chuyên môn Thông tin, Giám sát hàng không” cho 30 lượt học viên là nhân viên CNS mới tuyển dụng năm 2024 theo Chương trình đào tạo mới được Cục Hàng không phê duyệt tại Quyết định số 2936/QĐ-CHK ngày 26/11/2024.",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/11/galaxy-s25-edge-3-173816699907118368675-182-288-1103-1762-crop-1741690464030800598099.jpg",
+      "https://attech.com.vn/wp-content/uploads/2025/01/thong-tin-10-1-2-170x130.jpg",
   },
   {
-    id: 2,
-    category: "Đồ chơi số",
-    time: "1 ngày trước",
+    id: 19,
+    category: "Huấn luyện",
+    time: "9/12/2024",
     title:
-      "Samsung duy trì vị thế thương hiệu loa soundbar số 1 thế giới năm thứ 11 liên tiếp",
+      "Khai giảng khóa “Huấn luyện về phòng cháy chữa cháy và cứu nạn cứu hộ”",
     description:
-      "Thành công của Samsung trong thị trường loa soundbar là nhờ vào trải nghiệm âm thanh sống động được cung cấp bởi các sản phẩm loa và khả năng kết nối liền mạch với TV Samsung.",
+      "Ngày 9/12/2024, Trung tâm huấn luyện CNS – Công ty TNHH Kỹ thuật Quản lý bay đã phối hợp với Đội Cảnh sát phòng cháy chữa cháy quận Long Biên tổ chức khóa “Huấn luyện về phòng cháy chữa cháy và cứu nạn cứu hộ”. Tham dự lễ khai giảng có bà Nguyễn Tố Loan – Phó Trưởng Trung tâm Huấn luyện CNS và các học viên là thành viên Ban chỉ huy, thành viên lực lượng PCCC cơ sở của Công ty.",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/10/avatar1741595932946-17415959335951919565352.jpg",
+      "https://attech.com.vn/wp-content/uploads/2024/12/hl-pccc-12-10-1-170x130.jpg",
   },
   {
-    id: 3,
-    category: "Mobile",
-    time: "3 ngày trước",
-    title: "Linh kiện quan trọng nhất của OPPO Find N5 được làm bởi... Samsung",
+    id: 20,
+    category: "Lễ kỷ niệm",
+    time: "20/11/2024",
+    title:
+      "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Lễ kỷ niệm 42 năm Ngày Nhà giáo Việt Nam 20/11/2024",
     description:
-      "OPPO Find N5 là mẫu smartphone màn hình gập được săn đón nhất hiện nay.",
+      "Ngày 20/11/2024, Trung tâm huấn luyện CNS – Công ty TNHH Kỹ thuật Quản lý bay tổ chức Lễ kỷ niệm 42 năm ngày Nhà giáo Việt Nam 20/11. Buổi lễ tôn vinh và ghi nhận những đóng góp vô cùng quan trọng của những người làm công tác giáo dục, đào tạo – những người thầy, người cô đã và đang cống hiến hết mình vì sự nghiệp phát triển nguồn nhân lực chất lượng cao cho Công ty.",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/8/dscf7685-17414322732321604260232-13-46-1226-1986-crop-1741432335136591300811-1741453671142-174145367161342907775-0-0-477-764-crop-1741453693343843141249.jpg",
+      "https://attech.com.vn/wp-content/uploads/2024/11/TTHL-21-11-5-170x130.jpg",
   },
   {
-    id: 4,
-    category: "Mobile",
-    time: "4 ngày trước",
+    id: 21,
+    category: "Huấn luyện",
+    time: "11/11/2024",
     title:
-      "Cận cảnh mẫu điện thoại Trung Quốc đang khiến Apple, Samsung cũng phải dè chừng: Mỏng chỉ 5.75mm, trọng lượng 146g mà pin tận 5.200mAh",
+      "Khai giảng khóa huấn luyện “Nhân viên mới” và “Đào tạo ban đầu để cấp chứng chỉ chuyên môn nhân viên CNS”",
     description:
-      "Tuy nhiên, mẫu này sẽ chưa được thương mại hóa, ít nhất là ở thời điểm hiện tại.",
+      "Ngày 11/11/2024, Trung tâm huấn luyện CNS – Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức khóa huấn luyện “Nhân viên mới” và “Đào tạo ban đầu để cấp chứng chỉ chuyên môn nhân viên CNS”. Tham dự lễ khai giảng có bà Nguyễn Tố Loan – Phó Trưởng Trung tâm Huấn luyện CNS.",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/7/gsmarena015-2-17413192865622124120363-1741323957177-1741323962346407355609-19-0-769-1200-crop-17413239811911437220195.jpg",
+      "https://attech.com.vn/wp-content/uploads/2024/11/nvm-13-11-1-170x130.jpg",
   },
 ];
 

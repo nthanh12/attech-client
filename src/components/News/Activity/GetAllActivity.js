@@ -5,47 +5,46 @@ import { Link } from "react-router-dom";
 
 const data = [
   {
-    id: 1,
-    category: "Mobile",
-    time: "2 giờ trước",
-    title:
-      "Thiết kế siêu mỏng của Galaxy S25 Edge có thể là một vấn đề nếu Samsung không làm được điều này",
+    id: 14,
+    category: "Hoạt động",
+    time: "7-8/3/2025",
+    title: "Nữ công ATTECH hưởng ứng chuỗi hoạt động chào mừng ngày 8/3",
     description:
-      'Thông tin mới nhất cho thấy Galaxy S25 Edge sẽ sở hữu viên pin dung lượng rất "khiêm tốn".',
+      "Chuỗi hoạt động chào mừng ngày Quốc tế phụ nữ 8/3 được BCH Công đoàn, Ban Nữ công Công ty triển khai gồm tham gia Chương trình 'Hội chợ ẩm thực năm 2025' do Công đoàn Tổng công ty Quản lý bay tổ chức .",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/11/galaxy-s25-edge-3-173816699907118368675-182-288-1103-1762-crop-1741690464030800598099.jpg",
+      "https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-1-170x130.jpg",
   },
   {
-    id: 2,
-    category: "Đồ chơi số",
-    time: "1 ngày trước",
-    title:
-      "Samsung duy trì vị thế thương hiệu loa soundbar số 1 thế giới năm thứ 11 liên tiếp",
+    id: 15,
+    category: "Lễ ký kết",
+    time: "4/3/2025",
+    title: "Lễ ký kết Hợp đồng cho Gói thầu TB05",
     description:
-      "Thành công của Samsung trong thị trường loa soundbar là nhờ vào trải nghiệm âm thanh sống động được cung cấp bởi các sản phẩm loa và khả năng kết nối liền mạch với TV Samsung.",
+      "Lễ ký kết Hợp đồng cho Gói thầu TB05 'Cung cấp và lắp đặt hệ thống DVOR/DME' Dự án thành phần 2 'Các công trình phục vụ quản lý bay' thuộc dự án 'Cảng hàng không quốc tế Long Thành – Giai đoạn 1'.",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/10/avatar1741595932946-17415959335951919565352.jpg",
+      "https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-2-170x130.jpg",
   },
   {
-    id: 3,
-    category: "Mobile",
-    time: "3 ngày trước",
-    title: "Linh kiện quan trọng nhất của OPPO Find N5 được làm bởi... Samsung",
+    id: 16,
+    category: "Hội nghị",
+    time: "28/02/2025",
+    title:
+      "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị đại biểu Người lao động năm 2025",
     description:
-      "OPPO Find N5 là mẫu smartphone màn hình gập được săn đón nhất hiện nay.",
+      "Chiều ngày 28/02/2025, Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) đã tổ chức Hội nghị đại biểu Người lao động năm 2025.",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/8/dscf7685-17414322732321604260232-13-46-1226-1986-crop-1741432335136591300811-1741453671142-174145367161342907775-0-0-477-764-crop-1741453693343843141249.jpg",
+      "https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg",
   },
   {
-    id: 4,
-    category: "Mobile",
-    time: "4 ngày trước",
+    id: 17,
+    category: "Hội nghị",
+    time: "28/02/2025",
     title:
-      "Cận cảnh mẫu điện thoại Trung Quốc đang khiến Apple, Samsung cũng phải dè chừng: Mỏng chỉ 5.75mm, trọng lượng 146g mà pin tận 5.200mAh",
+      "Tuyên dương điển hình tiên tiến giai đoạn 2020-2024 và phát động phong trào thi đua giai đoạn 2025-2030",
     description:
-      "Tuy nhiên, mẫu này sẽ chưa được thương mại hóa, ít nhất là ở thời điểm hiện tại.",
+      "Sáng ngày 28/02/2025, Công ty TNHH Kỹ thuật Quản lý bay và Công đoàn cơ sở tổ chức Hội nghị tuyên dương điển hình tiên tiến giai đoạn 2020-2024 và phát động phong trào thi đua giai đoạn 2025-2030.",
     image:
-      "https://genk.mediacdn.vn/zoom/250_155/139269124445442048/2025/3/7/gsmarena015-2-17413192865622124120363-1741323957177-1741323962346407355609-19-0-769-1200-crop-17413239811911437220195.jpg",
+      "https://attech.com.vn/wp-content/uploads/2025/03/HN-dien-hinh-tt-3-3-7-170x130.jpg",
   },
 ];
 
@@ -53,6 +52,7 @@ const GetAllActivity = () => {
   return (
     <div className="container">
       <div className="get-all">
+        <h2>Tin tức hoạt động</h2>
         {data.map((item) => (
           <Link
             key={item.id}

@@ -24,6 +24,9 @@ import GetAllTrain from "./components/News/Train/GetAllTrain";
 import DetailTrain from "./components/News/Train/DetailTrain";
 import DetailTNHC from "./components/Service/TNHC/DetailTNHC";
 import DetailDVKTCNS from "./components/Service/DVKTCNS/DetailDVKTCNS";
+import DetailHLDT from "./components/Service/HLDT/DetailHLDT";
+import DetailKTDD from "./components/Service/KTDD/DetailKTDD";
+import DetailXDQLDA from "./components/Service/XDQLDA/DetailXDQLDA";
 
 function App() {
   return (
@@ -46,6 +49,9 @@ function App() {
           <Route path="/service/bkthc" element={<DetailBKTHC />} />
           <Route path="/service/tnhc" element={<DetailTNHC />} />
           <Route path="/service/dvktcns" element={<DetailDVKTCNS />} />
+          <Route path="/service/hldt" element={<DetailHLDT />} />
+          <Route path="/service/ktdd" element={<DetailKTDD />} />
+          <Route path="/service/qlda" element={<DetailXDQLDA />} />
 
           <Route path="/news" element={<News />} />
 

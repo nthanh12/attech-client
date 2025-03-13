@@ -150,13 +150,13 @@ const Header = () => {
                     <Link to="/service/tnhc" className="dropdown-item">
                       Thử nghiệm hiệu chuẩn
                     </Link>
-                    <Link to="/tu-van-dau-tu" className="dropdown-item">
+                    <Link to="/service/qlda" className="dropdown-item">
                       Dịch vụ tư vấn đầu tư xây dựng và QLDA
                     </Link>
-                    <Link to="/ky-thuat-dan-dung" className="dropdown-item">
+                    <Link to="/service/ktdd" className="dropdown-item">
                       Đảm bảo kỹ thuật dân dụng
                     </Link>
-                    <Link to="/dao-tao" className="dropdown-item">
+                    <Link to="/service/hldt" className="dropdown-item">
                       Dịch vụ huấn luyện đào tạo
                     </Link>
                   </div>
@@ -189,7 +189,7 @@ const Header = () => {
                     <Link to="/news/activity/all" className="dropdown-item">
                       Tin tức hoạt động
                     </Link>
-                    <Link to="/hoat-dong-huan-luyen" className="dropdown-item">
+                    <Link to="/news/train/all" className="dropdown-item">
                       Tin hoạt động huấn luyện
                     </Link>
                     <Link to="/hang-khong-the-gioi" className="dropdown-item">

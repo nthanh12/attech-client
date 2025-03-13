@@ -1,59 +1,65 @@
 import "../../assets/css/Product/ProductItem.css";
+import { Link } from "react-router-dom";
 
 const ProductItem = () => {
   return (
     <>
       <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="product-item">
-          <div class="product-img">
-            <img
-              src="https://attech.com.vn/wp-content/uploads/2024/07/BPDDT-1.jpg"
-              alt="Image"
-            />
-            <div class="product-overlay">
-              <p>
-                Hệ thống băng phi diễn điện tử (Electronic Flight Strip) là một
-                sản phẩm trong lĩnh vực CNS do ATTECH sản xuất. Hệ thống cung
-                cấp môi trường số hóa, công cụ hỗ trợ trực quan cho hoạt động
-                chỉ huy điều hành bay của kiểm soát viên không lưu nhằm thay thế
-                hoàn toàn cho việc sử dụng băng phi diễn bằng giấy được các
-                KSVKL sử dụng trước đây.
-              </p>
+        <Link to="/product/cns-atm/detail/1">
+          <div class="product-item">
+            <div class="product-img">
+              <img
+                src="https://attech.com.vn/wp-content/uploads/2024/07/BPDDT-1.jpg"
+                alt="Image"
+              />
+              <div class="product-overlay">
+                <p>
+                  Hệ thống băng phi diễn điện tử (Electronic Flight Strip) là
+                  một sản phẩm trong lĩnh vực CNS do ATTECH sản xuất. Hệ thống
+                  cung cấp môi trường số hóa, công cụ hỗ trợ trực quan cho hoạt
+                  động chỉ huy điều hành bay của kiểm soát viên không lưu nhằm
+                  thay thế hoàn toàn cho việc sử dụng băng phi diễn bằng giấy
+                  được các KSVKL sử dụng trước đây.
+                </p>
+              </div>
+            </div>
+            <div class="product-text">
+              <h3>Hệ thống Băng phi diễn điện tử</h3>
+              <a class="btn" href="img/product-1.jpg" data-lightbox="product">
+                <i class="fa fa-solid fa-eye"></i>
+              </a>
             </div>
           </div>
-          <div class="product-text">
-            <h3>Hệ thống Băng phi diễn điện tử</h3>
-            <a class="btn" href="img/product-1.jpg" data-lightbox="product">
-              <i class="fa fa-solid fa-eye"></i>
-            </a>
-          </div>
-        </div>
+        </Link>
       </div>
       <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
-        <div class="product-item">
-          <div class="product-img">
-            <img
-              src="https://attech.com.vn/wp-content/uploads/2015/12/ghiam2015.jpg"
-              alt="Image"
-            />
-            <div class="product-overlay">
-              <p>
-                Ghi âm các cuộc gọi trên đường thoại analog, các tín hiệu thoại
-                thu phát của các thiết bị HF, VHF Công nghệ kỹ thuật số Ghi âm
-                các cuộc gọi trên đường thoại analog, các tín hiệu thoại thu
-                phát của các thiết bị HF, VHF Dung lượng lưu trữ trên 20.000 giờ
-                Tự động backup dữ liệu trên đĩa DVD-RW/ DVD-RAM Tìm kiếm và nghe
-                lại các bản ghi theo thời gian, theo kênh
-              </p>
+        <Link to="/product/cns-atm/detail/2">
+          <div class="product-item">
+            <div class="product-img">
+              <img
+                src="https://attech.com.vn/wp-content/uploads/2015/12/ghiam2015.jpg"
+                alt="Image"
+              />
+              <div class="product-overlay">
+                <p>
+                  Ghi âm các cuộc gọi trên đường thoại analog, các tín hiệu
+                  thoại thu phát của các thiết bị HF, VHF Công nghệ kỹ thuật số
+                  Ghi âm các cuộc gọi trên đường thoại analog, các tín hiệu
+                  thoại thu phát của các thiết bị HF, VHF Dung lượng lưu trữ
+                  trên 20.000 giờ Tự động backup dữ liệu trên đĩa DVD-RW/
+                  DVD-RAM Tìm kiếm và nghe lại các bản ghi theo thời gian, theo
+                  kênh
+                </p>
+              </div>
+            </div>
+            <div class="product-text">
+              <h3>Thiết bị ghi âm</h3>
+              <a class="btn" href="img/product-2.jpg" data-lightbox="product">
+                <i class="fa fa-solid fa-eye"></i>
+              </a>
             </div>
           </div>
-          <div class="product-text">
-            <h3>Thiết bị ghi âm</h3>
-            <a class="btn" href="img/product-2.jpg" data-lightbox="product">
-              <i class="fa fa-solid fa-eye"></i>
-            </a>
-          </div>
-        </div>
+        </Link>
       </div>
       <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
         <div class="product-item">
