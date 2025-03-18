@@ -4,8 +4,9 @@
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     margin-top: 50PX;
+    min-width: 1500px;
   }
   
   .experience h2 {    

@@ -15,7 +15,7 @@ const NotificationList = ({ notifications }) => {
   // };
 
   return (
-    <>
+    <div className="notification-container">
       <div className="container">
         <div class="row">
           <div class="col-12 col-sm-6 p-0">
@@ -162,7 +162,7 @@ const NotificationList = ({ notifications }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -5,8 +5,8 @@ import sliderImg1 from "../../assets/img/slider_img1.jpg";
 import sliderImg2 from "../../assets/img/slider_img2.jpg";
 import sliderImg3 from "../../assets/img/slider_img3.jpg";
 import sliderImg4 from "../../assets/img/slider_img4.jpg";
-import postImg from "../../assets/img/img-01.png";
 import { Autoplay } from "swiper/modules";
+import { Link } from "react-router-dom";
 
 const SliderSection = () => {
   return (
@@ -107,18 +107,34 @@ const SliderSection = () => {
           </Swiper>
         </div>
 
-        <div className="col-lg-4">
-          <div className="latest_post">
+        <div class="col-lg-4">
+          <div class="latest_post">
             <h2>
               <span>Thông báo</span>
             </h2>
+            <div class="fixed_announcement">
+              <div class="media">
+                <a href="pages/single_page.html" class="media-left">
+                  <img
+                    alt=""
+                    src="https://attech.com.vn/wp-content/uploads/2023/07/giai-bong-da1-170x130.jpg"
+                  />
+                </a>
+                <div class="media-body">
+                  <a href="pages/single_page.html" class="catg_title">
+                    Thông báo ghim: Nữ công ATTECH hưởng ứng chuỗi hoạt động
+                    chào mừng ngày 8/3
+                  </a>
+                </div>
+              </div>
+            </div>
             <Swiper
               direction="vertical"
-              slidesPerView={6}
-              spaceBetween={0}
+              slidesPerView={4}
+              spaceBetween={15}
               loop={true}
               autoplay={{
-                delay: 2000,
+                delay: 4000,
                 disableOnInteraction: false,
                 pauseOnMouseEnter: true,
               }}
@@ -126,114 +142,151 @@ const SliderSection = () => {
               className="swiper_latest_post"
             >
               <SwiperSlide>
+                {" "}
                 <div className="media">
+                  {" "}
                   <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2023/07/giai-bong-da1-170x130.jpg" />
-                  </a>
+                    {" "}
+                    <img
+                      alt=""
+                      src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                    />{" "}
+                  </a>{" "}
                   <div className="media-body">
+                    {" "}
                     <a href="pages/single_page.html" className="catg_title">
-                      Nữ công ATTECH hưởng ứng chuỗi hoạt động chào mừng ngày 8/3
-                    </a>
-                  </div>
-                </div>
+                      {" "}
+                      Hội nghị tuyên dương điển hình tiên tiến giai đoạn
+                      2020-2024 và phát động phong trào thi đua giai đoạn
+                      2025-2030{" "}
+                    </a>{" "}
+                  </div>{" "}
+                </div>{" "}
+              </SwiperSlide>{" "}
+              <SwiperSlide>
+                {" "}
+                <div className="media">
+                  {" "}
+                  <a href="pages/single_page.html" className="media-left">
+                    {" "}
+                    <img
+                      alt=""
+                      src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                    />{" "}
+                  </a>{" "}
+                  <div className="media-body">
+                    {" "}
+                    <a href="pages/single_page.html" className="catg_title">
+                      {" "}
+                      Đại hội Chi bộ Chi nhánh tại Tp. HCM nhiệm kỳ 2025 – 2027{" "}
+                    </a>{" "}
+                  </div>{" "}
+                </div>{" "}
+              </SwiperSlide>{" "}
+              <SwiperSlide>
+                {" "}
+                <div className="media">
+                  {" "}
+                  <a href="pages/single_page.html" className="media-left">
+                    {" "}
+                    <img
+                      alt=""
+                      src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                    />{" "}
+                  </a>{" "}
+                  <div className="media-body">
+                    {" "}
+                    <a href="pages/single_page.html" className="catg_title">
+                      {" "}
+                      Đại hội Chi bộ Phòng Tổ chức cán bộ – Lao động nhiệm kỳ
+                      2025-2027{" "}
+                    </a>{" "}
+                  </div>{" "}
+                </div>{" "}
+              </SwiperSlide>{" "}
+              <SwiperSlide>
+                {" "}
+                <div className="media">
+                  {" "}
+                  <a href="pages/single_page.html" className="media-left">
+                    {" "}
+                    <img
+                      alt=""
+                      src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                    />{" "}
+                  </a>{" "}
+                  <div className="media-body">
+                    {" "}
+                    <a href="pages/single_page.html" className="catg_title">
+                      {" "}
+                      Hoạt động chào mừng Ngày truyền thống của Công ty TNHH Kỹ
+                      thuật Quản lý Bay 22/7 & kỷ niệm 15 năm tiếp nhận cung cấp
+                      dịch vụ dẫn đường{" "}
+                    </a>{" "}
+                  </div>{" "}
+                </div>{" "}
+              </SwiperSlide>{" "}
+              <SwiperSlide>
+                {" "}
+                <div className="media">
+                  {" "}
+                  <a href="pages/single_page.html" className="media-left">
+                    {" "}
+                    <img
+                      alt=""
+                      src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                    />{" "}
+                  </a>{" "}
+                  <div className="media-body">
+                    {" "}
+                    <a href="pages/single_page.html" className="catg_title">
+                      {" "}
+                      Ngày hội gia đình ATTECH năm 2023 – We are a family{" "}
+                    </a>{" "}
+                  </div>{" "}
+                </div>{" "}
+              </SwiperSlide>{" "}
+              <SwiperSlide>
+                {" "}
+                <div className="media">
+                  {" "}
+                  <a href="pages/single_page.html" className="media-left">
+                    {" "}
+                    <img
+                      alt=""
+                      src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                    />{" "}
+                  </a>{" "}
+                  <div className="media-body">
+                    {" "}
+                    <a href="pages/single_page.html" className="catg_title">
+                      {" "}
+                      Ngày hội gia đình ATTECH khu vực phía Nam năm 2023{" "}
+                    </a>{" "}
+                  </div>{" "}
+                </div>{" "}
               </SwiperSlide>
               <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
+                <div class="media">
+                  <a href="pages/single_page.html" class="media-left">
+                    <img
+                      alt=""
+                      src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                    />
                   </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị đại biểu Người lao động năm 2025
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
-                  </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Hội nghị tuyên dương điển hình tiên tiến giai đoạn 2020-2024 và phát động phong trào thi đua giai đoạn 2025-2030
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
-                  </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Đại hội Chi bộ Chi nhánh tại Tp. HCM nhiệm kỳ 2025 – 2027
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
-                  </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Đại hội Chi bộ Phòng Tổ chức cán bộ – Lao động nhiệm kỳ 2025-2027
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
-                  </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Hoạt động chào mừng Ngày truyền thống của Công ty TNHH Kỹ thuật Quản lý Bay 22/7 & kỷ niệm 15 năm tiếp nhận cung cấp dịch vụ dẫn đường
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
-                  </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Ngày hội gia đình ATTECH năm 2023 – We are a family
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
-                  </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Ngày hội gia đình ATTECH khu vực phía Nam năm 2023
-                    </a>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide>
-                <div className="media">
-                  <a href="pages/single_page.html" className="media-left">
-                    <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />
-                  </a>
-                  <div className="media-body">
-                    <a href="pages/single_page.html" className="catg_title">
-                      Ngày hội gia đình ATTECH khu vực phía Nam năm 2023
+                  <div class="media-body">
+                    <a href="pages/single_page.html" class="catg_title">
+                      Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị đại
+                      biểu Người lao động năm 2025
                     </a>
                   </div>
                 </div>
               </SwiperSlide>
             </Swiper>
+            <Link to="/news/notification/all" className="more-btn">
+              <i class="fa fa-angle-down" aria-hidden="true"></i>
+              <span>Xem tất cả</span>
+            </Link>
           </div>
         </div>
       </div>

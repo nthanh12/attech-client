@@ -1,8 +1,6 @@
 import "../../assets/css/News/ContentSection/ContentSection.css";
 import sliderImg1 from "../../assets/img/featured_img1.jpg";
-import sliderImg2 from "../../assets/img/featured_img2.jpg";
-import sliderImg3 from "../../assets/img/featured_img3.jpg";
-
+import { Link } from "react-router-dom";
 const ContentSection = () => {
   return (
     <>
@@ -126,6 +124,10 @@ const ContentSection = () => {
                       </div>
                     </li>
                   </ul>
+                  <Link to="/news/notification/all" className="more-btn">
+                    <i class="fa fa-angle-down" aria-hidden="true"></i>
+                    <span>Xem tất cả</span>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -142,7 +144,10 @@ const ContentSection = () => {
                       {" "}
                       <a href="pages/single_page.html" class="media-left">
                         {" "}
-                        <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />{" "}
+                        <img
+                          alt=""
+                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                        />{" "}
                       </a>
                       <div class="media-body">
                         {" "}
@@ -158,7 +163,10 @@ const ContentSection = () => {
                       {" "}
                       <a href="pages/single_page.html" class="media-left">
                         {" "}
-                        <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />{" "}
+                        <img
+                          alt=""
+                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                        />{" "}
                       </a>
                       <div class="media-body">
                         {" "}
@@ -174,7 +182,10 @@ const ContentSection = () => {
                       {" "}
                       <a href="pages/single_page.html" class="media-left">
                         {" "}
-                        <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />{" "}
+                        <img
+                          alt=""
+                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                        />{" "}
                       </a>
                       <div class="media-body">
                         {" "}
@@ -190,7 +201,10 @@ const ContentSection = () => {
                       {" "}
                       <a href="pages/single_page.html" class="media-left">
                         {" "}
-                        <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />{" "}
+                        <img
+                          alt=""
+                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                        />{" "}
                       </a>
                       <div class="media-body">
                         {" "}
@@ -206,7 +220,10 @@ const ContentSection = () => {
                       {" "}
                       <a href="pages/single_page.html" class="media-left">
                         {" "}
-                        <img alt="" src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg" />{" "}
+                        <img
+                          alt=""
+                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
+                        />{" "}
                       </a>
                       <div class="media-body">
                         {" "}
@@ -218,6 +235,10 @@ const ContentSection = () => {
                     </div>
                   </li>
                 </ul>
+                <Link to="/news/notification/all" className="more-btn">
+                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                  <span>Xem tất cả</span>
+                </Link>
               </div>
             </aside>
           </div>

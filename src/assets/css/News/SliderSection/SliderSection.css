@@ -1,5 +1,4 @@
 #sliderSection {
-    padding: 20px 30px;
   }
   
 
@@ -8,6 +7,7 @@
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    height: 480px;
   }
   
   .single_item {
@@ -53,28 +53,79 @@
 
   .latest_post {
     background: #fff;
-    padding: 15px;
+    padding: 0 15px;
+    height: 480px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
   .latest_post h2 {
     font-size: 20px;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     text-align: center;
     font-weight: bold;
   }
   
   .swiper_latest_post {
-    height: 550px; 
+    height: 300px; 
     overflow: hidden;
   }
-  
+  .more-btn {
+    float: right;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 5px;
+    justify-content: center;
+    color: rgb(88, 115, 235);
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.more-btn:hover i{
+  color: #002a5c;
+}
+
+.more-btn i {
+    margin-right: 8px;
+    font-size: 20px; 
+    color: rgb(88, 115, 235);
+}
+
+.more-btn span {
+    display: inline-block;
+}
+
   
   .latest_postnav {
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+  .fixed_announcement {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
+  }
+  
+  .fixed_announcement .media {
+    display: flex;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .fixed_announcement img {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .fixed_announcement .catg_title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
   }
   
   .latest_postnav li {
@@ -112,7 +163,7 @@
   }
   
   .media-left {
-    width: 100px;
+    width: 80px;
     height: auto; 
   }
   

@@ -1,8 +1,13 @@
 body {
-  color: #666666;
-  background: #fffdfd;
-  font-family: 'Open sans', sans-serif;
+  color: #413f3f;
+  background: #ffffff;
+  /* font-family: 'Open sans', sans-serif; */
+  font-family: Montserrat, sans-serif;
   font-weight: 400;
+}
+
+:root {
+  --mainColor: #002a5c;
 }
 
 h1,

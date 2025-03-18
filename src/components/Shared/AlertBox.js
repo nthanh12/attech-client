@@ -19,21 +19,42 @@ const AlertBox = () => {
   //     }
   //   }
   // };
+  const handleSlideEffect = (swiper) => {
+    // Reset trạng thái
+    swiper.slides.forEach((slide) => {
+      slide.style.opacity = 1; // Hiển thị đầy đủ
+      slide.style.transform = "scale(1)"; // Không thu nhỏ
+    });
+
+    // Làm mờ 2 slide ngoài cùng
+    const activeIndex = swiper.activeIndex;
+    const totalSlides = swiper.slides.length;
+
+    // Tìm index của 2 slide ngoài cùng
+    const prevIndex = (activeIndex - 2 + totalSlides) % totalSlides;
+    const nextIndex = (activeIndex + 2) % totalSlides;
+
+    swiper.slides[prevIndex].style.opacity = 0.5;
+    swiper.slides[prevIndex].style.transform = "scale(0.9)";
+    swiper.slides[nextIndex].style.opacity = 0.5;
+    swiper.slides[nextIndex].style.transform = "scale(0.9)";
+  };
+
   return (
     <div className="alert-box">
-      <div className="container p-0">
+      <div className=" p-0">
         <Swiper
-          breakpoints={{
-            640: { slidesPerView: 2, spaceBetween: 5 },
-            768: { slidesPerView: 2, spaceBetween: 5 },
-            1024: { slidesPerView: 3, spaceBetween: 5 },
-            1200: { slidesPerView: 4, spaceBetween: 5 },
-          }}
+          slidesPerView={5} // Hiển thị 5 slide
+          spaceBetween={10} // Khoảng cách giữa các slide
+          centeredSlides={true} // Slide trung tâm nằm chính giữa
+          loop={true} // Lặp lại các slide
           autoplay={{
             delay: 3000,
             disableOnInteraction: false,
           }}
-          loop={true}
+          onSlideChange={(swiper) => {
+            handleSlideEffect(swiper); // Xử lý logic làm mờ
+          }}
           pagination={{
             clickable: true,
           }}
@@ -46,7 +67,42 @@ const AlertBox = () => {
                 <img src="https://vatm.vn/uploads/m.jpg" alt="alertbox Image" />
               </div>
               <div className="item-description">
-                <p className="item-time">05/03/2025</p>
+                <p className="item-time">
+                  <i class="fa fa-solid fa-calendar-days"></i>
+                  05/03/2025
+                </p>
+                <p className="item-text">
+                  Tuyển dụng nhân viên nhà ở khu đô thị Tam Trinh
+                </p>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="wrap-item">
+              <div class="item-img">
+                <img src="https://vatm.vn/uploads/m.jpg" alt="alertbox Image" />
+              </div>
+              <div className="item-description">
+                <p className="item-time">
+                  <i class="fa fa-solid fa-calendar-days"></i>
+                  05/03/2025
+                </p>
+                <p className="item-text">
+                  Tuyển dụng nhân viên nhà ở khu đô thị Tam Trinh
+                </p>
+              </div>
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className="wrap-item">
+              <div class="item-img">
+                <img src="https://vatm.vn/uploads/m.jpg" alt="alertbox Image" />
+              </div>
+              <div className="item-description">
+                <p className="item-time">
+                  <i class="fa fa-solid fa-calendar-days"></i>
+                  05/03/2025
+                </p>
                 <p className="item-text">
                   Tuyển dụng nhân viên nhà ở khu đô thị Tam Trinh
                 </p>
@@ -62,7 +118,10 @@ const AlertBox = () => {
                 />
               </div>
               <div className="item-description">
-                <p className="item-time">05/03/2025</p>
+                <p className="item-time">
+                  <i class="fa fa-solid fa-calendar-days"></i>
+                  05/03/2025
+                </p>{" "}
                 <p className="item-text">
                   Đồng loạt đề xuất tăng giá bốc dỡ cảng biển
                 </p>
@@ -78,7 +137,10 @@ const AlertBox = () => {
                 />
               </div>
               <div className="item-description">
-                <p className="item-time">05/03/2025</p>
+                <p className="item-time">
+                  <i class="fa fa-solid fa-calendar-days"></i>
+                  05/03/2025
+                </p>{" "}
                 <p className="item-text">
                   VIMC và Câu lạc bộ Sao Vàng Đất Việt thúc đẩy hợp tác, mở rộng
                   kết nối doanh nghiệp
@@ -95,7 +157,10 @@ const AlertBox = () => {
                 />
               </div>
               <div className="item-description">
-                <p className="item-time">05/03/2025</p>
+                <p className="item-time">
+                  <i class="fa fa-solid fa-calendar-days"></i>
+                  05/03/2025
+                </p>{" "}
                 <p className="item-text">
                   Công ty TNHH Kỹ thuật Quản lý bay đã chính thức có mặt trên
                   Zalo!
@@ -112,7 +177,10 @@ const AlertBox = () => {
                 />
               </div>
               <div className="item-description">
-                <p className="item-time">05/03/2025</p>
+                <p className="item-time">
+                  <i class="fa fa-solid fa-calendar-days"></i>
+                  05/03/2025
+                </p>{" "}
                 <p className="item-text">
                   Hội nghị Thường trực Chính phủ làm việc với DNNN: VIMC quán
                   triệt sâu sắc chỉ đạo, quyết tâm thúc đẩy tăng trưởng kinh tế
