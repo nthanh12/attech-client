@@ -5,6 +5,7 @@ import NotificationList from "../components/Shared/NotificationList";
 import About from "../components/Shared/About";
 import Fact from "../components/Shared/Fact";
 import Media from "../components/Shared/Media";
+import Map from "../components/Shared/Map";
 import Partner from "../components/Shared/Partner";
 import Quotes from "../components/Shared/Quotes";
 
@@ -14,8 +15,9 @@ const Home = () => {
       <Banner />
       <Feature />
       <AlertBox />
-      <NotificationList />
       <About />
+      <NotificationList />
+      <Map />
       <Fact />
       <Media />
       {/* <Partner /> */}

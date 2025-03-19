@@ -1,14 +1,28 @@
 .about-section {
     padding: 50px 0;
-    background-color: var(--mainColor); /* Màu nền nhẹ nhàng */
+    background-color: var(--mainColor);
   }
-  
+
   .about-title {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
-    color: #ffffff; /* Màu chủ đạo */
-    margin-bottom: 20px;
-  }
+    margin-bottom: 25px;
+    color: #ffffff;
+    text-align: left;
+    position: relative;
+    display: inline-block;
+}
+
+.about-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 80px;
+    height: 3px;
+    background-color: #64B5F6;
+}
+
   
   .about-description {
     font-size: 16px;

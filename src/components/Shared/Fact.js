@@ -1,51 +1,72 @@
+import React, { useState } from "react";
+import CountUp from "react-countup";
+import { useInView } from "react-intersection-observer";
 import "../../assets/css/Fact.css";
+
 const Fact = () => {
+  const [startAnimation, setStartAnimation] = useState(false);
+  const { ref, inView } = useInView({
+    triggerOnce: true, // Trigger only once
+    onChange: (inView) => {
+      if (inView) {
+        setStartAnimation(true);
+      }
+    },
+  });
+
   return (
     <>
-      <div class="fact">
-        <div class="container">
-          <div class="row counters">
-            <div class="col-12 col-sm-6 fact-left wow slideInLeft">
-              <div class="row">
-                <div class="col-12 col-sm-6">
-                  <div class="fact-icon">
-                    <i class="fas fa-clock"></i>
-                  </div>
-                  <div class="fact-text">
-                    <h2 data-toggle="counter-up">&gt; 30</h2>
-                    <p>Năm hoạt động</p>
-                  </div>
+      <div className="fact" ref={ref}>
+        <div className="p-0">
+          <div className="row counters">
+            <h2>Niềm tự hào của ATTECH</h2>
+            <div className="col-12 col-sm-3 fact-left wow slideInLeft">
+              <div className="col-12 col-sm-6">
+                <div className="fact-icon">
+                  <i className="fas fa-clock"></i>
                 </div>
-                <div class="col-12 col-sm-6">
-                  <div class="fact-icon">
-                    <i class="flaticon-building"></i>
-                  </div>
-                  <div class="fact-text">
-                    <h2 data-toggle="counter-up">25</h2>
-                    <p>Đài dẫn đường DVOR/DME và NDB</p>
-                  </div>
+                <div className="fact-text">
+                  <h2>
+                    {startAnimation && <CountUp end={20} duration={2} />}+
+                  </h2>
+                  <p>Năm hoạt động</p>
                 </div>
               </div>
             </div>
-            <div class="col-12 col-sm-6 fact-right wow slideInRight">
-              <div class="row">
-                <div class="col-12 col-sm-6">
-                  <div class="fact-icon">
-                    <i class="flaticon-address"></i>
-                  </div>
-                  <div class="fact-text">
-                    <h2 data-toggle="counter-up">13</h2>
-                    <p>trạm giám sát tự động</p>
-                  </div>
+            <div className="col-12 col-sm-3 fact-left wow slideInLeft">
+              <div className="col-12 col-sm-6">
+                <div className="fact-icon">
+                  <i class="fa fa-solid fa-building"></i>{" "}
                 </div>
-                <div class="col-12 col-sm-6">
-                  <div class="fact-icon">
-                    <i class="flaticon-crane"></i>
-                  </div>
-                  <div class="fact-text">
-                    <h2 data-toggle="counter-up">04</h2>
-                    <p>trạm giám sát VHF tầm xa</p>
-                  </div>
+                <div className="fact-text">
+                  <h2>
+                    {startAnimation && <CountUp end={100} duration={2} />}+
+                  </h2>
+                  <p>Công trình</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-12 col-sm-3 fact-right wow slideInRight">
+              <div className="col-12 col-sm-6">
+                <div className="fact-icon">
+                  <i class="fa fa-solid fa-earth-asia"></i>{" "}
+                </div>
+                <div className="fact-text">
+                  <h2>
+                    {startAnimation && <CountUp end={13} duration={2} />}+
+                  </h2>
+                  <p>Quốc gia</p>
+                </div>
+              </div>
+            </div>
+            <div className="col-12 col-sm-3 fact-right wow slideInRight">
+              <div className="col-12 col-sm-6">
+                <div className="fact-icon">
+                  <i class="fa fa-solid fa-certificate"></i>{" "}
+                </div>
+                <div className="fact-text">
+                  <h2>{startAnimation && <CountUp end={4} duration={2} />}+</h2>
+                  <p>Bằng khen</p>
                 </div>
               </div>
             </div>
