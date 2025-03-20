@@ -109,9 +109,13 @@ const SliderSection = () => {
 
         <div class="col-lg-4">
           <div class="latest_post">
-            <h2>
-              <span>Thông báo</span>
-            </h2>
+            <div className="d-flex justify-content-between align-items-center m-0">
+              <p>Thông tin tuyển dụng</p>
+              <Link to="/news/notification/all" className="more-btn">
+                <span>Xem tất cả</span>
+                <i class="fa fa-angle-down" aria-hidden="true"></i>
+              </Link>
+            </div>
             <div class="fixed_announcement">
               <div class="media">
                 <a href="pages/single_page.html" class="media-left">
@@ -131,7 +135,7 @@ const SliderSection = () => {
             <Swiper
               direction="vertical"
               slidesPerView={4}
-              spaceBetween={15}
+              spaceBetween={8}
               loop={true}
               autoplay={{
                 delay: 4000,
@@ -145,7 +149,7 @@ const SliderSection = () => {
                 {" "}
                 <div className="media">
                   {" "}
-                  <a href="pages/single_page.html" className="media-left">
+                  <a href="pages/single_page.html" className="media-left slide">
                     {" "}
                     <img
                       alt=""
@@ -167,7 +171,7 @@ const SliderSection = () => {
                 {" "}
                 <div className="media">
                   {" "}
-                  <a href="pages/single_page.html" className="media-left">
+                  <a href="pages/single_page.html" className="media-left slide">
                     {" "}
                     <img
                       alt=""
@@ -187,7 +191,7 @@ const SliderSection = () => {
                 {" "}
                 <div className="media">
                   {" "}
-                  <a href="pages/single_page.html" className="media-left">
+                  <a href="pages/single_page.html" className="media-left slide">
                     {" "}
                     <img
                       alt=""
@@ -208,7 +212,7 @@ const SliderSection = () => {
                 {" "}
                 <div className="media">
                   {" "}
-                  <a href="pages/single_page.html" className="media-left">
+                  <a href="pages/single_page.html" className="media-left slide">
                     {" "}
                     <img
                       alt=""
@@ -230,7 +234,7 @@ const SliderSection = () => {
                 {" "}
                 <div className="media">
                   {" "}
-                  <a href="pages/single_page.html" className="media-left">
+                  <a href="pages/single_page.html" className="media-left slide">
                     {" "}
                     <img
                       alt=""
@@ -250,7 +254,7 @@ const SliderSection = () => {
                 {" "}
                 <div className="media">
                   {" "}
-                  <a href="pages/single_page.html" className="media-left">
+                  <a href="pages/single_page.html" className="media-left slide">
                     {" "}
                     <img
                       alt=""
@@ -268,7 +272,7 @@ const SliderSection = () => {
               </SwiperSlide>
               <SwiperSlide>
                 <div class="media">
-                  <a href="pages/single_page.html" class="media-left">
+                  <a href="pages/single_page.html" class="media-left slide">
                     <img
                       alt=""
                       src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
@@ -283,10 +287,6 @@ const SliderSection = () => {
                 </div>
               </SwiperSlide>
             </Swiper>
-            <Link to="/news/notification/all" className="more-btn">
-              <i class="fa fa-angle-down" aria-hidden="true"></i>
-              <span>Xem tất cả</span>
-            </Link>
           </div>
         </div>
       </div>

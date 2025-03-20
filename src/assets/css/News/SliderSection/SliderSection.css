@@ -54,11 +54,12 @@
   .latest_post {
     background: #fff;
     padding: 0 15px;
-    height: 480px;
+    height: 100%;
+    padding: 8px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
-  
+
   .latest_post h2 {
     font-size: 20px;
     margin-bottom: 0px;
@@ -93,6 +94,7 @@
 
 .more-btn span {
     display: inline-block;
+    margin-right: 8px;
 }
 
   
@@ -104,7 +106,7 @@
   .fixed_announcement {
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
   }
   
   .fixed_announcement .media {
@@ -163,40 +165,44 @@
   }
   
   .media-left {
-    width: 80px;
-    height: auto; 
+    margin-right: 8px;
+  }
+
+  .media-left.slide {
+    flex: 1;
+    margin: 0;
   }
   
   .media-left img {
     width: 100%;
-    height: auto; 
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px; 
+    height: auto;
+    display: block;
+    max-height: 90px;  
   }
   
   .media-body {
-    flex: 1;
+    flex: 2;
     overflow: hidden; 
   }
 
   .media {
     background-color: #f1f1f1;
-    border-radius: 5px;
   }
 
   .media-body .catg_title {
-    font-size: 11px;
-    padding: 0 8px;
-    margin-top: 2px;
+    font-size: 12px;
+    padding: 8px;
+    font-size: 500;
     color: #333;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    width: 100%;
     text-overflow: ellipsis;
     text-align: justify;
     line-height: 1.4; 
-    max-height: 2.8em; 
+    max-height: 3.6em; 
   }
   
   .media:hover .media-body .catg_title {

@@ -9,9 +9,13 @@ const ContentSection = () => {
           <div class="col-lg-8 col-md-8 col-sm-8">
             <div class="left_content">
               <div class="single_post_content">
-                <h2>
-                  <span>Tin tức hoạt động</span>
-                </h2>
+              <div className="d-flex justify-content-between align-items-center">
+                <h4>Thông tin tuyển dụng</h4>
+                <Link to="/news/notification/all" className="more-btn">
+                  <span>Xem tất cả</span>
+                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </Link>
+                </div>
                 <div class="single_post_content_left">
                   <ul class="business_catgnav  wow fadeInDown">
                     <li>
@@ -124,10 +128,6 @@ const ContentSection = () => {
                       </div>
                     </li>
                   </ul>
-                  <Link to="/news/notification/all" className="more-btn">
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    <span>Xem tất cả</span>
-                  </Link>
                 </div>
               </div>
             </div>
@@ -135,9 +135,13 @@ const ContentSection = () => {
           <div class="col-lg-4 col-md-4 col-sm-4">
             <aside class="right_content">
               <div class="single_sidebar">
-                <h2>
-                  <span>Thông tin tuyển dụng</span>
-                </h2>
+                <div className="d-flex justify-content-between align-items-center">
+                <p>Thông tin tuyển dụng</p>
+                <Link to="/news/notification/all" className="more-btn">
+                  <span>Xem tất cả</span>
+                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </Link>
+                </div>
                 <ul class="spost_nav">
                   <li>
                     <div class="media wow fadeInDown">
@@ -235,10 +239,6 @@ const ContentSection = () => {
                     </div>
                   </li>
                 </ul>
-                <Link to="/news/notification/all" className="more-btn">
-                  <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  <span>Xem tất cả</span>
-                </Link>
               </div>
             </aside>
           </div>

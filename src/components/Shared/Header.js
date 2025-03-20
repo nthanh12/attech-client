@@ -4,20 +4,6 @@ import "../../assets/css/Header.css";
 import Logo from "../../assets/img/logo.png";
 
 const Header = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState({
-    products: false,
-    services: false,
-    news: false,
-    companyInfo: false,
-  });
-
-  const toggleDropdown = (menu) => {
-    setDropdownOpen((prevState) => ({
-      ...prevState,
-      [menu]: !prevState[menu],
-    }));
-  };
-
   return (
     <div className="header-div header-div-fix">
       <div className="top-bar">
@@ -93,11 +79,7 @@ const Header = () => {
                 </NavLink>
 
                 {/* Products Dropdown */}
-                <div
-                  className="nav-item dropdown"
-                  onMouseEnter={() => toggleDropdown("products")}
-                  onMouseLeave={() => toggleDropdown("products")}
-                >
+                <div className="nav-item dropdown">
                   <Link
                     to="/product"
                     className="nav-link dropdown-toggle"
@@ -105,11 +87,7 @@ const Header = () => {
                   >
                     Sản phẩm
                   </Link>
-                  <div
-                    className={`dropdown-menu ${
-                      isDropdownOpen.products ? "show" : ""
-                    }`}
-                  >
+                  <div className="dropdown-menu">
                     <Link to="/product/cns-atm" className="dropdown-item">
                       CNS/ATM
                     </Link>
@@ -124,16 +102,21 @@ const Header = () => {
                       className="dropdown-item"
                     >
                       Cơ khí chế tạo
+                      {/* Dropdown con */}
+                      <div className="dropdown-menu">
+                        <Link to="/product/detail" className="dropdown-item">
+                          Chi tiết sản phẩm
+                        </Link>
+                        <Link to="/product/support" className="dropdown-item">
+                          Hỗ trợ kỹ thuật
+                        </Link>
+                      </div>
                     </Link>
                   </div>
                 </div>
 
                 {/* Services Dropdown */}
-                <div
-                  className="nav-item dropdown"
-                  onMouseEnter={() => toggleDropdown("services")}
-                  onMouseLeave={() => toggleDropdown("services")}
-                >
+                <div className="nav-item dropdown">
                   <Link
                     to="/service"
                     className="nav-link dropdown-toggle"
@@ -141,13 +124,20 @@ const Header = () => {
                   >
                     Dịch vụ
                   </Link>
-                  <div
-                    className={`dropdown-menu ${
-                      isDropdownOpen.services ? "show" : ""
-                    }`}
-                  >
+                  <div className="dropdown-menu">
                     <Link to="/service/dvktcns" className="dropdown-item">
                       DVKT Chuyên ngành CNS
+                      <div className="dropdown-menu">
+                        <Link to="/service/dvktcns" className="dropdown-item">
+                          Đặc tính kỹ thuật
+                        </Link>
+                        <Link to="/service/bkthc" className="dropdown-item">
+                          Tiêu chuẩn đáp ứng/ Tài liệu áp dụng
+                        </Link>
+                        <Link to="/logistics" className="dropdown-item">
+                          Dịch vụ cung cấp:
+                        </Link>
+                      </div>
                     </Link>
                     <Link to="/service/bkthc" className="dropdown-item">
                       Bay kiểm tra hiệu chuẩn
@@ -171,11 +161,7 @@ const Header = () => {
                 </div>
 
                 {/* News Dropdown */}
-                <div
-                  className="nav-item dropdown"
-                  onMouseEnter={() => toggleDropdown("news")}
-                  onMouseLeave={() => toggleDropdown("news")}
-                >
+                <div className="nav-item dropdown">
                   <Link
                     to="/news"
                     className="nav-link dropdown-toggle"
@@ -183,11 +169,7 @@ const Header = () => {
                   >
                     Tin tức & sự kiện
                   </Link>
-                  <div
-                    className={`dropdown-menu ${
-                      isDropdownOpen.news ? "show" : ""
-                    }`}
-                  >
+                  <div className="dropdown-menu">
                     <Link to="/news/notification/all" className="dropdown-item">
                       Thông báo
                     </Link>
@@ -210,11 +192,7 @@ const Header = () => {
                 </div>
 
                 {/* Company Info Dropdown */}
-                <div
-                  className="nav-item dropdown"
-                  onMouseEnter={() => toggleDropdown("companyInfo")}
-                  onMouseLeave={() => toggleDropdown("companyInfo")}
-                >
+                <div className="nav-item dropdown">
                   <Link
                     to="/information"
                     className="nav-link dropdown-toggle"
@@ -222,11 +200,7 @@ const Header = () => {
                   >
                     Thông tin công ty
                   </Link>
-                  <div
-                    className={`dropdown-menu ${
-                      isDropdownOpen.companyInfo ? "show" : ""
-                    }`}
-                  >
+                  <div className="dropdown-menu">
                     <Link
                       to="/information/company-history"
                       className="dropdown-item"
