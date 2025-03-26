@@ -1,6 +1,5 @@
 import "../../assets/css/Service/ServiceList.css";
 import ServiceFilter from "./ServiceFilter";
-import ServiceItem from "./ServiceItem";
 
 const ServiceList = () => {
   return (

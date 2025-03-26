@@ -1,10 +1,7 @@
-
-/*******************************/
-/********* Feature CSS *********/
-/*******************************/
 .feature {
     position: relative;
 }
+
 .wrap-feature {
     /* background: linear-gradient(135deg, #007bff, #8b50eb); */
     padding: 20px;
@@ -15,7 +12,7 @@
 .feature .col-md-12 {
     background: #ffffff;
 }
-    
+
 /* .feature .col-md-12:nth-child(2n) {
     color: #030f27;
     background: #d8dbdd;
@@ -33,7 +30,7 @@
     border: 1px solid #e0e0e0;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;    
+    transition: all 0.4s ease;
     animation: fadeIn 1s ease-in-out;
 }
 
@@ -47,7 +44,7 @@
 .feature .feature-item:hover i,
 .feature .feature-item:hover h3 {
     color: #ffffff;
- }
+}
 
 .feature .feature-text h3 {
     font-size: 18px;
@@ -63,6 +60,7 @@
     font-size: 40px;
     color: var(--mainColor);
 }
+
 .feature .feature-icon {
     position: relative;
     width: 60px;
@@ -93,6 +91,7 @@
     align-items: center;
     margin-top: 10px;
 }
+
 /* 
 .feature .feature-text h3 {
     margin: 0 0 10px 0;
@@ -113,12 +112,20 @@
     font-size: 18px;
     font-weight: 400;
 }
+
 .feature .container-fluid {
     max-width: 1200px;
     margin: 0 auto;
 }
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

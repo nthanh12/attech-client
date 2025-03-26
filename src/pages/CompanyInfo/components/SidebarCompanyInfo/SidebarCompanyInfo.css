@@ -1,0 +1,95 @@
+.page-company-info .sidebar-company-info {
+    position: fixed;
+    width: var(--sp-navbar-width);
+    background-color: var(--mainColor);
+    height: 100vh;
+    transition: width 0.3s ease, background-color 0.3s ease;}
+  .page-company-info .sidebar-company-info.resize {
+    width: var(--sp-navbar-width-min);
+  }
+  .sidebar-company-info.resize .sp-nav-button span {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .sp-nav-button {
+    margin: 0 16px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    color: var(--sp-navbar-light-secondary);
+    direction: ltr;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.2s;
+  }
+  .sp-nav-button i {
+    display: flex;
+    color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    min-width: 40px;
+    height: 40px;
+  }
+  .sp-nav-button span {
+    margin-left: 8px;
+    font-size: 14px;
+    color: #ffffff;
+    visibility: visible; /* Hiển thị nội dung đầy đủ mặc định */
+    white-space: nowrap; /* Ngăn không cho xuống dòng */
+    overflow: hidden; /* Ẩn nội dung tràn */
+    text-overflow: ellipsis; /* Thêm dấu "..." nếu nội dung vượt quá chiều rộng */
+    transition: opacity 0.3s, visibility 0.3s;
+    position: relative; /* Vị trí bình thường */
+  }
+  
+  
+  .sp-nav-button:hover span {
+    overflow: visible;
+    text-overflow: unset;
+    white-space: normal;
+    padding: 4px 8px;
+    border-radius: 4px;
+    z-index: 10;
+  }
+  
+  .sp-nav-button:hover {
+    background-color: rgba(161, 182, 221, 0.1);
+    border-radius: 8px;
+    color: var(--sp-navbar-dark-primary);
+  }
+  
+  :root {
+  
+    --sp-navbar-dark-primary: #18283b;
+    --sp-navbar-dark-secondary: #2c3e50;
+    --sp-navbar-light-primary: #83c8e7;
+    --sp-navbar-light-secondary: #8392a5;
+  }
+  
+  .top-sidebar {
+    margin: 8px 20px 0;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-bottom: 10px;
+  }
+  
+  .top-sidebar button {
+    border: none;
+    font-size: 26px;
+    background-color: transparent;
+    color: #ffffff;
+    height: 40px;
+  }
+  
+  .top-sidebar span {
+    font-size: 26px;
+    margin-left: 10px;
+    color: #ffffff;
+    visibility: visible;
+    white-space: nowrap;
+    overflow: hidden; 
+    transition: opacity 0.3s, visibility 0.3s; 
+    opacity: 1;
+  }
+  

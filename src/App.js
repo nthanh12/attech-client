@@ -1,20 +1,21 @@
 import logo from "./logo.svg";
-import Header from "./components/Shared/Header";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import Home from "./pages/Home";
-import Product from "./pages/Product";
-import Footer from "./components/Shared/Footer";
-import ProductList from "./components/Product/ProductList";
-import Service from "./pages/Service";
-import News from "./pages/News";
-import Contact from "./pages/Contact";
+import Home from "./pages/Home/HomePage/HomePage";
+import Header from "./components/Shared/Layout/Header/Header";
+import Footer from "./components/Shared/Layout/Footer/Footer";
+import ProductList from "./components/Product/Content/ProductList/ProductList";
+import Product from "./pages/Product/ProductPage/ProductPage";
+import Service from "./pages/Service/ServicePage/ServicePage";
 import DetailAllCNSATM from "./components/Product/CNSATM/DetailCNSATM";
+import NewsPage from "./pages/News/NewsPage/NewsPage";
+import ContactPage from "./pages/Contact/ContactPage/ContactPage";
+import CompanyInfoPage from "./pages/CompanyInfo/CompanyInfoPage/CompanyInfoPage";
 
+import ServiceDetail from "./pages/Service/ServiceDetail/ServiceDetail";
 import GetAll from "./components/News/Recruitment/GetAll";
 import Detail from "./components/News/Recruitment/Detail";
-import Information from "./pages/Information";
 import DetailBKTHC from "./components/Service/BKTHC/DetailBKTHC";
 import GetAllNotification from "./components/News/Notification/GetAllNotification";
 import DetailNotification from "./components/News/Notification/DetailNotification";
@@ -35,7 +36,6 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/product" element={<Product />} />
           <Route path="/product/cns-atm" element={<Product />} />
           <Route path="/product/he-thong-den-hieu" element={<Product />} />
           <Route path="/product/co-khi-che-tao" element={<Product />} />
@@ -45,15 +45,11 @@ function App() {
             element={<DetailAllCNSATM />}
           />
 
-          <Route path="/service" element={<Service />} />
-          <Route path="/service/bkthc" element={<DetailBKTHC />} />
-          <Route path="/service/tnhc" element={<DetailTNHC />} />
-          <Route path="/service/dvktcns" element={<DetailDVKTCNS />} />
-          <Route path="/service/hldt" element={<DetailHLDT />} />
-          <Route path="/service/ktdd" element={<DetailKTDD />} />
-          <Route path="/service/qlda" element={<DetailXDQLDA />} />
+          <Route path="/products/*" element={<Product />} />
+          <Route path="/services/*" element={<Service />} />
 
-          <Route path="/news" element={<News />} />
+          {/* <Route path="/news" element={<NewsPage />} /> */}
+          <Route path="/news" element={<NewsPage />} />
 
           <Route
             path="/news/notification/all"
@@ -74,8 +70,8 @@ function App() {
           <Route path="/news/train/all" element={<GetAllTrain />} />
           <Route path="/news/train/detail/:id" element={<DetailTrain />} />
 
-          <Route path="/information/*" element={<Information />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/company-info/*" element={<CompanyInfoPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
           <Route
             path="/product-category/product-list"

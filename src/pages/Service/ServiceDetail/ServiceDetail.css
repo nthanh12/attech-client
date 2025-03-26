@@ -1,0 +1,125 @@
+.service-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+}
+
+.service-detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.service-detail-image {
+    width: 40%;
+    height: 400px;
+}
+
+.service-detail-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.service-detail-title {
+    width: 60%;
+    padding: 30px;
+}
+
+.service-detail-title h1 {
+    color: #002a5c;
+    margin-bottom: 15px;
+    font-size: 28px;
+}
+
+.service-detail-title p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.service-detail-content {
+    background-color: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.service-detail-section h2,
+.service-detail-grid h2 {
+    color: #002a5c;
+    border-bottom: 3px solid #002a5c;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.service-detail-section ul,
+.service-detail-process ol,
+.service-detail-benefits ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.service-detail-section ul li,
+.service-detail-process ol li,
+.service-detail-benefits ul li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.service-detail-section ul li::before,
+.service-detail-benefits ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #002a5c;
+    font-weight: bold;
+}
+
+.service-detail-process ol li::before {
+    content: counter(li);
+    counter-increment: li;
+    position: absolute;
+    left: 0;
+    color: white;
+    background-color: #002a5c;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+}
+
+.service-detail-process ol {
+    counter-reset: li;
+}
+
+.service-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+    .service-detail-header {
+        flex-direction: column;
+    }
+
+    .service-detail-image,
+    .service-detail-title {
+        width: 100%;
+    }
+
+    .service-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
