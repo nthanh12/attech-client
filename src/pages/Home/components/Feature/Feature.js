@@ -71,7 +71,7 @@ const Feature = () => {
                     <i className="fas fa-wrench"></i>
                   </div>
                   <div className="feature-text">
-                    <h3>Cơ khí chế tạo</h3>
+                    <h3>Công nghiệp hàng không</h3>
                   </div>
                 </div>
               </div>

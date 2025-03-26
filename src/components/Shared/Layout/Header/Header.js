@@ -90,7 +90,6 @@ const Header = () => {
                   <div className="dropdown-menu">
                     <Link to="/product/cns-atm" className="dropdown-item">
                       CNS/ATM
-                      {/* Dropdown con */}
                       <div className="dropdown-menu">
                         <Link to="/product/detail" className="dropdown-item">
                           Hệ thống ADS-B
@@ -109,13 +108,30 @@ const Header = () => {
                       className="dropdown-item"
                     >
                       Các sản phẩm khác
-                      {/* Dropdown con */}
                       <div className="dropdown-menu">
                         <Link to="/product/detail" className="dropdown-item">
                           Hệ thống đèn hiệu
                         </Link>
+                        {/* 8 sản phẩm như web cũ */}
+                        <Link to="/product/detail" className="dropdown-item">
+                          Shelter
+                        </Link>
                         <Link to="/product/support" className="dropdown-item">
-                          Bán consoles
+                          Bàn consoles
+                          {/* <div className="dropdown-menu">
+                            <Link
+                              to="/product/detail"
+                              className="dropdown-item"
+                            >
+                              ATC Consoles
+                            </Link>
+                            <Link
+                              to="/product/support"
+                              className="dropdown-item"
+                            >
+                              Technical consoles
+                            </Link>
+                          </div> */}
                         </Link>
                       </div>
                     </Link>
@@ -238,16 +254,19 @@ const Header = () => {
                   </Link>
                   <div className="dropdown-menu">
                     <Link
-                      to="/information/company-history"
+                      to="/company-info/company-history"
                       className="dropdown-item"
                     >
                       Lịch sử ra đời
                     </Link>
-                    <Link to="/information/structure" className="dropdown-item">
+                    <Link
+                      to="/company-info/structure"
+                      className="dropdown-item"
+                    >
                       Cơ cấu tổ chức
                     </Link>
                     <Link
-                      to="/information/leadership"
+                      to="/company-info/leadership"
                       className="dropdown-item"
                     >
                       Ban lãnh đạo

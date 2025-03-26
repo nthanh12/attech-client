@@ -20,7 +20,8 @@ const categories = [
     icon: "fas fa-broadcast-tower",
     subCategories: [
       { id: "5", label: "Hệ thống đèn hiệu" },
-      { id: "6", label: "Bán console" },
+      { id: "6", label: "Shelter" },
+      { id: "7", label: "Bàn console" },
     ],
   },
 ];

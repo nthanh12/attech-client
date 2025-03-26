@@ -1,0 +1,84 @@
+.custom-content-img {
+  width: 100vw;
+  height: calc(100vh - 110px);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.custom-navbar {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #f8f9fa;
+  padding: 10px 20px;
+}
+
+.custom-navbar-title {
+  font-size: 1.2rem;
+  color: #343a40;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.custom-navbar-title:hover {
+  color: var(--mainColor);
+}
+.custom-navbar-button {
+  font-size: 1.2rem;
+  color: #343a40;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+}
+
+.custom-navbar-button.active {
+  color: var(--mainColor);
+  border-bottom: 2px solid var(--mainColor);
+}
+
+.custom-navbar-button:hover {
+  color: var(--mainColor);
+}
+.custom-bg-box {
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  height: 450px;
+  overflow: hidden;
+}
+
+.custom-achievements {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.custom-achievement-item {
+  display: flex;
+  align-items: flex-start;
+}
+
+.custom-achievement-icon {
+  margin-right: 16px;
+}
+
+.custom-achievement-title {
+  font-size: 1rem;
+  color: #212529;
+  font-weight: 600;
+}
+
+.custom-achievement-description {
+  font-size: 0.875rem;
+  color: #6c757d;
+}

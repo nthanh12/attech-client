@@ -1,35 +1,20 @@
 import React, { useState } from "react";
 import "../CompanyInfoPage/CompanyInfoPage.css";
 import { Route, Routes } from "react-router-dom";
-import SidebarCompanyInfo from "../components/SidebarCompanyInfo/SidebarCompanyInfo";
+import ContentInfo from "../components/Content/ContentInfo";
+import photo from "../../../assets/img/attech-photo/2017-01-13.jpg";
+import photo_sub from "../../../assets/img/attech-photo/2021-05-15.jpg";
+import Structure from "../components/Structure/Structure";
+import Leadership from "../components/Leadership/Leadership";
 
 const CompanyInfo = () => {
-  const [openSidebar, setOpenSidebar] = useState(false);
-
   return (
     <div className="page-company-info">
-      {/* Sidebar cố định */}
-      <SidebarCompanyInfo
-        openSidebar={openSidebar}
-        setOpenSidebar={setOpenSidebar}
-      />
-
-      <div
-        className={
-          openSidebar ? "company-info-content resize" : "company-info-content"
-        }
-      >
-        <Routes>
-          {/* <Route
-            path="/"
-            element={<company-infoList company-infos={company - infos} />}
-          />
-          <Route
-            path=":company-infoId"
-            element={<company-infoDetail company-infos={company - infos} />}
-          /> */}
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<ContentInfo backgroundImage={photo} />} />
+        <Route path="/structure" element={<Structure />} />
+        <Route path="/leadership" element={<Leadership />} />
+      </Routes>
     </div>
   );
 };
