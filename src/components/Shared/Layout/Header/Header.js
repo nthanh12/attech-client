@@ -218,7 +218,7 @@ const Header = () => {
                 {/* News Dropdown */}
                 <div className="nav-item dropdown">
                   <Link
-                    to="/news"
+                    to="/notifications"
                     className="nav-link dropdown-toggle"
                     data-toggle="dropdown"
                   >

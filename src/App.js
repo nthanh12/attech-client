@@ -10,10 +10,11 @@ import Product from "./pages/Product/ProductPage/ProductPage";
 import Service from "./pages/Service/ServicePage/ServicePage";
 import DetailAllCNSATM from "./components/Product/CNSATM/DetailCNSATM";
 import NewsPage from "./pages/News/NewsPage/NewsPage";
+import NotificationPage from "./pages/Notification/NotificationPage/NotificationPage";
 import ContactPage from "./pages/Contact/ContactPage/ContactPage";
 import CompanyInfoPage from "./pages/CompanyInfo/CompanyInfoPage/CompanyInfoPage";
 
-import ServiceDetail from "./pages/Service/ServiceDetail/ServiceDetail";
+import NewsListPage from "./pages/News/NewsListPage/NewsListPage";
 import GetAll from "./components/News/Recruitment/GetAll";
 import Detail from "./components/News/Recruitment/Detail";
 import DetailBKTHC from "./components/Service/BKTHC/DetailBKTHC";
@@ -50,6 +51,9 @@ function App() {
 
           {/* <Route path="/news" element={<NewsPage />} /> */}
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/news/list" element={<NewsListPage />} />
+
+          <Route path="/notifications" element={<NotificationPage />} />
 
           <Route
             path="/news/notification/all"

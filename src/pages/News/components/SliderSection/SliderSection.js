@@ -110,7 +110,7 @@ const SliderSection = () => {
         <div class="col-lg-4">
           <div class="latest_post">
             <div className="d-flex justify-content-between align-items-center m-0">
-              <p>Thông tin tuyển dụng</p>
+              <p>Hoạt động công ty</p>
               <Link to="/news/notification/all" className="more-btn">
                 <span>Xem tất cả</span>
                 <i class="fa fa-angle-down" aria-hidden="true"></i>

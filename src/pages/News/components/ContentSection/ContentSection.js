@@ -1,250 +1,176 @@
 import "../ContentSection/ContentSection.css";
 import sliderImg1 from "../../../../assets/img/featured_img1.jpg";
 import { Link } from "react-router-dom";
+
+const newsData = [
+  {
+    id: 1,
+    category: "Hàng không",
+    title:
+      "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị đại biểu Người lao động năm 2025",
+    description:
+      "Chiều ngày 28/02/2025, Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) đã tổ chức Hội nghị đại biểu Người lao động năm 2025.",
+    imgUrl:
+      "https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg",
+    link: "/pages/single_page.html",
+  },
+  {
+    id: 2,
+    category: "Pháp luật",
+    title:
+      "Hội nghị tuyên dương điển hình tiên tiến giai đoạn 2020-2024 và phát động phong trào thi đua giai đoạn 2025-2030",
+    description:
+      "Nhân dịp năm mới 2022 và đón Tết cổ truyền Nhâm Dần, Bộ trưởng gửi lời thăm hỏi và chúc mừng đến các đồng chí cán bộ, công chức, viên chức, người lao động ngành GTVT ",
+    imgUrl: "https://attech.com.vn/wp-content/uploads/2025/03/phapluat.jpg",
+    link: "/pages/single_page.html",
+  },
+  {
+    id: 3,
+    category: "Hàng không",
+    title: "Thư chúc mừng năm mới của Bộ trưởng Bộ Giao thông Vận tải",
+    description:
+      "Nhân dịp năm mới 2022 và đón Tết cổ truyền Nhâm Dần, Bộ trưởng gửi lời thăm hỏi và chúc mừng đến các đồng chí cán bộ, công chức, viên chức, người lao động ngành GTVT ",
+    imgUrl:
+      "https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg",
+    link: "/pages/single_page.html",
+  },
+  {
+    id: 4,
+    category: "Hàng không",
+    title:
+      "Quản lý bay thời Covid-19: Kiểm soát tốt không lưu, tăng phòng dịch",
+    description:
+      "Vừa đảm bảo an toàn tuyệt đối cho các chuyến bay, Quản lý bay miền Trung nỗ lực phòng chống dịch Covid-19.",
+    imgUrl: "https://attech.com.vn/wp-content/uploads/2021/08/qlb-170x130.jpg",
+    link: "/pages/single_page.html",
+  },
+  {
+    id: 5,
+    category: "Pháp luật",
+    title: "Quy định số 232-QĐ/TW",
+    description:
+      "Quy định số 232-QĐ/TW ngày 20/01/2025 của Ban Chấp hành Trung ương về thi hành Điều lệ Đảng.",
+    imgUrl: "https://attech.com.vn/wp-content/uploads/2025/03/phapluat.jpg",
+    link: "/pages/single_page.html",
+  },
+];
+
 const ContentSection = () => {
+  // Lọc tin tức theo từng chủ đề
+  const aviationNews = newsData.filter(
+    (news) => news.category === "Hàng không"
+  );
+  const lawNews = newsData.filter((news) => news.category === "Pháp luật");
+
   return (
-    <>
-      <section id="contentSection">
-        <div class="row">
-          <div class="col-lg-8 col-md-8 col-sm-8">
-            <div class="left_content">
-              <div class="single_post_content">
-                <div className="d-flex justify-content-between align-items-center">
-                  <h4>Thông tin tuyển dụng</h4>
-                  <Link to="/news/notification/all" className="more-btn">
-                    <span>Xem tất cả</span>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  </Link>
-                </div>
-                <div class="single_post_content_left">
-                  <ul class="business_catgnav  wow fadeInDown">
+    <section id="contentSection">
+      <div className="row">
+        <div className="col-lg-8 col-md-8 col-sm-8">
+          <div className="left_content">
+            <div className="single_post_content">
+              <div className="d-flex justify-content-between align-items-center">
+                <h4>Tin ngành hàng không</h4>
+                <Link to={`/news/list?category=aviation`} className="more-btn">
+                  <span>Xem tất cả</span>
+                  <i className="fa fa-angle-down" aria-hidden="true"></i>
+                </Link>
+              </div>
+
+              {/* Bài viết nổi bật */}
+              {aviationNews.length > 0 && (
+                <div className="single_post_content_left">
+                  <ul className="business_catgnav wow fadeInDown">
                     <li>
-                      <figure class="bsbig_fig">
-                        {" "}
-                        <a href="pages/single_page.html" class="featured_img">
-                          {" "}
+                      <figure className="bsbig_fig">
+                        <a href={aviationNews[0].link} className="featured_img">
                           <img
                             style={{ borderRadius: "5px" }}
                             alt=""
                             src={sliderImg1}
-                          />{" "}
-                          <span class="overlay"></span>{" "}
+                          />
+                          <span className="overlay"></span>
                         </a>
                         <div className="col2">
                           <figcaption>
-                            {" "}
-                            <a href="pages/single_page.html">
-                              Hội nghị tuyên dương điển hình tiên tiến giai đoạn
-                              2020-2024 và phát động phong trào thi đua giai
-                              đoạn 2025-2030
+                            <a href={aviationNews[0].link}>
+                              {aviationNews[0].title}
                             </a>
                           </figcaption>
-                          <p>
-                            Sáng ngày 28/02/2025, Công ty TNHH Kỹ thuật Quản lý
-                            bay và Công đoàn cơ sở tổ chức Hội nghị tuyên dương
-                            điển hình tiên tiến giai đoạn 2020-2024 và phát động
-                            phong trào thi đua giai đoạn 2025-2030.
-                          </p>
+                          <p>{aviationNews[0].description}</p>
                         </div>
                       </figure>
                     </li>
                   </ul>
                 </div>
-                <div class="single_post_content_right">
-                  <ul class="spost_nav">
-                    <li>
-                      <div class="media wow fadeInDown">
-                        {" "}
-                        <a href="pages/single_page.html" class="media-left">
-                          {" "}
-                          <img
-                            alt=""
-                            src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                          />{" "}
+              )}
+
+              {/* Danh sách tin hàng không */}
+              <div className="single_post_content_right">
+                <ul className="spost_nav">
+                  {aviationNews.slice(1).map((news, index) => (
+                    <li key={news.id}>
+                      <div
+                        className={`media wow ${
+                          index === 0 ? "fadeInDown" : "fadeInUp"
+                        }`}
+                      >
+                        <a href={news.link} className="media-left">
+                          <img alt="" src={news.imgUrl} />
                         </a>
-                        <div class="media-body">
-                          {" "}
-                          <a href="pages/single_page.html" class="catg_title">
-                            {" "}
-                            Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị
-                            đại biểu Người lao động năm 2025
-                          </a>{" "}
-                          <p className="media-content">
-                            Chiều ngày 28/02/2025, Công ty TNHH Kỹ thuật Quản lý
-                            bay (ATTECH) đã tổ chức Hội nghị đại biểu Người lao
-                            động năm 2025.{" "}
-                          </p>
+                        <div className="media-body">
+                          <a href={news.link} className="catg_title">
+                            {news.title}
+                          </a>
+                          {news.description && (
+                            <p className="media-content">{news.description}</p>
+                          )}
                         </div>
                       </div>
                     </li>
-                    <li>
-                      <div class="media wow fadeInDown">
-                        {" "}
-                        <a href="pages/single_page.html" class="media-left">
-                          {" "}
-                          <img
-                            alt=""
-                            src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                          />{" "}
-                        </a>
-                        <div class="media-body">
-                          {" "}
-                          <a href="pages/single_page.html" class="catg_title">
-                            {" "}
-                            Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị
-                            đại biểu Người lao động năm 2025
-                          </a>{" "}
-                          <p className="media-content">
-                            Chiều ngày 28/02/2025, Công ty TNHH Kỹ thuật Quản lý
-                            bay (ATTECH) đã tổ chức Hội nghị đại biểu Người lao
-                            động năm 2025.{" "}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="media wow fadeInDown">
-                        {" "}
-                        <a href="pages/single_page.html" class="media-left">
-                          {" "}
-                          <img
-                            alt=""
-                            src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                          />{" "}
-                        </a>
-                        <div class="media-body">
-                          {" "}
-                          <a href="pages/single_page.html" class="catg_title">
-                            {" "}
-                            Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị
-                            đại biểu Người lao động năm 2025
-                          </a>{" "}
-                          <p className="media-content">
-                            Chiều ngày 28/02/2025, Công ty TNHH Kỹ thuật Quản lý
-                            bay (ATTECH) đã tổ chức Hội nghị đại biểu Người lao
-                            động năm 2025.{" "}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
-          <div class="col-lg-4 col-md-4 col-sm-4">
-            <aside class="right_content">
-              <div class="single_sidebar">
-                <div className="d-flex justify-content-between align-items-center">
-                  <p>Thông tin tuyển dụng</p>
-                  <Link to="/news/notification/all" className="more-btn">
-                    <span>Xem tất cả</span>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                  </Link>
-                </div>
-                <ul class="spost_nav">
-                  <li>
-                    <div class="media wow fadeInDown">
-                      {" "}
-                      <a href="pages/single_page.html" class="media-left">
-                        {" "}
-                        <img
-                          alt=""
-                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                        />{" "}
-                      </a>
-                      <div class="media-body">
-                        {" "}
-                        <a href="pages/single_page.html" class="catg_title">
-                          {" "}
-                          Danh sách nhân sự trúng tuyển đợt 3 năm 2024
-                        </a>{" "}
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown">
-                      {" "}
-                      <a href="pages/single_page.html" class="media-left">
-                        {" "}
-                        <img
-                          alt=""
-                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                        />{" "}
-                      </a>
-                      <div class="media-body">
-                        {" "}
-                        <a href="pages/single_page.html" class="catg_title">
-                          {" "}
-                          Danh sách nhân sự trúng tuyển đợt 3 năm 2024
-                        </a>{" "}
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown">
-                      {" "}
-                      <a href="pages/single_page.html" class="media-left">
-                        {" "}
-                        <img
-                          alt=""
-                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                        />{" "}
-                      </a>
-                      <div class="media-body">
-                        {" "}
-                        <a href="pages/single_page.html" class="catg_title">
-                          {" "}
-                          Danh sách nhân sự trúng tuyển đợt 3 năm 2024
-                        </a>{" "}
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown">
-                      {" "}
-                      <a href="pages/single_page.html" class="media-left">
-                        {" "}
-                        <img
-                          alt=""
-                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                        />{" "}
-                      </a>
-                      <div class="media-body">
-                        {" "}
-                        <a href="pages/single_page.html" class="catg_title">
-                          {" "}
-                          Danh sách nhân sự trúng tuyển đợt 3 năm 2024
-                        </a>{" "}
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="media wow fadeInDown">
-                      {" "}
-                      <a href="pages/single_page.html" class="media-left">
-                        {" "}
-                        <img
-                          alt=""
-                          src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
-                        />{" "}
-                      </a>
-                      <div class="media-body">
-                        {" "}
-                        <a href="pages/single_page.html" class="catg_title">
-                          {" "}
-                          Danh sách nhân sự trúng tuyển đợt 3 năm 2024
-                        </a>{" "}
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </aside>
-          </div>
         </div>
-      </section>
-    </>
+
+        {/* Tuyên truyền pháp luật */}
+        <div className="col-lg-4 col-md-4 col-sm-4">
+          <aside className="right_content">
+            <div className="single_sidebar">
+              <div className="d-flex justify-content-between align-items-center">
+                <p>Tuyên truyền pháp luật</p>
+                <Link to="/news/law/all" className="more-btn">
+                  <span>Xem tất cả</span>
+                  <i className="fa fa-angle-down" aria-hidden="true"></i>
+                </Link>
+              </div>
+              <ul className="spost_nav">
+                {lawNews.map((news, index) => (
+                  <li key={news.id}>
+                    <div
+                      className={`media wow ${
+                        index === 0 ? "fadeInDown" : "fadeInUp"
+                      }`}
+                    >
+                      <a href={news.link} className="media-left">
+                        <img alt="" src={news.imgUrl} />
+                      </a>
+                      <div className="media-body">
+                        <a href={news.link} className="catg_title">
+                          {news.title}
+                        </a>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
   );
 };
+
 export default ContentSection;
