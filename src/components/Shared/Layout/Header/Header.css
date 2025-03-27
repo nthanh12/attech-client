@@ -143,10 +143,10 @@
     padding: 10px 10px 8px 10px;
     color: #002a5c;
     font-weight: bold;
-    margin-right: 20px;
+    margin-right: 10px;
     display: block;
     transition: all 0.3s;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .nav-item.dropdown:hover>.nav-link {
@@ -249,7 +249,7 @@
 }
 
 .logo {
-    margin-right: 100px;
+    margin-right: 20px;
 }
 
 .logo img {
@@ -260,4 +260,8 @@
 
 .company-name {
     font-weight: bold;
+}
+
+#navbarCollapse {
+    justify-content: space-between;
 }

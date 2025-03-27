@@ -78,7 +78,6 @@ const Header = () => {
                   Trang chủ
                 </NavLink>
 
-                {/* Products Dropdown */}
                 <div className="nav-item dropdown">
                   <Link
                     to="/products"
@@ -138,7 +137,6 @@ const Header = () => {
                   </div>
                 </div>
 
-                {/* Services Dropdown */}
                 <div className="nav-item dropdown">
                   <Link
                     to="/services"
