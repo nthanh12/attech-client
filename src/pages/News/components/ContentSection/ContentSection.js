@@ -65,11 +65,11 @@ const ContentSection = () => {
   return (
     <section id="contentSection">
       <div className="row">
-        <div className="col-lg-8 col-md-8 col-sm-8">
+        <div className="col-lg-8 col-md-12 col-sm-12 col-12">
           <div className="left_content">
             <div className="single_post_content">
               <div className="d-flex justify-content-between align-items-center">
-                <h4>Tin ngành hàng không</h4>
+                <p className="d-flex-text-bg">Tin ngành hàng không</p>
                 <Link to={`/news/list?category=aviation`} className="more-btn">
                   <span>Xem tất cả</span>
                   <i className="fa fa-angle-down" aria-hidden="true"></i>
@@ -84,13 +84,12 @@ const ContentSection = () => {
                       <figure className="bsbig_fig">
                         <a href={aviationNews[0].link} className="featured_img">
                           <img
-                            style={{ borderRadius: "5px" }}
                             alt=""
                             src={sliderImg1}
                           />
                           <span className="overlay"></span>
                         </a>
-                        <div className="col2">
+                        <div className="col2 featured_text">
                           <figcaption>
                             <a href={aviationNews[0].link}>
                               {aviationNews[0].title}
@@ -135,11 +134,11 @@ const ContentSection = () => {
         </div>
 
         {/* Tuyên truyền pháp luật */}
-        <div className="col-lg-4 col-md-4 col-sm-4">
+        <div className="col-lg-4 col-md-12 col-sm-12 col-12">
           <aside className="right_content">
             <div className="single_sidebar">
               <div className="d-flex justify-content-between align-items-center">
-                <p>Tuyên truyền pháp luật</p>
+                <p className="d-flex-text">Tuyên truyền pháp luật</p>
                 <Link to="/news/law/all" className="more-btn">
                   <span>Xem tất cả</span>
                   <i className="fa fa-angle-down" aria-hidden="true"></i>

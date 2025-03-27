@@ -94,6 +94,7 @@
 
 .product-item .card-footer {
     border-top: 1px solid #e9ecef;
+    background-color: transparent !important;
     padding: 10px;
 }
 
@@ -103,6 +104,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    font-size: 13px;
     transition: all 0.3s ease;
 }
 

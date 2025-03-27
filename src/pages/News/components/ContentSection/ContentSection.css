@@ -3,9 +3,8 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 20px 0;
+    padding: 0 0 20px;
     background-color: #ffffff;
-    border-radius: 8px;
 }
 
 .business_catgnav {
@@ -16,14 +15,18 @@
     margin: 8px 0;
 }
 
-.d-flex p {
+.d-flex-text{
     color: #FF6F61;
-    margin: 0 !important;
+    margin: 7px 0 0 !important;
     font-weight: 600;
 }
 
-.d-flex h4 {
-    margin: 8px 0;
+.d-flex-text-bg {
+    margin: 8px 0 0 !important;
+}
+
+.d-flex p {
+    font-weight: 16px;
     color: #FF6F61;
     font-weight: 600;
 }
@@ -32,19 +35,24 @@
     position: relative;
     overflow: hidden;
     display: flex;
-    border-radius: 8px;
 }
 
 .featured_img {
     width: 100%;
     height: 100%;
+    max-height: 200px;
+    overflow: hidden;
     display: block;
+    flex: 2;
     position: relative;
-    border-radius: 8px;
 }
 
 .featured_img img {
     width: 100%;
+}
+
+.featured_text {
+    flex: 3;    
 }
 
 .overlay {
@@ -55,8 +63,8 @@
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
+    border-radius: 0 !important;
     transition: opacity 0.3s ease-in-out;
-    border-radius: 8px;
 }
 
 .featured_img:hover .overlay {
@@ -102,7 +110,6 @@ p {
     height: 70px;
     margin-top: 5px;
     object-fit: cover;
-    border-radius: 5px;
 }
 
 .spost_nav .media-body {
@@ -144,13 +151,13 @@ p {
 .photo_grid {
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
+    /* border-radius: 10px; */
 }
 
 .effect-layla {
     position: relative;
     overflow: hidden;
-    border-radius: 8px;
+    /* border-radius: 8px; */
 }
 
 .effect-layla img {
