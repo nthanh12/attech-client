@@ -1,5 +1,5 @@
 .contact1 {
-    margin-top: 110px;
+    margin-top: 90px;
     width: 100%;
     min-height: 100%;
     padding: 15px;
@@ -57,7 +57,6 @@
 
 .contact1-form-title {
     display: block;
-    font-family: Montserrat-ExtraBold;
     font-size: 24px;
     color: #333333;
     line-height: 1.2;
@@ -98,7 +97,6 @@ textarea.input1+.shadow-input1 {
     display: block;
     width: 100%;
     background: #e6e6e6;
-    font-family: Montserrat-Bold;
     font-size: 15px;
     line-height: 1.5;
     color: #666666;
@@ -152,7 +150,6 @@ textarea.input1+.shadow-input1 {
     height: 50px;
     border-radius: 25px;
     background: #57b846;
-    font-family: Montserrat-Bold;
     font-size: 15px;
     line-height: 1.5;
     color: #fff;
@@ -267,7 +264,6 @@ textarea.input1+.shadow-input1 {
     right: 8px;
     pointer-events: none;
 
-    font-family: Montserrat-Medium;
     color: #c80000;
     font-size: 13px;
     line-height: 1.4;
@@ -284,7 +280,6 @@ textarea.input1+.shadow-input1 {
 
 .alert-validate::after {
     content: "\f06a";
-    font-family: FontAwesome;
     display: block;
     position: absolute;
     color: #c80000;

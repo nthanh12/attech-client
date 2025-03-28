@@ -7,7 +7,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import { Button } from "bootstrap";
 import { useRef } from "react";
 
 const Banner = () => {
@@ -35,7 +34,7 @@ const Banner = () => {
         className="mySwiper"
       >
         <SwiperSlide>
-          <div class="carousel-item active">
+          <div className="banner-item active">
             <img
               src="https://prd-sc102-cdn.rtx.com/-/media/ca/product-assets/marketing/a/air-traffic-getty-1351088941.jpg?rev=cbbc080bbe804ad4baeb6b87dbe011a1"
               alt="Carousel Image"
@@ -43,7 +42,7 @@ const Banner = () => {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div class="carousel-item active">
+          <div className="banner-item active">
             <img
               src="https://vatm.vn/uploads/2024/05/vatm-slide-1.jpg"
               alt="Carousel Image"
@@ -51,7 +50,7 @@ const Banner = () => {
           </div>
         </SwiperSlide>
         <SwiperSlide>
-          <div class="carousel-item active">
+          <div className="banner-item active">
             <img
               src="https://vatm.vn/uploads/2024/07/wep-new-5-4.jpg"
               alt="Carousel Image"
@@ -59,28 +58,30 @@ const Banner = () => {
           </div>
         </SwiperSlide>
         <button
-          class="carousel-control-prev"
-          href="#carousel"
+          className="carousel-control-prev"
           role="button"
-          data-slide="prev"
           onClick={() => {
             handleMove("prev");
           }}
         >
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
+          <span
+            className="carousel-control-prev-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="sr-only">Previous</span>
         </button>
         <button
-          class="carousel-control-next"
-          href="#carousel"
+          className="carousel-control-next"
           role="button"
-          data-slide="next"
           onClick={() => {
             handleMove("next");
           }}
         >
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
+          <span
+            className="carousel-control-next-icon"
+            aria-hidden="true"
+          ></span>
+          <span className="sr-only">Next</span>
         </button>
       </Swiper>
     </div>

@@ -1,10 +1,9 @@
 .banner .swiper {
     width: 100%;
     height: 100%;
-    margin-top: 110px;
 }
 
-.swiper-slide {
+.banner .swiper-slide {
     text-align: center;
     font-size: 18px;
     background: #fff;
@@ -15,19 +14,19 @@
     align-items: center;
 }
 
-.carousel-item {
+.banner .banner-item {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.carousel-item img {
+.banner .banner-item img {
     width: 100%;
-    height: 50vh;
+    height: 600px;
     object-fit: cover;
 }
 
-.carousel-item::after {
+.banner .banner-item::after {
     position: absolute;
     content: "";
     width: 100%;
@@ -38,7 +37,7 @@
     z-index: 1;
 }
 
-.carousel-caption {
+.banner .banner-caption {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -50,21 +49,21 @@
     min-height: 400px;
 }
 
-.carousel-caption p {
+.banner .banner-caption p {
     color: #ffffff;
     font-size: 30px;
     margin-bottom: 15px;
     letter-spacing: 1px;
 }
 
-.carousel-caption h1 {
+.banner .banner-caption h1 {
     color: #ffffff;
     font-size: 60px;
     font-weight: 700;
     margin-bottom: 35px;
 }
 
-.carousel-caption .btn {
+.banner .banner-caption .btn {
     padding: 15px 35px;
     font-size: 18px;
     font-weight: 500;
@@ -77,23 +76,23 @@
     transition: .3s;
 }
 
-.carousel-caption .btn:hover {
+.banner .banner-caption .btn:hover {
     color: #030f27;
     background: #002a5c;
     border-color: #002a5c;
 }
 
 @media (max-width: 767.98px) {
-    .carousel-caption h1 {
+    .banner .banner-caption h1 {
         font-size: 40px;
         font-weight: 700;
     }
 
-    .carousel-caption p {
+    .banner .banner-caption p {
         font-size: 20px;
     }
 
-    .carousel-caption .btn {
+    .banner .banner-caption .btn {
         padding: 12px 30px;
         font-size: 18px;
         font-weight: 500;
@@ -102,16 +101,16 @@
 }
 
 @media (max-width: 575.98px) {
-    .carousel-caption h1 {
+    .banner .banner-caption h1 {
         font-size: 30px;
         font-weight: 500;
     }
 
-    .carousel-caption p {
+    .banner .banner-caption p {
         font-size: 16px;
     }
 
-    .carousel-caption .btn {
+    .banner .banner-caption .btn {
         padding: 10px 25px;
         font-size: 16px;
         font-weight: 400;

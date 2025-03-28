@@ -8,12 +8,14 @@ import Media from "../components/Media/Media";
 import Map from "../components/Map/Map";
 import Partner from "../components/Partner/Partner";
 import Quotes from "../components/Quotes/Quotes";
+import Carousel from "../../../components/Shared/Layout/Carousel/Carousel";
 
 const Home = () => {
   return (
     <>
-      <Banner />
+      <Carousel />
       <Feature />
+      <Banner />
       <AlertBox />
       <About />
       <NotificationList />
