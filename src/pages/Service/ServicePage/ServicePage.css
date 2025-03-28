@@ -4,8 +4,14 @@
 }
 
 .page-service {
+<<<<<<< HEAD
     margin-top: 90px;
     height: 100vh;
+=======
+    margin-top: 110px;
+    min-height: 100vh;
+    height: 100%;
+>>>>>>> XuanKham
     position: relative;
     display: flex;
 }

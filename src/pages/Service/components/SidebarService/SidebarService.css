@@ -2,7 +2,8 @@
   position: fixed;
   width: var(--sp-navbar-width);
   background-color: var(--mainColor);
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   transition: width 0.3s ease, background-color 0.3s ease;}
 .page-service .sidebar-service.resize {
   width: var(--sp-navbar-width-min);
