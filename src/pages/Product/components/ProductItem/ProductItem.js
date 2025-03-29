@@ -20,7 +20,7 @@ const ProductItem = ({ id, title, description, image }) => {
             to={`/products/${id}`}
             className="btn btn-primary text-white px-3"
           >
-            <i className="fa fa-solid fa-eye"></i> Đọc thêm
+            <i className="fa fa-solid fa-eye"></i> Xem thêm
           </Link>
         </div>
       </div>

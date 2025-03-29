@@ -17,7 +17,8 @@ const Carousel = () => {
             <div className="carousel-caption">
               <p className="text-uppercase text-secondary fs-4 mb-0"></p>
               <h1 className="display-1 text-capitalize text-white mb-4">
-                Kiến tạo tương lai từ tầm nhìn không giới hạn
+                {/* Kiến tạo tương lai từ tầm nhìn không giới hạn */}
+                SÁNG TẠO - THÍCH NGHI
               </h1>
               <p className="mb-5 fs-5 intro-sub">
                 Điều gì làm nên sự khác biệt trong quản lý bay? Hãy để ATTECH

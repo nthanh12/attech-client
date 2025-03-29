@@ -3,7 +3,7 @@ import SidebarService from "../components/SidebarService/SidebarService";
 import ServiceList from "../components/ServiceList/ServiceList";
 import "../ServicePage/ServicePage.css";
 import ServiceDetail from "../ServiceDetail/ServiceDetail";
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 
 const Service = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -171,13 +171,7 @@ const Service = () => {
       <div
         className={openSidebar ? "service-content resize" : "service-content"}
       >
-        <Routes>
-          <Route path="/" element={<ServiceList services={services} />} />
-          <Route
-            path=":serviceId"
-            element={<ServiceDetail services={services} />}
-          />
-        </Routes>
+        <Outlet />
       </div>
     </div>
   );
