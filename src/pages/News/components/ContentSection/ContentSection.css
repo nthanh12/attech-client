@@ -11,8 +11,8 @@
     padding-left: 0;
 }
 
-.d-flex {
-    margin: 8px 0;
+#contentSection .d-flex {
+    /* margin: 8px 0; */
 }
 
 .d-flex-text{
@@ -84,7 +84,7 @@ figcaption a:hover {
     color: #FF6F61;
 }
 
-p {
+#contentSection p {
     font-size: 0.9rem;
     color: #666;
     line-height: 1.6;

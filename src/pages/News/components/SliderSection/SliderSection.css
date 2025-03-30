@@ -114,8 +114,6 @@
 .fixed_announcement .media {
     display: flex;
     background-color: #f9f9f9;
-    padding: 10px;
-    /* border-radius: 5px; */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -181,7 +179,7 @@
     height: auto;
     object-fit: cover;
     aspect-ratio: 4/3;
-    max-height: 200px;
+    max-height: 70px;
 }
 
 .media-body {
@@ -190,7 +188,7 @@
 }
 
 .media {
-    background-color: #f5f5f5;
+    background-color: #fdfbfb;
 }
 
 .media-body .catg_title {

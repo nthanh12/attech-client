@@ -20,17 +20,14 @@ const AlertBox = () => {
   //   }
   // };
   const handleSlideEffect = (swiper) => {
-    // Reset trạng thái
     swiper.slides.forEach((slide) => {
-      slide.style.opacity = 1; // Hiển thị đầy đủ
-      slide.style.transform = "scale(1)"; // Không thu nhỏ
+      slide.style.opacity = 1;
+      slide.style.transform = "scale(1)";
     });
 
-    // Làm mờ 2 slide ngoài cùng
     const activeIndex = swiper.activeIndex;
     const totalSlides = swiper.slides.length;
 
-    // Tìm index của 2 slide ngoài cùng
     const prevIndex = (activeIndex - 2 + totalSlides) % totalSlides;
     const nextIndex = (activeIndex + 2) % totalSlides;
 

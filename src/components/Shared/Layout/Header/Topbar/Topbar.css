@@ -77,12 +77,11 @@
 
 .company-name {
     font-weight: bold;
-    color: var(--mainColor) !important;
 }
 .top-bar .top-bar-text p {
     margin: 0;
     font-size: 14px;
-    color: #000000;
+    color: #ffffff;
 }
 
 @media (min-width: 992px) {

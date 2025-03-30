@@ -1,10 +1,10 @@
-.swiper {
+.alert-box .swiper {
     width: 100%;
     height: 100%;
     margin: 20px 0;
 }
 
-.swiper-slide {
+.alert-box .swiper-slide {
     text-align: center;
     font-size: 18px;
     background: #fff;

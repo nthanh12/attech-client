@@ -13,6 +13,8 @@ import ServiceList from "../pages/Service/components/ServiceList/ServiceList";
 import ServiceDetail from "../pages/Service/ServiceDetail/ServiceDetail";
 
 import NewsPage from "../pages/News/NewsPage/NewsPage";
+import NewsListPage from "../pages/News/NewsListPage/NewsListPage";
+
 import NotificationPage from "../pages/Notification/NotificationPage/NotificationPage";
 import ContactPage from "../pages/Contact/ContactPage/ContactPage";
 import CompanyInfoPage from "../pages/CompanyInfo/CompanyInfoPage/CompanyInfoPage";
@@ -36,7 +38,7 @@ const Public = () => {
         </Route>
 
         <Route path="/news" element={<NewsPage />} />
-        {/* <Route path="/news/list" element={<NewsListPage />} /> */}
+        <Route path="/news/list" element={<NewsListPage />} />
 
         <Route path="/notifications" element={<NotificationPage />} />
 

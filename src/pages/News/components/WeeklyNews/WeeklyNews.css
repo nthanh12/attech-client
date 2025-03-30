@@ -1,0 +1,132 @@
+
+.weekly-news-area .weekly-wrapper {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 60px
+}
+
+.weekly-news-area .weekly-wrapper .weekly-single {
+    position: relative;
+    /* margin-left: 15px; */
+    margin-right: 15px
+}
+
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-img {
+    height: 300px;
+    width: 280px;
+}
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-img img {
+    width: 100%; 
+    height: 100%;
+    border-radius: 6px;
+    object-fit: cover; 
+    object-position: center;
+    transition: all 1s ease;
+}
+
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-img img:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+}
+/* .weekly-news-area .weekly-wrapper .weekly-single .weekly-caption {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    background: #fff;
+    padding: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin: 0 28px;
+    border-radius: 10px;
+    -webkit-transition: all .4s ease-out 0s;
+    -moz-transition: all .4s ease-out 0s;
+    -ms-transition: all .4s ease-out 0s;
+    -o-transition: all .4s ease-out 0s;
+    transition: all .4s ease-out 0s;
+    opacity: 0;
+    visibility: hidden
+} */
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(68, 64, 64, 0.6); /* Lớp nền đen mờ */
+    border-radius: 6px;
+    color: #fff; /* Màu chữ trắng để dễ nhìn */
+    opacity: 1;
+    visibility: visible;
+    transition: all 0.3s ease;
+}
+
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-caption span {
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 10px;
+    display: inline-block
+}
+
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-caption h4 a {
+    font-size: 16px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 1.4; /* Khoảng cách giữa các dòng */
+    display: -webkit-box; /* Hiển thị như một hộp linh hoạt */
+    -webkit-box-orient: vertical; /* Hướng hiển thị theo chiều dọc */
+    -webkit-line-clamp: 2; /* Giới hạn tối đa 2 dòng */
+    overflow: hidden; /* Ẩn phần vượt quá */
+    text-overflow: ellipsis; /* Hiển thị dấu "..." nếu nội dung bị cắt */
+}
+
+/* .weekly-news-area .weekly-wrapper .weekly-single .weekly-caption h4 a:hover {
+    color: #fc3f00;
+} */
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-caption:hover {
+    background-color: #cce5f3; /* Nền trắng khi hover */
+    color: #0e0e0e; /* Màu chữ chuyển sang tối */
+    border-radius: 6px; /* Bo góc nền (tùy chọn) */
+    transition: all 0.3s ease; /* Hiệu ứng mượt mà khi hover */
+}
+
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-caption:hover span,
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-caption:hover h4 a {
+    color: inherit; /* Kế thừa màu chữ từ .weekly-caption */
+}
+
+
+.weekly-news-area .weekly-wrapper .weekly-single .weekly-caption h4 a:hover.weekly-caption {
+    color: #0e0e0e;
+    background-color: #ffffff;
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+    .weekly-news-area .weekly-wrapper .weekly-single .weekly-caption h4 a {
+        font-size: 9px;
+        line-height: 1
+    }
+}
+
+/* .weekly-news-area .weekly-wrapper .weekly-single:hover .weekly-caption {
+    bottom: 20px;
+    opacity: 1;
+    visibility: visible
+} */
+
+.weekly-news-area .weekly-wrapper .weekly-single.active .weekly-caption {
+    opacity: 1;
+    visibility: visible;
+    bottom: 20px
+}
+.pt-50 {
+    padding-top: 50px
+}
+.pt-30 {
+    padding-top: 30px
+}
+.weekly-news-active {
+    justify-content: space-between;
+}

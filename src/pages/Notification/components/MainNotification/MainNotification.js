@@ -18,44 +18,44 @@ const MainNotification = () => {
         </div>
         <div id="ourserv">
           <article>
-            <h1>Danh sách nhân sự trúng tuyển đợt 3 năm 2024</h1>
             <img src={im1} alt="Web Design" />
-            <p>
+            <h1>Danh sách nhân sự trúng tuyển đợt 3 năm 2024</h1>
+            {/* <p>
               Danh sách nhân sự trúng tuyển đợt 3 năm 2024 của Công ty TNHH Kỹ
               thuật Quản lý bay. Tài liệu đính kèm DS NS trung tuyen Dot 3 nam
               2024 (27.4 KB)
-            </p>
+            </p> */}
             <a href="fullwidth.html" className="rma">
-              Đọc thêm
+              Xem thêm
             </a>
           </article>
           <article>
-            <h1>Thông tin tuyển dụng đợt 3 năm 2024</h1>
             <img src={im1} alt="Graphic Design" />
-            <p>
+            <h1>Thông tin tuyển dụng đợt 3 năm 2024</h1>
+            {/* <p>
               Công ty TNHH Kỹ thuật Quản lý bay (tên gọi tắt là ATTECH) là một
               trong những đơn vị kỹ thuật hàng đầu của ngành hàng không Việt Nam
               với 3 lĩnh vực kinh doanh cốt lõi là cung cấp dịch vụ Thông tin –
               Dẫn đường – Giám sát hàng không, dịch vụ Bay kiểm tra hiệu chuẩn
               và Sản xuất công nghiệp hàng không.
-            </p>
+            </p> */}
             <a href="fullwidth.html" className="rma">
-              Đọc thêm
+              Xem thêm
             </a>
           </article>
           <article className="lastarticle">
-            <h1>Thông tin tuyển dụng vị trí nhân viên kế toán</h1>
             <img src={im1} alt="Web Development" />
-            <p>
+            <h1>Thông tin tuyển dụng vị trí nhân viên kế toán</h1>
+            {/* <p>
               Công ty TNHH Kỹ thuật Quản lý bay (tên gọi tắt là ATTECH) là một
               trong những đơn vị kỹ thuật hàng đầu của ngành hàng không Việt Nam
               với 3 lĩnh vực kinh doanh cốt lõi là cung cấp dịch vụ Thông tin –
               Dẫn đường – Giám sát hàng không, dịch vụ Bay kiểm tra hiệu chuẩn
               và Sản xuất công nghiệp hàng không. Tài liệu đính kèm Tiêu chuẩn
               vị trí Nhân viên kế toán (17.75 KB)
-            </p>
+            </p> */}
             <a href="fullwidth.html" className="rma">
-              Đọc thêm
+              Xem thêm
             </a>
           </article>
         </div>

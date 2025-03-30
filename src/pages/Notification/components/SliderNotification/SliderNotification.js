@@ -1,6 +1,6 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from "swiper/modules"; // Cập nhật import
+import { Pagination, Navigation, Autoplay } from "swiper/modules"; // Cập nhật import
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -14,26 +14,48 @@ import slider4 from "../../../../assets/img/slider_img4.jpg";
 const SliderNotification = () => {
   return (
     <div className="slider-notification-wrapper">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-tittle mb-20">
+            <h3>Trang thông báo</h3>
+          </div>
+        </div>
+      </div>
       <Swiper
-        modules={[Pagination, Navigation]}
+        modules={[Pagination, Navigation, Autoplay]}
         pagination={{ clickable: true }}
         navigation={true}
         loop={true}
+        autoplay={{ delay: 3500, disableOnInteraction: false }}
         className="slider-notification"
       >
         <SwiperSlide>
-          <img src={slider1} alt="Slide 1" />
+          <img
+            src="http://vatm.vn/upload_images/images/T10.2017/U27A9375.JPG"
+            alt="Slide 1"
+          />
         </SwiperSlide>
         <SwiperSlide>
           <a href="http://geeksband.com">
-            <img src={slider2} alt="Slide 2" title="Caption with a link" />
+            <img
+              src="https://hust.edu.vn/uploads/sys/sinh-vien/2018/05/330156.jpg"
+              alt="Slide 2"
+              title="Caption with a link"
+            />
           </a>
         </SwiperSlide>
         <SwiperSlide>
-          <img src={slider3} alt="Slide 3" title="Caption example" />
+          <img
+            src="https://vatm.vn/upload_images/images/T7.2019/24-7%20ATTECH%20-%20PIC%201.jpg"
+            alt="Slide 3"
+            title="Caption example"
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={slider4} alt="Slide 4" />
+          <img
+            src="https://vatm.vn/images/news/2019/12/26/original/attech-3_1577353826.jpg"
+            alt="Slide 4"
+          />
         </SwiperSlide>
       </Swiper>
     </div>

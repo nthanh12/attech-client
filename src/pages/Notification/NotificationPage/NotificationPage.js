@@ -45,7 +45,7 @@ const Notification = () => {
     <div className="notification">
       <SliderNotification />
       <MainNotification />
-      <SubNotification projects={projectData} />
+      <SubNotification />
     </div>
   );
 };
