@@ -2,6 +2,7 @@
     position: relative;
     width: 100%;
     margin-bottom: 45px;
+    margin-top: 20px;
 }
 
 .fact .col-12,
@@ -57,7 +58,7 @@
 
 .fact .fact-left {
     color: #ffffff;
-    background: #030f27;
+    background: #3a4b6e;
 }
 
 .fact .fact-right {

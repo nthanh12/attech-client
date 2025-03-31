@@ -7,8 +7,8 @@ const menuItems = [
     label: "Sản phẩm",
     path: "/products",
     submenu: [
-      { path: "/product/cns-atm", label: "CNS/ATM" },
-      { path: "/product/others", label: "Các sản phẩm khác" },
+      { path: "/products/cns-atm", label: "CNS/ATM" },
+      { path: "/products/others", label: "Các sản phẩm khác" },
     ],
   },
   {
@@ -16,21 +16,21 @@ const menuItems = [
     path: "/services",
     submenu: [
       {
-        path: "/service/feature",
+        path: "/services/cns-atm",
         label: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
       },
       {
-        path: "/service/flight-check",
+        path: "/services/flight-check",
         label: "Dịch vụ Bay kiểm tra hiệu chuẩn",
       },
-      { path: "/service/testing", label: "Dịch vụ Thử nghiệm - Hiệu chuẩn" },
+      { path: "/services/testing", label: "Dịch vụ Thử nghiệm - Hiệu chuẩn" },
       {
-        path: "/service/aviation-tech",
+        path: "/services/aviation-tech",
         label: "Dịch vụ Kỹ thuật (Hàng không)",
       },
-      { path: "/service/training", label: "Dịch vụ Huấn luyện - Đào tạo" },
+      { path: "/services/training", label: "Dịch vụ Huấn luyện - Đào tạo" },
       {
-        path: "/service/consulting",
+        path: "/services/consulting",
         label: "Dịch vụ Tư vấn đầu tư và xây dựng QLDA",
       },
     ],
@@ -71,7 +71,7 @@ const menuItems = [
     submenu: [
       { path: "/company-info/history", label: "Lịch sử ra đời" },
       { path: "/company-info/structure", label: "Cơ cấu tổ chức" },
-      { path: "/company-info/team", label: "Ban lãnh đạo" },
+      { path: "/company-info/leadership", label: "Ban lãnh đạo" },
       { path: "/company-info/business", label: "Ngành nghề kinh doanh" },
       { path: "/company-info/iso", label: "Hệ thống chứng chỉ ISO" },
       { path: "/company-info/finance", label: "Thông tin tài chính" },

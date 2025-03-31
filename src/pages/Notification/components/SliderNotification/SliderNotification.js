@@ -6,10 +6,6 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import "./SliderNotification.css";
-import slider1 from "../../../../assets/img/slider_img1.jpg";
-import slider2 from "../../../../assets/img/slider_img2.jpg";
-import slider3 from "../../../../assets/img/slider_img3.jpg";
-import slider4 from "../../../../assets/img/slider_img4.jpg";
 
 const SliderNotification = () => {
   return (
@@ -38,7 +34,7 @@ const SliderNotification = () => {
         <SwiperSlide>
           <a href="http://geeksband.com">
             <img
-              src="https://hust.edu.vn/uploads/sys/sinh-vien/2018/05/330156.jpg"
+              src="https://attech.com.vn/wp-content/uploads/2025/03/banner-26-3.png"
               alt="Slide 2"
               title="Caption with a link"
             />
@@ -46,7 +42,7 @@ const SliderNotification = () => {
         </SwiperSlide>
         <SwiperSlide>
           <img
-            src="https://vatm.vn/upload_images/images/T7.2019/24-7%20ATTECH%20-%20PIC%201.jpg"
+            src="https://attech.com.vn/wp-content/uploads/2023/07/25-nam1.jpg"
             alt="Slide 3"
             title="Caption example"
           />

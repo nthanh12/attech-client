@@ -6,7 +6,7 @@ const newsData = [
   {
     id: 1,
     title: "Chuyển đổi số trong hàng không: Xu hướng công nghệ mới",
-    category: "aviation",
+    category: "activities",
     description:
       "Khám phá những công nghệ đang định hình lại ngành hàng không hiện đại",
     image: "http://img2.caa.gov.vn/2020/08/03/09/25/vnpdoitaubay.jpg",
@@ -46,6 +46,9 @@ const NewsListPage = () => {
       filtered = newsData.filter((news) => news.category === category);
 
       switch (category) {
+        case "activities":
+          setPageTitle("Tin Hoạt Động");
+          break;
         case "aviation":
           setPageTitle("Tin Tức Hàng Không");
           break;
@@ -73,9 +76,6 @@ const NewsListPage = () => {
             <div key={news.id} className="news-item">
               <div className="news-image-container">
                 <img src={news.image} alt={news.title} />
-                <div className="news-category-tag">
-                  {news.category === "aviation" ? "Hàng Không" : "Pháp Luật"}
-                </div>
               </div>
 
               <div className="news-content">

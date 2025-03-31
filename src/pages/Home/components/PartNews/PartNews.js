@@ -4,7 +4,7 @@ import icon_fb from "../../../../assets/imgs/news/icon-fb.png";
 import icon_ins from "../../../../assets/imgs/news/icon-ins.png";
 import icon_tw from "../../../../assets/imgs/news/icon-tw.png";
 import icon_yh from "../../../../assets/imgs/news/icon-yo.png";
-import icon_new_card from "../../../../assets/imgs/news/news_card.jpg";
+import icon_new_card from "../../../../assets/img/part-banner.jpg";
 import giai_bong from "../../../../assets/img/giai-bong-26_03_2025.jpg";
 
 const categories = [
@@ -130,7 +130,9 @@ const PartNews = () => {
                               <div className="what-cap">
                                 <span className="title-news">{news.date}</span>
                                 <h4>
-                                  <a href="#">{news.title}</a>
+                                  <a title={news.title} href="#">
+                                    {news.title}
+                                  </a>
                                 </h4>
                               </div>
                             </div>

@@ -19,7 +19,6 @@ const Fact = () => {
       <div className="fact" ref={ref}>
         <div className="p-0">
           <div className="row counters m-0">
-            <h2>Niềm tự hào của ATTECH</h2>
             <div className="col-12 col-sm-3 fact-left wow slideInLeft">
               <div className="col-12 col-sm-12">
                 <div className="fact-icon">
@@ -27,7 +26,7 @@ const Fact = () => {
                 </div>
                 <div className="fact-text">
                   <h2>
-                    {startAnimation && <CountUp end={20} duration={2} />}+
+                    {startAnimation && <CountUp end={25} duration={2} />}+
                   </h2>
                   <p>Năm hoạt động</p>
                 </div>

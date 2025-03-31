@@ -17,15 +17,15 @@ const Home = () => {
       <Carousel />
       <Feature />
       <Banner />
-      <AlertBox />
       <About />
+      <AlertBox />
       <PartNews />
       {/* <NotificationList /> */}
-      <Map />
+      {/* <Map /> */}
       <Fact />
       <Media />
       {/* <Partner /> */}
-      <Quotes />
+      {/* <Quotes /> */}
     </>
   );
 };

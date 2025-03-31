@@ -6,7 +6,7 @@ const Footer = () => {
         <div class="row">
           <div class="col-md-6 col-lg-3">
             <div class="footer-contact">
-              <h2>Thông tin liên hệ</h2>
+              <p className="footer-title">Thông tin liên hệ</p>
               <p>
                 <i class="fa fa-map-marker-alt"></i>Số 5/200 đường Nguyễn Sơn,
                 phường Bồ Đề, quận Long Biên, Thành phố Hà Nội
@@ -24,17 +24,17 @@ const Footer = () => {
           </div>
           <div class="col-md-6 col-lg-3">
             <div class="footer-link">
-              <h2>Dịch vụ</h2>
+              <p className="footer-title">Dịch vụ</p>
               <a href="">DVKT Chuyên ngành CNS</a>
               <a href="">Bay kiểm tra hiệu chuẩn</a>
               <a href="">Dịch vụ huấn luyện đào tạo</a>
-              <a href="">Logistics</a>
-              <a href="">Đảm bảo kỹ thuật dân dụng</a>
+              <a href="">Kỹ thuật Hàng không</a>
+              <a href="">Huấn luyện đào tạo</a>
             </div>
           </div>
           <div class="col-md-6 col-lg-2">
             <div class="footer-link">
-              <h2>Trang tiện ích</h2>
+              <p className="footer-title">Trang tiện ích</p>
               <a href="">Về chúng tôi</a>
               <a href="">Hướng dẫn sử dụng</a>
               <a href="">Câu hỏi thường gặp</a>
@@ -42,7 +42,7 @@ const Footer = () => {
           </div>
           <div class="col-md-6 col-lg-4">
             <div class="newsletter">
-              <h3>Bản đồ chỉ dẫn Công ty TNHH Kỹ thuật Quản lý bay</h3>
+              <p>Bản đồ chỉ dẫn Công ty TNHH Kỹ thuật Quản lý bay</p>
               {/* <h2>Newsletter</h2>
               <p>
                 Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi.
@@ -76,20 +76,16 @@ const Footer = () => {
       <div class="container copyright">
         <div class="row">
           <div class="col-md-8">
-            <p>
+            <p className="copyright-text">
               &copy; <a href="#">2025. Bản quyền thuộc sở hữu của ATTECH.</a>
             </p>
           </div>
 
           <div class="col-md-1">
-            <p>
-              Trang chủ <a href="https://htmlcodex.com"></a>
-            </p>
+            <a href="/">Trang chủ </a>
           </div>
           <div class="col-md-1">
-            <p>
-              Liên hệ <a href="https://htmlcodex.com"></a>
-            </p>
+            <a href="/">Liên hệ</a>
           </div>
           <div class="col-md-2  ">
             <p>

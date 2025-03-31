@@ -8,7 +8,7 @@ import icon_fb from "../../../../assets/imgs/news/icon-fb.png";
 import icon_ins from "../../../../assets/imgs/news/icon-ins.png";
 import icon_tw from "../../../../assets/imgs/news/icon-tw.png";
 import icon_yh from "../../../../assets/imgs/news/icon-yo.png";
-import icon_new_card from "../../../../assets/imgs/news/news_card.jpg";
+import icon_new_card from "../../../../assets/img/part-banner.jpg";
 
 const WhatsNews = () => {
   return (
