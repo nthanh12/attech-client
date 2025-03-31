@@ -1,0 +1,202 @@
+
+.whats-news-area .whats-news-caption .single-what-news,
+.about-area .whats-news-caption .single-what-news,
+.contact-section .whats-news-caption .single-what-news {
+    position: relative
+}
+
+.whats-news-area .whats-news-caption .single-what-news .what-img {
+    height: 246px;
+    width: 264px;
+}
+.whats-news-area .whats-news-caption .single-what-news .what-img img,
+.about-area .whats-news-caption .single-what-news .what-img img,
+.contact-section .whats-news-caption .single-what-news .what-img img {
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.whats-news-area .whats-news-caption .single-what-news .what-cap,
+.about-area .whats-news-caption .single-what-news .what-cap,
+.contact-section .whats-news-caption .single-what-news .what-cap {
+    padding: 15px 20px 10px 0;
+    background: #fff;
+    position: absolute;
+    bottom: -63px;
+    left: 0;
+    width: 80%;
+    border-radius: 0 7px 0 0;
+    -webkit-transition: all .4s ease-out 0s;
+    -moz-transition: all .4s ease-out 0s;
+    -ms-transition: all .4s ease-out 0s;
+    -o-transition: all .4s ease-out 0s;
+    transition: all .4s ease-out 0s
+}
+
+.whats-news-area .whats-news-caption .single-what-news .what-cap span,
+.about-area .whats-news-caption .single-what-news .what-cap span,
+.contact-section .whats-news-caption .single-what-news .what-cap span {
+    color: #000;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 5px 10px;
+    line-height: 1;
+    margin-bottom: 10px;
+    display: inline-block
+}
+
+.whats-news-area .whats-news-caption .single-what-news .what-cap h4 a,
+.about-area .whats-news-caption .single-what-news .what-cap h4 a,
+.contact-section .whats-news-caption .single-what-news .what-cap h4 a {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.whats-news-area .whats-news-caption .single-what-news .what-cap h4 a:hover,
+.about-area .whats-news-caption .single-what-news .what-cap h4 a:hover,
+.contact-section .whats-news-caption .single-what-news .what-cap h4 a:hover {
+    color: #fc3f00
+}
+
+.whats-news-area .whats-news-caption .single-what-news:hover .what-cap,
+.about-area .whats-news-caption .single-what-news:hover .what-cap,
+.contact-section .whats-news-caption .single-what-news:hover .what-cap {
+    bottom: -70px
+}
+
+.whats-news-area .single-follow .single-box,
+.about-area .single-follow .single-box,
+.contact-section .single-follow .single-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between
+}
+
+.whats-news-area .single-follow .follow-us,
+.about-area .single-follow .follow-us,
+.contact-section .single-follow .follow-us {
+    border: 1px solid #f4f4f4;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-left: 13px;
+    padding-right: 13px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    width: 49%
+}
+
+.whats-news-area .single-follow .follow-us .follow-count,
+.about-area .single-follow .follow-us .follow-count,
+.contact-section .single-follow .follow-us .follow-count {
+    padding-left: 15px
+}
+
+.whats-news-area .single-follow .follow-us .follow-count span,
+.about-area .single-follow .follow-us .follow-count span,
+.contact-section .single-follow .follow-us .follow-count span {
+    color: #232323;
+    font-size: 14px;
+    font-weight: 500
+}
+
+.whats-news-area .single-follow .follow-us .follow-count p,
+.about-area .single-follow .follow-us .follow-count p,
+.contact-section .single-follow .follow-us .follow-count p {
+    margin-bottom: 0;
+    line-height: 1;
+    font-size: 11px
+}
+
+.whats-news-area .news-poster img,
+.about-area .news-poster img,
+.contact-section .news-poster img {
+    width: 100%;
+    padding: 0 61px
+}
+
+.whats-news-area .nav-tabs .nav-link,
+.about-area .nav-tabs .nav-link,
+.contact-section .nav-tabs .nav-link {
+    border: 0;
+    border-bottom: 2px solid transparent;
+    padding: 10px 20px
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+
+    .whats-news-area .nav-tabs .nav-link,
+    .about-area .nav-tabs .nav-link,
+    .contact-section .nav-tabs .nav-link {
+        padding: 10px 10px
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+    .whats-news-area .nav-tabs .nav-link,
+    .about-area .nav-tabs .nav-link,
+    .contact-section .nav-tabs .nav-link {
+        padding: 10px 15px
+    }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+
+    .whats-news-area .nav-tabs .nav-link,
+    .about-area .nav-tabs .nav-link,
+    .contact-section .nav-tabs .nav-link {
+        padding: 10px 15px
+    }
+}
+
+@media (max-width: 767px) {
+
+    .whats-news-area .nav-tabs .nav-link,
+    .about-area .nav-tabs .nav-link,
+    .contact-section .nav-tabs .nav-link {
+        padding: 10px 15px
+    }
+}
+
+.whats-news-area .nav-tabs .nav-item.show .nav-link,
+.whats-news-area .nav-tabs .nav-link.active,
+.about-area .nav-tabs .nav-item.show .nav-link,
+.about-area .nav-tabs .nav-link.active,
+.contact-section .nav-tabs .nav-item.show .nav-link,
+.contact-section .nav-tabs .nav-link.active {
+    color: #fc3f00;
+    background: none
+}
+
+.whats-news-area .nav-tabs .nav-item,
+.about-area .nav-tabs .nav-item,
+.contact-section .nav-tabs .nav-item {
+    display: block;
+    color: #8f8f96;
+    text-transform: capitalize;
+    font-size: 16px
+}
+
+.whats-news-area .nav-tabs,
+.about-area .nav-tabs,
+.contact-section .nav-tabs {
+    margin-bottom: 31px;
+    padding-bottom: 0px;
+    position: relative;
+    border: 0;
+    display: flex;
+    justify-content: center;
+    background: #f7f7f7
+}
+.mb-20 {
+    margin-bottom: 20px;
+}

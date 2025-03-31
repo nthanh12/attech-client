@@ -20,7 +20,7 @@
 .feature .feature-item {
     min-height: 100px;
     padding: 20px;
-    margin: 15px;
+    /* margin: 15px; */
     display: flex;
     align-items: center;
     justify-content: center;

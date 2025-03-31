@@ -9,6 +9,7 @@ import Map from "../components/Map/Map";
 import Partner from "../components/Partner/Partner";
 import Quotes from "../components/Quotes/Quotes";
 import Carousel from "../../../components/Shared/Layout/Carousel/Carousel";
+import PartNews from "../components/PartNews/PartNews";
 
 const Home = () => {
   return (
@@ -18,7 +19,8 @@ const Home = () => {
       <Banner />
       <AlertBox />
       <About />
-      <NotificationList />
+      <PartNews />
+      {/* <NotificationList /> */}
       <Map />
       <Fact />
       <Media />
