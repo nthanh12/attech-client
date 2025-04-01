@@ -34,7 +34,7 @@ const SidebarProduct = ({ openSidebar, setOpenSidebar }) => {
   };
 
   return (
-    <div class={openSidebar ? "sidebar-product resize" : "sidebar-product"}>
+    <div className={openSidebar ? "sidebar-product resize" : "sidebar-product"}>
       <div className="top-sidebar">
         <button onClick={() => setOpenSidebar(!openSidebar)}>
           <i className="fa fa-solid fa-bars"></i>
@@ -50,11 +50,11 @@ const SidebarProduct = ({ openSidebar, setOpenSidebar }) => {
             aria-label={category.label}
             onClick={() => category.subCategories && toggleSubCategories(index)}
           >
-            <i class={category.icon} aria-hidden="true"></i>
+            <i className={category.icon} aria-hidden="true"></i>
             {!openSidebar && <span>{category.label}</span>}
             {category.subCategories && (
               <i
-                class={`fas ${
+                className={`fas ${
                   expandedCategory === index
                     ? "fa-chevron-down"
                     : "fa-chevron-right"

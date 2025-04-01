@@ -57,6 +57,7 @@
     line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    color: #000000;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

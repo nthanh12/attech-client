@@ -2,7 +2,7 @@ import React from "react";
 import "../ServiceItem/ServiceItem.css";
 import { Link } from "react-router-dom";
 
-const ServiceItem = ({ id, title, description, image }) => {
+const ServiceItem = ({ id, slug, title, description, image }) => {
   return (
     <div className="col-lg-4 col-md-6 wow fadeInUp mb-4" data-wow-delay="0.1s">
       <div className="card service-item">
@@ -17,7 +17,7 @@ const ServiceItem = ({ id, title, description, image }) => {
         </div>
         <div className="card-footer border-0 bg-light p-2 d-flex justify-content-center">
           <Link
-            to={`/services/${id}`}
+            to={`/services/${slug}`}
             className="btn btn-primary text-white px-3"
           >
             <i className="fa fa-solid fa-eye"></i> Xem thêm

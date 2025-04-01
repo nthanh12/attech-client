@@ -10,13 +10,14 @@ const Product = () => {
 
   return (
     <div className="page-product">
-      {/* Sidebar cố định */}
       <SidebarProduct
         openSidebar={openSidebar}
         setOpenSidebar={setOpenSidebar}
       />
 
-      <div class={openSidebar ? "product-content resize" : "product-content"}>
+      <div
+        className={openSidebar ? "product-content resize" : "product-content"}
+      >
         <Outlet />
       </div>
     </div>

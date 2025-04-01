@@ -32,23 +32,25 @@ const Public = () => {
           <Route path=":productId" element={<ProductDetail />} />
         </Route>
 
+        {/* Service */}
         <Route path="/services/*" element={<Service />}>
           <Route path="" element={<ServiceList />} />
-          <Route path=":serviceId" element={<ServiceDetail />} />
+          {/* <Route path=":serviceId" element={<ServiceDetail />} /> */}
+          <Route path=":serviceSlug" element={<ServiceDetail />} />
         </Route>
 
+        {/* News */}
         <Route path="/news" element={<NewsPage />} />
         <Route path="/news/list" element={<NewsListPage />} />
 
+        {/* Notification */}
         <Route path="/notifications" element={<NotificationPage />} />
 
+        {/* Company info */}
         <Route path="/company-info/*" element={<CompanyInfoPage />} />
-        <Route path="/contact" element={<ContactPage />} />
 
-        {/* <Route
-            path="/product-category/product-list"
-            element={<ProductList />}
-          /> */}
+        {/* Contact */}
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
       <Footer />
     </>

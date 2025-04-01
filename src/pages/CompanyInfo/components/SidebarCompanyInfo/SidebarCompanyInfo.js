@@ -4,7 +4,7 @@ import "./SidebarCompanyInfo.css";
 const SidebarCompanyInfo = ({ openSidebar, setOpenSidebar }) => {
   return (
     <div
-      class={
+      className={
         openSidebar ? "sidebar-company-info resize" : "sidebar-company-info"
       }
     >

@@ -69,7 +69,7 @@ const CustomContentInfo = ({ backgroundImage }) => {
       <div className="custom-bg-box">
         <div className="custom-navbar">
           <button
-            class={`custom-navbar-button ${
+            className={`custom-navbar-button ${
               activeTab === "overview" ? "active" : ""
             }`}
             onClick={() => setActiveTab("overview")}
@@ -77,7 +77,7 @@ const CustomContentInfo = ({ backgroundImage }) => {
             Giới Thiệu Chung
           </button>
           <button
-            class={`custom-navbar-button ${
+            className={`custom-navbar-button ${
               activeTab === "quality" ? "active" : ""
             }`}
             onClick={() => setActiveTab("quality")}

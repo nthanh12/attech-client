@@ -4,10 +4,12 @@ import "../ServiceDetail/ServiceDetail.css";
 
 const ServiceDetail = () => {
   const { serviceId } = useParams();
+  const { serviceSlug } = useParams();
   const [service, setService] = useState(null);
   const services = [
     {
       id: 1,
+      slug: "cns-atm",
       title: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
       fullTitle:
         "Dịch Vụ Kỹ Thuật Chuyên Ngành Thông Tin, Dẫn Đường, Giám Sát (CNS)",
@@ -34,6 +36,7 @@ const ServiceDetail = () => {
     },
     {
       id: 2,
+      slug: "flight-check",
       title: "Dịch vụ Bay kiểm tra hiệu chuẩn",
       fullTitle: "Dịch Vụ Bay Kiểm Tra Hiệu Chuẩn",
       description:
@@ -58,6 +61,7 @@ const ServiceDetail = () => {
     },
     {
       id: 3,
+      slug: "testing",
       title: "Dịch vụ Thử nghiệm - Hiệu chuẩn",
       fullTitle: "Dịch Vụ Thử Nghiệm - Hiệu Chuẩn Thiết Bị",
       description:
@@ -83,6 +87,7 @@ const ServiceDetail = () => {
     },
     {
       id: 4,
+      slug: "aviation-tech",
       title: "Dịch vụ Kỹ thuật (Hàng không)",
       fullTitle: "Dịch Vụ Kỹ Thuật Trong Lĩnh Vực Hàng Không",
       description:
@@ -108,6 +113,7 @@ const ServiceDetail = () => {
     },
     {
       id: 5,
+      slug: "training",
       title: "Dịch vụ Huấn luyện - Đào tạo",
       fullTitle: "Dịch Vụ Huấn Luyện Và Đào Tạo Nhân Sự",
       description:
@@ -133,6 +139,7 @@ const ServiceDetail = () => {
     },
     {
       id: 6,
+      slug: "consulting",
       title: "Dịch vụ tư vấn đầu tư xây dựng và QLDA",
       fullTitle: "Dịch Vụ Tư Vấn Đầu Tư Xây Dựng Và Quản Lý Dự Án",
       description:
@@ -158,12 +165,17 @@ const ServiceDetail = () => {
   ];
 
   useEffect(() => {
-    const foundService = services.find((s) => s.id === parseInt(serviceId));
+    const foundService = services.find((s) => s.slug === serviceSlug);
     setService(foundService);
-  }, [serviceId, services]);
+  }, [serviceSlug]);
 
   if (!service) {
-    return <div>Đang tải...</div>;
+    return (
+      <div className="container py-5 text-center">
+        <h2>Không tìm thấy thông tin dịch vụ</h2>
+        <p>Dịch vụ bạn đang tìm kiếm không tồn tại hoặc đã bị gỡ bỏ.</p>
+      </div>
+    );
   }
 
   return (

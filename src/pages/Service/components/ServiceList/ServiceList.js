@@ -7,6 +7,7 @@ const ServiceList = () => {
   const services = [
     {
       id: 1,
+      slug: "cns-atm",
       title: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
       fullTitle:
         "Dịch Vụ Kỹ Thuật Chuyên Ngành Thông Tin, Dẫn Đường, Giám Sát (CNS)",
@@ -33,6 +34,7 @@ const ServiceList = () => {
     },
     {
       id: 2,
+      slug: "flight-check",
       title: "Dịch vụ Bay kiểm tra hiệu chuẩn",
       fullTitle: "Dịch Vụ Bay Kiểm Tra Hiệu Chuẩn",
       description:
@@ -57,6 +59,7 @@ const ServiceList = () => {
     },
     {
       id: 3,
+      slug: "testing",
       title: "Dịch vụ Thử nghiệm - Hiệu chuẩn",
       fullTitle: "Dịch Vụ Thử Nghiệm - Hiệu Chuẩn Thiết Bị",
       description:
@@ -82,6 +85,7 @@ const ServiceList = () => {
     },
     {
       id: 4,
+      slug: "aviation-tech",
       title: "Dịch vụ Kỹ thuật (Hàng không)",
       fullTitle: "Dịch Vụ Kỹ Thuật Trong Lĩnh Vực Hàng Không",
       description:
@@ -107,6 +111,7 @@ const ServiceList = () => {
     },
     {
       id: 5,
+      slug: "training",
       title: "Dịch vụ Huấn luyện - Đào tạo",
       fullTitle: "Dịch Vụ Huấn Luyện Và Đào Tạo Nhân Sự",
       description:
@@ -132,6 +137,7 @@ const ServiceList = () => {
     },
     {
       id: 6,
+      slug: "consulting",
       title: "Dịch vụ tư vấn đầu tư xây dựng và QLDA",
       fullTitle: "Dịch Vụ Tư Vấn Đầu Tư Xây Dựng Và Quản Lý Dự Án",
       description:
@@ -172,6 +178,7 @@ const ServiceList = () => {
           <ServiceItem
             key={index}
             id={service.id}
+            slug={service.slug}
             title={service.title}
             description={service.description}
             image={service.image}

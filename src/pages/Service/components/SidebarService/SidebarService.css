@@ -1,76 +1,61 @@
 .page-service .sidebar-service {
   position: fixed;
-  width: var(--sp-navbar-width);
-  background-color: var(--mainColor);
+  width: var(--sp-navbar-width, 250px); /* Giá trị mặc định nếu không định nghĩa */
+  background-color: var(--mainColor, #18283b); /* Màu nền mặc định */
   height: 100%;
   min-height: 100vh;
-  transition: width 0.3s ease, background-color 0.3s ease;}
+  transition: width 0.3s ease;
+}
+
 .page-service .sidebar-service.resize {
-  width: var(--sp-navbar-width-min);
+  width: var(--sp-navbar-width-min, 60px); /* Chiều rộng tối thiểu khi thu nhỏ */
 }
-.sidebar-service.resize .sp-nav-button span {
-  opacity: 0;
-  visibility: hidden;
-}
+
+/* Nút điều hướng */
 .sp-nav-button {
-  margin: 0 16px;
+  margin: 8px 16px;
   display: flex;
-  position: relative;
   align-items: center;
-  color: var(--sp-navbar-light-secondary);
-  direction: ltr;
+  color: var(--sp-navbar-light-secondary, #8392a5);
   cursor: pointer;
-  z-index: 1;
-  transition: color 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-radius: 8px;
 }
+
 .sp-nav-button i {
   display: flex;
-  color: #ffffff;
   justify-content: center;
   align-items: center;
   min-width: 40px;
   height: 40px;
+  color: #ffffff;
 }
+
 .sp-nav-button span {
   margin-left: 8px;
   font-size: 14px;
   color: #ffffff;
-  visibility: visible; /* Hiển thị nội dung đầy đủ mặc định */
-  white-space: nowrap; /* Ngăn không cho xuống dòng */
-  overflow: hidden; /* Ẩn nội dung tràn */
-  text-overflow: ellipsis; /* Thêm dấu "..." nếu nội dung vượt quá chiều rộng */
-  transition: opacity 0.3s, visibility 0.3s;
-  position: relative; /* Vị trí bình thường */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.2s ease;
 }
 
-
-.sp-nav-button:hover span {
-  overflow: visible;
-  text-overflow: unset;
-  white-space: normal;
-  padding: 4px 8px;
-  border-radius: 4px;
-  z-index: 10;
+.sidebar-service.resize .sp-nav-button span {
+  opacity: 0;
+  visibility: hidden;
 }
 
+/* Hiệu ứng hover */
 .sp-nav-button:hover {
-  background-color: rgba(161, 182, 221, 0.1);
-  border-radius: 8px;
-  color: var(--sp-navbar-dark-primary);
+  background-color: rgba(161, 182, 221, 0.2); /* Tăng độ tương phản nhẹ */
+  color: var(--sp-navbar-light-primary, #83c8e7);
 }
 
-:root {
-
-  --sp-navbar-dark-primary: #18283b;
-  --sp-navbar-dark-secondary: #2c3e50;
-  --sp-navbar-light-primary: #83c8e7;
-  --sp-navbar-light-secondary: #8392a5;
-}
-
+/* Top sidebar */
 .top-sidebar {
   margin: 8px 20px 0;
   display: flex;
-  justify-content: start;
   align-items: center;
   padding-bottom: 10px;
 }
@@ -80,16 +65,29 @@
   font-size: 26px;
   background-color: transparent;
   color: #ffffff;
-  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.top-sidebar button:hover {
+  transform: scale(1.1); /* Hiệu ứng phóng to nhẹ */
 }
 
 .top-sidebar span {
-  font-size: 26px;
+  font-size: 20px; /* Giảm kích thước chữ cho hài hòa */
   margin-left: 10px;
   color: #ffffff;
-  visibility: visible;
   white-space: nowrap;
-  overflow: hidden; 
-  transition: opacity 0.3s, visibility 0.3s; 
-  opacity: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Định nghĩa biến CSS */
+:root {
+  --sp-navbar-dark-primary: #18283b;
+  --sp-navbar-dark-secondary: #2c3e50;
+  --sp-navbar-light-primary: #83c8e7;
+  --sp-navbar-light-secondary: #8392a5;
+  --sp-navbar-width: 250px; /* Chiều rộng mặc định */
+  --sp-navbar-width-min: 60px; /* Chiều rộng khi thu nhỏ */
 }

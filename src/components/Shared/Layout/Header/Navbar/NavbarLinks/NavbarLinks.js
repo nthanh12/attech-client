@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import "./NavbarLinks.css";
 
 const menuItems = [
   { path: "/", label: "Trang chủ" },
@@ -8,7 +9,14 @@ const menuItems = [
     path: "/products",
     submenu: [
       { path: "/products/cns-atm", label: "CNS/ATM" },
-      { path: "/products/others", label: "Các sản phẩm khác" },
+      {
+        path: "/products/others",
+        label: "Các sản phẩm khác",
+        submenu: [
+          { path: "/products/others/category1", label: "Hệ thống đèn hiệu" },
+          { path: "/products/others/category2", label: "Shelt" },
+        ],
+      },
     ],
   },
   {
@@ -23,12 +31,18 @@ const menuItems = [
         path: "/services/flight-check",
         label: "Dịch vụ Bay kiểm tra hiệu chuẩn",
       },
-      { path: "/services/testing", label: "Dịch vụ Thử nghiệm - Hiệu chuẩn" },
+      {
+        path: "/services/testing",
+        label: "Dịch vụ Thử nghiệm - Hiệu chuẩn",
+      },
       {
         path: "/services/aviation-tech",
         label: "Dịch vụ Kỹ thuật (Hàng không)",
       },
-      { path: "/services/training", label: "Dịch vụ Huấn luyện - Đào tạo" },
+      {
+        path: "/services/training",
+        label: "Dịch vụ Huấn luyện - Đào tạo",
+      },
       {
         path: "/services/consulting",
         label: "Dịch vụ Tư vấn đầu tư và xây dựng QLDA",
@@ -105,6 +119,62 @@ const NavbarLinks = () => {
     return currentPath.startsWith(path);
   };
 
+  const renderDropdownMenu = (items, parentPath = "") => {
+    return (
+      <div className="dropdown-menu m-lg-0">
+        {items.map((sub) => {
+          if (sub.submenu) {
+            // Xử lý menu con nhiều cấp
+            return (
+              <div key={sub.path} className="dropdown-item dropdown">
+                <span
+                  className={`dropdown-toggle ${
+                    isActive(sub.path, sub.query) ? "active" : ""
+                  }`}
+                  data-bs-toggle="dropdown"
+                  onClick={() => handleNavigate(sub.path, sub.query)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {sub.label}
+                </span>
+                <div className="dropdown-menu dropdown-submenu">
+                  {sub.submenu.map((childSub) => (
+                    <span
+                      key={childSub.path}
+                      className={`dropdown-item ${
+                        isActive(childSub.path, childSub.query) ? "active" : ""
+                      }`}
+                      onClick={() =>
+                        handleNavigate(childSub.path, childSub.query)
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
+                      {childSub.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          } else {
+            // Xử lý menu con đơn giản
+            return (
+              <span
+                key={sub.path}
+                className={`dropdown-item ${
+                  isActive(sub.path, sub.query) ? "active" : ""
+                }`}
+                onClick={() => handleNavigate(sub.path, sub.query)}
+                style={{ cursor: "pointer" }}
+              >
+                {sub.label}
+              </span>
+            );
+          }
+        })}
+      </div>
+    );
+  };
+
   return (
     <div className="collapse navbar-collapse" id="navbarCollapse">
       <div className="navbar-nav ms-auto pt-2 pt-lg-0">
@@ -120,20 +190,7 @@ const NavbarLinks = () => {
                 >
                   {item.label}
                 </span>
-                <div className="dropdown-menu m-lg-0">
-                  {item.submenu.map((sub) => (
-                    <span
-                      key={sub.label}
-                      className={`dropdown-item ${
-                        isActive(sub.path, sub.query) ? "active" : ""
-                      }`}
-                      onClick={() => handleNavigate(sub.path, sub.query)}
-                      style={{ cursor: "pointer" }}
-                    >
-                      {sub.label}
-                    </span>
-                  ))}
-                </div>
+                {renderDropdownMenu(item.submenu)}
               </>
             ) : (
               <span

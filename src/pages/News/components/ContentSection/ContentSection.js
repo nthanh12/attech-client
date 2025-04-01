@@ -106,7 +106,7 @@ const ContentSection = () => {
                   {aviationNews.slice(1).map((news, index) => (
                     <li key={news.id}>
                       <div
-                        class={`media wow ${
+                        className={`media wow ${
                           index === 0 ? "fadeInDown" : "fadeInUp"
                         }`}
                       >
@@ -145,7 +145,7 @@ const ContentSection = () => {
                 {lawNews.map((news, index) => (
                   <li key={news.id}>
                     <div
-                      class={`media wow ${
+                      className={`media wow ${
                         index === 0 ? "fadeInDown" : "fadeInUp"
                       }`}
                     >
