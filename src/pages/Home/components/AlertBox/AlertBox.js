@@ -60,12 +60,12 @@ const AlertBox = () => {
         >
           <SwiperSlide>
             <div className="wrap-item">
-              <div class="item-img">
+              <div className="item-img">
                 <img src="https://vatm.vn/uploads/m.jpg" alt="alertbox Image" />
               </div>
               <div className="item-description">
                 <p className="item-time">
-                  <i class="fa fa-solid fa-calendar-days"></i>
+                  <i className="fa fa-solid fa-calendar-days"></i>
                   05/03/2025
                 </p>
                 <p className="item-text">
@@ -76,12 +76,12 @@ const AlertBox = () => {
           </SwiperSlide>
           <SwiperSlide>
             <div className="wrap-item">
-              <div class="item-img">
+              <div className="item-img">
                 <img src="https://vatm.vn/uploads/m.jpg" alt="alertbox Image" />
               </div>
               <div className="item-description">
                 <p className="item-time">
-                  <i class="fa fa-solid fa-calendar-days"></i>
+                  <i className="fa fa-solid fa-calendar-days"></i>
                   05/03/2025
                 </p>
                 <p className="item-text">
@@ -92,12 +92,12 @@ const AlertBox = () => {
           </SwiperSlide>
           <SwiperSlide>
             <div className="wrap-item">
-              <div class="item-img">
+              <div className="item-img">
                 <img src="https://vatm.vn/uploads/m.jpg" alt="alertbox Image" />
               </div>
               <div className="item-description">
                 <p className="item-time">
-                  <i class="fa fa-solid fa-calendar-days"></i>
+                  <i className="fa fa-solid fa-calendar-days"></i>
                   05/03/2025
                 </p>
                 <p className="item-text">
@@ -108,7 +108,7 @@ const AlertBox = () => {
           </SwiperSlide>
           <SwiperSlide>
             <div className="wrap-item">
-              <div class="item-img">
+              <div className="item-img">
                 <img
                   src="https://vimc.co/wp-content/uploads/2024/08/CMIT_8.24-400x300.jpg"
                   alt="alertbox Image"
@@ -116,7 +116,7 @@ const AlertBox = () => {
               </div>
               <div className="item-description">
                 <p className="item-time">
-                  <i class="fa fa-solid fa-calendar-days"></i>
+                  <i className="fa fa-solid fa-calendar-days"></i>
                   05/03/2025
                 </p>{" "}
                 <p className="item-text">
@@ -127,7 +127,7 @@ const AlertBox = () => {
           </SwiperSlide>
           <SwiperSlide>
             <div className="wrap-item">
-              <div class="item-img">
+              <div className="item-img">
                 <img
                   src="https://vimc.co/wp-content/uploads/2025/02/VIMC-Svdv-11.2.25-3-400x300.jpg"
                   alt="alertbox Image"
@@ -135,7 +135,7 @@ const AlertBox = () => {
               </div>
               <div className="item-description">
                 <p className="item-time">
-                  <i class="fa fa-solid fa-calendar-days"></i>
+                  <i className="fa fa-solid fa-calendar-days"></i>
                   05/03/2025
                 </p>{" "}
                 <p className="item-text">
@@ -147,7 +147,7 @@ const AlertBox = () => {
           </SwiperSlide>
           <SwiperSlide>
             <div className="wrap-item">
-              <div class="item-img">
+              <div className="item-img">
                 <img
                   src="https://vimc.co/wp-content/uploads/2025/02/Zalo-fanpage-VIMC-400x300.jpg"
                   alt="alertbox Image"
@@ -155,7 +155,7 @@ const AlertBox = () => {
               </div>
               <div className="item-description">
                 <p className="item-time">
-                  <i class="fa fa-solid fa-calendar-days"></i>
+                  <i className="fa fa-solid fa-calendar-days"></i>
                   05/03/2025
                 </p>{" "}
                 <p className="item-text">
@@ -167,7 +167,7 @@ const AlertBox = () => {
           </SwiperSlide>
           <SwiperSlide>
             <div className="wrap-item">
-              <div class="item-img">
+              <div className="item-img">
                 <img
                   src="https://vimc.co/wp-content/uploads/2025/02/PTT-Ho-Duc-Phoc-27.2.25-400x300.jpg"
                   alt="alertbox Image"
@@ -175,7 +175,7 @@ const AlertBox = () => {
               </div>
               <div className="item-description">
                 <p className="item-time">
-                  <i class="fa fa-solid fa-calendar-days"></i>
+                  <i className="fa fa-solid fa-calendar-days"></i>
                   05/03/2025
                 </p>{" "}
                 <p className="item-text">
@@ -186,7 +186,7 @@ const AlertBox = () => {
             </div>
           </SwiperSlide>
           {/* <button
-            class="alertbox-control-prev"
+            className="alertbox-control-prev"
             href="#alertbox"
             role="button"
             data-slide="prev"
@@ -194,11 +194,11 @@ const AlertBox = () => {
               handleMove("prev");
             }}
           >
-            <span class="alertbox-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+            <span className="alertbox-control-prev-icon" aria-hidden="true"></span>
+            <span className="sr-only">Previous</span>
           </button>
           <button
-            class="alertbox-control-next"
+            className="alertbox-control-next"
             href="#alertbox"
             role="button"
             data-slide="next"
@@ -206,8 +206,8 @@ const AlertBox = () => {
               handleMove("next");
             }}
           >
-            <span class="alertbox-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
+            <span className="alertbox-control-next-icon" aria-hidden="true"></span>
+            <span className="sr-only">Next</span>
         </button> */}
         </Swiper>
       </div>

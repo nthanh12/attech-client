@@ -14,17 +14,17 @@ import { Autoplay } from "swiper/modules";
 
 const TrendingArea = () => {
   return (
-    <div class="trending-area fix">
-      <div class="container">
-        <div class="trending-main">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="section-tittle mb-20">
+    <div className="trending-area fix">
+      <div className="container">
+        <div className="trending-main">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="section-tittle mb-20">
                 <h3>Tin hoạt động công ty</h3>
               </div>
             </div>
           </div>
-          <div class="row">
+          <div className="row">
             <div className="col-lg-8">
               <Swiper
                 className="trending-top mb-30"
@@ -88,18 +88,18 @@ const TrendingArea = () => {
                   </div>
                 </SwiperSlide>
               </Swiper>
-              <div class="trending-bottom">
-                <div class="row">
-                  <div class="col-lg-4">
-                    <div class="single-bottom mb-35">
-                      <div class="trend-bottom-img mb-30">
+              <div className="trending-bottom">
+                <div className="row">
+                  <div className="col-lg-4">
+                    <div className="single-bottom mb-35">
+                      <div className="trend-bottom-img mb-30">
                         <img
                           src="https://attech.com.vn/wp-content/uploads/2025/03/canh-thu-Con-Son-28-3-1.jpg"
                           alt=""
                         />
                       </div>
-                      <div class="trend-bottom-cap">
-                        <span class="color1">31/03/2025</span>
+                      <div className="trend-bottom-cap">
+                        <span className="color1">31/03/2025</span>
                         <h4>
                           <a href="details.html">
                             Hoàn thành canh thu, đảm bảo kỹ thuật các tần số VHF
@@ -109,16 +109,16 @@ const TrendingArea = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4">
-                    <div class="single-bottom mb-35">
-                      <div class="trend-bottom-img mb-30">
+                  <div className="col-lg-4">
+                    <div className="single-bottom mb-35">
+                      <div className="trend-bottom-img mb-30">
                         <img
                           src="https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-1.jpg"
                           alt=""
                         />
                       </div>
-                      <div class="trend-bottom-cap">
-                        <span class="color2">30/04/2024</span>
+                      <div className="trend-bottom-cap">
+                        <span className="color2">30/04/2024</span>
 
                         <h4>
                           <a href="details.html">
@@ -131,16 +131,16 @@ const TrendingArea = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="col-lg-4">
-                    <div class="single-bottom mb-35">
-                      <div class="trend-bottom-img mb-30">
+                  <div className="col-lg-4">
+                    <div className="single-bottom mb-35">
+                      <div className="trend-bottom-img mb-30">
                         <img
                           src="https://attech.com.vn/wp-content/uploads/2025/02/nesic-nghiem-thu-18-02-2.jpg"
                           alt=""
                         />
                       </div>
-                      <div class="trend-bottom-cap">
-                        <span class="color3">Travels</span>
+                      <div className="trend-bottom-cap">
+                        <span className="color3">Travels</span>
                         <h4>
                           <a href="details.html">
                             ATTECH và NESIC hoàn thành nghiệm thu tại Nhà máy 05

@@ -3,10 +3,10 @@ import ServiceFilter from "./ServiceFilter";
 
 const ServiceList = () => {
   return (
-    <div class="service-page">
-      <div class="service">
-        <div class="container">
-          <div class="section-header text-center">
+    <div className="service-page">
+      <div className="service">
+        <div className="container">
+          <div className="section-header text-center">
             <h2>Dịch vụ</h2>
             <p className="general-text">
               ATTECH, Công ty TNHH Kỹ thuật Quản lý bay, cung cấp dịch vụ thông
@@ -17,7 +17,7 @@ const ServiceList = () => {
             </p>
           </div>
           <ServiceFilter />
-          <div class="row">
+          <div className="row">
             <ServiceItem />
           </div>
         </div>

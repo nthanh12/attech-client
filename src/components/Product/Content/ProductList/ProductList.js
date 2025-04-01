@@ -4,10 +4,10 @@ import ProductItem from "../ProductItem/ProductItem";
 
 const ProductList = () => {
   return (
-    <div class="product-page">
-      <div class="product">
-        <div class="container">
-          <div class="section-header text-center">
+    <div className="product-page">
+      <div className="product">
+        <div className="container">
+          <div className="section-header text-center">
             <h2>Sản phẩm</h2>
             <p className="general-text">
               Các sản phẩm do ATTECH nghiên cứu, sản xuất, đáp ứng tiêu chuẩn
@@ -18,7 +18,7 @@ const ProductList = () => {
             </p>
           </div>
           <ProductFilter />
-          <div class="row">
+          <div className="row">
             <ProductItem />
           </div>
         </div>

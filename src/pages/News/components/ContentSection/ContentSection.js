@@ -83,10 +83,7 @@ const ContentSection = () => {
                     <li>
                       <figure className="bsbig_fig">
                         <a href={aviationNews[0].link} className="featured_img">
-                          <img
-                            alt=""
-                            src={sliderImg1}
-                          />
+                          <img alt="" src={sliderImg1} />
                           <span className="overlay"></span>
                         </a>
                         <div className="col2 featured_text">
@@ -109,7 +106,7 @@ const ContentSection = () => {
                   {aviationNews.slice(1).map((news, index) => (
                     <li key={news.id}>
                       <div
-                        className={`media wow ${
+                        class={`media wow ${
                           index === 0 ? "fadeInDown" : "fadeInUp"
                         }`}
                       >
@@ -148,7 +145,7 @@ const ContentSection = () => {
                 {lawNews.map((news, index) => (
                   <li key={news.id}>
                     <div
-                      className={`media wow ${
+                      class={`media wow ${
                         index === 0 ? "fadeInDown" : "fadeInUp"
                       }`}
                     >

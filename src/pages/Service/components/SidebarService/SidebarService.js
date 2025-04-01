@@ -3,7 +3,7 @@ import "./SidebarService.css";
 
 const SidebarService = ({ openSidebar, setOpenSidebar }) => {
   return (
-    <div className={openSidebar ? "sidebar-service resize" : "sidebar-service"}>
+    <div class={openSidebar ? "sidebar-service resize" : "sidebar-service"}>
       <div className="top-sidebar">
         <button onClick={() => setOpenSidebar(!openSidebar)}>
           <i className=" fa fa-solid fa-bars"></i>

@@ -16,9 +16,7 @@ const Product = () => {
         setOpenSidebar={setOpenSidebar}
       />
 
-      <div
-        className={openSidebar ? "product-content resize" : "product-content"}
-      >
+      <div class={openSidebar ? "product-content resize" : "product-content"}>
         <Outlet />
       </div>
     </div>

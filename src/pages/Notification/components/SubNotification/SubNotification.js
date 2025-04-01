@@ -49,7 +49,7 @@ const SubNotification = () => {
         {projects.map((project, index) => (
           <article
             key={index}
-            className={index === projects.length - 1 ? "lastarticle" : ""}
+            class={index === projects.length - 1 ? "lastarticle" : ""}
           >
             <img src={project.image} alt={project.title} />
             <h1>{project.title}</h1>

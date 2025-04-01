@@ -3,14 +3,14 @@ import "../../assets/css/Service/ServiceItem.css";
 const ServiceItem = () => {
   return (
     <>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="service-item">
-          <div class="service-img">
+      <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div className="service-item">
+          <div className="service-img">
             <img
               src="https://attech.com.vn/wp-content/uploads/2015/05/dichvuKTCNS2.png"
               alt="Image"
             />
-            <div class="service-overlay">
+            <div className="service-overlay">
               <p>
                 Với đội ngũ nhân viên tinh nhuệ, chuyên nghiệp gồm hàng chục kỹ
                 sư dày dạn kinh nghiệm, được đào tạo bài bản trong và ngoài
@@ -23,22 +23,22 @@ const ServiceItem = () => {
               </p>
             </div>
           </div>
-          <div class="service-text">
+          <div className="service-text">
             <h3>DVKT CHUYÊN NGÀNH CNS</h3>
-            <a class="btn" href="img/service-1.jpg" data-lightbox="service">
-              <i class="fa fa-solid fa-eye"></i>
+            <a className="btn" href="img/service-1.jpg" data-lightbox="service">
+              <i className="fa fa-solid fa-eye"></i>
             </a>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
-        <div class="service-item">
-          <div class="service-img">
+      <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+        <div className="service-item">
+          <div className="service-img">
             <img
               src="https://attech.com.vn/wp-content/uploads/2015/05/dichvuBHC.png"
               alt="Image"
             />
-            <div class="service-overlay">
+            <div className="service-overlay">
               <p>
                 Đội Bay kiểm tra hiệu chuẩn được thành lập theo Quyết định số
                 115/QĐ-KTQLB ngày 19 tháng 08 năm 2010 với nhiệm vụ Tổ chức cung
@@ -47,22 +47,22 @@ const ServiceItem = () => {
               </p>
             </div>
           </div>
-          <div class="service-text">
+          <div className="service-text">
             <h3>BAY KIỂM TRA HIỆU CHUẨN</h3>
-            <a class="btn" href="img/service-2.jpg" data-lightbox="service">
-              <i class="fa fa-solid fa-eye"></i>
+            <a className="btn" href="img/service-2.jpg" data-lightbox="service">
+              <i className="fa fa-solid fa-eye"></i>
             </a>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-        <div class="service-item">
-          <div class="service-img">
+      <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+        <div className="service-item">
+          <div className="service-img">
             <img
               src="https://attech.com.vn/wp-content/uploads/2015/05/dichvuLogistics.png"
               alt="Image"
             />
-            <div class="service-overlay">
+            <div className="service-overlay">
               <p>
                 Góp phần nâng cao sức cạnh tranh của doanh nghiệp, công ty TNHH
                 Kỹ thuật Quản lý bay (ATTECH) đã tập trung đầu tư nhân lực và cơ
@@ -73,26 +73,26 @@ const ServiceItem = () => {
               </p>
             </div>
           </div>
-          <div class="service-text">
+          <div className="service-text">
             <h3>LOGISTICS</h3>
             <a
-              class="btn"
+              className="btn"
               href="https://attech.com.vn/wp-content/uploads/2015/05/dichvuDoLuong.png"
               data-lightbox="service"
             >
-              <i class="fa fa-solid fa-eye"></i>
+              <i className="fa fa-solid fa-eye"></i>
             </a>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="service-item">
-          <div class="service-img">
+      <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+        <div className="service-item">
+          <div className="service-img">
             <img
               src="https://attech.com.vn/wp-content/uploads/2015/05/dichvuDoLuong.png"
               alt="Image"
             />
-            <div class="service-overlay">
+            <div className="service-overlay">
               <p>
                 Đến nay, phòng thí nghiệm của ATTECH đã được Văn phòng công nhận
                 chất lượng thuộc Bộ Khoa học công nghệ Việt Nam cấp chứng chỉ
@@ -103,22 +103,22 @@ const ServiceItem = () => {
               </p>
             </div>
           </div>
-          <div class="service-text">
+          <div className="service-text">
             <h3>ĐO LƯỜNG HIỆU CHUẨN</h3>
-            <a class="btn" href="img/service-1.jpg" data-lightbox="service">
-              <i class="fa fa-solid fa-eye"></i>
+            <a className="btn" href="img/service-1.jpg" data-lightbox="service">
+              <i className="fa fa-solid fa-eye"></i>
             </a>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
-        <div class="service-item">
-          <div class="service-img">
+      <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+        <div className="service-item">
+          <div className="service-img">
             <img
               src="https://attech.com.vn/wp-content/uploads/2015/06/dichvuTVTK3.png"
               alt="Image"
             />
-            <div class="service-overlay">
+            <div className="service-overlay">
               <p>
                 Với trên 10 năm kinh nghiệm và đội ngũ kỹ sư, kiến trúc sư và
                 cán bộ chuyên môn có trình độ, Ban QLDA Đầu tư và Xây dựng
@@ -131,22 +131,22 @@ const ServiceItem = () => {
               </p>
             </div>
           </div>
-          <div class="service-text">
+          <div className="service-text">
             <h3>TƯ VẤN THIẾT KẾ</h3>
-            <a class="btn" href="img/service-2.jpg" data-lightbox="service">
-              <i class="fa fa-solid fa-eye"></i>
+            <a className="btn" href="img/service-2.jpg" data-lightbox="service">
+              <i className="fa fa-solid fa-eye"></i>
             </a>
           </div>
         </div>
       </div>
-      <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-        <div class="service-item">
-          <div class="service-img">
+      <div className="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+        <div className="service-item">
+          <div className="service-img">
             <img
               src="https://attech.com.vn/wp-content/uploads/2015/05/dichvuGiaDung.png"
               alt="Image"
             />
-            <div class="service-overlay">
+            <div className="service-overlay">
               <p>
                 Chúng tôi, công ty ATTECH cung cấp bảo dưỡng các thiết bị gia
                 dụng gồm: 1. Bảo dưỡng máy điều hòa nhiệt độ 2. Bảo dưỡng bình
@@ -156,14 +156,14 @@ const ServiceItem = () => {
               </p>
             </div>
           </div>
-          <div class="service-text">
+          <div className="service-text">
             <h3>ĐẢM BẢO KỸ THUẬT DÂN DỤNG</h3>
             <a
-              class="btn"
+              className="btn"
               href="https://attech.com.vn/wp-content/themes/html5blank/images/sanpham/spCoKhiCheTao.png"
               data-lightbox="service"
             >
-              <i class="fa fa-solid fa-eye"></i>
+              <i className="fa fa-solid fa-eye"></i>
             </a>
           </div>
         </div>

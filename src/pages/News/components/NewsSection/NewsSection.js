@@ -6,13 +6,13 @@ const NewsSection = () => {
   return (
     <>
       <section id="newsSection">
-        <div class="row">
-          <div class="col-lg-12 col-md-12">
-            <div class="latest_newsarea">
+        <div className="row">
+          <div className="col-lg-12 col-md-12">
+            <div className="latest_newsarea">
               {" "}
               <p>Tin tức</p>
               <div id="ticker01">
-                <ul class="news_sticker">
+                <ul className="news_sticker">
                   <li>
                     <a href="#">
                       <img src={news_thumbnail3} alt="" />
@@ -57,46 +57,46 @@ const NewsSection = () => {
                   </li>
                 </ul>
               </div>
-              <div class="social_area">
-                <ul class="social_nav">
-                  <li class="facebook">
+              <div className="social_area">
+                <ul className="social_nav">
+                  <li className="facebook">
                     <a href="#">
-                      <i class="fab fa-facebook-f"></i>
+                      <i className="fab fa-facebook-f"></i>
                     </a>
                   </li>
-                  <li class="twitter">
+                  <li className="twitter">
                     <a href="#">
-                      <i class="fab fa-twitter"></i>
+                      <i className="fab fa-twitter"></i>
                     </a>
                   </li>
-                  <li class="flickr">
+                  <li className="flickr">
                     <a href="#">
-                      <i class="fab fa-flickr"></i>
+                      <i className="fab fa-flickr"></i>
                     </a>
                   </li>
-                  <li class="pinterest">
+                  <li className="pinterest">
                     <a href="#">
-                      <i class="fab fa-pinterest"></i>
+                      <i className="fab fa-pinterest"></i>
                     </a>
                   </li>
-                  <li class="googleplus">
+                  <li className="googleplus">
                     <a href="#">
-                      <i class="fab fa-google-plus-g"></i>
+                      <i className="fab fa-google-plus-g"></i>
                     </a>
                   </li>
-                  <li class="vimeo">
+                  <li className="vimeo">
                     <a href="#">
-                      <i class="fab fa-vimeo-v"></i>
+                      <i className="fab fa-vimeo-v"></i>
                     </a>
                   </li>
-                  <li class="youtube">
+                  <li className="youtube">
                     <a href="#">
-                      <i class="fab fa-youtube"></i>
+                      <i className="fab fa-youtube"></i>
                     </a>
                   </li>
-                  <li class="mail">
+                  <li className="mail">
                     <a href="#">
-                      <i class="fas fa-envelope"></i>
+                      <i className="fas fa-envelope"></i>
                     </a>
                   </li>
                 </ul>

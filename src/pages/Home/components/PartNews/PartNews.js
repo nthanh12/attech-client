@@ -98,7 +98,7 @@ const PartNews = () => {
                       {categories.map((cat) => (
                         <a
                           key={cat.id}
-                          className={`nav-item nav-link ${
+                          class={`nav-item nav-link ${
                             activeTab === cat.label ? "active" : ""
                           }`}
                           href="#"

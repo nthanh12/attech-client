@@ -10,9 +10,9 @@ import "./SliderNotification.css";
 const SliderNotification = () => {
   return (
     <div className="slider-notification-wrapper">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="section-tittle mb-20">
+      <div className="row">
+        <div className="col-lg-12">
+          <div className="section-tittle mb-20">
             <h3>Trang thông báo</h3>
           </div>
         </div>

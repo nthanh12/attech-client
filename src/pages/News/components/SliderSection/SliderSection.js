@@ -107,25 +107,25 @@ const SliderSection = () => {
           </Swiper>
         </div>
 
-        <div class="col-lg-4">
-          <div class="latest_post">
+        <div className="col-lg-4">
+          <div className="latest_post">
             <div className="d-flex justify-content-between align-items-center m-0">
               <p>Hoạt động công ty</p>
               <Link to="/news/notification/all" className="more-btn">
                 <span>Xem tất cả</span>
-                <i class="fa fa-angle-down" aria-hidden="true"></i>
+                <i className="fa fa-angle-down" aria-hidden="true"></i>
               </Link>
             </div>
-            <div class="fixed_announcement">
-              <div class="media">
-                <a href="pages/single_page.html" class="media-left">
+            <div className="fixed_announcement">
+              <div className="media">
+                <a href="pages/single_page.html" className="media-left">
                   <img
                     alt=""
                     src="https://attech.com.vn/wp-content/uploads/2023/07/giai-bong-da1-170x130.jpg"
                   />
                 </a>
-                <div class="media-body">
-                  <a href="pages/single_page.html" class="catg_title">
+                <div className="media-body">
+                  <a href="pages/single_page.html" className="catg_title">
                     Thông báo ghim: Nữ công ATTECH hưởng ứng chuỗi hoạt động
                     chào mừng ngày 8/3
                   </a>
@@ -271,15 +271,15 @@ const SliderSection = () => {
                 </div>{" "}
               </SwiperSlide>
               <SwiperSlide>
-                <div class="media">
-                  <a href="pages/single_page.html" class="media-left slide">
+                <div className="media">
+                  <a href="pages/single_page.html" className="media-left slide">
                     <img
                       alt=""
                       src="https://attech.com.vn/wp-content/uploads/2025/03/HN-NLD-2025-3-3-6-170x130.jpg"
                     />
                   </a>
-                  <div class="media-body">
-                    <a href="pages/single_page.html" class="catg_title">
+                  <div className="media-body">
+                    <a href="pages/single_page.html" className="catg_title">
                       Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị đại
                       biểu Người lao động năm 2025
                     </a>

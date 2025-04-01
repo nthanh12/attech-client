@@ -35,7 +35,7 @@ const Fact = () => {
             <div className="col-12 col-sm-3 fact-left wow slideInLeft">
               <div className="col-12 col-sm-12">
                 <div className="fact-icon">
-                  <i class="fa fa-solid fa-building"></i>{" "}
+                  <i className="fa fa-solid fa-building"></i>{" "}
                 </div>
                 <div className="fact-text">
                   <h2>
@@ -48,7 +48,7 @@ const Fact = () => {
             <div className="col-12 col-sm-3 fact-right wow slideInRight">
               <div className="col-12 col-sm-12">
                 <div className="fact-icon">
-                  <i class="fa fa-solid fa-earth-asia"></i>{" "}
+                  <i className="fa fa-solid fa-earth-asia"></i>{" "}
                 </div>
                 <div className="fact-text">
                   <h2>
@@ -61,7 +61,7 @@ const Fact = () => {
             <div className="col-12 col-sm-3 fact-right wow slideInRight">
               <div className="col-12 col-sm-12">
                 <div className="fact-icon">
-                  <i class="fa fa-solid fa-certificate"></i>{" "}
+                  <i className="fa fa-solid fa-certificate"></i>{" "}
                 </div>
                 <div className="fact-text">
                   <h2>{startAnimation && <CountUp end={4} duration={2} />}+</h2>
