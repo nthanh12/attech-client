@@ -71,7 +71,6 @@
 
 .nav-item.dropdown:hover>.dropdown-menu {
     display: block;
-    overflow: hidden;
 }
 
 .nav-bar .dropdown-menu .dropdown-menu {

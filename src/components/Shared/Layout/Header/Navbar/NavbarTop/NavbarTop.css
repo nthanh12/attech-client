@@ -130,7 +130,7 @@
 .dropdown-item:hover {
     background-color: rgba(15, 159, 219, 0.3);
     color: #ffffff;
-    transform: translateX(5px);
+    /* transform: translateX(5px); */
     border-left: 3px solid #0f9fdb;
 }
 
