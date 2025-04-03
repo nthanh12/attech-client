@@ -5,7 +5,7 @@
 
 .page-product {
     margin-top: 76px;
-    height: 100vh;
+    height: 100%;
     position: relative;
     display: flex;
 }

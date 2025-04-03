@@ -100,14 +100,10 @@
 
 /* Dropdown styling */
 .dropdown-menu {
-    background-color: rgba(0, 42, 92, 0.8);
+    background-color: rgb(53 93 140 / 80%);
     border: none;
-    border-radius: 15px;
-    padding: 15px 0;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(15px);
-    margin-top: 15px;
-    min-width: 200px;
+    min-width: 230px;
 }
 
 .dropdown-menu::before {
@@ -117,21 +113,20 @@
     left: 20px;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-bottom: 10px solid rgba(0, 42, 92, 0.8);
 }
 
 .dropdown-item {
     color: white;
-    padding: 12px 25px;
+    padding: 10px 15px;
     transition: all 0.3s;
-    border-left: 1px solid transparent;
+    /* border-left: 1px solid transparent; */
 }
 
 .dropdown-item:hover {
     background-color: rgba(15, 159, 219, 0.3);
     color: #ffffff;
     /* transform: translateX(5px); */
-    border-left: 3px solid #0f9fdb;
+    /* border-left: 3px solid #0f9fdb; */
 }
 
 .nav-item.dropdown:hover > .dropdown-menu {

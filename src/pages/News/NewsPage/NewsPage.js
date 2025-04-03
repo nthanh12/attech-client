@@ -13,7 +13,7 @@ const NewsPage = () => {
   return (
     <div className="news-page">
       <div className="container">
-        <NewsSection category={category || "aviation"} />
+        <NewsSection />
         {/* <SliderSection category="tech" /> */}
         {/* <ContentSection category="law" /> */}
         <TrendingArea />

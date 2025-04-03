@@ -14,6 +14,7 @@ import ServiceDetail from "../pages/Service/ServiceDetail/ServiceDetail";
 
 import NewsPage from "../pages/News/NewsPage/NewsPage";
 import NewsListPage from "../pages/News/NewsListPage/NewsListPage";
+import NewsDetailPage from "../pages/News/NewsDetailPage/NewsDetailPage";
 
 import NotificationPage from "../pages/Notification/NotificationPage/NotificationPage";
 import ContactPage from "../pages/Contact/ContactPage/ContactPage";
@@ -29,7 +30,7 @@ const Public = () => {
         {/* Product */}
         <Route path="/products/*" element={<Product />}>
           <Route path="" element={<ProductList />} />
-          <Route path=":productId" element={<ProductDetail />} />
+          <Route path=":productId/:slug" element={<ProductDetail />} />
         </Route>
 
         {/* Service */}
@@ -42,6 +43,7 @@ const Public = () => {
         {/* News */}
         <Route path="/news" element={<NewsPage />} />
         <Route path="/news/list" element={<NewsListPage />} />
+        <Route path="/news/:id/:slug" element={<NewsDetailPage />} />
 
         {/* Notification */}
         <Route path="/notifications" element={<NotificationPage />} />

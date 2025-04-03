@@ -1,120 +1,184 @@
 /* Tin tức */
 #newsSection {
-    float: left;
-    display: inline;
     width: 100%;
     padding: 0 30px;
     background-color: #ffffff;
     padding-bottom: 20px;
-}
-
-/* Khu vực tin tức */
-.latest_newsarea {
+  }
+  
+  /* Khu vực tin tức */
+  .latest_newsarea {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    overflow: hidden;
+    gap: 20px; /* Khoảng cách đều giữa các phần tử */
     border-bottom: 2px solid #ddd;
     padding: 10px 0;
-}
-
-.latest_newsarea p {
-    width: 80px;
+  }
+  
+  /* Tiêu đề "Tin tức" */
+  .latest_newsarea p {
+    flex: 0 0 100px; /* Chiều rộng cố định */
     margin: 0;
     font-weight: 600;
     font-size: 20px;
-}
-
-/* Vùng chứa ticker */
-#ticker01 {
-    width: 70%;
+    color: #333;
+  }
+  
+  /* Vùng chứa ticker */
+  #ticker01 {
+    flex: 1; /* Chiếm không gian còn lại */
     overflow: hidden;
     position: relative;
-    white-space: nowrap;
-}
-
-/* Danh sách tin tức */
-.news_sticker {
+  }
+  
+  /* Danh sách tin tức */
+  .news_sticker {
     display: flex;
-    min-width: 200%;
     list-style: none;
     padding: 0;
     margin: 0;
-    animation: tickerScroll 25s linear infinite;
-}
-
-/* Các mục tin tức */
-.news_sticker li {
+    white-space: nowrap;
+    animation: tickerScroll 20s linear infinite;
+  }
+  
+  /* Các mục tin tức */
+  .news_sticker li {
     display: flex;
     align-items: center;
-    white-space: nowrap;
     margin-right: 30px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-}
-
-.news_sticker a {
+  }
+  
+  .news_sticker a {
+    display: flex;
+    align-items: center;
     text-decoration: none;
     color: #333;
-    display: flex;
-    align-items: center;
-}
-
-.news_sticker img {
-    width: 40px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  
+  .news_sticker a:hover {
+    color: #007bff;
+  }
+  
+  .news_sticker img {
+    width: 40px; /* Tăng kích thước ảnh một chút */
     height: 40px;
-    margin-right: 10px;
+    margin-right: 15px;
     border-radius: 5px;
-}
-
-/* Hiệu ứng trượt */
-@keyframes tickerScroll {
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+  }
+  
+  /* Hiệu ứng trượt */
+  @keyframes tickerScroll {
     0% {
-        transform: translateX(100%);
+      transform: translateX(0);
     }
-
     100% {
-        transform: translateX(-100%);
+      transform: translateX(-100%);
     }
-}
-
-/* Tạm dừng khi hover */
-#ticker01:hover .news_sticker {
+  }
+  
+  /* Tạm dừng khi hover */
+  #ticker01:hover .news_sticker {
     animation-play-state: paused;
-}
-
-/* Mạng xã hội */
-.social_area {
-    display: flex;
-    align-items: center;
-}
-
-.social_nav {
+  }
+  
+  /* Mạng xã hội */
+  .social_area {
+    flex: 0 0 auto; /* Không co giãn */
+  }
+  
+  .social_nav {
     display: flex;
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.social_nav li {
-    margin-right: 10px;
-}
-
-.social_nav a {
+    gap: 10px; /* Khoảng cách đều giữa các icon */
+  }
+  
+  .social_nav li {
+    display: flex;
+  }
+  
+  .social_nav a {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 35px; /* Tăng kích thước icon */
+    height: 35px;
     border-radius: 50%;
     background: #ddd;
     color: #333;
-    font-size: 16px;
+    font-size: 18px;
     transition: all 0.3s ease;
-}
-
-.social_nav a:hover {
+  }
+  
+  .social_nav a:hover {
     background: #007bff;
     color: #fff;
-}
+  }
+  
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .latest_newsarea {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+  
+    .latest_newsarea p {
+      flex: none;
+      width: auto;
+    }
+  
+    #ticker01 {
+      width: 100%;
+    }
+  
+    .social_area {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .news_sticker li {
+      margin-right: 20px;
+    }
+  
+    .news_sticker img {
+      width: 40px;
+      height: 40px;
+    }
+  
+    .news_sticker a {
+      font-size: 14px;
+    }
+  
+    .social_nav a {
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    #newsSection {
+      padding: 0 15px;
+    }
+  
+    .latest_newsarea p {
+      font-size: 18px;
+    }
+  
+    .news_sticker img {
+      width: 30px;
+      height: 30px;
+    }
+  
+    .news_sticker a {
+      font-size: 12px;
+    }
+  }

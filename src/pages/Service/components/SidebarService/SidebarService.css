@@ -11,8 +11,7 @@
   width: var(--sp-navbar-width-min, 60px); /* Chiều rộng tối thiểu khi thu nhỏ */
 }
 
-/* Nút điều hướng */
-.sp-nav-button {
+.sidebar-service .sp-nav-button {
   margin: 8px 16px;
   display: flex;
   align-items: center;
@@ -22,7 +21,7 @@
   border-radius: 8px;
 }
 
-.sp-nav-button i {
+.sidebar-service .sp-nav-button i {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,7 +30,7 @@
   color: #ffffff;
 }
 
-.sp-nav-button span {
+.sidebar-service .sp-nav-button span {
   margin-left: 8px;
   font-size: 14px;
   color: #ffffff;
@@ -46,8 +45,7 @@
   visibility: hidden;
 }
 
-/* Hiệu ứng hover */
-.sp-nav-button:hover {
+.sidebar-service .sp-nav-button:hover {
   background-color: rgba(161, 182, 221, 0.2); /* Tăng độ tương phản nhẹ */
   color: var(--sp-navbar-light-primary, #83c8e7);
 }

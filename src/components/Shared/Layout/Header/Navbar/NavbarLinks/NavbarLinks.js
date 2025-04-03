@@ -8,13 +8,22 @@ const menuItems = [
     label: "Sản phẩm",
     path: "/products",
     submenu: [
-      { path: "/products/cns-atm", label: "CNS/ATM" },
+      {
+        path: "/products/cns-atm",
+        label: "CNS/ATM",
+        submenu: [
+          { path: "/products/ads-b", label: "Hệ thống ADS-B" },
+          { path: "/products/amhs", label: "Hệ thống AMHS" },
+          { path: "/products/amss", label: "Hệ thống AMSS" },
+        ],
+      },
       {
         path: "/products/others",
         label: "Các sản phẩm khác",
         submenu: [
-          { path: "/products/others/category1", label: "Hệ thống đèn hiệu" },
-          { path: "/products/others/category2", label: "Shelt" },
+          { path: "/products/category1", label: "Hệ thống đèn hiệu" },
+          { path: "/products/shelter1", label: "Shelter" },
+          { path: "/products/category2", label: "Bàn Console" },
         ],
       },
     ],
@@ -24,11 +33,11 @@ const menuItems = [
     path: "/services",
     submenu: [
       {
-        path: "/services/cns-atm",
+        path: "/services/cns",
         label: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
       },
       {
-        path: "/services/flight-check",
+        path: "/services/flightcheck",
         label: "Dịch vụ Bay kiểm tra hiệu chuẩn",
       },
       {
@@ -54,19 +63,22 @@ const menuItems = [
     path: "/news",
     submenu: [
       {
-        path: "/news/list",
-        query: { category: "activities" },
         label: "Tin hoạt động",
+        path: "/news/all-act",
+        submenu: [
+          { label: "Hoạt động công ty", path: "/news/activities" },
+          { label: "Đảng bộ công ty", path: "/news/party" },
+          { label: "Đoàn thanh niên công ty", path: "/news/youth" },
+          { label: "Công đoàn công ty", path: "/news/union" },
+        ],
       },
       {
-        path: "/news/list",
-        query: { category: "aviation" },
         label: "Tin ngành hàng không",
+        path: "/news/aviation",
       },
       {
-        path: "/news/list",
-        query: { category: "law" },
         label: "Tuyên truyền pháp luật",
+        path: "/news/law",
       },
     ],
   },
@@ -121,7 +133,7 @@ const NavbarLinks = () => {
 
   const renderDropdownMenu = (items, parentPath = "") => {
     return (
-      <div className="dropdown-menu m-lg-0">
+      <div className="navbar-links dropdown-menu m-lg-0">
         {items.map((sub) => {
           if (sub.submenu) {
             // Xử lý menu con nhiều cấp
@@ -137,7 +149,7 @@ const NavbarLinks = () => {
                 >
                   {sub.label}
                 </span>
-                <div className="dropdown-menu dropdown-submenu">
+                <div className="dropdown-menu-son dropdown-submenu">
                   {sub.submenu.map((childSub) => (
                     <span
                       key={childSub.path}
@@ -156,7 +168,6 @@ const NavbarLinks = () => {
               </div>
             );
           } else {
-            // Xử lý menu con đơn giản
             return (
               <span
                 key={sub.path}

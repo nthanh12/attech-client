@@ -11,7 +11,7 @@
   opacity: 0;
   visibility: hidden;
 }
-.sp-nav-button {
+.sidebar-product .sp-nav-button {
   margin: 0 16px;
   display: flex;
   position: relative;
@@ -94,19 +94,20 @@
 }
 /* Danh mục con */
 .sub-nav-button {
-  margin-left: 40px; /* Đẩy danh mục con vào trong */
   display: flex;
   align-items: center;
   color: var(--sp-navbar-light-secondary);
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 8px 8px;
   transition: background-color 0.2s, color 0.2s;
+  justify-content: space-between;
   border-radius: 4px;
+  margin: 0 24px;
 }
 
 .sub-nav-button i {
-  min-width: 30px;
-  height: 30px;
+  min-width: 20px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -146,6 +147,35 @@
 /* Khi sidebar đóng, ẩn luôn mũi tên */
 .sidebar-product.resize .sp-nav-button i.fa-chevron-right,
 .sidebar-product.resize .sp-nav-button i.fa-chevron-down {
+  opacity: 0;
+  visibility: hidden;
+}
+.nested-sub-nav-button {
+  margin: 0 16px 0 30px; 
+  display: flex;
+  align-items: center;
+  color: var(--sp-navbar-light-secondary);
+  cursor: pointer;
+  padding: 6px 0 6px 16px;
+  transition: background-color 0.2s, color 0.2s;
+  border-radius: 4px;
+}
+
+.nested-sub-nav-button span {
+  font-size: 13px;
+  color: #ffffff;
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.nested-sub-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Ẩn danh mục con lồng nhau khi sidebar đóng */
+.sidebar-product.resize .nested-sub-nav-button span {
   opacity: 0;
   visibility: hidden;
 }

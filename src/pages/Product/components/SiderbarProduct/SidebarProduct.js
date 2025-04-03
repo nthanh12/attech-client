@@ -3,34 +3,71 @@ import "./SidebarProduct.css";
 
 const categories = [
   {
-    label: "Tất cả sản phẩm",
-    icon: "fas fa-list-alt",
+    id: 1,
+    name: "CNS/ATM",
+    icon: "fas fa-broadcast-tower",
+    subCategories: ["Hệ thống ADS-B", "Hệ thống AMHS", "Hệ thống AMSS"],
   },
   {
-    label: "CNS/ATM",
-    icon: "fas fa-broadcast-tower",
+    id: 2,
+    name: "Các sản phẩm khác",
+    icon: "fas fa-tools",
     subCategories: [
-      { id: "1", label: "Hệ thống ADS-B" },
-      { id: "2", label: "Hệ thống AMHS" },
-      { id: "3", label: "Hệ thống AMSS" },
-    ],
-  },
-  {
-    label: "Các sản phẩm khác",
-    icon: "fas fa-broadcast-tower",
-    subCategories: [
-      { id: "5", label: "Hệ thống đèn hiệu" },
-      { id: "6", label: "Shelter" },
-      { id: "7", label: "Bàn console" },
+      {
+        name: "Hệ thống đèn hiệu",
+        nestedSubCategories: [
+          "Đèn chỉ thị góc tiếp cận chính xác - PAPI",
+          "Đèn lề đường CHC hai hướng lắp nối",
+          "Đèn lề đường lăn lắp nổi LED",
+          "Đèn lề đường lăn lắp nổi",
+          "Đèn chớp lắp nổi",
+          "Đèn pha 1 hướng lắp nổi",
+          "Đèn pha xoay",
+          "Đèn cao không công nghệ LED",
+          "Đèn cao tín hiệu ánh sáng",
+        ],
+      },
+      {
+        name: "Cơ khí chế tạo",
+        nestedSubCategories: ["Shelter Composite", "Shelter Thép"],
+      },
+      {
+        name: "Bàn console",
+        nestedSubCategories: ["ATC consoles", "Technical consoles"],
+      },
+      {
+        name: "Giàn phản xạ VOR",
+        nestedSubCategories: ["Dễ phá hủy", "Thép"],
+      },
+      {
+        name: "Thiết bị ghi âm/ ghi hình",
+        nestedSubCategories: ["Ghi âm chuyên dụng", "Ghi âm + Ghi hình"],
+      },
+      {
+        name: "Các sản phẩm dân dụng khác",
+        nestedSubCategories: [
+          "Đồng hồ GPS",
+          "Máy cắt Vấu",
+          "Máy là",
+          "Máy hàn TIG",
+          "Máy lốc",
+          "Máy hàn quay",
+        ],
+      },
     ],
   },
 ];
 
 const SidebarProduct = ({ openSidebar, setOpenSidebar }) => {
   const [expandedCategory, setExpandedCategory] = useState(null);
+  const [expandedSubCategory, setExpandedSubCategory] = useState(null);
 
-  const toggleSubCategories = (index) => {
-    setExpandedCategory(expandedCategory === index ? null : index);
+  const toggleCategory = (id) => {
+    setExpandedCategory(expandedCategory === id ? null : id);
+  };
+
+  const toggleSubCategory = (name) => {
+    setExpandedSubCategory(expandedSubCategory === name ? null : name);
   };
 
   return (
@@ -42,35 +79,60 @@ const SidebarProduct = ({ openSidebar, setOpenSidebar }) => {
         <div>{!openSidebar && <span>SẢN PHẨM</span>}</div>
         <hr />
       </div>
-
-      {categories.map((category, index) => (
-        <div key={index}>
+      {categories.map((category) => (
+        <div key={category.id}>
           <div
             className="sp-nav-button"
-            aria-label={category.label}
-            onClick={() => category.subCategories && toggleSubCategories(index)}
+            onClick={() => toggleCategory(category.id)}
           >
-            <i className={category.icon} aria-hidden="true"></i>
-            {!openSidebar && <span>{category.label}</span>}
-            {category.subCategories && (
-              <i
-                className={`fas ${
-                  expandedCategory === index
-                    ? "fa-chevron-down"
-                    : "fa-chevron-right"
-                }`}
-                style={{ marginLeft: "auto" }}
-              ></i>
-            )}
+            {!openSidebar && <span>{category.name}</span>}
+            <i
+              className={`fas ${
+                expandedCategory === category.id
+                  ? "fa-chevron-down"
+                  : "fa-chevron-right"
+              }`}
+            ></i>
           </div>
 
-          {expandedCategory === index &&
-            category.subCategories &&
-            category.subCategories.map((subCategory, subIndex) => (
-              <div key={subIndex} className="sub-nav-button">
-                {!openSidebar && <span>{subCategory.label}</span>}
-              </div>
-            ))}
+          {expandedCategory === category.id && (
+            <>
+              {category.subCategories.map((sub, index) =>
+                typeof sub === "string" ? (
+                  <div key={index} className="sub-nav-button">
+                    {!openSidebar && <span>{sub}</span>}
+                  </div>
+                ) : (
+                  <div key={sub.name}>
+                    <div
+                      className="sub-nav-button"
+                      onClick={() => toggleSubCategory(sub.name)}
+                    >
+                      {!openSidebar && <span>{sub.name}</span>}
+                      {!openSidebar && (
+                        <i
+                          className={`fas ${
+                            expandedSubCategory === sub.name
+                              ? "fa-chevron-down"
+                              : "fa-chevron-right"
+                          }`}
+                        ></i>
+                      )}
+                    </div>
+                    {expandedSubCategory === sub.name && (
+                      <>
+                        {sub.nestedSubCategories?.map((nested, idx) => (
+                          <div key={idx} className="nested-sub-nav-button">
+                            {!openSidebar && <span>{nested}</span>}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                )
+              )}
+            </>
+          )}
         </div>
       ))}
     </div>

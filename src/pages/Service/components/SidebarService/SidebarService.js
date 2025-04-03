@@ -17,32 +17,25 @@ const SidebarService = ({ openSidebar, setOpenSidebar }) => {
         <hr />
       </div>
 
-      <Link
+      {/* <Link
         to="/services"
         className="sp-nav-button"
         aria-label="Tất cả dịch vụ"
       >
         <i className="fas fa-list-alt" aria-hidden="true"></i>
         {openSidebar ? null : <span>Tất cả dịch vụ</span>}
+      </Link> */}
+
+      <Link to="/services/cns" className="sp-nav-button" aria-label="CNS/ATM">
+        {/* <i className="fas fa-broadcast-tower" aria-hidden="true"></i> */}
+        {openSidebar ? null : <span>Dịch vụ thông tin dẫn đường giám sát</span>}
       </Link>
 
       <Link
-        to="/services/cns-atm"
-        className="sp-nav-button"
-        aria-label="CNS/ATM"
-      >
-        <i className="fas fa-broadcast-tower" aria-hidden="true"></i>
-        {openSidebar ? null : (
-          <span>Dịch vụ thông tin dẫn đường giám sát (CNS)</span>
-        )}
-      </Link>
-
-      <Link
-        to="/services/flight-check"
+        to="/services/flightcheck"
         className="sp-nav-button"
         aria-label="Bay kiểm tra hiệu chuẩn"
       >
-        <i className="fas fa-plane" aria-hidden="true"></i>
         {openSidebar ? null : <span>Dịch vụ Bay kiểm tra hiệu chuẩn</span>}
       </Link>
 
@@ -51,7 +44,6 @@ const SidebarService = ({ openSidebar, setOpenSidebar }) => {
         className="sp-nav-button"
         aria-label="Thử nghiệm - Hiệu chuẩn"
       >
-        <i className="fas fa-flask" aria-hidden="true"></i>
         {openSidebar ? null : <span>Dịch vụ Thử nghiệm - Hiệu chuẩn</span>}
       </Link>
 
@@ -60,7 +52,6 @@ const SidebarService = ({ openSidebar, setOpenSidebar }) => {
         className="sp-nav-button"
         aria-label="Kỹ thuật (Hàng không)"
       >
-        <i className="fas fa-cogs" aria-hidden="true"></i>
         {openSidebar ? null : <span>Dịch vụ Kỹ thuật (Hàng không)</span>}
       </Link>
 
@@ -69,7 +60,6 @@ const SidebarService = ({ openSidebar, setOpenSidebar }) => {
         className="sp-nav-button"
         aria-label="Huấn luyện - Đào tạo"
       >
-        <i className="fas fa-chalkboard-teacher" aria-hidden="true"></i>
         {openSidebar ? null : <span>Dịch vụ Huấn luyện - Đào tạo</span>}
       </Link>
 
@@ -78,7 +68,6 @@ const SidebarService = ({ openSidebar, setOpenSidebar }) => {
         className="sp-nav-button"
         aria-label="Tư vấn đầu tư"
       >
-        <i className="fas fa-handshake" aria-hidden="true"></i>
         {openSidebar ? null : (
           <span>Dịch vụ tư vấn đầu tư xây dựng và QLDA</span>
         )}

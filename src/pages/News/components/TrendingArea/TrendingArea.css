@@ -56,7 +56,8 @@
 }
 
 .trending-area .trending-main .trending-top .trend-top-img .trend-top-cap h2 {
-    font-size: 30px
+    font-size: 30px;
+    color: #ffffff;
 }
 
 @media (max-width: 767px) {
@@ -127,7 +128,7 @@
 }
 
 .trending-area .trending-main .trending-bottom .single-bottom .trend-bottom-cap h4 a:hover {
-    color: #fc3f00
+    color: #e23838;
 }
 
 /* Swiper container adjustments */
@@ -196,7 +197,7 @@
 }
 
 .trending-area .trending-main .trand-right-single .trand-right-cap h4 a:hover {
-    color: #fc3f00;
+    color: #e23838;
 }
 
 /* Hover effect */
@@ -217,7 +218,7 @@
 }
 
 .swiper-pagination-bullet-active {
-    background: #fc3f00;
+    color: #e23838;
 }
 
 .single-bottom:hover .trend-bottom-img img {
