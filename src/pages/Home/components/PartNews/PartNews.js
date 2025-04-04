@@ -146,7 +146,7 @@ const PartNews = () => {
             </div>
           </div>
           <div className="col-lg-4">
-            <div className="section-tittle mb-40">
+            <div className="follow-tittle mb-40">
               <h3>Theo dõi chúng tôi</h3>
             </div>
             <div className="single-follow mb-45">

@@ -123,6 +123,10 @@ const TrendingArea = () => {
             <div className="col-lg-12">
               <div className="section-tittle mb-20">
                 <h3>Tin hoạt động công ty</h3>
+                <Link className="get-all" to="/news/activities">
+                  Xem tất cả
+                  <i class="fa fa-solid fa-chevron-down"></i>
+                </Link>
               </div>
             </div>
           </div>

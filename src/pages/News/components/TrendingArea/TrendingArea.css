@@ -74,7 +74,7 @@
 
 .trending-area .trending-main .trending-bottom .single-bottom .trend-bottom-img {
     overflow: hidden;
-    width: 264px;
+    width: 235px;
     height: 176px;
 }
 
@@ -153,6 +153,7 @@
 
 .trending-area .trending-main .trand-right-single .trand-right-img {
     min-width: 120px;
+    max-width: 120px;
     height: 100px;
 }
 
@@ -297,3 +298,27 @@
 .mb-30 {
     margin-bottom: 30px
 }
+.section-tittle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+}
+.get-all {
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer; 
+    padding: 2px 5px;
+    gap: 6px;
+  }
+  
+  .get-all i {
+    font-size: 14px;
+  }
+  .get-all:hover {
+    color: #296abe;
+    border-radius: 2px;
+    padding: 2px 5px;
+  }

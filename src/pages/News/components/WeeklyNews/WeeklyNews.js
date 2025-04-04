@@ -3,6 +3,7 @@ import "./WeeklyNews.css";
 import weeklyNews2 from "../../../../assets/imgs/news/weeklyNews2.jpg";
 import weeklyNews1 from "../../../../assets/imgs/news/weeklyNews1.jpg";
 import weeklyNews3 from "../../../../assets/imgs/news/weeklyNews3.jpg";
+import { Link } from "react-router-dom";
 
 const categoryMap = {
   Activity: "Hoạt động công ty",
@@ -142,6 +143,10 @@ const WeeklyNews = () => {
               <div className="col-lg-12">
                 <div className="section-tittle mb-20">
                   <h3 className="title-category">{categoryMap[category]}</h3>
+                  <Link className="get-all">
+                    Xem tất cả
+                    <i class="fa fa-solid fa-chevron-down"></i>
+                  </Link>
                 </div>
               </div>
             </div>

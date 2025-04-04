@@ -7,7 +7,7 @@ const ServiceList = () => {
   const services = [
     {
       id: 1,
-      slug: "cns-atm",
+      slug: "cns",
       title: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
       fullTitle:
         "Dịch Vụ Kỹ Thuật Chuyên Ngành Thông Tin, Dẫn Đường, Giám Sát (CNS)",
@@ -34,7 +34,7 @@ const ServiceList = () => {
     },
     {
       id: 2,
-      slug: "flight-check",
+      slug: "flightcheck",
       title: "Dịch vụ Bay kiểm tra hiệu chuẩn",
       fullTitle: "Dịch Vụ Bay Kiểm Tra Hiệu Chuẩn",
       description:

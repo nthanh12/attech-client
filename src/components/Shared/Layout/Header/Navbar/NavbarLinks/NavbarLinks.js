@@ -12,9 +12,9 @@ const menuItems = [
         path: "/products/cns-atm",
         label: "CNS/ATM",
         submenu: [
-          { path: "/products/ads-b", label: "Hệ thống ADS-B" },
-          { path: "/products/amhs", label: "Hệ thống AMHS" },
-          { path: "/products/amss", label: "Hệ thống AMSS" },
+          { path: "/products/1/ads-b", label: "Hệ thống ADS-B" },
+          { path: "/products/2/amhs", label: "Hệ thống AMHS" },
+          { path: "/products/3/amss", label: "Hệ thống AMSS" },
         ],
       },
       {

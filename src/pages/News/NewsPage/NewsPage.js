@@ -16,7 +16,7 @@ const NewsPage = () => {
         <NewsSection />
         {/* <SliderSection category="tech" /> */}
         {/* <ContentSection category="law" /> */}
-        <TrendingArea />
+        <TrendingArea category="activities" />
         <WeeklyNews />
         {/* <WeeklyNews />
         <WeeklyNews /> */}

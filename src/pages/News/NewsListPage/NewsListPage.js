@@ -1,117 +1,79 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
+import { Link, useParams } from "react-router-dom";
 import "./NewsListPage.css";
 
-const newsData = [
+const allData = [
   {
     id: 1,
-    title: "Chuyển đổi số trong hàng không: Xu hướng công nghệ mới",
+    slug: "hoan-thanh-canh-thu-tai-tram-cns-con-son",
+    title: "Hoàn thành canh thu, đảm bảo kỹ thuật các tần số VHF...",
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/03/canh-thu-Con-Son-28-3-1.jpg",
+    date: "31/03/2025",
     category: "activities",
-    description:
-      "Khám phá những công nghệ đang định hình lại ngành hàng không hiện đại",
-    image: "http://img2.caa.gov.vn/2020/08/03/09/25/vnpdoitaubay.jpg",
-    date: "15/03/2024",
   },
   {
     id: 2,
-    title: "Cải cách pháp luật: Những điểm quan trọng cần biết",
-    category: "law",
-    description:
-      "Phân tích chuyên sâu về những thay đổi then chốt trong hệ thống pháp luật",
-    image: "http://img2.caa.gov.vn/2020/08/03/09/25/vnpdoitaubay.jpg",
-    date: "20/03/2024",
+    slug: "le-ky-ket-hop-dong-goi-thau-tb05",
+    title: "Lễ ký kết Hợp đồng cho Gói thầu TB05...",
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-1.jpg",
+    date: "30/04/2024",
+    category: "activities",
   },
-  {
-    id: 3,
-    title: "Công nghệ bay không người lái trong hàng không",
-    category: "aviation",
-    description: "Tương lai của vận tải hàng không và những đột phá công nghệ",
-    image: "http://img2.caa.gov.vn/2020/08/03/09/25/vnpdoitaubay.jpg",
-    date: "10/03/2024",
-  },
+  // ... các mục khác
 ];
-
 const NewsListPage = () => {
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const category = queryParams.get("category");
+  const { category } = useParams();
 
-  const [filteredNews, setFilteredNews] = useState([]);
-  const [pageTitle, setPageTitle] = useState("Tin Tức Mới Nhất");
+  // Lọc dữ liệu theo danh mục
+  const filteredItems = category
+    ? allData.filter((item) => item.category === category && item.id)
+    : allData.filter((item) => item.id);
 
-  useEffect(() => {
-    let filtered = newsData;
-
-    if (category) {
-      filtered = newsData.filter((news) => news.category === category);
-
-      switch (category) {
-        case "activities":
-          setPageTitle("Tin Hoạt Động");
-          break;
-        case "aviation":
-          setPageTitle("Tin Tức Hàng Không");
-          break;
-        case "law":
-          setPageTitle("Tin Tức Pháp Luật");
-          break;
-        default:
-          setPageTitle("Tin Tức Mới Nhất");
-      }
+  // Tiêu đề động
+  const getCategoryTitle = () => {
+    switch (category) {
+      case "activities":
+        return "Danh sách tin hoạt động";
+      case "events":
+        return "Danh sách sự kiện";
+      case "updates":
+        return "Danh sách cập nhật";
+      default:
+        return "Danh sách tin tức";
     }
-
-    setFilteredNews(filtered);
-  }, [category]);
+  };
 
   return (
     <div className="news-list-page">
-      <div className="news-list-header">
-        <h1>{pageTitle}</h1>
-        <p>Cập nhật thông tin chính xác và đáng tin cậy</p>
-      </div>
-
-      {filteredNews.length > 0 ? (
-        <div className="news-list">
-          {filteredNews.map((news) => (
-            <div key={news.id} className="news-item">
-              <div className="news-image-container">
-                <img src={news.image} alt={news.title} />
-              </div>
-
-              <div className="news-content">
-                <h2 className="news-title">{news.title}</h2>
-
-                <p className="news-description">{news.description}</p>
-
-                <div className="news-action">
-                  <a href="#" className="read-more">
-                    Đọc thêm
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+      <div className="container">
+        <h2 className="page-title">{getCategoryTitle()}</h2>
+        <div className="news-grid">
+          {filteredItems.length > 0 ? (
+            filteredItems.map((item) => (
+              <div className="news-item" key={item.id}>
+                <div className="news-image">
+                  <img src={item.image} alt={item.title} title={item.title} />
+                </div>
+                <div className="news-content">
+                  <span className="news-date">{item.date}</span>
+                  <h3>
+                    <Link
+                      to={`/news/${item.id}/${item.slug}`}
+                      title={item.title}
                     >
-                      <line x1="5" y1="12" x2="19" y2="12"></line>
-                      <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
-                  </a>
-                </div>
-                <div className="news-meta">
-                  <span className="news-date">{news.date}</span>
+                      {item.title}
+                    </Link>
+                  </h3>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>Chưa có tin tức nào trong danh mục này.</p>
+          )}
         </div>
-      ) : (
-        <p className="no-news">Không có tin tức phù hợp.</p>
-      )}
+      </div>
     </div>
   );
 };

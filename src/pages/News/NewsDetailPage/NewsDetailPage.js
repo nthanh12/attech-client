@@ -37,7 +37,82 @@ const NewsDetailPage = () => {
       date: "30/04/2024",
       content: `<p>Ngày 30/04/2024...</p>`,
     },
-    // Các bài khác...
+    {
+      id: 3,
+      slug: "attech-va-nesic-hoan-thanh-nghiem-thu",
+      title:
+        "ATTECH và NESIC hoàn thành nghiệm thu tại Nhà máy 05 phòng đặt thiết bị (Shelter) thép",
+      image:
+        "https://attech.com.vn/wp-content/uploads/2025/02/nesic-nghiem-thu-18-02-2.jpg",
+      date: "20/03/2025",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
+    {
+      id: 4,
+      slug: "hoan-thanh-cong-tac-bay-kiem-tra-dot-2-2024-2025",
+      title:
+        "Hoàn thành công tác bay kiểm tra, hiệu chuẩn các thiết bị dẫn đường, giám sát hàng không đợt 2 mùa bay 2024/2025",
+      image: "https://attech.com.vn/wp-content/uploads/2025/02/BHC-5-2.jpg",
+      date: "30/03/2025",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
+    {
+      id: 5,
+      slug: "hoi-nghi-nguoi-lao-dong-2025",
+      title:
+        "Ban Quản lý dự án Đầu tư và xây dựng chuyên ngành tổ chức Hội nghị người lao động năm 2025",
+      image:
+        "https://attech.com.vn/wp-content/uploads/2025/01/hnnld-ban-22-1-2.jpg",
+      date: "26/03/2025",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
+    {
+      id: 6,
+      slug: "hoi-nghi-tong-ket-2024-va-ke-hoach-2025",
+      title:
+        "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hội nghị tổng kết công tác năm 2024 và triển khai kế hoạch năm 2025",
+      image:
+        "https://attech.com.vn/wp-content/uploads/2025/01/hntk-nam-2024-21-1-1.jpg",
+      date: "22/03/2025",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
+    {
+      id: 7,
+      slug: "giai-pickleball-xuong-dvkt-lan-1",
+      title: "Giải Pickleball Xưởng DVKT mở rộng lần 1",
+      image:
+        "https://attech.com.vn/wp-content/uploads/2025/01/pickleball-l1-21-1-1.jpg",
+      date: "21/03/2025",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
+    {
+      id: 8,
+      slug: "dien-tap-ung-pho-tan-cong-gia-mao",
+      title:
+        "Diễn tập ứng phó tấn công giả mạo trên hệ thống thư điện tử tên miền @attech.com.vn của Công ty",
+      image:
+        "https://attech.com.vn/wp-content/uploads/2025/01/dien-tap-attt-28-12-1.jpg",
+      date: "16/12/2024",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
+    {
+      id: 9,
+      slug: "he-thong-amhs-mo-rong-hoan-thanh-conformance-test",
+      title:
+        "Hệ thống AMHS mở rộng (AMHS Extended) do ATTECH nghiên cứu, phát triển hoàn thành giai đoạn Conformance Test",
+      image: "https://attech.com.vn/wp-content/uploads/2025/01/amhs-6-1-2.jpg",
+      date: "16/12/2024",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
+    {
+      id: 10,
+      slug: "nhan-giay-khen-cuc-thue-ha-noi-2023",
+      title:
+        "Công ty TNHH Kỹ thuật Quản lý bay nhận giấy khen của Cục thuế Hà Nội tuyên dương người nộp thuế tiêu biểu thủ đô năm 2023",
+      image: "https://attech.com.vn/wp-content/uploads/2024/12/NTT-19-12-2.jpg",
+      date: "16/12/2024",
+      content: `<p>Ngày 30/04/2024...</p>`,
+    },
   ];
 
   const newsItem = newsData.find((item) => item.slug === slug);
