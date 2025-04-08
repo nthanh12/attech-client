@@ -12,7 +12,6 @@ const Product = () => {
         openSidebar={openSidebar}
         setOpenSidebar={setOpenSidebar}
       />
-
       <div
         className={openSidebar ? "product-content resize" : "product-content"}
       >

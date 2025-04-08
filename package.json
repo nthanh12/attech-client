@@ -11,6 +11,7 @@
     "bootstrap": "^5.3.3",
     "counterup": "^1.0.2",
     "counterup2": "^2.0.2",
+    "gsap": "^3.12.7",
     "jquery": "^3.7.1",
     "lucide-react": "^0.484.0",
     "react": "^19.0.0",

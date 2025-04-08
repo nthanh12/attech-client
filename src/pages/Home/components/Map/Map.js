@@ -6,7 +6,7 @@ import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import "./Map.css";
+// import "./Map.css";
 
 // Import images
 import pic_1 from "../../../../assets/img/ADSB V1.jpg";

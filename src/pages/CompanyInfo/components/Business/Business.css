@@ -1,0 +1,234 @@
+.business-fields {
+    padding: 50px 20px;
+    background: #fff;
+    font-family: "Times New Roman", Times, serif;
+    color: #000;
+    line-height: 1.6;
+  }
+  
+  /* Certificate Section */
+  .certificate-section {
+    max-width: 800px;
+    margin: 0 auto 50px;
+    text-align: center;
+  }
+  
+  .certificate-header h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  
+  .certificate-header p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    white-space: pre-line;
+    margin-bottom: 10px;
+  }
+  
+  .divider {
+    border: none;
+    border-top: 1px solid #000;
+    margin: 10px auto;
+    width: 50%;
+  }
+  
+  .certificate-info h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    white-space: pre-line;
+  }
+  
+  .certificate-info p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .company-details {
+    text-align: justify;
+    margin-top: 20px;
+  }
+  
+  .company-details h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .company-details p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  
+  .company-details a {
+    color: #0000ee;
+    text-decoration: underline;
+  }
+  
+  .company-details a:hover {
+    color: #0000cc;
+  }
+  
+  /* Fields Section */
+  .fields-section {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .fields-section h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  .fields-list {
+    margin-bottom: 20px;
+  }
+  
+  .field-item {
+    margin-bottom: 15px;
+    text-align: justify;
+  }
+  
+  .field-item p {
+    font-size: 1rem;
+  }
+  
+  .field-details {
+    margin-top: 5px;
+    margin-left: 20px;
+  }
+  
+  .field-details p {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .field-details ul {
+    list-style: none;
+    padding-left: 20px;
+  }
+  
+  .field-details ul li {
+    font-size: 1rem;
+    position: relative;
+    margin-bottom: 5px;
+  }
+  
+  .field-details ul li::before {
+    content: "-";
+    position: absolute;
+    left: -15px;
+  }
+  
+  .note {
+    font-size: 0.9rem;
+    font-style: italic;
+    text-align: justify;
+    margin-top: 20px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .business-fields {
+      padding: 30px 15px;
+    }
+  
+    .certificate-header h1 {
+      font-size: 1.1rem;
+    }
+  
+    .certificate-header p {
+      font-size: 1rem;
+    }
+  
+    .certificate-info h2 {
+      font-size: 1.3rem;
+    }
+  
+    .certificate-info p {
+      font-size: 0.95rem;
+    }
+  
+    .company-details h3 {
+      font-size: 1.1rem;
+    }
+  
+    .company-details p {
+      font-size: 0.95rem;
+    }
+  
+    .fields-section h3 {
+      font-size: 1.1rem;
+    }
+  
+    .field-item p {
+      font-size: 0.95rem;
+    }
+  
+    .field-details p {
+      font-size: 0.95rem;
+    }
+  
+    .field-details ul li {
+      font-size: 0.95rem;
+    }
+  
+    .note {
+      font-size: 0.85rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .business-fields {
+      padding: 20px 10px;
+    }
+  
+    .certificate-header h1 {
+      font-size: 1rem;
+    }
+  
+    .certificate-header p {
+      font-size: 0.9rem;
+    }
+  
+    .certificate-info h2 {
+      font-size: 1.2rem;
+    }
+  
+    .certificate-info p {
+      font-size: 0.9rem;
+    }
+  
+    .company-details h3 {
+      font-size: 1rem;
+    }
+  
+    .company-details p {
+      font-size: 0.9rem;
+    }
+  
+    .fields-section h3 {
+      font-size: 1rem;
+    }
+  
+    .field-item p {
+      font-size: 0.9rem;
+    }
+  
+    .field-details p {
+      font-size: 0.9rem;
+    }
+  
+    .field-details ul li {
+      font-size: 0.9rem;
+    }
+  
+    .note {
+      font-size: 0.8rem;
+    }
+  }

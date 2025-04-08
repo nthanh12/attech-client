@@ -138,7 +138,7 @@ const WeeklyNews = () => {
     <div className="weekly-news-area">
       <div className="container">
         {Object.entries(groupedNews).map(([category, articles]) => (
-          <div key={category} className="weekly-wrapper pt-30">
+          <div key={category} className="weekly-wrapper pt-10">
             <div className="row">
               <div className="col-lg-12">
                 <div className="section-tittle mb-20">

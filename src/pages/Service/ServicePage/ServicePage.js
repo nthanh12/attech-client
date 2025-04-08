@@ -12,7 +12,6 @@ const Service = () => {
         openSidebar={openSidebar}
         setOpenSidebar={setOpenSidebar}
       />
-
       <div
         className={openSidebar ? "service-content resize" : "service-content"}
       >

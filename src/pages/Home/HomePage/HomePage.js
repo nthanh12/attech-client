@@ -18,11 +18,11 @@ const Home = () => {
       <Feature />
       <Banner />
       <About />
+      <Fact />
       <AlertBox />
       <PartNews />
       {/* <NotificationList /> */}
       {/* <Map /> */}
-      <Fact />
       <Media />
       {/* <Partner /> */}
       {/* <Quotes /> */}

@@ -1,43 +1,27 @@
 .top-bar {
     position: absolute;
-    height: 30px;
-    line-height: 30px;
-    display: flex;
-    align-items: center;
     top: 0;
     left: 0;
     right: 0;
     z-index: 999;
     background-color: #ffffff2f;
+    padding: 10px 0;
+    display: flex;
+    align-items: center;
 }
+
 .top-bar-content {
-    z-index: 1; /* Đảm bảo chữ nổi trên nền */
-    color: #000; /* Đặt màu chữ rõ nét */
-    opacity: 1; /* Loại bỏ hiệu ứng mờ của chữ */
-}
-.top-bar .logo {
-    padding: 15px 0;
-    text-align: left;
-    overflow: hidden;
-}
-
-.top-bar .logo h1 {
-    margin: 0;
-    color: #f8f8f8;
-    font-size: 40px;
-    line-height: 60px;
-    font-weight: 700;
-}
-
-.top-bar .logo img {
-    max-width: 100%;
-    max-height: 60px;
+    z-index: 1;
+    color: #000;
+    opacity: 1;
+    width: 100%;
 }
 
 .top-bar .top-bar-item {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap; /* Cho phép nội dung xuống dòng nếu cần */
 }
 
 .top-bar .top-bar-icon {
@@ -45,63 +29,70 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 5px;
-    margin-right: -10px;
+    margin-right: 5px; /* Giảm margin để tránh tràn */
 }
 
 .top-bar .top-bar-icon i {
-    align-items: center;
-    margin-left: 10px;
     color: var(--mainColor);
     padding-right: 5px;
-    margin-top: 3px;
-}
-
-.top-bar .top-bar-icon [class^="flaticon-"]::before {
-    margin: 0;
-    color: #0000002f;
-    font-size: 20px;
 }
 
 .top-bar .top-bar-text {
-    padding-left: 15px;
-    padding-right: 20px;
-}
-
-.top-bar .top-bar-text h3 {
-    margin: 0 0 5px 0;
-    color: #f8f8f8;
-    font-size: 16px;
-    font-weight: 400;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .company-name {
     font-weight: bold;
 }
+
 .top-bar .top-bar-text p {
     margin: 0;
     font-size: 14px;
     color: #ffffff;
 }
 
+/* Responsive Adjustments */
 @media (min-width: 992px) {
     .top-bar {
-        padding: 0 60px;
+        padding: 0 20px;
+    }
+    .topbar1 {
+        display: flex;
+        justify-content: flex-start;
+    }
+    .topbar2 {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .topbar3 {
+        display: flex;
+        justify-content: center;
     }
 }
 
 @media (max-width: 991.98px) {
-    .top-bar .logo {
-        text-align: center;
+    .top-bar {
+        padding: 10px; /* Giảm padding cho màn hình nhỏ */
+    }
+    .top-bar .top-bar-item {
+        justify-content: flex-start; /* Căn trái cho dễ đọc */
+        margin-bottom: 10px; /* Thêm khoảng cách giữa các item */
+    }
+    .topbar1, .topbar2, .topbar3 {
+        justify-content: center; /* Căn giữa khi xuống dòng */
+    }
+    .top-bar .col-4 {
+        flex: 0 0 100%; /* Chuyển thành full-width trên màn hình nhỏ */
+        max-width: 100%;
     }
 }
 
-.topbar1 {
-    display: flex;
-    justify-content: flex-start;
-}
-
-.topbar2 {
-    display: flex;
-    justify-content: flex-end;
+@media (max-width: 576px) {
+    .top-bar .top-bar-text p {
+        font-size: 12px; /* Giảm kích thước chữ cho màn hình rất nhỏ */
+    }
+    .top-bar .top-bar-icon {
+        width: 15px; /* Giảm kích thước icon */
+    }
 }

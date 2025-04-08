@@ -1,129 +1,118 @@
-.feature {
-    position: relative;
-}
-
-.wrap-feature {
-    padding: 20px;
-    border-radius: 10px;
-}
-
-
-.feature .col-md-12 {
-    background: #ffffff;
-}
-
-/* .feature .col-md-12:nth-child(2n) {
-    color: #030f27;
-    background: #d8dbdd;
-} */
-
-.feature .feature-item {
-    min-height: 100px;
-    padding: 20px;
-    /* margin: 15px; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background: linear-gradient(to bottom, #ffffff, #f1f1f1);
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
-    animation: fadeIn 1s ease-in-out;
-}
-
-.feature .feature-item:hover {
-    transform: translateY(0) scale(1.05);
-    background: linear-gradient(135deg, #0f9fdb, #4facfe);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
-}
-
-.feature .feature-item:hover i,
-.feature .feature-item:hover h3 {
-    color: #ffffff;
-}
-
-.feature .feature-text h3 {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--mainColor);
-    text-transform: uppercase;
-    margin: 10px 0;
-}
-
-
-.feature .feature-icon i {
-    font-size: 40px;
-    color: var(--mainColor);
-}
-
-.feature .feature-icon {
-    position: relative;
-    width: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.feature .feature-icon::before {
-    content: none;
-}
-
-.feature .feature-icon::after {
-    content: none;
-}
-
-
-.feature .feature-icon [class^="flaticon-"]::before {
-    position: relative;
-    margin: 0;
-    color: #002a5c;
-    font-size: 60px;
-    line-height: 60px;
-    z-index: 3;
-}
-
-.feature .feature-text {
-    align-items: center;
-    margin-top: 10px;
-}
-
-/* 
-.feature .feature-text h3 {
-    margin: 0 0 10px 0;
-    color: #002a5c;
-    font-size: 14px;
-    text-transform: uppercase;
-    font-weight: 600;
-    text-align: center;
-    height: 24px;
-}
-.feature-item:hover h3  {
-    color: #0f9fdb;
-} */
-
-.feature .feature-text p {
-    margin: 0;
-    color: #002a5c;
-    font-size: 18px;
-    font-weight: 400;
-}
-
-.feature .container-fluid {
+/* Feature.css */
+.feature-section {
+    padding: 60px 20px;
+    background: #f8f9fa;
+  }
+  
+  .feature-container {
     max-width: 1200px;
     margin: 0 auto;
-}
-
-@keyframes fadeIn {
+  }
+  
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px;
+  }
+  
+  .feature-link {
+    text-decoration: none;
+  }
+  
+  .feature-item {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .feature-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #1895ca, #4facfe);
+  }
+  
+  .feature-icon i {
+    font-size: 48px;
+    color: #1895ca;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .feature-item:hover .feature-icon i {
+    color: #ffffff;
+    transform: scale(1.1);
+  }
+  
+  .feature-text h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #002a5c;
+    margin: 0;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+  }
+  
+  .feature-item:hover .feature-text h3 {
+    color: #ffffff;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .feature-section {
+      padding: 40px 15px;
+    }
+  
+    .feature-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+  
+    .feature-item {
+      padding: 25px 15px;
+    }
+  
+    .feature-icon i {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+  
+    .feature-text h3 {
+      font-size: 18px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .feature-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+  
+    .feature-item {
+      padding: 20px 15px;
+    }
+  }
+  
+  /* Animation */
+  .feature-item {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  @keyframes fadeInUp {
     from {
-        opacity: 0;
-        transform: translateY(20px);
+      opacity: 0;
+      transform: translateY(20px);
     }
-
     to {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
-}
+  }

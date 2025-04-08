@@ -12,7 +12,7 @@
 .trending-area .trending-main .trending-top .trend-top-img {
     overflow: hidden;
     position: relative;
-    height: 472px;
+    height: 400px;
     width: 840px;
 }
 
@@ -112,19 +112,13 @@
 .trending-area .trending-main .trending-bottom .single-bottom .trend-bottom-cap h4 a {
     font-weight: 500;
     display: -webkit-box;
-    /* Bắt buộc để sử dụng line-clamp */
+    font-size: 14px;
     -webkit-line-clamp: 3;
-    /* Giới hạn 2 dòng */
     -webkit-box-orient: vertical;
-    /* Hướng hiển thị dọc */
     overflow: hidden;
-    /* Ẩn phần văn bản vượt quá */
     text-overflow: ellipsis;
-    /* Thêm dấu "..." */
     line-height: 1.4;
-    /* Điều chỉnh khoảng cách giữa các dòng */
     max-height: calc(1.5em * 3);
-    /* Chiều cao tối đa cho 2 dòng */
 }
 
 .trending-area .trending-main .trending-bottom .single-bottom .trend-bottom-cap h4 a:hover {
@@ -190,7 +184,7 @@
     color: #333;
     text-decoration: none;
     transition: color 0.3s ease-in-out;
-    /* Thêm để giới hạn 2 dòng */
+    font-size: 14px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -298,7 +292,7 @@
 .mb-30 {
     margin-bottom: 30px
 }
-.section-tittle {
+.trending-area .section-tittle {
     display: flex;
     justify-content: space-between;
     align-items: center;

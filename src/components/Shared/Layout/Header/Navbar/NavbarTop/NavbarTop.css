@@ -1,6 +1,6 @@
 .fixed-top {
     position: fixed;
-    top: 30px;
+    top: 0;
     right: 0;
     left: 0;
     z-index: 1030;
@@ -10,6 +10,8 @@
     transition: all 0.5s ease;
     display: flex;
     justify-content: center;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .bg-transparent {
@@ -31,7 +33,6 @@
 
 /* Căn giữa các phần tử navbar */
 #navbarCollapse {
-    display: flex;
     justify-content: center;
     width: 100%;
 }
@@ -41,103 +42,7 @@
     align-items: center;
 }
 
-.navbar-dark .navbar-nav .nav-link {
-    color: #ffffff;
-    font-weight: 600;
-    font-size: 16px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 10px 20px;
-    margin: 0 5px;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-/* Hiệu ứng glow cho các menu items */
-.navbar-dark .navbar-nav .nav-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    opacity: 0;
-    transition: all 0.3s ease;
-    transform: scale(0.8);
-    z-index: -1;
-}
-
-.navbar-top .navbar-dark .navbar-nav .nav-link:hover::before,
-.navbar-top .navbar-dark .navbar-nav .nav-link.active::before {
-    opacity: 1;
-    color: #9ec9ff;
-    transform: scale(1);
-}
-
-
-.navbar-dark .navbar-nav .nav-link::after {
-    content: '';
-    /* position: absolute; */
-    width: 0;
-    height: 2px;
-    bottom: 5px;
-    /* left: 50%; */
-    /* transform: translateX(-50%); */
-    transition: width 0.3s;
-}
-
-.navbar-dark .navbar-nav .nav-link:hover::after,
-.navbar-dark .navbar-nav .nav-link.active::after {
-    /* width: 50%; */
-}
-
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link.active {
-    /* text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); */
-}
-
-/* Dropdown styling */
-.dropdown-menu {
-    background-color: rgb(53 93 140 / 80%);
-    border: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    min-width: 230px;
-}
-
-.dropdown-menu::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 20px;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-}
-
-.dropdown-item {
-    color: white;
-    padding: 10px 15px;
-    transition: all 0.3s;
-    /* border-left: 1px solid transparent; */
-}
-
-.dropdown-item:hover {
-    background-color: rgba(15, 159, 219, 0.3);
-    color: #ffffff;
-    /* transform: translateX(5px); */
-    /* border-left: 3px solid #0f9fdb; */
-}
-
-.nav-item.dropdown:hover > .dropdown-menu {
-    animation: fadeIn 0.4s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
+/* Nút toggler */
 .navbar-toggler {
     border: none;
     background: rgba(255, 255, 255, 0.2);
@@ -145,7 +50,7 @@
     border-radius: 50%;
     width: 45px;
     height: 45px;
-    display: flex;
+    display: none; /* Ẩn mặc định */
     align-items: center;
     justify-content: center;
     margin-right: 15px;
@@ -166,50 +71,151 @@
     font-size: 18px;
 }
 
-/* Media Queries */
+/* Desktop: ẩn toggler, hiển thị navbar */
+@media (min-width: 992px) {
+    .navbar-toggler {
+        display: none; /* Ẩn nút toggler trên desktop */
+    }
+    .navbar-collapse {
+        display: flex; /* Hiển thị nội dung navbar trên desktop */
+    }
+    #navbarCollapse {
+        display: flex; /* Đảm bảo căn giữa trên desktop */
+    }
+}
+
+/* Mobile: hiển thị toggler, ẩn navbar collapse mặc định */
 @media (max-width: 991.98px) {
+    .navbar-toggler {
+        display: flex; /* Hiển thị nút toggler trên mobile */
+    }
+    .navbar-collapse {
+        display: none; /* Ẩn nội dung navbar mặc định trên mobile */
+    }
+    .navbar-collapse.show {
+        display: block; /* Hiển thị khi nhấp toggler */
+    }
     .navbar {
         padding: 20px;
-        background-color: rgba(0, 42, 92, 0.95) !important;
+        /* background-color: rgba(0, 42, 92, 0.95) !important; */
         backdrop-filter: blur(10px);
         justify-content: flex-start;
+        background: none;
     }
-
     #navbarCollapse {
         justify-content: flex-start;
     }
-
     .navbar-collapse {
         background-color: rgba(0, 42, 92, 0.95);
         border-radius: 15px;
         padding: 20px;
         margin-top: 15px;
     }
-
-    .navbar-dark .navbar-nav .nav-link::after {
-        display: none;
-    }
-
     .navbar-nav {
         align-items: flex-start;
     }
+}
+
+/* Các kiểu khác giữ nguyên */
+.navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 1px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.navbar-dark .navbar-nav .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    transform: scale(0.8);
+    z-index: -1;
+}
+
+.navbar-top .navbar-dark .navbar-nav .nav-link:hover::before,
+.navbar-top .navbar-dark .navbar-nav .nav-link.active::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.navbar-dark .navbar-nav .nav-link::after {
+    content: '';
+    width: 0;
+    height: 2px;
+    bottom: 5px;
+    transition: width 0.3s;
+}
+
+.dropdown-menu {
+    background-color: rgb(53 93 140 / 80%);
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-width: 230px;
+}
+
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
+
+.dropdown-item {
+    color: white;
+    padding: 10px 15px;
+    transition: all 0.3s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(15, 159, 219, 0.3);
+    color: #ffffff;
+}
+
+.nav-item.dropdown:hover > .dropdown-menu {
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 768px) {
     .navbar-nav {
         text-align: center;
     }
-
     .dropdown-menu {
         background-color: rgba(15, 159, 219, 0.2);
         text-align: center;
     }
-
     .dropdown-menu::before {
         display: none;
     }
 }
 
+.navbar-top .searchbtn:hover {
+    background-color: rgba(15, 159, 219, 0.3);
+}
+.navbar-top .searchbtn {
+    color: #ffffff;
+}
 .navbar-top .navbar-dark .navbar-nav .nav-link {
     color: #ffffff;
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        background: none;
+    }
 }

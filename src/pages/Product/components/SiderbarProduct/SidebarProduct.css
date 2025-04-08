@@ -3,7 +3,8 @@
   width: var(--sp-navbar-width);
   background-color: var(--mainColor);
   height: 100vh;
-  transition: width 0.3s ease, background-color 0.3s ease;}
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
 .page-product .sidebar-product.resize {
   width: var(--sp-navbar-width-min);
 }
@@ -34,14 +35,13 @@
   margin-left: 8px;
   font-size: 14px;
   color: #ffffff;
-  visibility: visible; /* Hiển thị nội dung đầy đủ mặc định */
-  white-space: nowrap; /* Ngăn không cho xuống dòng */
-  overflow: hidden; /* Ẩn nội dung tràn */
-  text-overflow: ellipsis; /* Thêm dấu "..." nếu nội dung vượt quá chiều rộng */
+  visibility: visible;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: opacity 0.3s, visibility 0.3s;
-  position: relative; /* Vị trí bình thường */
+  position: relative;
 }
-
 
 .sp-nav-button:hover span {
   overflow: visible;
@@ -59,7 +59,6 @@
 }
 
 :root {
-
   --sp-navbar-dark-primary: #18283b;
   --sp-navbar-dark-secondary: #2c3e50;
   --sp-navbar-light-primary: #83c8e7;
@@ -88,11 +87,11 @@
   color: #ffffff;
   visibility: visible;
   white-space: nowrap;
-  overflow: hidden; 
-  transition: opacity 0.3s, visibility 0.3s; 
+  overflow: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
   opacity: 1;
 }
-/* Danh mục con */
+
 .sub-nav-button {
   display: flex;
   align-items: center;
@@ -124,19 +123,16 @@
   transition: opacity 0.3s, visibility 0.3s;
 }
 
-/* Hiệu ứng khi hover vào danh mục con */
 .sub-nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
   color: var(--sp-navbar-dark-primary);
 }
 
-/* Ẩn danh mục con khi sidebar đóng */
 .sidebar-product.resize .sub-nav-button span {
   opacity: 0;
   visibility: hidden;
 }
 
-/* Mũi tên mở rộng */
 .sp-nav-button i.fa-chevron-right,
 .sp-nav-button i.fa-chevron-down {
   margin-left: auto;
@@ -144,14 +140,14 @@
   color: #ffffff;
 }
 
-/* Khi sidebar đóng, ẩn luôn mũi tên */
 .sidebar-product.resize .sp-nav-button i.fa-chevron-right,
 .sidebar-product.resize .sp-nav-button i.fa-chevron-down {
   opacity: 0;
   visibility: hidden;
 }
+
 .nested-sub-nav-button {
-  margin: 0 16px 0 30px; 
+  margin: 0 16px 0 30px;
   display: flex;
   align-items: center;
   color: var(--sp-navbar-light-secondary);
@@ -164,7 +160,7 @@
 .nested-sub-nav-button span {
   font-size: 13px;
   color: #ffffff;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: opacity 0.3s, visibility 0.3s;
@@ -174,8 +170,73 @@
   background-color: rgba(255, 255, 255, 0.15);
 }
 
-/* Ẩn danh mục con lồng nhau khi sidebar đóng */
 .sidebar-product.resize .nested-sub-nav-button span {
   opacity: 0;
   visibility: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-product .sidebar-product {
+    width: 100%;
+    max-width: 300px;
+    left: -100%;
+    transition: left 0.3s ease;
+  }
+
+  .page-product .sidebar-product.resize {
+    width: 100%;
+    max-width: 300px;
+    left: 0;
+  }
+
+  .sidebar-product .sp-nav-button span,
+  .sidebar-product .sub-nav-button span,
+  .sidebar-product .nested-sub-nav-button span {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .sidebar-product.resize .sp-nav-button span,
+  .sidebar-product.resize .sub-nav-button span,
+  .sidebar-product.resize .nested-sub-nav-button span {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .sidebar-product.resize .sp-nav-button i.fa-chevron-right,
+  .sidebar-product.resize .sp-nav-button i.fa-chevron-down {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .top-sidebar span {
+    font-size: 20px;
+  }
+
+  .top-sidebar button {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sp-nav-button span {
+    font-size: 12px;
+  }
+
+  .sub-nav-button span {
+    font-size: 11px;
+  }
+
+  .nested-sub-nav-button span {
+    font-size: 10px;
+  }
+
+  .top-sidebar span {
+    font-size: 18px;
+  }
+
+  .top-sidebar button {
+    font-size: 18px;
+  }
 }

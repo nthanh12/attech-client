@@ -17,17 +17,7 @@ const SidebarService = ({ openSidebar, setOpenSidebar }) => {
         <hr />
       </div>
 
-      {/* <Link
-        to="/services"
-        className="sp-nav-button"
-        aria-label="Tất cả dịch vụ"
-      >
-        <i className="fas fa-list-alt" aria-hidden="true"></i>
-        {openSidebar ? null : <span>Tất cả dịch vụ</span>}
-      </Link> */}
-
       <Link to="/services/cns" className="sp-nav-button" aria-label="CNS/ATM">
-        {/* <i className="fas fa-broadcast-tower" aria-hidden="true"></i> */}
         {openSidebar ? null : <span>Dịch vụ thông tin dẫn đường giám sát</span>}
       </Link>
 

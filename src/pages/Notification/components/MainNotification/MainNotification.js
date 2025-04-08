@@ -1,60 +1,58 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./MainNotification.css";
-
+import AOS from "aos";
+import "aos/dist/aos.css";
 import img1 from "../../../../assets/img/featured_img1.jpg";
 import img2 from "../../../../assets/img/featured_img2.jpg";
 import img3 from "../../../../assets/img/featured_img3.jpg";
 
 const MainNotification = () => {
-  const im1 =
-    "https://congthuongbentre.gov.vn/image/upload/catalog/thong-bao/thong-bao-x480.png";
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      easing: "ease-in-out",
+      once: true,
+    });
+  }, []);
+
   return (
     <div className="main-notification">
       <section>
-        <div id="line">
-          <div className="dline"></div>
-          <h1>Tuyển dụng</h1>
-          <div className="dline"></div>
+        <div className="row">
+          <div className="col-lg-12">
+            <div className="section-tittle mb-20">
+              <h3 data-aos="fade-up">Tin tuyển dụng</h3>
+            </div>
+          </div>
         </div>
-        <div id="ourserv">
-          <article>
-            <img src={im1} alt="Web Design" />
-            <h1>Danh sách nhân sự trúng tuyển đợt 3 năm 2024</h1>
-            {/* <p>
-              Danh sách nhân sự trúng tuyển đợt 3 năm 2024 của Công ty TNHH Kỹ
-              thuật Quản lý bay. Tài liệu đính kèm DS NS trung tuyen Dot 3 nam
-              2024 (27.4 KB)
-            </p> */}
-            <a href="fullwidth.html" className="rma">
+        <div className="notification-grid">
+          <article data-aos="fade-up">
+            <div className="image-wrapper">
+              <img src={img1} alt="Recruitment List" />
+            </div>
+            <h2>Danh sách nhân sự trúng tuyển đợt 3 năm 2024</h2>
+
+            <a href="fullwidth.html" className="read-more">
               Xem thêm
             </a>
           </article>
-          <article>
-            <img src={im1} alt="Graphic Design" />
-            <h1>Thông tin tuyển dụng đợt 3 năm 2024</h1>
-            {/* <p>
-              Công ty TNHH Kỹ thuật Quản lý bay (tên gọi tắt là ATTECH) là một
-              trong những đơn vị kỹ thuật hàng đầu của ngành hàng không Việt Nam
-              với 3 lĩnh vực kinh doanh cốt lõi là cung cấp dịch vụ Thông tin –
-              Dẫn đường – Giám sát hàng không, dịch vụ Bay kiểm tra hiệu chuẩn
-              và Sản xuất công nghiệp hàng không.
-            </p> */}
-            <a href="fullwidth.html" className="rma">
+          <article data-aos="fade-up">
+            <div className="image-wrapper">
+              <img src={img2} alt="Recruitment Info" />
+            </div>
+            <h2>Thông tin tuyển dụng đợt 3 năm 2024</h2>
+
+            <a href="fullwidth.html" className="read-more">
               Xem thêm
             </a>
           </article>
-          <article className="lastarticle">
-            <img src={im1} alt="Web Development" />
-            <h1>Thông tin tuyển dụng vị trí nhân viên kế toán</h1>
-            {/* <p>
-              Công ty TNHH Kỹ thuật Quản lý bay (tên gọi tắt là ATTECH) là một
-              trong những đơn vị kỹ thuật hàng đầu của ngành hàng không Việt Nam
-              với 3 lĩnh vực kinh doanh cốt lõi là cung cấp dịch vụ Thông tin –
-              Dẫn đường – Giám sát hàng không, dịch vụ Bay kiểm tra hiệu chuẩn
-              và Sản xuất công nghiệp hàng không. Tài liệu đính kèm Tiêu chuẩn
-              vị trí Nhân viên kế toán (17.75 KB)
-            </p> */}
-            <a href="fullwidth.html" className="rma">
+          <article data-aos="fade-up">
+            <div className="image-wrapper">
+              <img src={img3} alt="Accounting Position" />
+            </div>
+            <h2>Thông tin tuyển dụng vị trí nhân viên kế toán</h2>
+
+            <a href="fullwidth.html" className="read-more">
               Xem thêm
             </a>
           </article>

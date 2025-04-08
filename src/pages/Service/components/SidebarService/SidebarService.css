@@ -1,14 +1,14 @@
 .page-service .sidebar-service {
   position: fixed;
-  width: var(--sp-navbar-width, 250px); /* Giá trị mặc định nếu không định nghĩa */
-  background-color: var(--mainColor, #18283b); /* Màu nền mặc định */
+  width: var(--sp-navbar-width, 250px);
+  background-color: var(--mainColor, #18283b);
   height: 100%;
   min-height: 100vh;
   transition: width 0.3s ease;
 }
 
 .page-service .sidebar-service.resize {
-  width: var(--sp-navbar-width-min, 60px); /* Chiều rộng tối thiểu khi thu nhỏ */
+  width: var(--sp-navbar-width-min, 60px);
 }
 
 .sidebar-service .sp-nav-button {
@@ -46,11 +46,10 @@
 }
 
 .sidebar-service .sp-nav-button:hover {
-  background-color: rgba(161, 182, 221, 0.2); /* Tăng độ tương phản nhẹ */
+  background-color: rgba(161, 182, 221, 0.2);
   color: var(--sp-navbar-light-primary, #83c8e7);
 }
 
-/* Top sidebar */
 .top-sidebar {
   margin: 8px 20px 0;
   display: flex;
@@ -68,11 +67,11 @@
 }
 
 .top-sidebar button:hover {
-  transform: scale(1.1); /* Hiệu ứng phóng to nhẹ */
+  transform: scale(1.1);
 }
 
 .top-sidebar span {
-  font-size: 20px; /* Giảm kích thước chữ cho hài hòa */
+  font-size: 20px;
   margin-left: 10px;
   color: #ffffff;
   white-space: nowrap;
@@ -80,12 +79,59 @@
   text-overflow: ellipsis;
 }
 
-/* Định nghĩa biến CSS */
 :root {
   --sp-navbar-dark-primary: #18283b;
   --sp-navbar-dark-secondary: #2c3e50;
   --sp-navbar-light-primary: #83c8e7;
   --sp-navbar-light-secondary: #8392a5;
-  --sp-navbar-width: 250px; /* Chiều rộng mặc định */
-  --sp-navbar-width-min: 60px; /* Chiều rộng khi thu nhỏ */
+  --sp-navbar-width: 250px;
+  --sp-navbar-width-min: 60px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-service .sidebar-service {
+    width: 100%;
+    max-width: 300px;
+    left: -100%;
+    transition: left 0.3s ease;
+  }
+
+  .page-service .sidebar-service.resize {
+    width: 100%;
+    max-width: 300px;
+    left: 0;
+  }
+
+  .sidebar-service .sp-nav-button span {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .sidebar-service.resize .sp-nav-button span {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .top-sidebar span {
+    font-size: 18px;
+  }
+
+  .top-sidebar button {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-service .sp-nav-button span {
+    font-size: 12px;
+  }
+
+  .top-sidebar span {
+    font-size: 16px;
+  }
+
+  .top-sidebar button {
+    font-size: 18px;
+  }
 }

@@ -70,7 +70,7 @@
 }
 
 .weekly-news-area .weekly-wrapper .weekly-single .weekly-caption h4 a {
-    font-size: 16px;
+    font-size: 14px;
     color: #ffffff;
     text-decoration: none;
     font-weight: 700;
@@ -127,6 +127,13 @@
 .pt-30 {
     padding-top: 30px
 }
+.pt-10 {
+    padding-top: 10px
+}
 .weekly-news-active {
+    justify-content: space-between;
+}
+.weekly-news-area .section-tittle {
+    display: flex;
     justify-content: space-between;
 }

@@ -219,7 +219,7 @@ const NavbarLinks = () => {
       </div>
       <div className="d-flex align-items-center flex-nowrap pt-3 pt-lg-0 ms-lg-2">
         <button
-          className="btn btn-primary py-2 px-3"
+          className="btn searchbtn py-2 px-3"
           data-bs-toggle="modal"
           data-bs-target="#searchModal"
         >

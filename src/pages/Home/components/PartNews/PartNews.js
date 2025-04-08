@@ -81,17 +81,17 @@ const PartNews = () => {
   );
 
   return (
-    <section className="whats-news-area pt-50 pb-20">
+    <section className="parts-news-area pt-50 pb-20">
       <div className="container">
         <div className="row">
-          <div className="col-lg-8">
+          <div className="col-lg-8 col-md-12">
             <div className="row d-flex justify-content-between">
-              <div className="col-lg-2 col-md-2">
-                <div className="section-tittle mb-20">
+              <div className="col-lg-2 col-md-3 col-sm-12">
+                <div className="section-tittle">
                   <h3>Tin tức</h3>
                 </div>
               </div>
-              <div className="col-lg-10 col-md-10">
+              <div className="col-lg-10 col-md-9 col-sm-12">
                 <div className="properties__button">
                   <nav>
                     <div className="nav nav-tabs" role="tablist">
@@ -119,15 +119,18 @@ const PartNews = () => {
               <div className="col-12">
                 <div className="tab-content">
                   <div className="tab-pane fade show active">
-                    <div className="whats-news-caption">
+                    <div className="parts-news-caption">
                       <div className="row">
                         {filteredNews.map((news) => (
-                          <div key={news.id} className="col-lg-4 col-md-4">
-                            <div className="single-what-news mb-60">
-                              <div className="what-img">
+                          <div
+                            key={news.id}
+                            className="col-lg-4 col-md-6 col-sm-12"
+                          >
+                            <div className="single-part-news mb-60">
+                              <div className="part-img">
                                 <img src={news.image} alt="news" />
                               </div>
-                              <div className="what-cap">
+                              <div className="part-cap">
                                 <span className="title-news">{news.date}</span>
                                 <h4>
                                   <a title={news.title} href="#">
@@ -145,11 +148,11 @@ const PartNews = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4">
+          <div className="col-lg-4 col-md-12">
             <div className="follow-tittle mb-40">
               <h3>Theo dõi chúng tôi</h3>
             </div>
-            <div className="single-follow mb-45">
+            <div className="single-follow mb-45 d-md-block">
               <div className="single-box">
                 {socialLinks.map((social, index) => (
                   <div

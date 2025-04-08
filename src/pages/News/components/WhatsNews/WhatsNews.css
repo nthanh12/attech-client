@@ -22,7 +22,7 @@
 .whats-news-area .whats-news-caption .single-what-news .what-cap,
 .about-area .whats-news-caption .single-what-news .what-cap,
 .contact-section .whats-news-caption .single-what-news .what-cap {
-    padding: 15px 20px 10px 0;
+    padding: 5px 10px 10px 0;
     background: #fff;
     position: absolute;
     bottom: -63px;
@@ -45,14 +45,13 @@
     font-weight: 600;
     padding: 5px 10px;
     line-height: 1;
-    margin-bottom: 10px;
     display: inline-block
 }
 
 .whats-news-area .whats-news-caption .single-what-news .what-cap h4 a,
 .about-area .whats-news-caption .single-what-news .what-cap h4 a,
 .contact-section .whats-news-caption .single-what-news .what-cap h4 a {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     line-height: 1.4;
     display: -webkit-box;

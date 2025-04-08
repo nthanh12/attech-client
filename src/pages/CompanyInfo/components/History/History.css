@@ -1,0 +1,351 @@
+.history-timeline {
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%); /* Gradient nền nhẹ */
+  }
+  
+  /* Section Title */
+  .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .section-title h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a202c;
+    /* text-transform: uppercase; */
+    letter-spacing: 1px;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .section-title h2::after {
+    content: "";
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(to right, #4a90e2, #2ecc71); /* Gradient xanh dương - xanh lá */
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+  }
+  
+  /* Timeline */
+  .timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .timeline::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    background: linear-gradient(to bottom, #4a90e2, #2ecc71); /* Gradient xanh dương - xanh lá */
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .timeline-item {
+    padding: 20px 40px;
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+  }
+  
+  .timeline-item.left {
+    left: 0;
+  }
+  
+  .timeline-item.right {
+    left: 50%;
+  }
+  
+  .timeline-item::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 4px solid #f1c40f; /* Vàng làm điểm nhấn */
+    border-radius: 50%;
+    top: 30px;
+    z-index: 1;
+  }
+  
+  .timeline-item.left::before {
+    right: -12px;
+  }
+  
+  .timeline-item.right::before {
+    left: -12px;
+  }
+  
+  .timeline-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #4a90e2; /* Viền trái xanh dương */
+  }
+  
+  .timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-left-color: #e67e22; /* Viền trái đổi thành cam khi hover */
+  }
+  
+  .timeline-year {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e67e22; /* Cam làm nổi bật năm */
+    margin-bottom: 10px;
+    background: linear-gradient(to right, #e67e22, #f1c40f); /* Gradient cam - vàng */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .timeline-content h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 10px;
+  }
+  
+  .timeline-content p {
+    font-size: 0.9rem;
+    color: #718096;
+    line-height: 1.6;
+  }
+  
+  /* Company Info Section */
+  .company-info-section {
+    max-width: 1200px;
+    margin: 50px auto;
+  }
+  
+  .company-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  .info-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e9ecef;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .info-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(to right, #4a90e2, #2ecc71); /* Gradient xanh dương - xanh lá */
+  }
+  
+  .info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .info-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 15px;
+  }
+  
+  .info-card p {
+    font-size: 0.9rem;
+    color: #718096;
+    margin-bottom: 8px;
+  }
+  
+  .info-card a {
+    color: #4a90e2;
+    text-decoration: none;
+  }
+  
+  .info-card a:hover {
+    color: #e67e22; /* Cam khi hover */
+    text-decoration: underline;
+  }
+  
+  .branches-section h3,
+  .stations-section h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 20px 0;
+    background: linear-gradient(to right, #4a90e2, #2ecc71); /* Gradient xanh dương - xanh lá */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .branches-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .branch-card {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f1c40f; /* Viền vàng nhạt */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .branch-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-color: #e67e22; /* Viền cam khi hover */
+  }
+  
+  .branch-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 10px;
+  }
+  
+  .branch-card p {
+    font-size: 0.9rem;
+    color: #718096;
+    margin-bottom: 5px;
+  }
+  
+  /* Stations Section */
+  .stations-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .station-item {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #212547;
+    transition: transform 0.3s ease;
+    border: 1px solid #6786bb;
+  }
+
+  
+  .station-item:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .section-title h2 {
+      font-size: 2rem;
+    }
+  
+    .timeline::before {
+      left: 20px;
+    }
+  
+    .timeline-item {
+      width: 100%;
+      padding-left: 60px;
+      padding-right: 20px;
+    }
+  
+    .timeline-item.left,
+    .timeline-item.right {
+      left: 0;
+    }
+  
+    .timeline-item::before {
+      left: 8px;
+    }
+  
+    .timeline-content h3 {
+      font-size: 1.2rem;
+    }
+  
+    .timeline-content p {
+      font-size: 0.85rem;
+    }
+  
+    .company-info-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .branches-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .stations-list {
+      gap: 8px;
+    }
+  
+    .station-item {
+      font-size: 0.85rem;
+      padding: 6px 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .section-title h2 {
+      font-size: 1.8rem;
+    }
+  
+    .timeline-item {
+      padding-left: 50px;
+      padding-right: 15px;
+    }
+  
+    .timeline-content {
+      padding: 15px;
+    }
+  
+    .timeline-year {
+      font-size: 1rem;
+    }
+  
+    .timeline-content h3 {
+      font-size: 1.1rem;
+    }
+  
+    .timeline-content p {
+      font-size: 0.8rem;
+    }
+  
+    .info-card h3 {
+      font-size: 1.1rem;
+    }
+  
+    .info-card p {
+      font-size: 0.85rem;
+    }
+  
+    .branches-section h3,
+    .stations-section h3 {
+      font-size: 1.3rem;
+    }
+  
+    .branch-card h4 {
+      font-size: 1rem;
+    }
+  
+    .branch-card p {
+      font-size: 0.85rem;
+    }
+  }

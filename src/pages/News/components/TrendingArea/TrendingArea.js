@@ -121,7 +121,7 @@ const TrendingArea = () => {
         <div className="trending-main">
           <div className="row">
             <div className="col-lg-12">
-              <div className="section-tittle mb-20">
+              <div className="section-tittle">
                 <h3>Tin hoạt động công ty</h3>
                 <Link className="get-all" to="/news/activities">
                   Xem tất cả

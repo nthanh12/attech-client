@@ -1,6 +1,7 @@
+/* Hình nền */
 .custom-content-img {
   width: 100vw;
-  height: calc(100vh - 110px);
+  height: 70vh; /* Giảm chiều cao để cân đối hơn */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -12,23 +13,35 @@
   text-align: center;
 }
 
+.custom-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-img-title {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(129, 165, 172, 0.5);
+}
+
+/* Navbar */
 .custom-navbar {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   background-color: #f8f9fa;
-  padding: 10px 20px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e9ecef;
 }
 
-.custom-navbar-title {
-  font-size: 1.2rem;
-  color: #343a40;
-  font-weight: bold;
-  transition: color 0.3s ease-in-out;
-}
-
-.custom-navbar-title:hover {
-  color: var(--mainColor);
-}
 .custom-navbar-button {
   font-size: 1.2rem;
   color: #343a40;
@@ -36,49 +49,158 @@
   background: none;
   border: none;
   cursor: pointer;
-  padding: 10px 20px;
+  padding: 10px 30px;
   transition: color 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
 }
 
 .custom-navbar-button.active {
-  color: var(--mainColor);
-  border-bottom: 2px solid var(--mainColor);
+  color: var(--mainColor, #007bff); /* Sử dụng biến màu nếu có */
+  border-bottom: 3px solid var(--mainColor, #007bff);
 }
 
 .custom-navbar-button:hover {
-  color: var(--mainColor);
+  color: var(--mainColor, #007bff);
 }
+
+/* Box chứa nội dung */
 .custom-bg-box {
   background-color: #fff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  height: 450px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 90%;
+  position: relative;
+  top: -50px; /* Đẩy box lên để chồng lên hình nền */
   overflow: hidden;
 }
 
+/* Thành tựu */
 .custom-achievements {
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cột trên desktop */
+  gap: 30px;
 }
 
 .custom-achievement-item {
   display: flex;
   align-items: flex-start;
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-achievement-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .custom-achievement-icon {
-  margin-right: 16px;
+  margin-right: 20px;
+  color: var(--mainColor, #007bff);
+}
+
+.custom-achievement-icon .custom-icon {
+  width: 40px;
+  height: 40px;
 }
 
 .custom-achievement-title {
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #212529;
   font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .custom-achievement-description {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: #6c757d;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .custom-content-img {
+    height: 50vh; /* Giảm chiều cao trên mobile */
+  }
+
+  .custom-img-title {
+    font-size: 1.8rem;
+  }
+
+  .custom-bg-box {
+    width: 95%;
+    top: -30px;
+  }
+
+  .custom-navbar {
+    padding: 10px;
+  }
+
+  .custom-navbar-button {
+    font-size: 1rem;
+    padding: 8px 20px;
+  }
+
+  .custom-achievements {
+    grid-template-columns: 1fr; /* 1 cột trên mobile */
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .custom-achievement-item {
+    padding: 10px;
+  }
+
+  .custom-achievement-icon .custom-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .custom-achievement-title {
+    font-size: 1rem;
+  }
+
+  .custom-achievement-description {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-content-img {
+    height: 40vh;
+  }
+
+  .custom-img-title {
+    font-size: 1.5rem;
+  }
+
+  .custom-bg-box {
+    top: -20px;
+  }
+
+  .custom-navbar-button {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+
+  .custom-achievements {
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .custom-achievement-icon .custom-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .custom-achievement-title {
+    font-size: 0.9rem;
+  }
+
+  .custom-achievement-description {
+    font-size: 0.8rem;
+  }
 }

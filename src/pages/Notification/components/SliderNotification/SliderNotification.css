@@ -14,7 +14,7 @@
 .slider-notification img {
   width: 100%;
   height: auto;
-  max-height: 500px;
+  max-height: 400px;
   object-fit: cover;
   border-radius: 8px;
   transition: transform 0.3s ease-in-out;
@@ -43,13 +43,11 @@
   transition: background-color 0.3s ease;
 }
 
-/* Hover vào nút điều hướng */
 .swiper-button-prev:hover,
 .swiper-button-next:hover {
   background-color: rgba(255, 255, 255, 0.6);
 }
 
-/* Vị trí nút điều hướng */
 .swiper-button-prev {
   left: 15px;
 }
@@ -58,7 +56,6 @@
   right: 15px;
 }
 
-/* Ẩn icon mặc định của Swiper */
 .swiper-button-prev::after,
 .swiper-button-next::after {
   font-size: 18px;
@@ -80,4 +77,75 @@
   background: white;
   width: 12px;
   height: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .slider-notification img {
+    max-height: 300px; /* Giảm chiều cao ảnh trên tablet/mobile */
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 36px;
+    height: 36px;
+  }
+
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 16px;
+  }
+
+  .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+  }
+
+  .swiper-pagination-bullet-active {
+    width: 10px;
+    height: 10px;
+  }
+
+  .section-tittle h3 {
+    font-size: 20px; /* Giảm kích thước tiêu đề */
+  }
+}
+
+@media (max-width: 480px) {
+  .slider-notification img {
+    max-height: 200px; /* Giảm thêm chiều cao ảnh trên mobile nhỏ */
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: 30px;
+    height: 30px;
+  }
+
+  .swiper-button-next {
+    right: 10px;
+  }
+
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    font-size: 14px;
+  }
+
+  .swiper-pagination-bullet {
+    width: 6px;
+    height: 6px;
+  }
+
+  .swiper-pagination-bullet-active {
+    width: 8px;
+    height: 8px;
+  }
+
+  .section-tittle h3 {
+    font-size: 18px;
+  }
+
+  .slider-notification-wrapper {
+    margin-bottom: 20px; /* Giảm margin trên mobile */
+  }
 }

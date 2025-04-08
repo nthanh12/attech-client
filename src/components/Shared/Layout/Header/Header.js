@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <div>
       <Spinner />
-      <Topbar />
+      {/* <Topbar /> */}
       <Navbar />
       <SearchModal />
     </div>

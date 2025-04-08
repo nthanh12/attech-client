@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import NavbarTop from "./NavbarTop/NavbarTop";
 import NavbarScrolled from "./NavbarScrolled/NavbarScrolled";
 import "../Navbar/Navbar.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Navbar = () => {
   const [isScrolled, setScrolled] = useState(false);

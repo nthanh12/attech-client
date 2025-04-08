@@ -16,8 +16,7 @@ const Carousel = () => {
             <img src={img5} className="img-fluid w-100" alt="First slide" />
             <div className="carousel-caption">
               <p className="text-uppercase text-secondary fs-4 mb-0"></p>
-              <h1 className="display-1 text-capitalize text-white mb-4">
-                {/* Kiến tạo tương lai từ tầm nhìn không giới hạn */}
+              <h1 className="display-1 text-capitalize text-white mb-4 text-carou">
                 SÁNG TẠO & THÍCH NGHI
               </h1>
               <p className="mb-5 fs-5 intro-sub">
@@ -41,7 +40,7 @@ const Carousel = () => {
             </div>
           </div>
         </div>
-        <button
+        {/* <button
           className="carousel-control-prev"
           type="button"
           data-bs-target="#carouselId"
@@ -64,7 +63,7 @@ const Carousel = () => {
             aria-hidden="true"
           ></span>
           <span className="visually-hidden">Next</span>
-        </button>
+        </button> */}
       </div>
     </div>
   );

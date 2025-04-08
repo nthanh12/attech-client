@@ -65,7 +65,9 @@ const CustomContentInfo = ({ backgroundImage }) => {
       <div
         className="custom-content-img"
         style={{ backgroundImage: `url(${backgroundImage})` }}
-      ></div>
+      >
+        <div className="custom-overlay"></div>
+      </div>
       <div className="custom-bg-box">
         <div className="custom-navbar">
           <button

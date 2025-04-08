@@ -260,7 +260,7 @@ const ProductList = () => {
         <h2>Sản phẩm</h2>
       </div>
       <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-8">
           <div class="search-container">
             <input
               type="text"
