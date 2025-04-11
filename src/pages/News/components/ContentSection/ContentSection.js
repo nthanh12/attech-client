@@ -1,4 +1,4 @@
-import "../ContentSection/ContentSection.css";
+// import "../ContentSection/ContentSection.css";
 import sliderImg1 from "../../../../assets/img/featured_img1.jpg";
 import { Link } from "react-router-dom";
 

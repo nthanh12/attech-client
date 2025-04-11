@@ -19,10 +19,10 @@ const Carousel = () => {
               <h1 className="display-1 text-capitalize text-white mb-4 text-carou">
                 SÁNG TẠO & THÍCH NGHI
               </h1>
-              <p className="mb-5 fs-5 intro-sub">
+              {/* <p className="mb-5 fs-5 intro-sub">
                 Điều gì làm nên sự khác biệt trong quản lý bay? Hãy để ATTECH
                 dẫn lối.
-              </p>
+              </p> */}
               <div className="d-flex justify-content-center">
                 <Link
                   className="btn btn-primary carousel-btn-left py-3 px-5 me-2 flex-shrink-0"
