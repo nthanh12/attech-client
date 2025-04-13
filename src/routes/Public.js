@@ -42,6 +42,7 @@ const Public = () => {
 
         {/* News */}
         <Route path="/news" element={<NewsPage />} />
+        <Route path="/news/all-act" element={<NewsListPage />} />
         <Route path="/news/:category" element={<NewsListPage />} />
         <Route path="/news/:id/:slug" element={<NewsDetailPage />} />
 

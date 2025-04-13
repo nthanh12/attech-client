@@ -21,9 +21,9 @@ const menuItems = [
         path: "/products/others",
         label: "Các sản phẩm khác",
         submenu: [
-          { path: "/products/category1", label: "Hệ thống đèn hiệu" },
-          { path: "/products/shelter1", label: "Shelter" },
-          { path: "/products/category2", label: "Bàn Console" },
+          { path: "/products/light", label: "Hệ thống đèn hiệu" },
+          { path: "/products/shelter", label: "Shelter" },
+          { path: "/products/console", label: "Bàn Console" },
         ],
       },
     ],
@@ -143,7 +143,6 @@ const NavbarLinks = () => {
                   className={`dropdown-toggle ${
                     isActive(sub.path, sub.query) ? "active" : ""
                   }`}
-                  data-bs-toggle="dropdown"
                   onClick={() => handleNavigate(sub.path, sub.query)}
                   style={{ cursor: "pointer" }}
                 >
@@ -195,7 +194,6 @@ const NavbarLinks = () => {
               <>
                 <span
                   className="nav-link dropdown-toggle"
-                  data-bs-toggle="dropdown"
                   onClick={() => handleNavigate(item.path)}
                   style={{ cursor: "pointer" }}
                 >

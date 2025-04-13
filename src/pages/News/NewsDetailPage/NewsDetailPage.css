@@ -242,10 +242,12 @@
   
   /* Trường hợp không tìm thấy bài viết */
   .not-found {
+    margin-top: 20px;
     text-align: center;
     padding: 50px;
     font-size: 1.5rem;
     color: #888;
+    min-height: 380px;
   }
   
   /* Responsive */
