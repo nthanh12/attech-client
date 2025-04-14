@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router-dom";
 import ProductItem from "../ProductItem/ProductItem";
 import "../ProductList/ProductList.css";
 
@@ -245,8 +246,28 @@ const products = [
   },
 ];
 
+const categorySlugMap = {
+  "CNS/ATM": "cns-atm",
+  "Hệ thống đèn hiệu": "he-thong-den-hieu",
+  Shelter: "shelter",
+  "Bàn console": "ban-console",
+  "Giàn phản xạ VOR": "gian-phan-xa-vor",
+  "Thiết bị ghi âm/ghi hình": "thiet-bi-ghi-am-ghi-hinh",
+  "Các sản phẩm dân dụng khác": "cac-san-pham-dan-dung-khac",
+};
+
 const ProductList = () => {
-  const groupedProducts = products.reduce((acc, product) => {
+  const { category } = useParams();
+
+  const categoryName = Object.keys(categorySlugMap).find(
+    (key) => categorySlugMap[key] === category
+  );
+
+  const filteredProducts = categoryName
+    ? products.filter((product) => product.category === categoryName)
+    : products;
+
+  const groupedProducts = filteredProducts.reduce((acc, product) => {
     if (!acc[product.category]) {
       acc[product.category] = [];
     }
@@ -257,38 +278,42 @@ const ProductList = () => {
   return (
     <div className="container product-list-container">
       <div className="section-header text-center">
-        <h2>Sản phẩm</h2>
+        <h2>{categoryName || "Sản phẩm"}</h2>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <div class="search-container">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="search-container">
             <input
               type="text"
-              class="form-control search-input"
+              className="form-control search-input"
               placeholder="Tìm kiếm sản phẩm..."
             />
-            <i class="fas fa-search search-icon"></i>
+            <i className="fas fa-search search-icon"></i>
           </div>
         </div>
       </div>
 
-      {Object.keys(groupedProducts).map((category, index) => (
-        <div key={index} className="product-category">
-          <h3 className="category-title">{category}</h3>
-          <div className="row product-row">
-            {groupedProducts[category].map((product) => (
-              <ProductItem
-                key={product.id}
-                id={product.id}
-                slug={product.slug}
-                title={product.title}
-                description={product.description}
-                image={product.image}
-              />
-            ))}
+      {Object.keys(groupedProducts).length > 0 ? (
+        Object.keys(groupedProducts).map((cat, index) => (
+          <div key={index} className="product-category">
+            <h3 className="category-title">{cat}</h3>
+            <div className="row product-row">
+              {groupedProducts[cat].map((product) => (
+                <ProductItem
+                  key={product.id}
+                  id={product.id}
+                  slug={product.slug}
+                  title={product.title}
+                  description={product.description}
+                  image={product.image}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p>Không có sản phẩm trong danh mục này.</p>
+      )}
     </div>
   );
 };

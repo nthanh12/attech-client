@@ -30,6 +30,7 @@ const Public = () => {
         {/* Product */}
         <Route path="/products/*" element={<Product />}>
           <Route path="" element={<ProductList />} />
+          <Route path=":category" element={<ProductList />} />
           <Route path=":productId/:slug" element={<ProductDetail />} />
         </Route>
 
