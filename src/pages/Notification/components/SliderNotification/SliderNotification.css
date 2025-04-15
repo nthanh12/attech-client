@@ -1,7 +1,7 @@
-/* Wrapper tổng thể */
+/* SliderNotification.css */
 .slider-notification-wrapper {
   position: relative;
-  max-width: 100%;
+  width: 100%; /* Tuân theo width của .notification */
   margin-bottom: 30px;
 }
 
@@ -9,7 +9,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 1140px;
+  width: 100%; /* Tuân theo width của .notification */
 }
 
 .slider-notification img {

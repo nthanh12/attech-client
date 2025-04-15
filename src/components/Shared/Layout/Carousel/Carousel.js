@@ -25,7 +25,7 @@ const Carousel = () => {
               </p> */}
               <div className="d-flex justify-content-center">
                 <Link
-                  className="btn btn-primary carousel-btn-left py-3 px-5 me-2 flex-shrink-0"
+                  className="carousel-btn-left py-3 px-5 me-2 flex-shrink-0"
                   to="/contact"
                 >
                   Liên hệ

@@ -38,7 +38,19 @@ const NewsDetailPage = () => {
       image:
         "https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-1.jpg",
       date: "30/04/2024",
-      content: `<p>Ngày 30/04/2024...</p>`,
+      content: `
+      <p style="text-align: left;"><em><strong>Dự &aacute;n đầu tư x&acirc;y dựng Cảng h&agrave;ng kh&ocirc;ng quốc tế Long Th&agrave;nh l&agrave; dự &aacute;n trọng điểm quốc gia, c&oacute; nhiều tổ hợp đầu tư phức tạp, hiện đang được c&aacute;c chủ đầu tư khẩn trương đẩy nhanh tiến độ để sớm đưa v&agrave;o khai th&aacute;c. Dự &aacute;n Cảng h&agrave;ng kh&ocirc;ng quốc tế Long Th&agrave;nh giai đoạn 1 gồm c&oacute; 4 th&agrave;nh phần, trong đ&oacute; c&oacute; Dự &aacute;n th&agrave;nh phần 2 &ldquo;C&aacute;c c&ocirc;ng tr&igrave;nh phục vụ quản l&yacute; bay&rdquo; do Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam l&agrave;m chủ đầu tư.</strong></em></p>
+<p style="text-align: left;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; G&oacute;i thầu TB05 &ldquo;Cung cấp v&agrave; lắp đặt hệ thống DVOR/DME&rdquo; nằm trong Dự &aacute;n th&agrave;nh phần 2. Đ&acirc;y l&agrave; một trong c&aacute;c g&oacute;i thầu đấu thầu quốc tế quan trọng của Tổng c&ocirc;ng ty để đảm bảo cung cấp dịch vụ dẫn đường v&ocirc; tuyến h&agrave;ng kh&ocirc;ng cho khu vực Cảng h&agrave;ng kh&ocirc;ng quốc tế Long Th&agrave;nh. Tr&ecirc;n cơ sở c&aacute;c năng lực hiện c&oacute;, C&ocirc;ng ty đ&atilde; tham gia đấu thấu v&agrave; tr&uacute;ng thầu g&oacute;i thầu n&agrave;y. Để đ&aacute;p ứng tiến độ của dự &aacute;n, hai b&ecirc;n đ&atilde; khẩn trương đ&aacute;m ph&agrave;n, ho&agrave;n thiện v&agrave; tiến h&agrave;nh k&yacute; kết Hợp đồng v&agrave;o ng&agrave;y 28/02/2025.</p>
+<p style="text-align: center;" align="center"><img class="aligncenter size-full wp-image-11472" src="https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-1.jpg" alt="hop dong tb05 4-3 1" /></p>
+<p style="text-align: center;" align="center"><em>&Ocirc;ng Hồ Sỹ T&ugrave;ng &ndash; Ph&oacute; Tổng gi&aacute;m đốc VATM v&agrave;</em></p>
+<p style="text-align: center;" align="center"><em>&Ocirc;ng Nguyễn Ho&agrave;ng Giang &ndash; Gi&aacute;m đốc ATTECH k&yacute; kết Hợp đồng g&oacute;i thầu TB05</em></p>
+<p style="text-align: left;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tham dự buổi lễ c&oacute; đại diện Chủ đầu tư l&agrave; &Ocirc;ng Hồ Sỹ T&ugrave;ng &ndash; Ph&oacute; Tổng gi&aacute;m đốc VATM c&ugrave;ng đại diện Ban quản l&yacute; dự &aacute;n Long Th&agrave;nh, về ph&iacute;a C&ocirc;ng ty c&oacute; &Ocirc;ng Nguyễn Ho&agrave;ng Giang &ndash; Gi&aacute;m đốc c&ugrave;ng đại diện l&atilde;nh đạo c&aacute;c Ph&ograve;ng Kế hoạch Kinh doanh, Ph&ograve;ng T&agrave;i ch&iacute;nh Kế to&aacute;n, Ph&ograve;ng Kỹ thuật An To&agrave;n Chất lượng.</p>
+<p style="text-align: center;" align="center"><a href="https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-2.jpg"><img class="aligncenter size-full wp-image-11473" src="https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-2.jpg" alt="hop dong tb05 4-3 2" /></a></p>
+<p style="text-align: center;" align="center"><em>Đại diện l&atilde;nh đạo VATM v&agrave; ATTECH tại lễ k&yacute; kết Hợp đồng</em></p>
+<p style="text-align: left;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Với t&iacute;nh chất quan trọng của G&oacute;i thầu TB05 n&oacute;i ri&ecirc;ng v&agrave; Dự &aacute;n n&oacute;i chung, ATTECH khẳng định sẽ thực hiện đ&uacute;ng theo Hợp đồng đ&atilde; k&yacute; để đảm bảo đạt mục ti&ecirc;u về chất lượng, cũng như tiến độ của g&oacute;i thầu, g&oacute;p phần cho dự &aacute;n th&agrave;nh phần 2 c&ugrave;ng c&aacute;c dự &aacute;n th&agrave;nh phần kh&aacute;c hiện thực h&oacute;a mục ti&ecirc;u đưa Cảng H&agrave;ng kh&ocirc;ng quốc tế Long Th&agrave;nh giai đoạn 1 v&agrave;o khai th&aacute;c v&agrave;o cuối năm 2025.&nbsp;</p>
+<p style="text-align: right;" align="right"><strong><em>B&agrave;i: Vũ Thu Trang &ndash; P.KHKD</em></strong></p>
+<p style="text-align: right;"><strong><em>Ảnh: Trịnh Phương Thu &ndash; VPCT</em></strong></p>
+      `,
     },
     {
       id: 3,

@@ -17,6 +17,9 @@ import NewsListPage from "../pages/News/NewsListPage/NewsListPage";
 import NewsDetailPage from "../pages/News/NewsDetailPage/NewsDetailPage";
 
 import NotificationPage from "../pages/Notification/NotificationPage/NotificationPage";
+import NotificationListPage from "../pages/Notification/NotificationListPage/NotificationListPage";
+import NotificationDetailPage from "../pages/Notification/NotificationDetailPage/NotificationDetailPage";
+
 import ContactPage from "../pages/Contact/ContactPage/ContactPage";
 import CompanyInfoPage from "../pages/CompanyInfo/CompanyInfoPage/CompanyInfoPage";
 
@@ -49,6 +52,14 @@ const Public = () => {
 
         {/* Notification */}
         <Route path="/notifications" element={<NotificationPage />} />
+        <Route
+          path="/notifications/:category"
+          element={<NotificationListPage />}
+        />
+        <Route
+          path="/notifications/:id/:slug"
+          element={<NotificationDetailPage />}
+        />
 
         {/* Company info */}
         <Route path="/company-info/*" element={<CompanyInfoPage />} />

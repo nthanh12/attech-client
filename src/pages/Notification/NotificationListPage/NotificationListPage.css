@@ -1,0 +1,67 @@
+.notification-list-page {
+  max-width: 1200px;
+  margin: 90px auto;
+  padding: 20px;
+}
+
+
+.notification-list-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.notification-list-page .page-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.notification-list-page .news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.notification-list-page .news-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+
+.notification-list-page .news-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification-list-page .news-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.notification-list-page .news-content {
+  padding: 15px;
+}
+
+.notification-list-page .news-date {
+  display: block;
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.notification-list-page .news-content h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.notification-list-page .news-content a {
+  text-decoration: none;
+  color: #333;
+}
+
+.notification-list-page .news-content a:hover {
+  color: #007bff;
+}

@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import "./MainNotification.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import img1 from "../../../../assets/img/featured_img1.jpg";
-import img2 from "../../../../assets/img/featured_img2.jpg";
-import img3 from "../../../../assets/img/featured_img3.jpg";
+import { Link } from "react-router-dom"; // nếu bạn dùng react-router
 
 const MainNotification = () => {
   useEffect(() => {
@@ -14,6 +12,33 @@ const MainNotification = () => {
       once: true,
     });
   }, []);
+
+  const notifications = [
+    {
+      id: 1,
+      slug: "danh-sach-nhan-su-trung-tuyen-dot-3-nam-2024",
+      title: "Danh sách nhân sự trúng tuyển đợt 3 năm 2024",
+      image: "https://jobsgo.vn/blog/wp-content/uploads/2021/05/mau-1.jpg",
+    },
+    {
+      id: 2,
+      slug: "thong-tin-tuyen-dung-dot-3-nam-2024",
+      title: "Thông tin tuyển dụng đợt 3 năm 2024",
+      image: "https://jobsgo.vn/blog/wp-content/uploads/2021/05/mau-1.jpg",
+    },
+    {
+      id: 3,
+      slug: "thong-tin-tuyen-dung-vi-tri-nhan-vien-ke-toan",
+      title: "Thông tin tuyển dụng vị trí nhân viên kế toán",
+      image: "https://jobsgo.vn/blog/wp-content/uploads/2021/05/mau-1.jpg",
+    },
+    {
+      id: 4,
+      slug: "danh-sach-nhan-su-trung-tuyen-dot-3-nam-2024",
+      title: "Thông tin tuyển dụng vị trí nhân viên kế toán",
+      image: "https://jobsgo.vn/blog/wp-content/uploads/2021/05/mau-1.jpg",
+    },
+  ];
 
   return (
     <div className="main-notification">
@@ -26,36 +51,21 @@ const MainNotification = () => {
           </div>
         </div>
         <div className="notification-grid">
-          <article data-aos="fade-up">
-            <div className="image-wrapper">
-              <img src={img1} alt="Recruitment List" />
-            </div>
-            <h2>Danh sách nhân sự trúng tuyển đợt 3 năm 2024</h2>
-
-            <a href="fullwidth.html" className="read-more">
-              Xem thêm
-            </a>
-          </article>
-          <article data-aos="fade-up">
-            <div className="image-wrapper">
-              <img src={img2} alt="Recruitment Info" />
-            </div>
-            <h2>Thông tin tuyển dụng đợt 3 năm 2024</h2>
-
-            <a href="fullwidth.html" className="read-more">
-              Xem thêm
-            </a>
-          </article>
-          <article data-aos="fade-up">
-            <div className="image-wrapper">
-              <img src={img3} alt="Accounting Position" />
-            </div>
-            <h2>Thông tin tuyển dụng vị trí nhân viên kế toán</h2>
-
-            <a href="fullwidth.html" className="read-more">
-              Xem thêm
-            </a>
-          </article>
+          {notifications.map((item) => (
+            <article key={item.id} data-aos="fade-up">
+              <Link
+                to={`/notifications/${item.id}/${item.slug}`}
+                className="notification-link"
+              >
+                <div className="image-wrapper">
+                  <img src={item.image} alt={item.title} />
+                </div>
+                <div className="content-wrapper">
+                  <h2 title={item.title}>{item.title}</h2>
+                </div>
+              </Link>
+            </article>
+          ))}
         </div>
       </section>
     </div>

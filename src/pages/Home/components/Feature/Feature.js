@@ -8,7 +8,7 @@ const Feature = () => {
     <section className="feature-section">
       <div className="feature-container">
         <div className="feature-grid">
-          <Link to="/service/bkthc" className="feature-link">
+          <Link to="/services/cns" className="feature-link">
             <div className="feature-item">
               <div className="feature-icon">
                 <i className="fas fa-satellite"></i>
@@ -18,7 +18,7 @@ const Feature = () => {
               </div>
             </div>
           </Link>
-          <Link to="/service/bkthc" className="feature-link">
+          <Link to="/services/flightcheck" className="feature-link">
             <div className="feature-item">
               <div className="feature-icon">
                 <i className="fas fa-plane"></i>
