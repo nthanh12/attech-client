@@ -165,7 +165,7 @@ const NotificationListPage = () => {
       case "recruitment":
         return "Danh sách thông báo tuyển dụng";
       case "supplier":
-        return "Danh sách thông báo mới nhà cung cấp";
+        return "Danh sách thông báo mời nhà cung cấp";
       case "others":
         return "Danh sách thông báo khác";
       default:

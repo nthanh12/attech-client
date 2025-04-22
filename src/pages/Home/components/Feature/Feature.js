@@ -85,7 +85,6 @@ const Feature = () => {
           </div>
         </Link>
 
-        {/* Slider thông báo */}
         <div className="notify-wrapper">
           <Swiper
             modules={[Pagination, Autoplay]}
@@ -103,7 +102,7 @@ const Feature = () => {
                 <div className="notify-item" title={item.title}>
                   <div className="notify-img">
                     <img src={item.image} alt={item.alt} loading="lazy" />
-                    <span className="news-badge">Thông báo</span>
+                    <span className="news-badge">Tin nổi bật</span>
                   </div>
                   <p className="notify-title">{item.title}</p>
                 </div>

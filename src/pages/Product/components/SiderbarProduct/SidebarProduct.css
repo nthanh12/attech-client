@@ -1,74 +1,28 @@
-.page-product .sidebar-product {
-  position: fixed;
-  width: var(--sp-navbar-width);
-  background-color: var(--mainColor);
-  height: 100vh;
-  transition: width 0.3s ease, background-color 0.3s ease;
-}
-.page-product .sidebar-product.resize {
-  width: var(--sp-navbar-width-min);
-}
-.sidebar-product.resize .sp-nav-button span {
-  opacity: 0;
-  visibility: hidden;
-}
-.sidebar-product .sp-nav-button {
-  margin: 0 16px;
-  display: flex;
-  position: relative;
-  align-items: center;
-  color: var(--sp-navbar-light-secondary);
-  direction: ltr;
-  cursor: pointer;
-  z-index: 1;
-  transition: color 0.2s;
-}
-.sp-nav-button i {
-  display: flex;
-  color: #ffffff;
-  justify-content: center;
-  align-items: center;
-  min-width: 40px;
-  height: 40px;
-}
-.sp-nav-button span {
-  margin-left: 8px;
-  font-size: 14px;
-  color: #ffffff;
-  visibility: visible;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: opacity 0.3s, visibility 0.3s;
-  position: relative;
-}
-
-.sp-nav-button:hover span {
-  overflow: visible;
-  text-overflow: unset;
-  white-space: normal;
-  padding: 4px 8px;
-  border-radius: 4px;
-  z-index: 10;
-}
-
-.sp-nav-button:hover {
-  background-color: rgba(161, 182, 221, 0.1);
-  border-radius: 8px;
-  color: var(--sp-navbar-dark-primary);
-}
-
 :root {
+  --sp-navbar-width: 280px;
+  --sp-navbar-width-min: 60px;
   --sp-navbar-dark-primary: #18283b;
   --sp-navbar-dark-secondary: #2c3e50;
   --sp-navbar-light-primary: #83c8e7;
   --sp-navbar-light-secondary: #8392a5;
 }
 
+.page-product .sidebar-product {
+  position: fixed;
+  width: 280px;
+  background-color: var(--mainColor);
+  height: 100vh;
+  transition: width 0.3s ease;
+  overflow-y: auto;
+}
+
+.page-product .sidebar-product.resize {
+  width: 60px;
+}
+
 .top-sidebar {
   margin: 8px 20px 0;
   display: flex;
-  justify-content: start;
   align-items: center;
   padding-bottom: 10px;
 }
@@ -78,30 +32,88 @@
   font-size: 26px;
   background-color: transparent;
   color: #ffffff;
-  height: 40px;
+  cursor: pointer;
 }
 
 .top-sidebar span {
   font-size: 26px;
   margin-left: 10px;
   color: #ffffff;
-  visibility: visible;
   white-space: nowrap;
-  overflow: hidden;
   transition: opacity 0.3s, visibility 0.3s;
-  opacity: 1;
 }
 
+.sidebar-product.resize .top-sidebar span {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.sp-nav-button {
+  display: flex;
+  align-items: center;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 8px 0;
+  margin: 4px 16px;
+  border-radius: 8px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sp-nav-button i:first-child {
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sp-nav-button span {
+  flex: 1;
+  margin-left: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.sp-nav-button i.fa-chevron-right,
+.sp-nav-button i.fa-chevron-down {
+  margin-left: auto;
+  transition: transform 0.3s;
+}
+
+.sp-nav-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--sp-navbar-light-primary);
+}
+
+.sidebar-product.resize .sp-nav-button span,
+.sidebar-product.resize .sp-nav-button i.fa-chevron-right,
+.sidebar-product.resize .sp-nav-button i.fa-chevron-down {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Sub Category Button */
 .sub-nav-button {
   display: flex;
   align-items: center;
-  color: var(--sp-navbar-light-secondary);
+  color: #ffffff;
   cursor: pointer;
-  padding: 8px 8px;
-  transition: background-color 0.2s, color 0.2s;
-  justify-content: space-between;
+  padding: 8px;
+  margin: 4px 24px;
   border-radius: 4px;
-  margin: 0 24px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sub-nav-button span {
+  flex: 1;
+  margin-left: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .sub-nav-button i {
@@ -110,60 +122,37 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
-}
-
-.sub-nav-button span {
-  margin-left: 8px;
-  font-size: 14px;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: opacity 0.3s, visibility 0.3s;
 }
 
 .sub-nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: var(--sp-navbar-dark-primary);
+  color: var(--sp-navbar-light-primary);
 }
 
-.sidebar-product.resize .sub-nav-button span {
+.sidebar-product.resize .sub-nav-button span,
+.sidebar-product.resize .sub-nav-button i.fa-chevron-right,
+.sidebar-product.resize .sub-nav-button i.fa-chevron-down {
   opacity: 0;
   visibility: hidden;
 }
 
-.sp-nav-button i.fa-chevron-right,
-.sp-nav-button i.fa-chevron-down {
-  margin-left: auto;
-  transition: transform 0.3s;
-  color: #ffffff;
-}
-
-.sidebar-product.resize .sp-nav-button i.fa-chevron-right,
-.sidebar-product.resize .sp-nav-button i.fa-chevron-down {
-  opacity: 0;
-  visibility: hidden;
-}
-
+/* Nested Sub Category Button */
 .nested-sub-nav-button {
-  margin: 0 16px 0 30px;
   display: flex;
   align-items: center;
-  color: var(--sp-navbar-light-secondary);
+  color: #ffffff;
   cursor: pointer;
-  padding: 6px 0 6px 16px;
-  transition: background-color 0.2s, color 0.2s;
+  padding: 6px 16px;
+  margin: 4px 30px;
   border-radius: 4px;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .nested-sub-nav-button span {
   font-size: 13px;
-  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  transition: opacity 0.3s, visibility 0.3s;
 }
 
 .nested-sub-nav-button:hover {
@@ -185,35 +174,21 @@
   }
 
   .page-product .sidebar-product.resize {
-    width: 100%;
-    max-width: 300px;
     left: 0;
   }
 
   .sidebar-product .sp-nav-button span,
   .sidebar-product .sub-nav-button span,
-  .sidebar-product .nested-sub-nav-button span {
+  .sidebar-product .nested-sub-nav-button span,
+  .sidebar-product .sp-nav-button i.fa-chevron-right,
+  .sidebar-product .sp-nav-button i.fa-chevron-down,
+  .sidebar-product .sub-nav-button i.fa-chevron-right,
+  .sidebar-product .sub-nav-button i.fa-chevron-down {
     opacity: 1;
     visibility: visible;
   }
 
-  .sidebar-product.resize .sp-nav-button span,
-  .sidebar-product.resize .sub-nav-button span,
-  .sidebar-product.resize .nested-sub-nav-button span {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .sidebar-product.resize .sp-nav-button i.fa-chevron-right,
-  .sidebar-product.resize .sp-nav-button i.fa-chevron-down {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .top-sidebar span {
-    font-size: 20px;
-  }
-
+  .top-sidebar span,
   .top-sidebar button {
     font-size: 20px;
   }
@@ -232,10 +207,7 @@
     font-size: 10px;
   }
 
-  .top-sidebar span {
-    font-size: 18px;
-  }
-
+  .top-sidebar span,
   .top-sidebar button {
     font-size: 18px;
   }

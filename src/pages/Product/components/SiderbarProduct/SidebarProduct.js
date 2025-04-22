@@ -58,6 +58,71 @@ const categories = [
   },
 ];
 
+const CategoryItem = ({
+  category,
+  isOpen,
+  toggleCategory,
+  expandedSubCategory,
+  toggleSubCategory,
+  isSidebarResized,
+}) => {
+  return (
+    <div className="category-item">
+      <div
+        className="sp-nav-button"
+        onClick={() => toggleCategory(category.id)}
+        title={category.name}
+      >
+        <i className={category.icon}></i>
+        {!isSidebarResized && <span>{category.name}</span>}
+        <i
+          className={`fas ${isOpen ? "fa-chevron-down" : "fa-chevron-right"}`}
+        ></i>
+      </div>
+
+      {isOpen && (
+        <div className="sub-categories">
+          {category.subCategories.map((sub, index) =>
+            typeof sub === "string" ? (
+              <div key={index} className="sub-nav-button">
+                {!isSidebarResized && <span>{sub}</span>}
+              </div>
+            ) : (
+              <div key={sub.name} className="sub-category-item">
+                <div
+                  className="sub-nav-button"
+                  onClick={() => toggleSubCategory(sub.name)}
+                  title={sub.name}
+                >
+                  {!isSidebarResized && <span>{sub.name}</span>}
+                  {!isSidebarResized && (
+                    <i
+                      className={`fas ${
+                        expandedSubCategory === sub.name
+                          ? "fa-chevron-down"
+                          : "fa-chevron-right"
+                      }`}
+                    ></i>
+                  )}
+                </div>
+                {expandedSubCategory === sub.name && (
+                  <div className="nested-sub-categories">
+                    {sub.nestedSubCategories?.map((nested, idx) => (
+                      <div key={idx} className="nested-sub-nav-button">
+                        {!isSidebarResized && <span>{nested}</span>}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const SidebarProduct = ({ openSidebar, setOpenSidebar }) => {
   const [expandedCategory, setExpandedCategory] = useState(null);
   const [expandedSubCategory, setExpandedSubCategory] = useState(null);
@@ -71,70 +136,33 @@ const SidebarProduct = ({ openSidebar, setOpenSidebar }) => {
   };
 
   return (
-    <div className={openSidebar ? "sidebar-product resize" : "sidebar-product"}>
+    <div className={`sidebar-product ${openSidebar ? "resize" : ""}`}>
       <div className="top-sidebar">
-        <button onClick={() => setOpenSidebar(!openSidebar)}>
-          <i className="fa fa-solid fa-bars"></i>
-        </button>
-        <div>{!openSidebar && <span>SẢN PHẨM</span>}</div>
-        <hr />
-      </div>
-      {categories.map((category) => (
-        <div key={category.id}>
-          <div
-            className="sp-nav-button"
-            onClick={() => toggleCategory(category.id)}
+        <div className="top-sidebar-content">
+          <button
+            onClick={() => setOpenSidebar(!openSidebar)}
+            aria-label="Toggle Sidebar"
+            className="toggle-button"
           >
-            {!openSidebar && <span>{category.name}</span>}
-            <i
-              className={`fas ${
-                expandedCategory === category.id
-                  ? "fa-chevron-down"
-                  : "fa-chevron-right"
-              }`}
-            ></i>
-          </div>
-
-          {expandedCategory === category.id && (
-            <>
-              {category.subCategories.map((sub, index) =>
-                typeof sub === "string" ? (
-                  <div key={index} className="sub-nav-button">
-                    {!openSidebar && <span>{sub}</span>}
-                  </div>
-                ) : (
-                  <div key={sub.name}>
-                    <div
-                      className="sub-nav-button"
-                      onClick={() => toggleSubCategory(sub.name)}
-                    >
-                      {!openSidebar && <span>{sub.name}</span>}
-                      {!openSidebar && (
-                        <i
-                          className={`fas ${
-                            expandedSubCategory === sub.name
-                              ? "fa-chevron-down"
-                              : "fa-chevron-right"
-                          }`}
-                        ></i>
-                      )}
-                    </div>
-                    {expandedSubCategory === sub.name && (
-                      <>
-                        {sub.nestedSubCategories?.map((nested, idx) => (
-                          <div key={idx} className="nested-sub-nav-button">
-                            {!openSidebar && <span>{nested}</span>}
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </div>
-                )
-              )}
-            </>
-          )}
+            <i className="fa fa-solid fa-bars"></i>
+          </button>
+          {!openSidebar && <span className="sidebar-title">SẢN PHẨM</span>}
         </div>
-      ))}
+        <hr className="sidebar-divider" />
+      </div>
+      <div className="categories">
+        {categories.map((category) => (
+          <CategoryItem
+            key={category.id}
+            category={category}
+            isOpen={expandedCategory === category.id}
+            toggleCategory={toggleCategory}
+            expandedSubCategory={expandedSubCategory}
+            toggleSubCategory={toggleSubCategory}
+            isSidebarResized={openSidebar}
+          />
+        ))}
+      </div>
     </div>
   );
 };

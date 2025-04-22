@@ -85,7 +85,7 @@
 }
 
 .carousel .carousel-indicators li.active {
-    border: 10px solid #0d6efd; /* Thay var(--bs-primary) */
+    border: 10px solid #0d6efd;
 }
 
 .carousel .carousel-control-prev,

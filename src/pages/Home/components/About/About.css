@@ -1,14 +1,47 @@
 .about-hero {
   height: 100vh;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  transition: background-image 1s ease-in-out;
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-  padding: 100px 0;
+}
+
+.about-hero-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.about-hero-column {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  opacity: 0; /* Initial state for AOS animation */
+}
+
+.about-hero-column[data-aos="fade-up"] {
+  opacity: 1; /* Ensure AOS handles opacity transition */
+}
+
+.about-hero-images {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.carousel-image.active {
+  opacity: 1;
 }
 
 .about-hero-overlay {
@@ -25,51 +58,27 @@
   color: white;
   text-align: center;
   padding: 20px;
-  max-width: 800px;
+  max-width: 80%;
   z-index: 2;
-  position: relative; /* Added to ensure proper stacking context */
+  position: relative;
 }
 
 .about-hero-content h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
   color: #ffffff;
   font-weight: bold;
 }
 
 .about-hero-content p {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   line-height: 1.6;
-  margin-bottom: 25px; /* Added to create space above button */
-}
-
-.about-wave,
-.about-wave-top {
-  position: absolute;
-  width: 100%;
-  line-height: 0;
-  z-index: 2;
-  pointer-events: none; /* Ensures waves don't block clicks */
-}
-
-.about-wave {
-  bottom: 0;
-}
-
-.about-wave-top {
-  top: 0;
-}
-
-.about-wave svg,
-.about-wave-top svg {
-  display: block;
-  width: 100%;
-  height: auto;
+  margin-bottom: 25px;
 }
 
 .custom-btn-group {
   position: relative;
-  z-index: 10; /* Higher z-index to ensure clickability */
+  z-index: 10;
 }
 
 .custom-btn-more {
@@ -84,10 +93,7 @@
   transition: all 0.3s ease;
   border: 2px solid #ffffff;
   cursor: pointer;
-  position: relative; 
-  z-index: 5;
   background-color: transparent;
-
 }
 
 .custom-btn-more:hover {
@@ -98,24 +104,47 @@
   box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
 }
 
-/* Active effect (when pressed) */
 .custom-btn-more:active {
   transform: translateY(1px);
   box-shadow: none;
 }
 
-/* Ensure responsiveness */
-@media (max-width: 768px) {
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .about-hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .about-hero-content p {
+    font-size: 1rem;
+  }
+
   .custom-btn-more {
     padding: 10px 25px;
     font-size: 14px;
   }
-  
-  .about-hero-content h1 {
-    font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+  .about-hero-container {
+    flex-direction: column;
   }
-  
+
+  .about-hero-column {
+    width: 100%;
+    height: 33.33vh;
+  }
+
+  .about-hero-content h1 {
+    font-size: 1.5rem;
+  }
+
   .about-hero-content p {
-    font-size: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .custom-btn-more {
+    padding: 8px 20px;
+    font-size: 12px;
   }
 }

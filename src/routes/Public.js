@@ -62,7 +62,7 @@ const Public = () => {
         />
 
         {/* Company info */}
-        <Route path="/company-info/*" element={<CompanyInfoPage />} />
+        <Route path="/company/*" element={<CompanyInfoPage />} />
 
         {/* Contact */}
         <Route path="/contact" element={<ContactPage />} />
