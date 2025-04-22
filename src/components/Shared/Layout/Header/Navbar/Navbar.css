@@ -43,7 +43,7 @@
     font-weight: bold;
     display: block;
     transition: all 0.3s;
-    font-size: 16px;
+    font-size: 14px;
   }
   
   .nav-item.dropdown:hover > .nav-link {
@@ -93,11 +93,11 @@
     border-color: #002a5c;
   }
   
-  .logo {
+  .navbar-scrolled .logo {
     margin-right: 20px;
   }
   
-  .logo img {
+  .navbar-scrolled .logo img {
     height: 60px;
     line-height: 60px;
     overflow: hidden;

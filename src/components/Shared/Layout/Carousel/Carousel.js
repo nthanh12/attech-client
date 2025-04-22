@@ -1,46 +1,59 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Carousel.css";
-import img1 from "../../../../assets/imgs/carousel-1.jpg";
-import img2 from "../../../../assets/imgs/carousel-2.jpg";
-import img3 from "../../../../assets/imgs/carousel-3.jpg";
-import img4 from "../../../../assets/img/attech-photo/2017-01-13.jpg";
 
 const Carousel = () => {
-  const img5 = "https://vatm.vn/uploads/2024/07/tru-so-tct.jpg";
+  const slides = [
+    {
+      img: "https://vatm.vn/uploads/2024/07/tru-so-tct.jpg",
+      title: "SÁNG TẠO & THÍCH NGHI",
+      subtitle:
+        "Điều gì làm nên sự khác biệt trong quản lý bay? Hãy để ATTECH dẫn lối.",
+    },
+    {
+      img: "https://vatm.vn/uploads/2024/07/wep-new-dien-thoai-an-toan.jpg",
+      title: "CÔNG NGHỆ TIÊN TIẾN",
+      subtitle: "Khám phá các giải pháp quản lý bay hiện đại.",
+    },
+    {
+      img: "https://attech.com.vn/en/wp-content/uploads/sites/5/2015/09/Toa-B-slidef.jpg",
+      title: "AN TOÀN HÀNG ĐẦU",
+      subtitle: "Đảm bảo an toàn bay với công nghệ tối ưu.",
+    },
+  ];
+
   return (
     <div className="container-fluid overflow-hidden px-0">
-      <div id="carouselId" className="carousel slide" data-bs-ride="carousel">
+      <div
+        id="carouselId"
+        className="carousel slide"
+        data-bs-ride="carousel"
+        data-bs-pause="hover"
+      >
         <div className="carousel-inner" role="listbox">
-          <div className="carousel-item active">
-            <img src={img5} className="img-fluid w-100" alt="First slide" />
-            <div className="carousel-caption">
-              <p className="text-uppercase text-secondary fs-4 mb-0"></p>
-              <h1 className="display-1 text-capitalize text-white mb-4 text-carou">
-                SÁNG TẠO & THÍCH NGHI
-              </h1>
-              {/* <p className="mb-5 fs-5 intro-sub">
-                Điều gì làm nên sự khác biệt trong quản lý bay? Hãy để ATTECH
-                dẫn lối.
-              </p> */}
-              <div className="d-flex justify-content-center">
-                <Link
-                  className="carousel-btn-left py-3 px-5 me-2 flex-shrink-0"
-                  to="/contact"
-                >
-                  Liên hệ
-                </Link>
-                <Link
-                  className="btn btn-secondary carousel-btn-right d-inline-block py-3 px-5 ms-2 flex-shrink-0"
-                  to="/company-info"
-                >
-                  Xem thêm
-                </Link>
-              </div>
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className={`carousel-item ${index === 0 ? "active" : ""}`}
+              data-bs-interval="10000"
+            >
+              <img
+                src={slide.img}
+                className="img-fluid w-100"
+                alt={`Slide ${index + 1}`}
+              />
+              {/* <div className="carousel-caption">
+                <p className="text-uppercase text-secondary fs-4 mb-0"></p>
+                <h1 className="display-1 text-capitalize text-white mb-4 text-carou">
+                  {slide.title}
+                </h1>
+                <p className="mb-5 fs-5 intro-sub">{slide.subtitle}</p>
+              </div> */}
             </div>
-          </div>
+          ))}
         </div>
-        {/* <button
+        {/* Nút điều hướng thủ công */}
+        <button
           className="carousel-control-prev"
           type="button"
           data-bs-target="#carouselId"
@@ -63,7 +76,21 @@ const Carousel = () => {
             aria-hidden="true"
           ></span>
           <span className="visually-hidden">Next</span>
-        </button> */}
+        </button>
+        {/* Chỉ báo (indicators) */}
+        <div className="carousel-indicators">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              data-bs-target="#carouselId"
+              data-bs-slide-to={index}
+              className={index === 0 ? "active" : ""}
+              aria-current={index === 0 ? "true" : "false"}
+              aria-label={`Slide ${index + 1}`}
+            ></button>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -16,9 +16,9 @@ const Home = () => {
     <>
       <Carousel />
       <Feature />
-      <Banner />
-      <AlertBox />
+      {/* <Banner /> */}
       <About />
+      <AlertBox />
       <Fact />
       <PartNews />
       {/* <NotificationList /> */}

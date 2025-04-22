@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import "./About.css";
 import { Link } from "react-router-dom";
 
-import about_img1 from "../../../../assets/img/featured_img1.jpg";
-import about_img2 from "../../../../assets/img/featured_img2.jpg";
-import about_img3 from "../../../../assets/img/featured_img3.jpg";
+import about_img1 from "../../../../assets/img/feature-cns.jpg";
+import about_img2 from "../../../../assets/img/feature-fi.jpg";
+import about_img3 from "../../../../assets/img/feature-ai.jpg";
 
 const products = [
   {

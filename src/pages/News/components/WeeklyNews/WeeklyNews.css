@@ -51,9 +51,9 @@
     left: 0;
     right: 0;
     padding: 10px;
-    background: rgba(68, 64, 64, 0.6); /* Lớp nền đen mờ */
+    background: rgba(68, 64, 64, 0.6);
     border-radius: 6px;
-    color: #fff; /* Màu chữ trắng để dễ nhìn */
+    color: #fff;
     opacity: 1;
     visibility: visible;
     transition: all 0.3s ease;
@@ -74,12 +74,12 @@
     color: #ffffff;
     text-decoration: none;
     font-weight: 700;
-    line-height: 1.4; /* Khoảng cách giữa các dòng */
-    display: -webkit-box; /* Hiển thị như một hộp linh hoạt */
-    -webkit-box-orient: vertical; /* Hướng hiển thị theo chiều dọc */
-    -webkit-line-clamp: 2; /* Giới hạn tối đa 2 dòng */
-    overflow: hidden; /* Ẩn phần vượt quá */
-    text-overflow: ellipsis; /* Hiển thị dấu "..." nếu nội dung bị cắt */
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* .weekly-news-area .weekly-wrapper .weekly-single .weekly-caption h4 a:hover {

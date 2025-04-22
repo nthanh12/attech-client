@@ -1,13 +1,11 @@
-
-/*** Carousel Start ***/
 .carousel .carousel-inner .carousel-item {
     position: relative;
     overflow: hidden;
-    height: 100vh;
+    height: 60vh;
 }
 
 .carousel .carousel-inner .carousel-item img {
-    animation-name: image-zoom ;
+    animation-name: image-zoom;
     animation-duration: 10s;
     animation-delay: 1s;
     animation-direction: alternate;
@@ -17,13 +15,9 @@
 
 @keyframes image-zoom {
     0%  {width: 100%; height: 100%; -webkit-filter: blur(0px); opacity: 1;}
-
     25% {width: 115%; height: 115%; -webkit-filter: blur(3px); opacity: 0.95;}
-
     50% {width: 130%; height: 130%; -webkit-filter: blur(10px); opacity: 0.85;}
-
     75% {width: 115%; height: 115%; -webkit-filter: blur(3px); opacity: 0.95;}
-
     100% {width: 100%; height: 100%; -webkit-filter: blur(0px); opacity: 1;}
 }
 
@@ -48,7 +42,6 @@
     .carousel-item .carousel-caption h1 {
         font-size: 36px;
     }
-
     .carousel-item .carousel-caption p.fs-5 {
         font-size: 15px;
     }
@@ -82,19 +75,17 @@
     z-index: 5;
 }
 
-.carousel .carousel-indicators li,
-.carousel .carousel-indicators li,
 .carousel .carousel-indicators li {
     margin-right: 30px !important;
     width: 10px;
     height: 10px;
-    border: 6px solid var(--bs-secondary);
-    background: var(--bs-white);
+    border: 6px solid #6c757d;
+    background: #ffffff;
     transition: 0.5s;
 }
 
 .carousel .carousel-indicators li.active {
-    border: 10px solid var(--bs-primary);
+    border: 10px solid #0d6efd; /* Thay var(--bs-primary) */
 }
 
 .carousel .carousel-control-prev,
@@ -106,86 +97,23 @@
     position: absolute;
     left: 0;
     padding: 25px 30px;
-    background: var(--bs-primary);
-
 }
 
 .carousel .carousel-control-next .carousel-control-next-icon {
     position: absolute;
     right: 0;
     padding: 25px 30px;
-    background: var(--bs-primary);
-
 }
 
 .carousel .carousel-control-prev .carousel-control-prev-icon:hover,
 .carousel .carousel-control-next .carousel-control-next-icon:hover {
-    background: var(--bs-secondary);
-    color: var(--bs-white);
+    color: #ffffff;
 }
+
 .intro-sub {
     color: #b2d7fd;
 }
-.carousel-btn-left {
-    background: linear-gradient(135deg, #1a2980, #26D0CE);
-    color: #ffffff;
-    padding: 12px 18px;
-    font-size: 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    /* text-transform: uppercase; */
-    letter-spacing: 1px;
-    font-weight: 500;
-    position: relative;
-    overflow: hidden;
-    min-width: 180px; 
-    text-align: center;
-}
 
-.carousel-btn-right {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #ffffff;
-    padding: 12px 18px;
-    font-size: 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    /* text-transform: uppercase; */
-    letter-spacing: 1px;
-    min-width: 180px; 
-    text-align: center;
-    font-weight: 500;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Hover Effects */
-.carousel-btn-left:hover {
-    background: linear-gradient(135deg, #26D0CE, #1a2980);
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-}
-
-.carousel-btn-right:hover {
-    background: linear-gradient(135deg, #2c5364, #203a43, #0f2027);
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-}
-
-/* Optional: Subtle Pulse Effect */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.carousel-btn-left:active,
-.carousel-btn-right:active {
-    animation: pulse 0.3s linear;
-}
 .text-carou {
     font-size: 4rem;
 }
