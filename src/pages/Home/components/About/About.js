@@ -4,26 +4,34 @@ import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import about_img1 from "../../../../assets/img/feature-cns.jpg";
-import about_img2 from "../../../../assets/img/feature-fi.jpg";
-import about_img3 from "../../../../assets/img/feature-ai.jpg";
+import about_cns1 from "../../../../assets/img/cns/about_cns1.jpg";
+import about_cns2 from "../../../../assets/img/cns/about_cns2.jpg";
+import about_cns3 from "../../../../assets/img/cns/about_cns3.jpg";
+import about_cns4 from "../../../../assets/img/cns/about_cns4.jpg";
+import about_cns5 from "../../../../assets/img/cns/about_cns5.jpg";
+import about_fi1 from "../../../../assets/img/bay-kthc/fi1.jpg";
+import about_fi2 from "../../../../assets/img/bay-kthc/fi2.jpg";
+import about_fi3 from "../../../../assets/img/bay-kthc/fi3.jpg";
+import about_ai1 from "../../../../assets/img/feature-cns.jpg";
+import about_ai2 from "../../../../assets/img/feature-fi.jpg";
+import about_ai3 from "../../../../assets/img/feature-ai.jpg";
 
 const products = [
   {
     title: "CNS / ATM",
-    images: [about_img1, about_img2, about_img3],
+    images: [about_cns1, about_cns2, about_cns3, about_cns4, about_cns5],
     description:
       "Cung cấp dịch vụ chuyên ngành Thông tin, Dẫn đường, Giám sát hàng không hàng đầu tại Việt Nam.",
   },
   {
     title: "Bay kiểm tra hiệu chuẩn",
-    images: [about_img2, about_img3, about_img1],
+    images: [about_fi1, about_fi2, about_fi3],
     description:
       "Bay hiệu chuẩn hệ thống ILS đến Cat III. Xử lý & lưu trữ dữ liệu bay trong thời gian thực.",
   },
   {
     title: "Công nghiệp hàng không",
-    images: [about_img3, about_img1, about_img2],
+    images: [about_ai1, about_ai2, about_ai3],
     description:
       "Đổi mới công nghệ, tiên phong phát triển ngành hàng không toàn cầu.",
   },

@@ -9,7 +9,7 @@
 
 .page-product .sidebar-product {
   position: fixed;
-  width: 280px;
+  width: var(--sp-navbar-width);
   background-color: var(--mainColor);
   height: 100vh;
   transition: width 0.3s ease;

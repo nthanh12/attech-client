@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../CompanyInfoPage/CompanyInfoPage.css";
 import { Route, Routes } from "react-router-dom";
 import ContentInfo from "../components/Content/ContentInfo";
-import photo from "../../../assets/img/attech-photo/2017-01-13.jpg";
+import photo from "../../../assets/img/attech-photo/anh_cong_ty.jpg";
 import photo_sub from "../../../assets/img/attech-photo/2021-05-15.jpg";
 import Structure from "../components/Structure/Structure";
 import History from "../components/History/History";

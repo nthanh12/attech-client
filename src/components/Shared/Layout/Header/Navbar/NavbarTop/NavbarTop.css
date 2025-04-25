@@ -1,3 +1,4 @@
+/* General styles */
 .fixed-top {
     position: fixed;
     top: 0;
@@ -5,41 +6,39 @@
     left: 0;
     z-index: 1030;
 }
+
 .navbar-top .logo-navbar-top {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     justify-content: flex-start;
-    width: 55%;
+    flex: 1;
 }
-.navbar-top .logo-navbar-top .company-name {
-}
+
 .navbar-top .logo-navbar-top .company-name h4 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 900;
+    font-size: 14px;
+    font-weight: 700;
     color: #0f9fdb;
     text-transform: uppercase;
+    line-height: 1.2;
 }
-.navbar-top .logo-company svg {
+
+.navbar-top .logo-company img {
     display: block;
-    height: 60px;
+    height: 70px;
+    width: auto;
 }
 
 .navbar-top .navbar {
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
+    padding: 8px 15px;
     display: flex;
-    /* justify-content: center; */
-    padding-top: 8px;
-    flex-direction: row;
-    padding-bottom: 8px;
+    align-items: center;
+    position: relative; /* Ensure positioning context for children */
 }
 
-.bg-transparent {
-    background-color: transparent !important;
-}
-
-/* Hiệu ứng backdrop cho navbar trong suốt */
+/* Backdrop effect */
 .navbar::before {
     content: "";
     position: absolute;
@@ -52,29 +51,35 @@
     z-index: -1;
 }
 
-/* Căn giữa các phần tử navbar */
+/* Navbar collapse */
 #navbarCollapse {
-    justify-content: center;
-    width: 100%;
+    justify-content: flex-end;
+    flex: 1;
 }
 
 .navbar-nav {
     display: flex;
     align-items: center;
+    gap: 15px;
 }
 
-/* Nút toggler */
+.navbar-top .navbar-dark .navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+/* Toggler button */
 .navbar-toggler {
     border: none;
     background: rgba(255, 255, 255, 0.2);
-    padding: 12px;
+    padding: 10px;
     border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    display: none; /* Ẩn mặc định */
+    width: 40px;
+    height: 40px;
+    display: none;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
+    transition: all 0.3s ease;
+    z-index: 1050; /* Ensure toggler is above other elements */
 }
 
 .navbar-toggler:focus {
@@ -88,155 +93,263 @@
 }
 
 .fa-bars {
-    color: white;
-    font-size: 18px;
+    color: var(--mainColor);
+    font-size: 16px;
 }
 
-/* Desktop: ẩn toggler, hiển thị navbar */
-@media (min-width: 992px) {
-    .navbar-toggler {
-        display: none; /* Ẩn nút toggler trên desktop */
-    }
-    .navbar-collapse {
-        display: flex; /* Hiển thị nội dung navbar trên desktop */
-    }
-    #navbarCollapse {
-        display: flex; /* Đảm bảo căn giữa trên desktop */
-    }
-}
-
-/* Mobile: hiển thị toggler, ẩn navbar collapse mặc định */
-@media (max-width: 991.98px) {
-    .navbar-toggler {
-        display: flex; /* Hiển thị nút toggler trên mobile */
-    }
-    .navbar-collapse {
-        display: none; /* Ẩn nội dung navbar mặc định trên mobile */
-    }
-    .navbar-collapse.show {
-        display: block; /* Hiển thị khi nhấp toggler */
-    }
-    .navbar {
-        padding: 20px;
-        /* background-color: rgba(0, 42, 92, 0.95) !important; */
-        backdrop-filter: blur(10px);
-        justify-content: flex-start;
-        background: none;
-    }
-    #navbarCollapse {
-        justify-content: flex-start;
-    }
-    .navbar-collapse {
-        background-color: rgba(0, 42, 92, 0.95);
-        border-radius: 15px;
-        padding: 20px;
-        margin-top: 15px;
-    }
-    .navbar-nav {
-        align-items: flex-start;
-    }
-}
-
-/* Các kiểu khác giữ nguyên */
+/* Nav links */
 .navbar-dark .navbar-nav .nav-link {
     color: #ffffff;
-    font-weight: 600;
-    /* font-size: 16px; */
-    letter-spacing: 1px;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.5px;
     position: relative;
+    padding: 8px 12px;
     transition: all 0.3s ease;
 }
 
 .navbar-dark .navbar-nav .nav-link::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
+    border-radius: 20px;
     opacity: 0;
     transition: all 0.3s ease;
     transform: scale(0.8);
     z-index: -1;
 }
 
-.navbar-top .navbar-dark .navbar-nav .nav-link:hover::before,
-.navbar-top .navbar-dark .navbar-nav .nav-link.active::before {
+.navbar-dark .navbar-nav .nav-link:hover::before,
+.navbar-dark .navbar-nav .nav-link.active::before {
     opacity: 1;
     transform: scale(1);
 }
 
-.navbar-dark .navbar-nav .nav-link::after {
-    content: '';
-    width: 0;
-    height: 2px;
-    bottom: 5px;
-    transition: width 0.3s;
-}
-
+/* Dropdown menu */
 .dropdown-menu {
-    background-color: rgb(53 93 140 / 80%);
+    background-color: rgba(53, 93, 140, 0.9);
     border: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    min-width: 230px;
-}
-
-.dropdown-menu::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 20px;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    border-radius: 10px;
+    margin-top: 10px;
 }
 
 .dropdown-item {
     color: white;
-    padding: 10px 15px;
-    transition: all 0.3s;
+    padding: 8px 15px;
+    font-size: 13px;
+    transition: all 0.3s ease;
 }
 
 .dropdown-item:hover {
-    background-color: rgba(15, 159, 219, 0.3);
+    background-color: rgba(15, 159, 219, 0.4);
     color: #ffffff;
 }
 
 .nav-item.dropdown:hover > .dropdown-menu {
-    animation: fadeIn 0.4s ease;
+    animation: fadeIn 0.3s ease;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-@media (max-width: 768px) {
-    .navbar-nav {
-        text-align: center;
-    }
-    .dropdown-menu {
-        background-color: rgba(15, 159, 219, 0.2);
-        text-align: center;
-    }
-    .dropdown-menu::before {
-        display: none;
-    }
+/* Search button */
+.navbar-top .searchbtn {
+    color: #ffffff;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
 }
 
 .navbar-top .searchbtn:hover {
     background-color: rgba(15, 159, 219, 0.3);
 }
-.navbar-top .searchbtn {
-    color: #ffffff;
-}
-.navbar-top .navbar-dark .navbar-nav .nav-link {
-    color: #ffffff;
+
+/* Desktop (min-width: 1200px) */
+@media (min-width: 1200px) {
+    .navbar-toggler {
+        display: none;
+    }
+    .navbar-collapse {
+        display: flex !important;
+    }
+    .navbar-top .logo-navbar-top {
+        width: auto;
+        max-width: 35%;
+    }
+    .navbar-top .logo-navbar-top .company-name h4 {
+        font-size: 16px;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+        font-size: 15px;
+    }
 }
 
-@media (max-width: 480px) {
+/* Intermediate range (min-width: 992px and max-width: 1200px) */
+@media (min-width: 992px) and (max-width: 1200px) {
+    .navbar-toggler {
+        display: none;
+    }
+    .navbar-top .logo-company img {
+        display: block;
+        height: 50px;
+        width: auto;
+    }
+    .navbar-nav {
+        gap: 5px;
+    }
+    .navbar-collapse {
+        display: flex !important;
+    }
+    .navbar-top .logo-navbar-top {
+        width: auto;
+        max-width: 35%;
+    }
+    .navbar-top .logo-navbar-top .company-name h4 {
+        font-size: 12px;
+    }
+    .navbar-top .navbar-dark .navbar-nav .nav-link {
+        font-size: 14px;
+        padding: 10px 5px 8px 5px;
+    }
+}
+
+/* Tablet (min-width: 768px and max-width: 991.98px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .navbar-toggler {
+        display: flex;
+    }
+    .navbar-collapse {
+        display: none;
+    }
+    .navbar-collapse.show {
+        display: block;
+        position: absolute;
+        top: 100%; /* Position below the navbar */
+        left: 0;
+        right: 0;
+        width: 100%;
+        background-color: rgba(0, 42, 92, 0.95);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 0; /* Remove margin-top to prevent gap */
+        z-index: 1040; /* Ensure it appears above other elements */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+    }
     .navbar {
-        background: none;
+        padding: 15px;
+    }
+    .navbar-nav {
+        align-items: flex-start;
+        gap: 10px;
+        flex-direction: column; /* Stack links vertically */
+    }
+    .navbar-top .logo-navbar-top {
+        max-width: 60%;
+    }
+    .navbar-top .logo-navbar-top .company-name h4 {
+        font-size: 14px;
+    }
+    .navbar-top .logo-company img {
+        height: 45px;
+    }
+}
+
+/* Mobile (max-width: 767.98px) */
+@media (max-width: 767.98px) {
+    .navbar-toggler {
+        display: flex;
+    }
+    .navbar-collapse {
+        display: none;
+    }
+    .navbar-collapse.show {
+        display: block;
+        position: absolute;
+        top: 100%; /* Position below the navbar */
+        left: 0;
+        right: 0;
+        width: 100%;
+        background-color: rgba(0, 42, 92, 0.95);
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 0; /* Remove margin-top to prevent gap */
+        z-index: 1040; /* Ensure it appears above other elements */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+    }
+    .navbar {
+        padding: 10px 15px;
+    }
+    .navbar-nav {
+        align-items: flex-start;
+        gap: 8px;
+        text-align: left;
+        flex-direction: column; /* Stack links vertically */
+    }
+    .dropdown-menu {
+        background-color: rgba(15, 159, 219, 0.3);
+        text-align: left;
+        border-radius: 8px;
+        width: 100%; /* Ensure dropdown takes full width */
+    }
+    .dropdown-menu::before {
+        display: none;
+    }
+    .navbar-top .logo-navbar-top {
+        max-width: 70%;
+        gap: 8px;
+    }
+    .navbar-top .logo-navbar-top .company-name h4 {
+        font-size: 12px;
+    }
+    .navbar-top .logo-company img {
+        height: 40px;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+}
+
+/* Extra small devices (max-width: 480px) */
+@media (max-width: 480px) {
+    .navbar-top .logo-navbar-top {
+        max-width: 80%;
+        gap: 6px;
+    }
+    .navbar-top .logo-navbar-top .company-name h4 {
+        font-size: 10px;
+    }
+    .navbar-top .logo-company img {
+        height: 35px;
+    }
+    .navbar {
+        padding: 8px 10px;
+    }
+    .navbar-toggler {
+        width: 35px;
+        height: 35px;
+        padding: 8px;
+    }
+    .fa-bars {
+        font-size: 14px;
+    }
+    .navbar-collapse.show {
+        padding: 0px;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+        font-size: 12px; 
     }
 }
