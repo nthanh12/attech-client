@@ -12,9 +12,10 @@ import about_cns5 from "../../../../assets/img/cns/about_cns5.jpg";
 import about_fi1 from "../../../../assets/img/bay-kthc/fi1.jpg";
 import about_fi2 from "../../../../assets/img/bay-kthc/fi2.jpg";
 import about_fi3 from "../../../../assets/img/bay-kthc/fi3.jpg";
-import about_ai1 from "../../../../assets/img/feature-cns.jpg";
-import about_ai2 from "../../../../assets/img/feature-fi.jpg";
-import about_ai3 from "../../../../assets/img/feature-ai.jpg";
+import about_ai1 from "../../../../assets/img/cnhk/about_ai1.jpg";
+import about_ai2 from "../../../../assets/img/cnhk/about_ai2.jpg";
+import about_ai3 from "../../../../assets/img/cnhk/about_ai3.jpg";
+import about_ai4 from "../../../../assets/img/cnhk/about_ai4.jpg";
 
 const products = [
   {
@@ -24,14 +25,14 @@ const products = [
       "Cung cấp dịch vụ chuyên ngành Thông tin, Dẫn đường, Giám sát hàng không hàng đầu tại Việt Nam.",
   },
   {
-    title: "Bay kiểm tra hiệu chuẩn",
+    title: "BAY KIỂM TRA HIỆU CHUẨN",
     images: [about_fi1, about_fi2, about_fi3],
     description:
       "Bay hiệu chuẩn hệ thống ILS đến Cat III. Xử lý & lưu trữ dữ liệu bay trong thời gian thực.",
   },
   {
-    title: "Công nghiệp hàng không",
-    images: [about_ai1, about_ai2, about_ai3],
+    title: "CÔNG NGHIỆP HÀNG KHÔNG",
+    images: [about_ai4, about_ai2, about_ai3, about_ai1],
     description:
       "Đổi mới công nghệ, tiên phong phát triển ngành hàng không toàn cầu.",
   },
@@ -82,13 +83,12 @@ export default function About() {
             </div>
             <div className="about-hero-overlay">
               <div className="about-hero-content">
-                <h1>{product.title}</h1>
-                <p>{product.description}</p>
-                <div className="custom-btn-group">
-                  <Link to="/home" className="btn custom-btn-more">
-                    Xem thêm
-                  </Link>
-                </div>
+                <h1 className="about-content-title">{product.title}</h1>
+              </div>
+              <div className="custom-btn-group">
+                <Link to="/home" className="custom-btn-more">
+                  Xem thêm
+                </Link>
               </div>
             </div>
           </div>

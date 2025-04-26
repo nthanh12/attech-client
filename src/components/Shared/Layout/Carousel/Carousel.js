@@ -2,21 +2,25 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Carousel.css";
 
+import banner1 from "../../../../assets/img/banner_attech.jpg";
+import banner2 from "../../../../assets/img/cns/about_cns4.jpg";
+import banner3 from "../../../../assets/img/cns/about_cns2.jpg";
+
 const Carousel = () => {
   const slides = [
     {
-      img: "https://vatm.vn/uploads/2024/07/tru-so-tct.jpg",
+      img: banner1,
       title: "SÁNG TẠO & THÍCH NGHI",
       subtitle:
         "Điều gì làm nên sự khác biệt trong quản lý bay? Hãy để ATTECH dẫn lối.",
     },
     {
-      img: "https://vatm.vn/uploads/2024/07/wep-new-dien-thoai-an-toan.jpg",
+      img: banner2,
       title: "CÔNG NGHỆ TIÊN TIẾN",
       subtitle: "Khám phá các giải pháp quản lý bay hiện đại.",
     },
     {
-      img: "https://attech.com.vn/en/wp-content/uploads/sites/5/2015/09/Toa-B-slidef.jpg",
+      img: banner3,
       title: "AN TOÀN HÀNG ĐẦU",
       subtitle: "Đảm bảo an toàn bay với công nghệ tối ưu.",
     },
