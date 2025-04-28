@@ -38,7 +38,6 @@ const Feature = () => {
   return (
     <section className="feature-section">
       <div className="feature-container">
-        {/* Phần dịch vụ */}
         <Link to="/services/cns" className="feature-link">
           <div
             className="feature-item"
@@ -69,7 +68,7 @@ const Feature = () => {
             </div>
           </div>
         </Link>
-        <Link to="/service/bkthc" className="feature-link">
+        <Link to="/services/aviation-tech" className="feature-link">
           <div
             className="feature-item"
             style={{ backgroundImage: `url(${aviation})` }}

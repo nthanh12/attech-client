@@ -23,18 +23,21 @@ const products = [
     images: [about_cns1, about_cns2, about_cns3, about_cns4, about_cns5],
     description:
       "Cung cấp dịch vụ chuyên ngành Thông tin, Dẫn đường, Giám sát hàng không hàng đầu tại Việt Nam.",
+    link: "/services/cns",
   },
   {
     title: "BAY KIỂM TRA HIỆU CHUẨN",
     images: [about_fi1, about_fi2, about_fi3],
     description:
       "Bay hiệu chuẩn hệ thống ILS đến Cat III. Xử lý & lưu trữ dữ liệu bay trong thời gian thực.",
+    link: "/services/flightcheck",
   },
   {
     title: "CÔNG NGHIỆP HÀNG KHÔNG",
     images: [about_ai4, about_ai2, about_ai3, about_ai1],
     description:
       "Đổi mới công nghệ, tiên phong phát triển ngành hàng không toàn cầu.",
+    link: "/services/aviation-tech",
   },
 ];
 
@@ -86,7 +89,7 @@ export default function About() {
                 <h1 className="about-content-title">{product.title}</h1>
               </div>
               <div className="custom-btn-group">
-                <Link to="/home" className="custom-btn-more">
+                <Link to={product.link} className="custom-btn-more">
                   Xem thêm
                 </Link>
               </div>

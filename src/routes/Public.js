@@ -23,6 +23,8 @@ import NotificationDetailPage from "../pages/Notification/NotificationDetailPage
 import ContactPage from "../pages/Contact/ContactPage/ContactPage";
 import CompanyInfoPage from "../pages/CompanyInfo/CompanyInfoPage/CompanyInfoPage";
 
+import NotFoundPage from "../pages/NotFound/NotFoundPage";
+
 const Public = () => {
   return (
     <>
@@ -66,6 +68,9 @@ const Public = () => {
 
         {/* Contact */}
         <Route path="/contact" element={<ContactPage />} />
+
+        {/* 404 Not Found */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
     </>
