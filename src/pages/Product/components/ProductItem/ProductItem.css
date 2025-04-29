@@ -1,200 +1,214 @@
 /* ProductItem.css */
 .product-item {
-    position: relative;
-    max-width: 100%;
-    border: none; /* Loại bỏ viền cứng */
-    border-radius: 16px; /* Bo góc mềm mại */
-    background: #fff;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Bóng nhẹ, hiện đại */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-  }
-  
-  .product-item:hover {
-    transform: translateY(-8px); /* Nâng nhẹ khi hover */
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15); /* Bóng đậm hơn */
-  }
-  
-  .product-img {
-    position: relative;
-    height: 260px; /* Tăng chiều cao hình ảnh */
-    overflow: hidden;
-  }
-  
-  .product-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease, filter 0.3s ease;
-  }
-  
-  .product-item:hover .product-img img {
-    transform: scale(1.08); /* Phóng to nhẹ */
-    filter: brightness(1.1); /* Tăng độ sáng */
-  }
-  
-  .product-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: #ff4d4f; /* Màu đỏ nổi bật */
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    z-index: 1;
-  }
-  
-  .product-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      180deg,
+  position: relative;
+  max-width: 100%;
+  border: none;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.product-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.product-img {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+}
+
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.product-item:hover .product-img img {
+  transform: scale(1.08);
+  /* Phóng to nhẹ */
+  filter: brightness(1.1);
+  /* Tăng độ sáng */
+}
+
+.product-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #ff4d4f;
+  /* Màu đỏ nổi bật */
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  z-index: 1;
+}
+
+.product-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
       rgba(0, 42, 92, 0.9),
-      rgba(0, 31, 63, 0.8)
-    ); /* Gradient hiện đại */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    padding: 20px;
+      rgba(0, 31, 63, 0.8));
+  /* Gradient hiện đại */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  padding: 20px;
+}
+
+.product-item:hover .product-overlay {
+  opacity: 1;
+}
+
+.product-overlay p {
+  color: #fff;
+  font-size: 1.1rem;
+  /* Chữ lớn hơn */
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.product-item:hover .product-overlay p {
+  opacity: 1;
+  transform: translateY(0);
+  /* Trượt lên khi hover */
+}
+
+.product-item .card-body {
+  padding: 20px;
+  /* Thoáng hơn */
+  min-height: 100px;
+  /* Đủ chỗ cho tiêu đề và giá */
+}
+
+.product-title {
+  margin: 0 0 10px 0;
+  font-size: 1.25rem;
+  /* Tiêu đề lớn hơn */
+  font-weight: 700;
+  /* Đậm hơn */
+  color: #002a5c;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  max-height: 48px;
+}
+
+.product-price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #002a5c;
+}
+
+.discounted-price {
+  color: #ff4d4f;
+  /* Màu đỏ cho giá giảm */
+  font-weight: 600;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #6c757d;
+  /* Màu xám cho giá gốc */
+  font-size: 0.9rem;
+}
+
+.card-footer {
+  padding: 15px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #002a5c, #004080);
+  /* Gradient nút */
+  border: none;
+  border-radius: 50px;
+  /* Bo tròn */
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, #001f3f, #003060);
+  /* Gradient đậm hơn */
+  transform: scale(1.05);
+  /* Phóng to nhẹ */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary i {
+  font-size: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .product-item {
+    margin-bottom: 2rem;
   }
-  
-  .product-item:hover .product-overlay {
-    opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .product-img {
+    height: 220px;
   }
-  
-  .product-overlay p {
-    color: #fff;
-    font-size: 1.1rem; /* Chữ lớn hơn */
-    font-weight: 400;
-    text-align: center;
-    line-height: 1.5;
-    margin: 0;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
-  
-  .product-item:hover .product-overlay p {
-    opacity: 1;
-    transform: translateY(0); /* Trượt lên khi hover */
-  }
-  
-  .card-body {
-    padding: 20px; /* Thoáng hơn */
-    min-height: 100px; /* Đủ chỗ cho tiêu đề và giá */
-  }
-  
+
   .product-title {
-    margin: 0 0 10px 0;
-    font-size: 1.25rem; /* Tiêu đề lớn hơn */
-    font-weight: 700; /* Đậm hơn */
-    color: #002a5c;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.4;
-    max-height: 48px;
+    font-size: 1.1rem;
+    max-height: 44px;
   }
-  
-  .product-price {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+
+  .product-overlay p {
     font-size: 1rem;
-    font-weight: 500;
-    color: #002a5c;
   }
-  
-  .discounted-price {
-    color: #ff4d4f; /* Màu đỏ cho giá giảm */
-    font-weight: 600;
-  }
-  
-  .original-price {
-    text-decoration: line-through;
-    color: #6c757d; /* Màu xám cho giá gốc */
-    font-size: 0.9rem;
-  }
-  
-  .card-footer {
-    padding: 15px;
-    background: transparent;
-    display: flex;
-    justify-content: center;
-  }
-  
+
   .btn-primary {
-    background: linear-gradient(45deg, #002a5c, #004080); /* Gradient nút */
-    border: none;
-    border-radius: 50px; /* Bo tròn */
-    padding: 10px 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #fff;
-    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 8px 20px;
+    font-size: 0.85rem;
   }
-  
-  .btn-primary:hover {
-    background: linear-gradient(45deg, #001f3f, #003060); /* Gradient đậm hơn */
-    transform: scale(1.05); /* Phóng to nhẹ */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 576px) {
+  .product-img {
+    height: 180px;
   }
-  
-  .btn-primary i {
+
+  .product-title {
     font-size: 1rem;
+    max-height: 40px;
   }
-  
-  /* Responsive adjustments */
-  @media (max-width: 992px) {
-    .product-item {
-      margin-bottom: 2rem;
-    }
+
+  .product-overlay p {
+    font-size: 0.9rem;
   }
-  
-  @media (max-width: 768px) {
-    .product-img {
-      height: 220px;
-    }
-  
-    .product-title {
-      font-size: 1.1rem;
-      max-height: 44px;
-    }
-  
-    .product-overlay p {
-      font-size: 1rem;
-    }
-  
-    .btn-primary {
-      padding: 8px 20px;
-      font-size: 0.85rem;
-    }
+
+  .product-price {
+    font-size: 0.9rem;
   }
-  
-  @media (max-width: 576px) {
-    .product-img {
-      height: 180px;
-    }
-  
-    .product-title {
-      font-size: 1rem;
-      max-height: 40px;
-    }
-  
-    .product-overlay p {
-      font-size: 0.9rem;
-    }
-  
-    .product-price {
-      font-size: 0.9rem;
-    }
-  }
+}

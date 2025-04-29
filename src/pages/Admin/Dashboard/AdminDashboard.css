@@ -1,0 +1,21 @@
+.admin-dashboard {
+    padding: 20px;
+  }
+  
+  .admin-dashboard .card {
+    transition: transform 0.2s;
+  }
+  
+  .admin-dashboard .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .admin-dashboard .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .admin-dashboard .card-text {
+    color: #007bff;
+    font-weight: bold;
+  }

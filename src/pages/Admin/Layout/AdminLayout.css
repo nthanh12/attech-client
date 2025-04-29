@@ -1,0 +1,196 @@
+/* General layout */
+.admin-layout {
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+}
+
+/* Sidebar */
+.admin-layout .sidebar {
+    width: 260px;
+    background-color: #1e293b;
+    color: #e2e8f0;
+    transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.admin-layout .sidebar.open {
+    transform: translateX(0);
+}
+
+.admin-layout .sidebar-header {
+    background-color: #17202a;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-layout .sidebar-header h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+}
+
+.admin-layout .nav-link {
+    color: #e2e8f0;
+    padding: 0.75rem 1.5rem;
+    margin: 0.25rem 1rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.admin-layout .nav-link:hover {
+    background-color: #334155;
+    color: #ffffff;
+}
+
+.admin-layout .nav-link.active {
+    background-color: #14b8a6;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.admin-layout .nav-link i {
+    font-size: 1.2rem;
+}
+
+/* Sub-menu */
+.admin-layout .sub-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0 1rem 0.5rem;
+    background-color: #2d3748; /* Slightly lighter than sidebar */
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.admin-layout .sub-menu li {
+    margin: 0;
+}
+
+.admin-layout .sub-menu .nav-link {
+    padding: 0.5rem 1.5rem 0.5rem 3rem; /* Indent sub-items */
+    font-size: 0.95rem;
+    color: #cbd5e1;
+}
+
+.admin-layout .sub-menu .nav-link:hover {
+    background-color: #475569;
+    color: #ffffff;
+}
+
+.admin-layout .sub-menu .nav-link.active {
+    background-color: #0d9488; /* Slightly darker teal */
+    color: #ffffff;
+}
+
+/* Chevron rotation for sub-menu toggle */
+.admin-layout .bi-chevron-down {
+    transition: transform 0.2s ease;
+}
+
+.admin-layout .bi-chevron-down.rotate {
+    transform: rotate(180deg);
+}
+
+/* Main Content */
+.admin-layout .main-content {
+    margin-left: 260px;
+    background-color: #f1f5f9;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s ease-in-out;
+}
+
+.admin-layout header {
+    background-color: #ffffff;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-layout header h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.admin-layout .btn-light {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: #1e293b;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.admin-layout .btn-light:hover {
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
+}
+
+/* Dropdown */
+.admin-layout .dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 0;
+    background-color: #ffffff;
+}
+
+.admin-layout .dropdown-item {
+    padding: 0.5rem 1.5rem;
+    color: #1e293b;
+    transition: background-color 0.2s ease;
+}
+
+.admin-layout .dropdown-item:hover {
+    background-color: #f1f5f9;
+}
+
+/* Content Area */
+.admin-layout .p-4 {
+    padding: 2rem !important;
+    background-color: #f1f5f9;
+    flex-grow: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-layout .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 1000;
+        width: 260px;
+    }
+
+    .admin-layout .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .admin-layout .main-content {
+        margin-left: 0;
+    }
+
+    .admin-layout header {
+        padding: 1rem;
+    }
+}
+
+@media (min-width: 769px) {
+    .admin-layout .sidebar {
+        transform: translateX(0);
+    }
+}

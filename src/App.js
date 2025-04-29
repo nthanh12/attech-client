@@ -1,7 +1,8 @@
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Public from "./routes/Public";
+import Admin from "./routes/Admin";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import ChatboxButton from "./components/Shared/Navigation/ChatboxButton/ChatboxButton";
@@ -18,28 +19,45 @@ const ScrollToTop = ({ children }) => {
   return children;
 };
 
-function App() {
+const AppContent = () => {
   const { chatbox, backToTop } = floatingButtonsConfig;
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   const handleChatboxClick = () => {
     openChat(chatbox.defaultService, chatbox.defaultConfig);
   };
 
   return (
+    <>
+      <Routes>
+        <Route path="/admin/*" element={<Admin />} />
+        <Route path="*" element={<Public />} />
+      </Routes>
+      {!isAdminRoute && (
+        <>
+          <ChatboxButton
+            onClick={handleChatboxClick}
+            iconSrc={chatbox.iconSrc}
+            size={chatbox.size}
+            backgroundColor={chatbox.backgroundColor}
+          />
+          <BackToTopButton
+            scrollThreshold={backToTop.scrollThreshold}
+            size={backToTop.size}
+            backgroundColor={backToTop.backgroundColor}
+          />
+        </>
+      )}
+    </>
+  );
+};
+
+function App() {
+  return (
     <Router>
       <ScrollToTop>
-        <Public />
-        <ChatboxButton
-          onClick={handleChatboxClick}
-          iconSrc={chatbox.iconSrc}
-          size={chatbox.size}
-          backgroundColor={chatbox.backgroundColor}
-        />
-        <BackToTopButton
-          scrollThreshold={backToTop.scrollThreshold}
-          size={backToTop.size}
-          backgroundColor={backToTop.backgroundColor}
-        />
+        <AppContent />
       </ScrollToTop>
     </Router>
   );

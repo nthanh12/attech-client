@@ -92,7 +92,7 @@
     transform: scale(1.05);
 }
 
-.fa-bars {
+.navbar-top .fa-bars {
     color: var(--mainColor);
     font-size: 16px;
 }

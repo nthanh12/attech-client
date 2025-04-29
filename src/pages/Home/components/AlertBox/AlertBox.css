@@ -49,9 +49,10 @@
 
 .item-time {
     font-style: italic;
-    font-size: 14px;
+    font-size: 12px;
     text-align: left;
     margin: 10px 0 0 10px;
+    color: #1c3e74;
 }
 
 .item-time i {

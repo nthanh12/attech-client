@@ -87,14 +87,21 @@ const Feature = () => {
         <div className="notify-wrapper">
           <Swiper
             modules={[Pagination, Autoplay]}
-            spaceBetween={20}
+            spaceBetween={15}
             slidesPerView={2}
             pagination={{ clickable: true }}
-            autoplay={{ delay: 7000 }}
+            autoplay={{ delay: 7000, disableOnInteraction: false }}
             breakpoints={{
-              0: { slidesPerView: 1 },
-              768: { slidesPerView: 2 },
+              0: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 15,
+              },
             }}
+            style={{ width: "100%" }}
           >
             {notifications.map((item, index) => (
               <SwiperSlide key={index}>
