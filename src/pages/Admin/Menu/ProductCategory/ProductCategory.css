@@ -130,6 +130,15 @@
     background: #2563eb;
 }
 
+.product-category .btn-toggle-status {
+    background: #a67c57;
+    color: white;
+}
+
+.product-category .btn-toggle-status:hover {
+    background: #c2a56c;
+}
+
 .product-category .btn-edit {
     background: #10b981;
     color: white;

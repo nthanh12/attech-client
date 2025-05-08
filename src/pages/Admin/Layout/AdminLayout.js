@@ -16,6 +16,10 @@ const AdminLayout = ({ children }) => {
     }
   };
 
+  const handleAccount = () => {
+    navigate("/admin/account");
+  };
+
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
   const toggleSubMenu = () => setSubMenuOpen(!subMenuOpen);
@@ -26,6 +30,7 @@ const AdminLayout = ({ children }) => {
     { path: "/admin/services", label: "Dịch vụ", icon: "bi bi-gear" },
     { path: "/admin/news", label: "Tin tức", icon: "bi bi-newspaper" },
     { path: "/admin/notifications", label: "Thông báo", icon: "bi bi-bell" },
+    { path: "/admin/config", label: "Cấu hình", icon: "bi bi-bell" },
     {
       path: "/admin/menu",
       label: "Danh mục từ điển",
@@ -153,8 +158,12 @@ const AdminLayout = ({ children }) => {
               </button>
               {dropdownOpen && (
                 <div className="dropdown-menu dropdown-menu-end show mt-2">
+                  <button className="dropdown-item" onClick={handleAccount}>
+                    {/* <i className="fa fa-box-arrow-right me-2"></i> */}
+                    Tài khoản
+                  </button>
                   <button className="dropdown-item" onClick={handleLogout}>
-                    <i className="bi bi-box-arrow-right me-2"></i>
+                    {/* <i className="bi bi-box-arrow-right me-2"></i> */}
                     Đăng xuất
                   </button>
                 </div>
