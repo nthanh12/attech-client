@@ -1,19 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import "./AdminProductList.css";
+import {
+  getProducts,
+  getProductCategories,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from "../../../api";
 
 const AdminProductList = () => {
   const [product, setProduct] = useState([]);
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({
     id: null,
-    title: "",
+    name: "",
     category: "",
     content: "",
     summary: "",
     imageUrl: "",
-    slug: "",
     featured: false,
     status: "active",
     publishDate: new Date().toISOString().split("T")[0],
@@ -35,39 +44,25 @@ const AdminProductList = () => {
   }, []);
 
   const fetchProduct = async () => {
+    setIsLoading(true);
     try {
-      setProduct([
-        ...Array(15)
-          .keys()
-          .map((i) => ({
-            id: i + 1,
-            title: `Tin tức thứ ${i + 1}`,
-            category: ["Công ty", "Sự kiện", "Công nghệ", "Thị trường"][
-              Math.floor(Math.random() * 4)
-            ],
-            slug: `tin-tuc-${i + 1}`,
-            content: `<p>Nội dung sản phẩm ${i + 1}</p>`,
-            summary: `Tóm tắt sản phẩm ${i + 1}`,
-            status: Math.random() > 0.3 ? "active" : "inactive",
-            featured: Math.random() > 0.7,
-            publishDate: `2025-04-${String(i + 1).padStart(2, "0")}`,
-          })),
-      ]);
+      const items = await getProducts();
+      setProduct(items);
     } catch (error) {
       console.error("Error fetching product:", error);
+      setToast({ show: true, message: "Lỗi khi tải sản phẩm!", type: "error" });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      setCategories([
-        { id: 1, name: "Công ty" },
-        { id: 2, name: "Sự kiện" },
-        { id: 3, name: "Công nghệ" },
-        { id: 4, name: "Thị trường" },
-      ]);
+      const items = await getProductCategories();
+      setCategories(items);
     } catch (error) {
       console.error("Error fetching categories:", error);
+      setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
     }
   };
 
@@ -77,12 +72,11 @@ const AdminProductList = () => {
     setErrors({});
     setCurrentProduct({
       id: null,
-      title: "",
+      name: "",
       category: "",
       content: "",
       summary: "",
       imageUrl: "",
-      slug: "",
       featured: false,
       status: "active",
       publishDate: new Date().toISOString().split("T")[0],
@@ -116,12 +110,23 @@ const AdminProductList = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!currentProduct.title) newErrors.title = "Tiêu đề là bắt buộc";
-    if (!currentProduct.slug) newErrors.slug = "Slug là bắt buộc";
+    if (!currentProduct.name) newErrors.name = "Tên sản phẩm là bắt buộc";
     if (!currentProduct.category) newErrors.category = "Vui lòng chọn danh mục";
     if (!currentProduct.content) newErrors.content = "Nội dung là bắt buộc";
+    if (currentProduct.imageUrl && !isValidUrl(currentProduct.imageUrl)) {
+      newErrors.imageUrl = "URL hình ảnh không hợp lệ";
+    }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const isValidUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -129,6 +134,7 @@ const AdminProductList = () => {
     if (!validateForm()) return;
     try {
       if (editMode) {
+        await updateProduct(currentProduct.id, currentProduct);
         setProduct(
           product.map((n) => (n.id === currentProduct.id ? currentProduct : n))
         );
@@ -138,10 +144,7 @@ const AdminProductList = () => {
           type: "success",
         });
       } else {
-        const newProduct = {
-          ...currentProduct,
-          id: Math.max(...product.map((n) => n.id), 0) + 1,
-        };
+        const newProduct = await createProduct(currentProduct);
         setProduct([...product, newProduct]);
         setToast({
           show: true,
@@ -160,6 +163,7 @@ const AdminProductList = () => {
   const handleDeleteProduct = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
       try {
+        await deleteProduct(id);
         setProduct(product.filter((n) => n.id !== id));
         setToast({
           show: true,
@@ -181,20 +185,12 @@ const AdminProductList = () => {
     }
   };
 
-  const generateSlug = (title) => {
-    const slug = title
-      .toLowerCase()
-      .replace(/[^\w\s]/gi, "")
-      .replace(/\s+/g, "-");
-    setCurrentProduct({ ...currentProduct, slug });
-  };
-
   const getFilteredAndSortedProduct = () => {
     let filteredProduct = [...product];
 
     if (filters.search) {
       filteredProduct = filteredProduct.filter((n) =>
-        n.title.toLowerCase().includes(filters.search.toLowerCase())
+        n.name.toLowerCase().includes(filters.search.toLowerCase())
       );
     }
     if (filters.category) {
@@ -211,7 +207,7 @@ const AdminProductList = () => {
     filteredProduct.sort((a, b) => {
       const key = sortConfig.key;
       const direction = sortConfig.direction === "asc" ? 1 : -1;
-      if (key === "title" || key === "category" || key === "status") {
+      if (key === "name" || key === "category" || key === "status") {
         return a[key].localeCompare(b[key]) * direction;
       } else if (key === "featured") {
         return (a[key] ? 1 : 0) - (b[key] ? 1 : 0) * direction;
@@ -224,7 +220,10 @@ const AdminProductList = () => {
     return filteredProduct;
   };
 
-  const filteredProduct = getFilteredAndSortedProduct();
+  const filteredProduct = useMemo(
+    () => getFilteredAndSortedProduct(),
+    [product, filters, sortConfig]
+  );
   const totalPages = Math.ceil(filteredProduct.length / itemsPerPage);
   const paginatedProduct = filteredProduct.slice(
     (currentPage - 1) * itemsPerPage,
@@ -308,116 +307,119 @@ const AdminProductList = () => {
             </select>
           </div>
 
-          <div className="table-container">
-            <table className="product-table">
-              <thead>
-                <tr>
-                  <th onClick={() => handleSort("id")} className="sortable">
-                    ID{" "}
-                    {sortConfig.key === "id" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th onClick={() => handleSort("title")} className="sortable">
-                    Tiêu đề{" "}
-                    {sortConfig.key === "title" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th
-                    onClick={() => handleSort("category")}
-                    className="sortable"
-                  >
-                    Danh mục{" "}
-                    {sortConfig.key === "category" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th onClick={() => handleSort("slug")} className="sortable">
-                    Slug{" "}
-                    {sortConfig.key === "slug" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th onClick={() => handleSort("status")} className="sortable">
-                    Trạng thái{" "}
-                    {sortConfig.key === "status" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th
-                    onClick={() => handleSort("featured")}
-                    className="sortable"
-                  >
-                    Nổi bật{" "}
-                    {sortConfig.key === "featured" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th
-                    onClick={() => handleSort("publishDate")}
-                    className="sortable"
-                  >
-                    Ngày đăng{" "}
-                    {sortConfig.key === "publishDate" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th>Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedProduct.map((productItem) => (
-                  <tr key={productItem.id}>
-                    <td>{productItem.id}</td>
-                    <td>{productItem.title}</td>
-                    <td>{productItem.category}</td>
-                    <td>{productItem.slug}</td>
-                    <td>
-                      <span
-                        className={`badge badge-${
-                          productItem.status === "active" ? "success" : "danger"
-                        }`}
-                      >
-                        {productItem.status === "active" ? "Hiển thị" : "Ẩn"}
-                      </span>
-                    </td>
-                    <td>
-                      <span
-                        className={`badge badge-${
-                          productItem.featured ? "primary" : "secondary"
-                        }`}
-                      >
-                        {productItem.featured ? "Có" : "Không"}
-                      </span>
-                    </td>
-                    <td>{productItem.publishDate}</td>
-                    <td>
-                      <div className="action-buttons">
-                        <button
-                          className="btn btn-edit"
-                          onClick={() => handleShowModal(productItem)}
-                        >
-                          Sửa
-                        </button>
-                        <button
-                          className="btn btn-delete"
-                          onClick={() => handleDeleteProduct(productItem.id)}
-                        >
-                          Xóa
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                {paginatedProduct.length === 0 && (
+          {isLoading ? (
+            <div className="loading">Đang tải...</div>
+          ) : (
+            <div className="table-container">
+              <table className="product-table">
+                <thead>
                   <tr>
-                    <td colSpan="8" className="no-data">
-                      Không có sản phẩm nào phù hợp
-                    </td>
+                    <th onClick={() => handleSort("id")} className="sortable">
+                      ID{" "}
+                      {sortConfig.key === "id" &&
+                        (sortConfig.direction === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th onClick={() => handleSort("name")} className="sortable">
+                      Tên sản phẩm{" "}
+                      {sortConfig.key === "name" &&
+                        (sortConfig.direction === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th
+                      onClick={() => handleSort("category")}
+                      className="sortable"
+                    >
+                      Danh mục{" "}
+                      {sortConfig.key === "category" &&
+                        (sortConfig.direction === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th
+                      onClick={() => handleSort("featured")}
+                      className="sortable"
+                    >
+                      Nổi bật{" "}
+                      {sortConfig.key === "featured" &&
+                        (sortConfig.direction === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th
+                      onClick={() => handleSort("status")}
+                      className="sortable"
+                    >
+                      Trạng thái{" "}
+                      {sortConfig.key === "status" &&
+                        (sortConfig.direction === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th
+                      onClick={() => handleSort("publishDate")}
+                      className="sortable"
+                    >
+                      Ngày đăng{" "}
+                      {sortConfig.key === "publishDate" &&
+                        (sortConfig.direction === "asc" ? "↑" : "↓")}
+                    </th>
+                    <th>Thao tác</th>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {paginatedProduct.map((productItem) => (
+                    <tr key={productItem.id}>
+                      <td>{productItem.id}</td>
+                      <td>{productItem.name}</td>
+                      <td>{productItem.category}</td>
+                      <td>
+                        <span
+                          className={`badge badge-${
+                            productItem.featured ? "success" : "secondary"
+                          }`}
+                        >
+                          {productItem.featured ? "Nổi bật" : "Bình thường"}
+                        </span>
+                      </td>
+                      <td>
+                        <span
+                          className={`badge badge-${
+                            productItem.status === "active"
+                              ? "success"
+                              : "danger"
+                          }`}
+                        >
+                          {productItem.status === "active" ? "Hiển thị" : "Ẩn"}
+                        </span>
+                      </td>
+                      <td>{productItem.publishDate}</td>
+                      <td>
+                        <div className="action-buttons">
+                          <button
+                            className="btn btn-edit"
+                            onClick={() => handleShowModal(productItem)}
+                          >
+                            Sửa
+                          </button>
+                          <button
+                            className="btn btn-delete"
+                            onClick={() => handleDeleteProduct(productItem.id)}
+                          >
+                            Xóa
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {paginatedProduct.length === 0 && (
+                    <tr>
+                      <td colSpan="7" className="no-data">
+                        Không có sản phẩm nào phù hợp
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           <div className="pagination-container">
             <div className="pagination-info">
-              Hiển thị {paginatedProduct.length} / {filteredProduct.length} tin
-              tức
+              Hiển thị {paginatedProduct.length} / {filteredProduct.length} sản
+              phẩm
             </div>
             <div className="pagination">
               <button
@@ -465,32 +467,17 @@ const AdminProductList = () => {
             <form onSubmit={handleSubmit}>
               <div className="form-grid">
                 <div className="form-group">
-                  <label>Tiêu đề</label>
+                  <label>Tên sản phẩm</label>
                   <input
                     type="text"
-                    className={`form-control ${errors.title ? "error" : ""}`}
-                    name="title"
-                    value={currentProduct.title}
-                    onChange={handleInputChange}
-                    onBlur={() => generateSlug(currentProduct.title)}
-                    required
-                  />
-                  {errors.title && (
-                    <span className="error-text">{errors.title}</span>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label>Slug</label>
-                  <input
-                    type="text"
-                    className={`form-control ${errors.slug ? "error" : ""}`}
-                    name="slug"
-                    value={currentProduct.slug}
+                    className={`form-control ${errors.name ? "error" : ""}`}
+                    name="name"
+                    value={currentProduct.name}
                     onChange={handleInputChange}
                     required
                   />
-                  {errors.slug && (
-                    <span className="error-text">{errors.slug}</span>
+                  {errors.name && (
+                    <span className="error-text">{errors.name}</span>
                   )}
                 </div>
               </div>
@@ -517,6 +504,18 @@ const AdminProductList = () => {
               </div>
 
               <div className="form-group">
+                <label>Nội dung</label>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={currentProduct.content}
+                  onChange={handleEditorChange}
+                />
+                {errors.content && (
+                  <span className="error-text">{errors.content}</span>
+                )}
+              </div>
+
+              <div className="form-group">
                 <label>Tóm tắt</label>
                 <textarea
                   className="form-control"
@@ -531,11 +530,26 @@ const AdminProductList = () => {
                 <label>Hình ảnh URL</label>
                 <input
                   type="text"
-                  className="form-control"
+                  className={`form-control ${errors.imageUrl ? "error" : ""}`}
                   name="imageUrl"
                   value={currentProduct.imageUrl}
                   onChange={handleInputChange}
                 />
+                {errors.imageUrl && (
+                  <span className="error-text">{errors.imageUrl}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="featured"
+                    checked={currentProduct.featured}
+                    onChange={handleInputChange}
+                  />
+                  Nổi bật
+                </label>
               </div>
 
               <div className="form-grid">
@@ -560,17 +574,6 @@ const AdminProductList = () => {
                     <option value="active">Hiển thị</option>
                     <option value="inactive">Ẩn</option>
                   </select>
-                </div>
-                <div className="form-group form-checkbox">
-                  <label className="checkbox-label">
-                    <input
-                      type="checkbox"
-                      name="featured"
-                      checked={currentProduct.featured}
-                      onChange={handleInputChange}
-                    />
-                    Tin tức nổi bật
-                  </label>
                 </div>
               </div>
 

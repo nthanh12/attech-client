@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ProductItem from "../ProductItem/ProductItem";
 import "../ProductList/ProductList.css";
@@ -234,7 +234,7 @@ const products = [
     image: "https://attech.com.vn/wp-content/uploads/2015/07/07-May-loc-1.jpg",
   },
   {
-    id: 22,
+    id: 23,
     slug: "may-han-quay",
     title: "Máy hàn quay",
     fullTitle: "Máy hàn quay",
@@ -258,61 +258,141 @@ const categorySlugMap = {
 
 const ProductList = () => {
   const { category } = useParams();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState("name");
+  const [viewMode, setViewMode] = useState("grid");
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const categoryName = Object.keys(categorySlugMap).find(
-    (key) => categorySlugMap[key] === category
-  );
-
-  const filteredProducts = categoryName
-    ? products.filter((product) => product.category === categoryName)
-    : products;
-
-  const groupedProducts = filteredProducts.reduce((acc, product) => {
-    if (!acc[product.category]) {
-      acc[product.category] = [];
+  useEffect(() => {
+    let result = [...products];
+    
+    // Filter by category if provided
+    if (category) {
+      result = result.filter(product => 
+        product.category.toLowerCase() === category.toLowerCase()
+      );
     }
-    acc[product.category].push(product);
-    return acc;
-  }, {});
+
+    // Filter by search term
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      result = result.filter(product =>
+        product.title.toLowerCase().includes(searchLower) ||
+        product.description.toLowerCase().includes(searchLower)
+      );
+    }
+
+    // Filter by selected categories
+    if (selectedCategories.length > 0) {
+      result = result.filter(product =>
+        selectedCategories.includes(product.category)
+      );
+    }
+
+    // Sort products
+    result.sort((a, b) => {
+      switch (sortBy) {
+        case "name":
+          return a.title.localeCompare(b.title);
+        case "category":
+          return a.category.localeCompare(b.category);
+        default:
+          return 0;
+      }
+    });
+
+    setFilteredProducts(result);
+  }, [category, searchTerm, sortBy, selectedCategories]);
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSort = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  const handleViewMode = (mode) => {
+    setViewMode(mode);
+  };
+
+  const handleCategoryFilter = (category) => {
+    setSelectedCategories(prev =>
+      prev.includes(category)
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
+    );
+  };
 
   return (
-    <div className="container product-list-container">
-      <div className="section-header text-center">
-        <h2>{categoryName || "Sản phẩm"}</h2>
-      </div>
-      <div className="row justify-content-center">
-        <div className="col-md-8">
-          <div className="search-container">
-            <input
-              type="text"
-              className="form-control search-input"
-              placeholder="Tìm kiếm sản phẩm..."
-            />
-            <i className="fas fa-search search-icon"></i>
+    <div className="product-list-container">
+      <div className="product-controls">
+        <div className="search-container">
+          <i className="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Tìm kiếm sản phẩm..."
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </div>
+
+        <div className="product-filters">
+          <select 
+            className="sort-select"
+            value={sortBy}
+            onChange={handleSort}
+          >
+            <option value="name">Sắp xếp theo tên</option>
+            <option value="category">Sắp xếp theo danh mục</option>
+          </select>
+
+          <div className="view-mode">
+            <button
+              className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+              onClick={() => handleViewMode('grid')}
+            >
+              <i className="fas fa-th"></i>
+            </button>
+            <button
+              className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
+              onClick={() => handleViewMode('list')}
+            >
+              <i className="fas fa-list"></i>
+            </button>
           </div>
         </div>
       </div>
 
-      {Object.keys(groupedProducts).length > 0 ? (
-        Object.keys(groupedProducts).map((cat, index) => (
-          <div key={index} className="product-category">
-            <h3 className="category-title">{cat}</h3>
-            <div className="row product-row">
-              {groupedProducts[cat].map((product) => (
-                <ProductItem
-                  key={product.id}
-                  id={product.id}
-                  slug={product.slug}
-                  title={product.title}
-                  description={product.description}
-                  image={product.image}
-                />
-              ))}
-            </div>
-          </div>
-        ))
+      <div className="category-filters">
+        {Array.from(new Set(products.map(p => p.category))).map(cat => (
+          <button
+            key={cat}
+            className={`category-filter-btn ${selectedCategories.includes(cat) ? 'active' : ''}`}
+            onClick={() => handleCategoryFilter(cat)}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {filteredProducts.length === 0 ? (
+        <div className="no-products">
+          <i className="fas fa-search"></i>
+          <p>Không tìm thấy sản phẩm phù hợp</p>
+        </div>
       ) : (
-        <p>Không có sản phẩm trong danh mục này.</p>
+        <div className={`product-grid ${viewMode}`}>
+          {filteredProducts.map((product) => (
+            <ProductItem
+              key={product.id}
+              product={product}
+              viewMode={viewMode}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

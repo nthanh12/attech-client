@@ -160,6 +160,15 @@
   background: #2563eb;
 }
 
+.admin-news-list .btn-toggle-status {
+  background: #a67c57;
+  color: white;
+}
+
+.admin-news-list .btn-toggle-status:hover {
+  background: #c2a56c;
+}
+
 .admin-news-list .btn-edit {
   background: #10b981;
   color: white;

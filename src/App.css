@@ -1,3 +1,7 @@
+html, body {
+  background: #fff !important;
+}
+
 body {
   color: #413f3f;
   background: #ffffff;

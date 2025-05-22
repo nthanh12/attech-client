@@ -2,7 +2,7 @@
     position: fixed;
     width: 100%;
     top: -200px;
-    transition: top 0.3s ease-in-out;
+    transition: top 0.8s ease-in-out;
   }
   
   .sticky-top.active {
@@ -216,4 +216,22 @@
     .top-sidebar {
       margin-top: 80px; /* Đảm bảo sidebar không đè navbar */
     }
+  }
+  
+  .navbar-container {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.8s ease-in-out;
+  }
+  
+  .navbar-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .navbar-container.hidden {
+    opacity: 0;
+    transform: translateY(-100px);
   }

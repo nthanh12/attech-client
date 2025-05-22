@@ -1,7 +1,49 @@
 import React, { useState, useEffect } from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import "./AdminNewsList.css";
+import { getNews, createNews, updateNewsStatus, getNewsCategories, uploadImage } from "../../../api";
+import axios from "axios";
+
+const editorConfiguration = {
+  toolbar: {
+    items: [
+      'heading',
+      '|',
+      'bold',
+      'italic',
+      'link',
+      'bulletedList',
+      'numberedList',
+      '|',
+      'alignment',
+      'outdent',
+      'indent',
+      '|',
+      'blockQuote',
+      'insertTable',
+      'imageUpload',
+      'undo',
+      'redo'
+    ]
+  },
+  language: 'vi',
+  image: {
+    toolbar: [
+      'imageTextAlternative',
+      'imageStyle:inline',
+      'imageStyle:block',
+      'imageStyle:side'
+    ]
+  },
+  table: {
+    contentToolbar: [
+      'tableColumn',
+      'tableRow',
+      'mergeTableCells'
+    ]
+  }
+};
 
 const AdminNewsList = () => {
   const [news, setNews] = useState([]);
@@ -38,38 +80,36 @@ const AdminNewsList = () => {
 
   const fetchNews = async () => {
     try {
-      setNews([
-        ...Array(15)
-          .keys()
-          .map((i) => ({
-            id: i + 1,
-            title: `Tin tức thứ ${i + 1}`,
-            category: ["Công ty", "Sự kiện", "Công nghệ", "Thị trường"][
-              Math.floor(Math.random() * 4)
-            ],
-            slug: `tin-tuc-${i + 1}`,
-            content: `<p>Nội dung tin tức ${i + 1}</p>`,
-            summary: `Tóm tắt tin tức ${i + 1}`,
-            status: Math.random() > 0.3 ? "active" : "inactive",
-            featured: Math.random() > 0.7,
-            publishDate: `2025-04-${String(i + 1).padStart(2, "0")}`,
-          })),
-      ]);
+      const response = await getNews();
+      if (Array.isArray(response)) {
+        const mappedNews = response.map(item => ({
+          id: item.id,
+          title: item.title,
+          slug: item.slug,
+          summary: item.description,
+          publishDate: item.timePosted.split('T')[0],
+          status: item.status === 1 ? 'active' : 'inactive',
+          category: item.postCategoryName,
+          featured: false
+        }));
+        setNews(mappedNews);
+      } else {
+        console.error("Invalid response format:", response);
+        setNews([]);
+      }
     } catch (error) {
       console.error("Error fetching news:", error);
+      setNews([]);
     }
   };
 
   const fetchCategories = async () => {
     try {
-      setCategories([
-        { id: 1, name: "Công ty" },
-        { id: 2, name: "Sự kiện" },
-        { id: 3, name: "Công nghệ" },
-        { id: 4, name: "Thị trường" },
-      ]);
+      const items = await getNewsCategories();
+      setCategories(items);
     } catch (error) {
       console.error("Error fetching categories:", error);
+      setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
     }
   };
 
@@ -116,10 +156,26 @@ const AdminNewsList = () => {
     setErrors({ ...errors, content: "" });
   };
 
+  const uploadAdapter = (loader) => {
+    return {
+      upload: async () => {
+        try {
+          const file = await loader.file;
+          const response = await uploadImage(file);
+          return {
+            default: response.location
+          };
+        } catch (error) {
+          console.error('Upload failed:', error);
+          throw error;
+        }
+      }
+    };
+  };
+
   const validateForm = () => {
     const newErrors = {};
     if (!currentNews.title) newErrors.title = "Tiêu đề là bắt buộc";
-    if (!currentNews.slug) newErrors.slug = "Slug là bắt buộc";
     if (!currentNews.category) newErrors.category = "Vui lòng chọn danh mục";
     if (!currentNews.content) newErrors.content = "Nội dung là bắt buộc";
     setErrors(newErrors);
@@ -138,16 +194,23 @@ const AdminNewsList = () => {
           type: "success",
         });
       } else {
-        const newNews = {
-          ...currentNews,
-          id: Math.max(...news.map((n) => n.id), 0) + 1,
+        const newsData = {
+          title: currentNews.title,
+          description: currentNews.summary,
+          content: currentNews.content,
+          postCategoryId: categories.find(cat => cat.name === currentNews.category)?.id || 1,
+          timePosted: new Date(currentNews.publishDate).toISOString()
         };
-        setNews([...news, newNews]);
-        setToast({
-          show: true,
-          message: "Thêm tin tức thành công!",
-          type: "success",
-        });
+
+        const response = await createNews(newsData);
+        if (response) {
+          setToast({
+            show: true,
+            message: "Thêm tin tức thành công!",
+            type: "success",
+          });
+          fetchNews(); // Refresh danh sách tin tức
+        }
       }
       handleCloseModal();
       setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
@@ -181,12 +244,34 @@ const AdminNewsList = () => {
     }
   };
 
-  const generateSlug = (title) => {
-    const slug = title
-      .toLowerCase()
-      .replace(/[^\w\s]/gi, "")
-      .replace(/\s+/g, "-");
-    setCurrentNews({ ...currentNews, slug });
+  const handleToggleStatus = async (newsItem) => {
+    if (
+      window.confirm(
+        "Bạn có chắc chắn muốn đổi trạng thái tin tức: " + newsItem.title
+      )
+    ) {
+      const newStatus = newsItem.status === 'active' ? 'inactive' : 'active';
+      try {
+        await updateNewsStatus({ 
+          id: newsItem.id, 
+          status: newStatus === 'active' ? 1 : 0 
+        });
+        setToast({
+          show: true,
+          message: "Cập nhật trạng thái thành công!",
+          type: "success",
+        });
+        fetchNews(); // Refresh danh sách tin tức
+        setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
+      } catch (error) {
+        console.error("Error updating news status:", error);
+        setToast({
+          show: true,
+          message: "Lỗi khi cập nhật trạng thái!",
+          type: "error",
+        });
+      }
+    }
   };
 
   const getFilteredAndSortedNews = () => {
@@ -249,6 +334,33 @@ const AdminNewsList = () => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
     setCurrentPage(1);
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      const response = await uploadImage(file);
+      if (response && response.location) {
+        setCurrentNews({
+          ...currentNews,
+          imageUrl: response.location
+        });
+        setToast({
+          show: true,
+          message: "Upload hình ảnh thành công!",
+          type: "success"
+        });
+      }
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      setToast({
+        show: true,
+        message: "Lỗi khi upload hình ảnh!",
+        type: "error"
+      });
+    }
   };
 
   return (
@@ -320,17 +432,14 @@ const AdminNewsList = () => {
                     {sortConfig.key === "title" &&
                       (sortConfig.direction === "asc" ? "↑" : "↓")}
                   </th>
-                  <th
-                    onClick={() => handleSort("category")}
-                    className="sortable"
-                  >
+                  <th onClick={() => handleSort("category")} className="sortable">
                     Danh mục{" "}
                     {sortConfig.key === "category" &&
                       (sortConfig.direction === "asc" ? "↑" : "↓")}
                   </th>
-                  <th onClick={() => handleSort("slug")} className="sortable">
-                    Slug{" "}
-                    {sortConfig.key === "slug" &&
+                  <th onClick={() => handleSort("publishDate")} className="sortable">
+                    Ngày đăng{" "}
+                    {sortConfig.key === "publishDate" &&
                       (sortConfig.direction === "asc" ? "↑" : "↓")}
                   </th>
                   <th onClick={() => handleSort("status")} className="sortable">
@@ -338,22 +447,7 @@ const AdminNewsList = () => {
                     {sortConfig.key === "status" &&
                       (sortConfig.direction === "asc" ? "↑" : "↓")}
                   </th>
-                  <th
-                    onClick={() => handleSort("featured")}
-                    className="sortable"
-                  >
-                    Nổi bật{" "}
-                    {sortConfig.key === "featured" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
-                  <th
-                    onClick={() => handleSort("publishDate")}
-                    className="sortable"
-                  >
-                    Ngày đăng{" "}
-                    {sortConfig.key === "publishDate" &&
-                      (sortConfig.direction === "asc" ? "↑" : "↓")}
-                  </th>
+                  <th>Đổi trạng thái</th>
                   <th>Thao tác</th>
                 </tr>
               </thead>
@@ -363,7 +457,7 @@ const AdminNewsList = () => {
                     <td>{newsItem.id}</td>
                     <td>{newsItem.title}</td>
                     <td>{newsItem.category}</td>
-                    <td>{newsItem.slug}</td>
+                    <td>{newsItem.publishDate}</td>
                     <td>
                       <span
                         className={`badge badge-${
@@ -374,15 +468,15 @@ const AdminNewsList = () => {
                       </span>
                     </td>
                     <td>
-                      <span
-                        className={`badge badge-${
-                          newsItem.featured ? "primary" : "secondary"
-                        }`}
-                      >
-                        {newsItem.featured ? "Có" : "Không"}
-                      </span>
+                      <div className="action-buttons">
+                        <button
+                          className="btn btn-toggle-status"
+                          onClick={() => handleToggleStatus(newsItem)}
+                        >
+                          {newsItem.status === "active" ? "Tạm dừng" : "Kích hoạt"}
+                        </button>
+                      </div>
                     </td>
-                    <td>{newsItem.publishDate}</td>
                     <td>
                       <div className="action-buttons">
                         <button
@@ -469,25 +563,10 @@ const AdminNewsList = () => {
                     name="title"
                     value={currentNews.title}
                     onChange={handleInputChange}
-                    onBlur={() => generateSlug(currentNews.title)}
                     required
                   />
                   {errors.title && (
                     <span className="error-text">{errors.title}</span>
-                  )}
-                </div>
-                <div className="form-group">
-                  <label>Slug</label>
-                  <input
-                    type="text"
-                    className={`form-control ${errors.slug ? "error" : ""}`}
-                    name="slug"
-                    value={currentNews.slug}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  {errors.slug && (
-                    <span className="error-text">{errors.slug}</span>
                   )}
                 </div>
               </div>
@@ -530,26 +609,11 @@ const AdminNewsList = () => {
                   editor={ClassicEditor}
                   data={currentNews.content}
                   onChange={handleEditorChange}
-                  config={{
-                    toolbar: [
-                      "heading",
-                      "|",
-                      "bold",
-                      "italic",
-                      "link",
-                      "bulletedList",
-                      "numberedList",
-                      "|",
-                      "outdent",
-                      "indent",
-                      "|",
-                      "imageUpload",
-                      "blockQuote",
-                      "insertTable",
-                      "mediaEmbed",
-                      "undo",
-                      "redo",
-                    ],
+                  config={editorConfiguration}
+                  onReady={editor => {
+                    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                      return uploadAdapter(loader);
+                    };
                   }}
                 />
                 {errors.content && (
@@ -558,14 +622,18 @@ const AdminNewsList = () => {
               </div>
 
               <div className="form-group">
-                <label>Hình ảnh URL</label>
+                <label>Hình ảnh</label>
                 <input
-                  type="text"
+                  type="file"
                   className="form-control"
-                  name="imageUrl"
-                  value={currentNews.imageUrl}
-                  onChange={handleInputChange}
+                  accept="image/*"
+                  onChange={handleImageUpload}
                 />
+                {currentNews.imageUrl && (
+                  <div className="image-preview">
+                    <img src={currentNews.imageUrl} alt="Preview" style={{ maxWidth: '200px', marginTop: '10px' }} />
+                  </div>
+                )}
               </div>
 
               <div className="form-grid">

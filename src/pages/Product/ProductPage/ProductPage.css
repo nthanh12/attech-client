@@ -20,7 +20,7 @@
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
-  margin-left: var(--sp-navbar-width);
+  /* margin-left: var(--sp-navbar-width); */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

@@ -17,10 +17,10 @@ const Home = () => {
       <Carousel />
       <Feature />
       {/* <Banner /> */}
-      <About />
       <AlertBox />
       <Fact />
       <PartNews />
+      <About />
       {/* <NotificationList /> */}
       {/* <Map /> */}
       <Media />

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./ProductCategory.css";
-import api from "../../../../api";
+import {
+  getProductCategories,
+  createProductCategory,
+  updateProductCategory,
+  deleteProductCategory,
+  updateProductCategoryStatus,
+} from "../../../../api";
 
 const ProductCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -23,29 +29,33 @@ const ProductCategory = () => {
     fetchCategories();
   }, []);
 
+  const fetchCategories = async () => {
+    try {
+      const items = await getProductCategories();
+      setCategories(items);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
+    }
+  };
+
   const handleToggleStatus = async (category) => {
     if (
       window.confirm(
-        "Bạn có chắc chắn muốn đổi trạng thái sản phẩm: " + category.name
+        "Bạn có chắc chắn muốn đổi trạng thái danh mục: " + category.name
       )
     ) {
       const newStatus = Number(category.status) === 1 ? 0 : 1;
       try {
-        await api.put(`/product-category/update-status`, {
+        await updateProductCategoryStatus({
           id: category.id,
           status: newStatus,
         });
-        console.log("đã thay đổi trạng thái");
-        console.log(category.id);
-        console.log(category.name);
-        console.log(newStatus);
-
         setCategories((prev) =>
           prev.map((c) =>
             c.id === category.id ? { ...c, status: newStatus } : c
           )
         );
-
         setToast({
           show: true,
           message: `Cập nhật trạng thái thành công!`,
@@ -66,28 +76,11 @@ const ProductCategory = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await api.get("/product-category/find-all");
-      const items = Array.isArray(
-        response.data && response.data.data && response.data.data.items
-      )
-        ? response.data.data.items
-        : [];
-      setCategories(items);
-      return items;
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
-      return [];
-    }
-  };
-
   const handleCloseModal = () => {
     setShowModal(false);
     setEditMode(false);
     setErrors({});
-    setCurrentCategory({ id: null, name: "" });
+    setCurrentCategory({ id: null, name: "", description: "", status: "1" });
   };
 
   const handleShowModal = (category = null) => {
@@ -95,7 +88,7 @@ const ProductCategory = () => {
       setCurrentCategory(category);
       setEditMode(true);
     } else {
-      setCurrentCategory({ id: null, name: "" });
+      setCurrentCategory({ id: null, name: "", description: "", status: "1" });
       setEditMode(false);
     }
     setShowModal(true);
@@ -124,7 +117,7 @@ const ProductCategory = () => {
 
     try {
       if (editMode) {
-        await api.put(`/product-category/update`, currentCategory);
+        await updateProductCategory(currentCategory);
         setCategories(
           categories.map((c) =>
             c.id === currentCategory.id ? currentCategory : c
@@ -132,24 +125,15 @@ const ProductCategory = () => {
         );
         setToast({
           show: true,
-          message: "Cập nhật danh mục sản phẩm thành công!",
+          message: "Cập nhật danh mục thành công!",
           type: "success",
         });
       } else {
-        const response = await api.post(
-          "/product-category/create",
-          currentCategory
-        );
-
-        const newCategory =
-          response.data && response.data.data
-            ? response.data.data
-            : response.data;
-
+        const newCategory = await createProductCategory(currentCategory);
         setCategories([...categories, newCategory]);
         setToast({
           show: true,
-          message: "Thêm danh mục sản phẩm thành công!",
+          message: "Thêm danh mục thành công!",
           type: "success",
         });
       }
@@ -168,7 +152,7 @@ const ProductCategory = () => {
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")) {
       try {
-        await api.delete(`/product-category/delete/${id}`);
+        await deleteProductCategory(id);
         setCategories(categories.filter((c) => c.id !== id));
         setToast({
           show: true,
@@ -204,7 +188,6 @@ const ProductCategory = () => {
       );
     }
 
-    // Apply sorting
     filteredCategories.sort((a, b) => {
       const key = sortConfig.key;
       const direction = sortConfig.direction === "asc" ? 1 : -1;
@@ -215,7 +198,7 @@ const ProductCategory = () => {
       if (valA === null || valA === undefined) return 1 * direction;
       if (valB === null || valB === undefined) return -1 * direction;
 
-      if (key === "name") {
+      if (key === "name" || key === "description") {
         return String(valA).localeCompare(String(valB)) * direction;
       }
       return (Number(valA) - Number(valB)) * direction;
@@ -224,7 +207,6 @@ const ProductCategory = () => {
     return filteredCategories;
   };
 
-  // Get the processed list of categories
   const filteredCategories = getFilteredAndSortedCategories();
   const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
   const paginatedCategories = filteredCategories.slice(
@@ -262,7 +244,7 @@ const ProductCategory = () => {
             className="toast-close-btn"
             onClick={() => setToast({ show: false, message: "", type: "" })}
           >
-            &times;
+            ×
           </button>
         </div>
       )}
@@ -328,7 +310,6 @@ const ProductCategory = () => {
                           ? "Hoạt động"
                           : "Ngừng hoạt động"}
                       </td>
-
                       <td>
                         <div className="action-buttons">
                           <button
@@ -339,7 +320,6 @@ const ProductCategory = () => {
                           </button>
                         </div>
                       </td>
-
                       <td>
                         <div className="action-buttons">
                           <button
@@ -360,7 +340,7 @@ const ProductCategory = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" className="no-data">
+                    <td colSpan="6" className="no-data">
                       Không có danh mục nào phù hợp
                     </td>
                   </tr>
@@ -413,19 +393,18 @@ const ProductCategory = () => {
 
       {showModal && (
         <div className="modal show">
-          {" "}
           <div className="modal-overlay" onClick={handleCloseModal}></div>
           <div className="modal-content">
             <div className="modal-header">
               <h5>{editMode ? "Chỉnh sửa danh mục" : "Thêm danh mục mới"}</h5>
               <button className="modal-close" onClick={handleCloseModal}>
-                &times;
+                ×
               </button>
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="categoryName">Tên danh mục</label>{" "}
+                  <label htmlFor="categoryName">Tên danh mục</label>
                   <input
                     type="text"
                     id="categoryName"
@@ -447,7 +426,6 @@ const ProductCategory = () => {
                     className="form-control"
                   />
                 </div>
-
                 <div className="form-actions">
                   <button
                     type="button"

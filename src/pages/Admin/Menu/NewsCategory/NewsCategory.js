@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./NewsCategory.css";
-import api from "../../../../api";
+import {
+  getNewsCategories,
+  createNewsCategory,
+  updateNewsCategory,
+  deleteNewsCategory,
+  updateNewsCategoryStatus,
+} from "../../../../api";
 
 const NewsCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -23,29 +29,30 @@ const NewsCategory = () => {
     fetchCategories();
   }, []);
 
+  const fetchCategories = async () => {
+    try {
+      const items = await getNewsCategories();
+      setCategories(items);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
+    }
+  };
+
   const handleToggleStatus = async (category) => {
     if (
       window.confirm(
-        "Bạn có chắc chắn muốn đổi trạng thái sản phẩm: " + category.name
+        "Bạn có chắc chắn muốn đổi trạng thái danh mục: " + category.name
       )
     ) {
       const newStatus = Number(category.status) === 1 ? 0 : 1;
       try {
-        await api.put(`/post-category/update-status`, {
-          id: category.id,
-          status: newStatus,
-        });
-        console.log("đã thay đổi trạng thái");
-        console.log(category.id);
-        console.log(category.name);
-        console.log(newStatus);
-
+        await updateNewsCategoryStatus({ id: category.id, status: newStatus });
         setCategories((prev) =>
           prev.map((c) =>
             c.id === category.id ? { ...c, status: newStatus } : c
           )
         );
-
         setToast({
           show: true,
           message: `Cập nhật trạng thái thành công!`,
@@ -66,28 +73,11 @@ const NewsCategory = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const response = await api.get("/post-category/find-all");
-      const items = Array.isArray(
-        response.data && response.data.data && response.data.data.items
-      )
-        ? response.data.data.items
-        : [];
-      setCategories(items);
-      return items;
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
-      return [];
-    }
-  };
-
   const handleCloseModal = () => {
     setShowModal(false);
     setEditMode(false);
     setErrors({});
-    setCurrentCategory({ id: null, name: "" });
+    setCurrentCategory({ id: null, name: "", description: "", status: "1" });
   };
 
   const handleShowModal = (category = null) => {
@@ -95,7 +85,7 @@ const NewsCategory = () => {
       setCurrentCategory(category);
       setEditMode(true);
     } else {
-      setCurrentCategory({ id: null, name: "" });
+      setCurrentCategory({ id: null, name: "", description: "", status: "1" });
       setEditMode(false);
     }
     setShowModal(true);
@@ -124,7 +114,7 @@ const NewsCategory = () => {
 
     try {
       if (editMode) {
-        await api.put(`/post-category/update`, currentCategory);
+        await updateNewsCategory(currentCategory);
         setCategories(
           categories.map((c) =>
             c.id === currentCategory.id ? currentCategory : c
@@ -132,24 +122,15 @@ const NewsCategory = () => {
         );
         setToast({
           show: true,
-          message: "Cập nhật danh mục sản phẩm thành công!",
+          message: "Cập nhật danh mục thành công!",
           type: "success",
         });
       } else {
-        const response = await api.post(
-          "/post-category/create",
-          currentCategory
-        );
-
-        const newCategory =
-          response.data && response.data.data
-            ? response.data.data
-            : response.data;
-
+        const newCategory = await createNewsCategory(currentCategory);
         setCategories([...categories, newCategory]);
         setToast({
           show: true,
-          message: "Thêm danh mục sản phẩm thành công!",
+          message: "Thêm danh mục thành công!",
           type: "success",
         });
       }
@@ -168,7 +149,7 @@ const NewsCategory = () => {
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")) {
       try {
-        await api.delete(`/post-category/delete/${id}`);
+        await deleteNewsCategory(id);
         setCategories(categories.filter((c) => c.id !== id));
         setToast({
           show: true,
@@ -204,7 +185,6 @@ const NewsCategory = () => {
       );
     }
 
-    // Apply sorting
     filteredCategories.sort((a, b) => {
       const key = sortConfig.key;
       const direction = sortConfig.direction === "asc" ? 1 : -1;
@@ -215,7 +195,7 @@ const NewsCategory = () => {
       if (valA === null || valA === undefined) return 1 * direction;
       if (valB === null || valB === undefined) return -1 * direction;
 
-      if (key === "name") {
+      if (key === "name" || key === "description") {
         return String(valA).localeCompare(String(valB)) * direction;
       }
       return (Number(valA) - Number(valB)) * direction;
@@ -224,7 +204,6 @@ const NewsCategory = () => {
     return filteredCategories;
   };
 
-  // Get the processed list of categories
   const filteredCategories = getFilteredAndSortedCategories();
   const totalPages = Math.ceil(filteredCategories.length / itemsPerPage);
   const paginatedCategories = filteredCategories.slice(
@@ -262,7 +241,7 @@ const NewsCategory = () => {
             className="toast-close-btn"
             onClick={() => setToast({ show: false, message: "", type: "" })}
           >
-            &times;
+            ×
           </button>
         </div>
       )}
@@ -328,7 +307,6 @@ const NewsCategory = () => {
                           ? "Hoạt động"
                           : "Ngừng hoạt động"}
                       </td>
-
                       <td>
                         <div className="action-buttons">
                           <button
@@ -339,7 +317,6 @@ const NewsCategory = () => {
                           </button>
                         </div>
                       </td>
-
                       <td>
                         <div className="action-buttons">
                           <button
@@ -360,7 +337,7 @@ const NewsCategory = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="3" className="no-data">
+                    <td colSpan="6" className="no-data">
                       Không có danh mục nào phù hợp
                     </td>
                   </tr>
@@ -413,19 +390,18 @@ const NewsCategory = () => {
 
       {showModal && (
         <div className="modal show">
-          {" "}
           <div className="modal-overlay" onClick={handleCloseModal}></div>
           <div className="modal-content">
             <div className="modal-header">
               <h5>{editMode ? "Chỉnh sửa danh mục" : "Thêm danh mục mới"}</h5>
               <button className="modal-close" onClick={handleCloseModal}>
-                &times;
+                ×
               </button>
             </div>
             <div className="modal-body">
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label htmlFor="categoryName">Tên danh mục</label>{" "}
+                  <label htmlFor="categoryName">Tên danh mục</label>
                   <input
                     type="text"
                     id="categoryName"
@@ -447,7 +423,6 @@ const NewsCategory = () => {
                     className="form-control"
                   />
                 </div>
-
                 <div className="form-actions">
                   <button
                     type="button"
