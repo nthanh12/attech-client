@@ -1,5 +1,4 @@
 .contact {
-    margin-top: 76px;
     padding-bottom: 20px;
 }
 
@@ -83,6 +82,6 @@
 
 @media (max-width: 480px) {
     .contact {
-        margin-top: 90px;
+        /* Không cần margin-top nữa vì đã được quản lý bởi MainLayout */
     }    
 }

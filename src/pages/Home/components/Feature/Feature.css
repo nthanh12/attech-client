@@ -1,5 +1,5 @@
 .feature-section {
-  padding: 40px 20px;
+  padding: 10px 20px;
   background: #f8f9fa;
 }
 
@@ -9,7 +9,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  padding: 20px;
+  padding: 10px 20px;
 }
 
 .feature-link {

@@ -1,6 +1,5 @@
 import React from "react";
 import Spinner from "./Spinner/Spinner";
-import Topbar from "./Topbar/Topbar";
 import Navbar from "./Navbar/Navbar";
 import SearchModal from "./SearchModal/SearchModal";
 import "./Header.css";

@@ -1,10 +1,15 @@
-:root {
-  --sp-navbar-width: 300px;
-  --sp-navbar-width-min: 80px;
+/* Sử dụng biến từ variables.css */
+.service-page {
+  margin-left: var(--sp-navbar-width);
+}
+
+@media (max-width: 768px) {
+  .service-page {
+    margin-left: var(--sp-navbar-width-min);
+  }
 }
 
 .page-service {
-  margin-top: 76px;
   min-height: 100vh;
   position: relative;
   display: flex;
@@ -20,7 +25,6 @@
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
-  margin-left: var(--sp-navbar-width);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -28,7 +32,6 @@
 .page-service .service-content.resize {
   position: relative;
   display: flex;
-  margin-left: var(--sp-navbar-width-min);
 }
 
 .section-header {
@@ -52,23 +55,6 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
-  .page-service {
-    flex-direction: column;
-    margin-top: 96px;
-  }
-
-  .page-service .service-content {
-    margin-left: 0;
-    width: 100%;
-    padding: 15px;
-  }
-
-  .page-service .service-content.resize {
-    margin-left: 0;
-  }
-}
-
 @media (max-width: 480px) {
   .page-service .service-content {
     padding: 10px;

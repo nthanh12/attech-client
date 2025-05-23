@@ -1,8 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-
-import Header from "../components/Shared/Layout/Header/Header";
+import MainLayout from "../components/Shared/Layout/MainLayout";
 import Home from "../pages/Home/HomePage/HomePage";
-import Footer from "../components/Shared/Layout/Footer/Footer";
 
 import Product from "../pages/Product/ProductPage/ProductPage";
 import ProductList from "../pages/Product/components/ProductList/ProductList";
@@ -27,8 +25,7 @@ import NotFoundPage from "../pages/NotFound/NotFoundPage";
 
 const Public = () => {
   return (
-    <>
-      <Header />
+    <MainLayout>
       <Routes>
         <Route path="/" element={<Home />} />
 
@@ -42,7 +39,6 @@ const Public = () => {
         {/* Service */}
         <Route path="/services/*" element={<Service />}>
           <Route path="" element={<ServiceList />} />
-          {/* <Route path=":serviceId" element={<ServiceDetail />} /> */}
           <Route path=":serviceSlug" element={<ServiceDetail />} />
         </Route>
 
@@ -72,8 +68,7 @@ const Public = () => {
         {/* 404 Not Found */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      <Footer />
-    </>
+    </MainLayout>
   );
 };
 

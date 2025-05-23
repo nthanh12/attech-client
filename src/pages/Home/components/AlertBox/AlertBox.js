@@ -8,58 +8,40 @@ import { Link } from "react-router-dom";
 import { posts } from "../../../../../src/data/postHome";
 
 const AlertBox = () => {
-  const handleSlideEffect = (swiper) => {
-    if (!swiper?.slides || swiper.slides.length === 0) return;
-
-    swiper.slides.forEach((slide) => {
-      slide.style.opacity = "1";
-      slide.style.transform = "scale(1)";
-    });
-
-    const activeIndex = swiper.activeIndex;
-    const totalSlides = swiper.slides.length;
-    const prevIndex = (activeIndex - 2 + totalSlides) % totalSlides;
-    const nextIndex = (activeIndex + 2) % totalSlides;
-
-    swiper.slides[prevIndex].style.opacity = "0.5";
-    swiper.slides[prevIndex].style.transform = "scale(0.9)";
-    swiper.slides[nextIndex].style.opacity = "0.5";
-    swiper.slides[nextIndex].style.transform = "scale(0.9)";
-  };
-
   return (
     <div className="alert-box">
       <Swiper
         slidesPerView={5}
-        spaceBetween={10}
-        centeredSlides={true}
+        spaceBetween={20}
+        centeredSlides={false}
         loop={true}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
+          pauseOnMouseEnter: true
         }}
         navigation={true}
         pagination={{ clickable: true }}
-        onSlideChange={handleSlideEffect}
-        onInit={handleSlideEffect}
         modules={[Autoplay, Navigation, Pagination]}
         className="mySwiper"
         breakpoints={{
-          320: { slidesPerView: 1, spaceBetween: 10 },
-          640: { slidesPerView: 3, spaceBetween: 10 },
-          1024: { slidesPerView: 5, spaceBetween: 10 },
+          320: { slidesPerView: 1, spaceBetween: 15 },
+          640: { slidesPerView: 2, spaceBetween: 15 },
+          768: { slidesPerView: 3, spaceBetween: 20 },
+          1024: { slidesPerView: 4, spaceBetween: 20 },
+          1200: { slidesPerView: 5, spaceBetween: 20 },
         }}
       >
         {posts.map((item) => (
           <SwiperSlide key={item.id}>
-            <Link to={`/news/${item.id}/${item.slug}`}>
+            <Link to={`/news/${item.id}/${item.slug}`} aria-label={`Read more about ${item.title}`}>
               <div className="wrap-item">
-                <div className="item-img">
-                  <img src={item.image} alt={item.title} />
+                <div className="item-img" title={item.title}>
+                  <img src={item.image} alt={item.title} loading="lazy" />
                 </div>
-                <div className="item-description">
+                <div className="item-description" title={item.title}>
                   <p className="item-time">
-                    <i className="fa fa-calendar-days"></i> {item.date}
+                    <i className="fa fa-calendar-days" aria-hidden="true"></i> {item.date}
                   </p>
                   <p className="item-text">{item.title}</p>
                 </div>

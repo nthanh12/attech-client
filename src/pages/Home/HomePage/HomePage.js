@@ -16,16 +16,11 @@ const Home = () => {
     <>
       <Carousel />
       <Feature />
-      {/* <Banner /> */}
-      <AlertBox />
       <Fact />
+      <AlertBox />
       <PartNews />
       <About />
-      {/* <NotificationList /> */}
-      {/* <Map /> */}
       <Media />
-      {/* <Partner /> */}
-      {/* <Quotes /> */}
     </>
   );
 };

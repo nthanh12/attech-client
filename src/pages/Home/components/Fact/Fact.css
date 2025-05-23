@@ -1,71 +1,78 @@
 .fact {
-    position: relative;
     width: 100%;
-    /* margin-bottom: 45px; */
+    margin: 20px 0;
 }
 
-.fact .col-12,
-.fact .col-sm-6 {
-    display: flex;
-    justify-content: center;
-}
-
-.fact .fact-icon {
+.fact__banner {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    background-color: #f0f0f0; /* Light gray placeholder */
     position: relative;
-    margin: 7px 15px 0 15px;
-    width: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    aspect-ratio: 1200 / 120; /* Adjust this ratio based on your banner's dimensions */
 }
 
-.fact .fact-icon [class^="fa-"]::before {
-    margin: 0;
-    font-size: 60px;
-    line-height: 60px;
-    background-image: linear-gradient(#ffffff, #002a5c);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.fact__image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.fact-icon i {
-    font-size: 50px;
+.fact__image.loaded {
+    opacity: 1;
 }
 
-.fact .fact-right .fact-icon [class^="fa-"]::before {
-    background-image: linear-gradient(#ffffff, #030f27);
+.fact__banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://vatm.vn/uploads/z6294715350538_ce0d1905bb27dbc45ce85ea076f82d48.jpg') no-repeat center center;
+    background-size: cover;
+    opacity: 0.15;
 }
 
-.fact .fact-left,
-.fact .fact-right {
-    padding-top: 60px;
-    padding-bottom: 60px;
+.fact__content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    text-align: center;
 }
 
-.fact .fact-text h2 {
-    font-size: 35px;
+.fact__heading {
+    color: #ffd700;
+    font-size: 28px;
     font-weight: 700;
-    color: #FF6F61;
-}
-
-.fact .fact-text p {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
     text-transform: uppercase;
+    margin: 0;
+    line-height: 1.4;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
 }
 
-.fact .fact-left {
-    color: #ffffff;
-    background: #002a5c;
+@media (max-width: 768px) {
+    .fact__banner {
+        height: auto;
+        padding: 20px;
+    }
+
+    .fact__heading {
+        font-size: 20px;
+    }
 }
 
-.fact .fact-right {
-    color: #ffffff;
-    background: #002a5c;
-}
-
-.counters {
-    justify-content: center;
-    display: flex;
+@media (max-width: 576px) {
+    .fact__heading {
+        font-size: 16px;
+    }
 }

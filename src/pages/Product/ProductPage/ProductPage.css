@@ -4,7 +4,6 @@
 }
 
 .page-product {
-  margin-top: 76px;
   height: 100%;
   position: relative;
   display: flex;
@@ -81,5 +80,16 @@
   .section-header .general-text {
     font-size: 14px;
     padding: 0 10px;
+  }
+}
+
+/* Sử dụng biến từ variables.css */
+.product-page {
+  margin-left: var(--sp-navbar-width);
+}
+
+@media (max-width: 768px) {
+  .product-page {
+    margin-left: var(--sp-navbar-width-min);
   }
 }

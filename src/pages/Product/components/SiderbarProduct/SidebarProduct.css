@@ -212,3 +212,23 @@
     font-size: 18px;
   }
 }
+
+.sidebar-product {
+  width: var(--sp-navbar-width);
+  transition: width var(--sp-transition-normal);
+  background: var(--sp-navbar-dark-primary);
+}
+
+.sidebar-product.collapsed {
+  width: var(--sp-navbar-width-min);
+}
+
+.sidebar-link {
+  color: var(--sp-navbar-light-secondary);
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  color: var(--sp-navbar-light-primary);
+  background: rgba(131, 200, 231, 0.1);
+}

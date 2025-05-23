@@ -1,5 +1,10 @@
 .header-div {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: #fff;
 }
 
 .header-div.header-div-fix {
@@ -9,3 +14,5 @@
     right: 0;
     z-index: 99;
 }
+
+/* Các styles khác nếu có */

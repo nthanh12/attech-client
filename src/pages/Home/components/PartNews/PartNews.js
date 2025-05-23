@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import "./PartNews.css";
-import icon_fb from "../../../../assets/imgs/news/icon-fb.png";
-import icon_ins from "../../../../assets/imgs/news/icon-ins.png";
-import icon_tw from "../../../../assets/imgs/news/icon-tw.png";
-import icon_yh from "../../../../assets/imgs/news/icon-yo.png";
-import icon_new_card from "../../../../assets/img/part-banner.jpg";
 import giai_bong from "../../../../assets/img/giai-bong-26_03_2025.jpg";
 
 const categories = [
-  { id: "nav-home", label: "Tất cả" },
-  { id: "nav-profile", label: "Hoạt động" },
-  { id: "nav-dangbo", label: "Đảng bộ công ty" },
-  { id: "nav-doan", label: "Đoàn thanh niên" },
-  { id: "nav-congdoan", label: "Công đoàn" },
+  { id: "all", label: "Tất cả", link: "/tin-tuc" },
+  { id: "activities", label: "Tin hoạt động", link: "/tin-tuc/hoat-dong" },
+  { id: "party", label: "Đảng bộ công ty", link: "/tin-tuc/dang-bo" },
+  { id: "youth", label: "Đoàn thanh niên", link: "/tin-tuc/doan-thanh-nien" },
+  { id: "union", label: "Công đoàn", link: "/tin-tuc/cong-doan" },
 ];
 
 const newsData = [
@@ -26,7 +21,7 @@ const newsData = [
   },
   {
     id: 2,
-    category: "Hoạt động",
+    category: "Tin hoạt động",
     date: "26/03/2025",
     title:
       "ATTECH tổ chức thành công giải bóng đá chào mừng 94 năm ngày thành lập Đoàn TNCS Hồ Chí Minh",
@@ -37,7 +32,7 @@ const newsData = [
     category: "Đoàn thanh niên",
     date: "26/03/2025",
     title:
-      "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức “Lễ kỷ niệm 94 năm Ngày thành lập Đoàn TNCS Hồ Chí Minh” và “Đối thoại giữa Đảng ủy – Ban Lãnh đạo Công ty với Đoàn Thanh niên năm 2025”",
+      "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức Lễ kỷ niệm 94 năm Ngày thành lập Đoàn TNCS Hồ Chí Minh và Đối thoại giữa Đảng ủy – Ban Lãnh đạo Công ty với Đoàn Thanh niên năm 2025",
     image:
       "https://attech.com.vn/wp-content/uploads/2025/03/doi-thoai-dtn-2025-2.jpg",
   },
@@ -67,115 +62,60 @@ const newsData = [
   },
 ];
 
-const socialLinks = [
-  { icon: icon_fb, label: "Fans", count: "8,045" },
-  { icon: icon_tw, label: "Followers", count: "8,045" },
-  { icon: icon_ins, label: "Followers", count: "8,045" },
-  { icon: icon_yh, label: "Subscribers", count: "8,045" },
-];
-
 const PartNews = () => {
   const [activeTab, setActiveTab] = useState("Tất cả");
   const filteredNews = newsData.filter(
     (news) => activeTab === "Tất cả" || news.category === activeTab
   );
 
+  const activeCategory = categories.find((cat) => cat.label === activeTab);
+
   return (
-    <section className="parts-news-area pt-50 pb-20">
+    <section className="part_news">
       <div className="container">
-        <div className="row">
-          <div className="col-lg-8 col-md-12">
-            <div className="row d-flex justify-content-between">
-              <div className="col-lg-2 col-md-3 col-sm-12">
-                <div className="section-tittle">
-                  <h3>Tin tức</h3>
-                </div>
-              </div>
-              <div className="col-lg-10 col-md-9 col-sm-12">
-                <div className="properties__button">
-                  <nav>
-                    <div className="nav nav-tabs" role="tablist">
-                      {categories.map((cat) => (
-                        <a
-                          key={cat.id}
-                          className={`nav-item nav-link ${
-                            activeTab === cat.label ? "active" : ""
-                          }`}
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setActiveTab(cat.label);
-                          }}
-                        >
-                          {cat.label}
-                        </a>
-                      ))}
-                    </div>
-                  </nav>
-                </div>
-              </div>
+        <div className="news__header">
+          <h3 className="news__title">Tin tức</h3>
+          <div className="news__nav">
+            <div className="news__categories">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className={`news__category ${
+                    activeTab === cat.label ? "news__category--active" : ""
+                  }`}
+                  onClick={() => setActiveTab(cat.label)}
+                >
+                  {cat.label}
+                </button>
+              ))}
             </div>
-            <div className="row">
-              <div className="col-12">
-                <div className="tab-content">
-                  <div className="tab-pane fade show active">
-                    <div className="parts-news-caption">
-                      <div className="row">
-                        {filteredNews.map((news) => (
-                          <div
-                            key={news.id}
-                            className="col-lg-4 col-md-6 col-sm-12"
-                          >
-                            <div className="single-part-news mb-60">
-                              <div className="part-img">
-                                <img src={news.image} alt="news" />
-                              </div>
-                              <div className="part-cap">
-                                <span className="title-news">{news.date}</span>
-                                <h4>
-                                  <a title={news.title} href="#">
-                                    {news.title}
-                                  </a>
-                                </h4>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <a href={activeCategory?.link} className="news__view-more">
+              Xem tất cả
+              <i className="fas fa-chevron-right"></i>
+            </a>
           </div>
-          <div className="col-lg-4 col-md-12">
-            <div className="follow-tittle mb-40">
-              <h3>Theo dõi chúng tôi</h3>
-            </div>
-            <div className="single-follow mb-45 d-md-block">
-              <div className="single-box">
-                {socialLinks.map((social, index) => (
-                  <div
-                    key={index}
-                    className="follow-us d-flex align-items-center"
-                  >
-                    <div className="follow-social">
-                      <a href="#">
-                        <img src={social.icon} alt="social" />
-                      </a>
-                    </div>
-                    <div className="follow-count">
-                      <span>{social.count}</span>
-                      <p>{social.label}</p>
-                    </div>
-                  </div>
-                ))}
+        </div>
+        <div className="news__list">
+          {filteredNews.map((news) => (
+            <article key={news.id} className="news__item">
+              <div className="news__image">
+                <img src={news.image} alt={news.title} title={news.title} />
               </div>
-            </div>
-            <div className="news-poster d-none d-lg-block">
-              <img src={icon_new_card} alt="news poster" />
-            </div>
-          </div>
+              <div className="news__content">
+                <div className="news__info">
+                  <span className="news__date">
+                    <i className="far fa-clock"></i>
+                    {news.date}
+                  </span>
+                </div>
+                <a href="#" className="news__link">
+                  <h4 className="news__heading" title={news.title}>
+                    {news.title}
+                  </h4>
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>

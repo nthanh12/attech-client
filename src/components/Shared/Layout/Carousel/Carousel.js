@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import "./Carousel.css";
 
 import banner1 from "../../../../assets/img/banner_attech.jpg";
@@ -10,19 +9,12 @@ const Carousel = () => {
   const slides = [
     {
       img: banner1,
-      title: "SÁNG TẠO & THÍCH NGHI",
-      subtitle:
-        "Điều gì làm nên sự khác biệt trong quản lý bay? Hãy để ATTECH dẫn lối.",
     },
     {
       img: banner2,
-      title: "CÔNG NGHỆ TIÊN TIẾN",
-      subtitle: "Khám phá các giải pháp quản lý bay hiện đại.",
     },
     {
       img: banner3,
-      title: "AN TOÀN HÀNG ĐẦU",
-      subtitle: "Đảm bảo an toàn bay với công nghệ tối ưu.",
     },
   ];
 
@@ -46,42 +38,10 @@ const Carousel = () => {
                 className="img-fluid w-100"
                 alt={`Slide ${index + 1}`}
               />
-              {/* <div className="carousel-caption">
-                <p className="text-uppercase text-secondary fs-4 mb-0"></p>
-                <h1 className="display-1 text-capitalize text-white mb-4 text-carou">
-                  {slide.title}
-                </h1>
-                <p className="mb-5 fs-5 intro-sub">{slide.subtitle}</p>
-              </div> */}
             </div>
           ))}
         </div>
-        {/* Nút điều hướng thủ công */}
-        <button
-          className="carousel-control-prev"
-          type="button"
-          data-bs-target="#carouselId"
-          data-bs-slide="prev"
-        >
-          <span
-            className="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-        <button
-          className="carousel-control-next"
-          type="button"
-          data-bs-target="#carouselId"
-          data-bs-slide="next"
-        >
-          <span
-            className="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Next</span>
-        </button>
-        {/* Chỉ báo (indicators) */}
+        
         <div className="carousel-indicators">
           {slides.map((_, index) => (
             <button

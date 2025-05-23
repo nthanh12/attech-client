@@ -93,3 +93,23 @@
     opacity: 1;
   }
   
+.sidebar-company {
+  width: var(--sp-navbar-width);
+  transition: width var(--sp-transition-normal);
+  background: var(--sp-navbar-dark-primary);
+}
+
+.sidebar-company.collapsed {
+  width: var(--sp-navbar-width-min);
+}
+
+.company-link {
+  color: var(--sp-navbar-light-secondary);
+}
+
+.company-link:hover,
+.company-link.active {
+  color: var(--sp-navbar-light-primary);
+  background: rgba(131, 200, 231, 0.1);
+}
+  
