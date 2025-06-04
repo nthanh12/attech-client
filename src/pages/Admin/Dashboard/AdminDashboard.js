@@ -14,6 +14,8 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import { Link } from "react-router-dom";
+import ViewAllButton from "../../../components/ViewAllButton/ViewAllButton";
 
 const AdminDashboard = () => {
   const [period, setPeriod] = useState("week");
@@ -420,9 +422,7 @@ const AdminDashboard = () => {
               </div>
             </div>
             <div className="card-footer bg-white text-center">
-              <button className="btn btn-link text-decoration-none">
-                Xem tất cả thông báo
-              </button>
+              <ViewAllButton to="/admin/notifications" />
             </div>
           </div>
         </div>

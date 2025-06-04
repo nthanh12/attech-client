@@ -9,7 +9,7 @@ const NotFoundPage = () => {
       <p className="mb-4 text-muted">
         Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
       </p>
-      <Link to="/" className="btn btn-primary btn-lg">
+      <Link to="/" className="btn btn-primary btn-lg btn-back-home">
         Trở lại Trang chủ
       </Link>
     </div>

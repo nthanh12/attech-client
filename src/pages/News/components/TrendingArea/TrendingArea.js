@@ -4,8 +4,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import "swiper/css/navigation";
-import { Autoplay } from "swiper/modules";
+import "../../../../styles/swiper-custom.css";
+import { Autoplay, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 
 const TrendingArea = () => {
   const allData = [
@@ -40,7 +42,7 @@ const TrendingArea = () => {
       id: 2,
       slug: "le-ky-ket-hop-dong-goi-thau-tb05",
       title:
-        "Lễ ký kết Hợp đồng cho Gói thầu TB05 “Cung cấp và lắp đặt hệ thống DVOR/DME”...",
+        "Lễ ký kết Hợp đồng cho Gói thầu TB05 'Cung cấp và lắp đặt hệ thống DVOR/DME'...",
       image:
         "https://attech.com.vn/wp-content/uploads/2025/03/hop-dong-tb05-4-3-1.jpg",
       date: "30/04/2024",
@@ -116,54 +118,51 @@ const TrendingArea = () => {
   ];
 
   return (
-    <div className="trending-area fix">
+    <div className="trending-area">
       <div className="container">
         <div className="trending-main">
           <div className="row">
-            <div className="col-lg-12">
+            <div className="col-12">
               <div className="section-tittle">
                 <h3>Tin hoạt động công ty</h3>
-                <Link className="get-all" to="/news/activities">
-                  Xem tất cả
-                  <i class="fa fa-solid fa-chevron-down"></i>
-                </Link>
+                <ViewAllButton to="/news/activities" />
               </div>
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-8">
-              <Swiper
-                className="trending-top mb-30"
-                spaceBetween={50}
-                modules={[Autoplay]}
-                autoplay={{ delay: 3500, disableOnInteraction: false }}
-                loop={true}
-                slidesPerView={1}
-                navigation
-                pagination={{ clickable: true }}
-              >
-                {allData.slice(0, 3).map((item, index) => (
-                  <SwiperSlide key={index}>
-                    <div className="trend-top-img">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        title={item.title}
-                      />
-                      <div className="trend-top-cap">
-                        <h2>{item.title}</h2> {/* Không có Link */}
+            <div className="col-lg-8 col-md-12">
+              <div className="trending-top-wrapper">
+                <Swiper
+                  className="trending-top mb-30"
+                  spaceBetween={0}
+                  modules={[Autoplay, Navigation]}
+                  autoplay={{ delay: 3500, disableOnInteraction: false }}
+                  loop={true}
+                  slidesPerView={1}
+                  navigation={true}
+                >
+                  {allData.slice(0, 3).map((item, index) => (
+                    <SwiperSlide key={index}>
+                      <div className="trend-top-img">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          title={item.title}
+                        />
+                        <div className="trend-top-cap">
+                          <h2>{item.title}</h2>
+                        </div>
                       </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-              {/* Tin tức trending-bottom (3 mục tiếp theo) */}
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
               <div className="trending-bottom">
                 <div className="row">
                   {allData.slice(3, 6).map((item) => (
-                    <div className="col-lg-4" key={item.id}>
-                      <div className="single-bottom mb-35">
-                        <div className="trend-bottom-img mb-30">
+                    <div className="col-lg-4 col-md-6 col-sm-12" key={item.id}>
+                      <div className="single-bottom">
+                        <div className="trend-bottom-img">
                           <img
                             src={item.image}
                             alt={item.title}
@@ -187,16 +186,32 @@ const TrendingArea = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-4">
-              {/* Swiper dọc cho tin tức còn lại */}
+            <div className="col-lg-4 col-md-12">
               <Swiper
                 direction="vertical"
                 spaceBetween={10}
                 slidesPerView={6}
-                autoplay={{ delay: 3000, disableOnInteraction: false }}
+                autoplay={{ delay: 30000, disableOnInteraction: false }}
                 loop
                 modules={[Autoplay]}
                 className="trand-right-swiper"
+                breakpoints={{
+                  320: {
+                    direction: "horizontal",
+                    slidesPerView: 1.2,
+                    spaceBetween: 12
+                  },
+                  576: {
+                    direction: "horizontal",
+                    slidesPerView: 2,
+                    spaceBetween: 15
+                  },
+                  992: {
+                    direction: "vertical",
+                    slidesPerView: 6,
+                    spaceBetween: 10
+                  }
+                }}
               >
                 {allData.slice(6).map((item) => (
                   <SwiperSlide key={item.id}>

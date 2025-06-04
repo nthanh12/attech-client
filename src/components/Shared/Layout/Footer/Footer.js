@@ -1,8 +1,13 @@
 import "../Footer/Footer.css";
+
 const Footer = () => {
   return (
     <div className="footer wow fadeIn" data-wow-delay="0.3s">
       <div className="container">
+        <div className="company-footer">
+          <h2>CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY</h2>
+          <h3>AIR TRAFFIC TECHNICAL COMPANY LIMITED</h3>
+        </div>
         <div className="row">
           <div className="col-md-6 col-lg-3">
             <div className="footer-contact">
@@ -42,20 +47,11 @@ const Footer = () => {
           </div>
           <div className="col-md-6 col-lg-4">
             <div className="newsletter">
-              <p>Bản đồ chỉ dẫn Công ty TNHH Kỹ thuật Quản lý bay</p>
-              {/* <h2>Newsletter</h2>
-              <p>
-                Lorem ipsum dolor sit amet elit. Phasellus nec pretium mi.
-                Curabitur facilisis ornare velit non vulpu
-              </p>
-              <div className="form">
-                <input className="form-control" placeholder="Email here" />
-                <button className="btn">Submit</button>
-              </div> */}
+              <p className="footer-title">Bản đồ chỉ dẫn</p>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1565.6549300951995!2d105.88089418363363!3d21.041648374720946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135a97c7dc6d877%3A0x1a140cbe4ea2cdd!2sCo.%20Management%20Engineering%20Flight!5e0!3m2!1sen!2sus!4v1741315536945!5m2!1sen!2sus"
                 width="100%"
-                height="100%"
+                height="250"
                 style={{ border: 0 }}
                 allowFullScreen=""
                 loading="lazy"
@@ -63,35 +59,33 @@ const Footer = () => {
             </div>
           </div>
         </div>
-      </div>
-      {/* <div className="container footer-menu">
-        <div className="f-menu">
-          <a href="">Terms of use</a>
-          <a href="">Privacy policy</a>
-          <a href="">Cookies</a>
-          <a href="">Help</a>
-          <a href="">FQAs</a>
+        <div className="footer-social">
+          <a href="#">
+            <i className="fab fa-facebook-f"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-twitter"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-linkedin-in"></i>
+          </a>
+          <a href="#">
+            <i className="fab fa-youtube"></i>
+          </a>
         </div>
-      </div> */}
-      <div className="container copyright">
-        <div className="row">
-          <div className="col-md-8">
-            <p className="copyright-text">
-              &copy; <a href="#">2025. Bản quyền thuộc sở hữu của ATTECH.</a>
-            </p>
-          </div>
-
-          <div className="col-md-1">
-            <a href="/">Trang chủ </a>
-          </div>
-          <div className="col-md-1">
-            <a href="/">Liên hệ</a>
-          </div>
-          <div className="col-md-2  ">
-            <p>
-              Chính sách điều khoản
-              <a href="https://htmlcodex.com"></a>
-            </p>
+        <div className="container copyright">
+          <div className="row">
+            <div className="col-md-8">
+              <p className="copyright-text">
+                © <a href="#">2025. Bản quyền thuộc sở hữu của ATTECH.</a>
+              </p>
+            </div>
+            <div className="col-md-2">
+              <a href="/">Trang chủ</a>
+            </div>
+            <div className="col-md-2">
+              <a href="/">Liên hệ</a>
+            </div>
           </div>
         </div>
       </div>

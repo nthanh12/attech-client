@@ -229,3 +229,8 @@
         font-size: 11px;
     }
 }
+.part_news__container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 auto;
+}

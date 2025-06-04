@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ProductItem from "../ProductItem/ProductItem";
+import Sidebar from "../Sidebar/Sidebar";
 import "../ProductList/ProductList.css";
 
 const products = [
@@ -256,25 +257,55 @@ const categorySlugMap = {
   "Các sản phẩm dân dụng khác": "cac-san-pham-dan-dung-khac",
 };
 
+// Thêm component CategoryNav mới
+const CategoryNav = ({ categories, selectedCategory, onSelectCategory }) => {
+  return (
+    <div className="attech-category-nav">
+      <button
+        className={`attech-category-btn ${!selectedCategory ? 'active' : ''}`}
+        onClick={() => onSelectCategory('')}
+      >
+        Tất cả sản phẩm
+      </button>
+      {Object.entries(categories).map(([category, slug]) => (
+        <button
+          key={slug}
+          className={`attech-category-btn ${selectedCategory === category ? 'active' : ''}`}
+          onClick={() => onSelectCategory(category)}
+        >
+          {category}
+        </button>
+      ))}
+    </div>
+  );
+};
+
 const ProductList = () => {
   const { category } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [viewMode, setViewMode] = useState("grid");
-  const [filteredProducts, setFilteredProducts] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [selectedCategory, setSelectedCategory] = useState(category || "");
+  const [favoriteProducts, setFavoriteProducts] = useState(() => {
+    const saved = localStorage.getItem("favoriteProducts");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
+  // Thêm state cho phân trang
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
 
   useEffect(() => {
     let result = [...products];
     
-    // Filter by category if provided
-    if (category) {
+    if (selectedCategory) {
       result = result.filter(product => 
-        product.category.toLowerCase() === category.toLowerCase()
+        product.category.toLowerCase() === selectedCategory.toLowerCase()
       );
     }
 
-    // Filter by search term
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
       result = result.filter(product =>
@@ -283,14 +314,6 @@ const ProductList = () => {
       );
     }
 
-    // Filter by selected categories
-    if (selectedCategories.length > 0) {
-      result = result.filter(product =>
-        selectedCategories.includes(product.category)
-      );
-    }
-
-    // Sort products
     result.sort((a, b) => {
       switch (sortBy) {
         case "name":
@@ -303,7 +326,19 @@ const ProductList = () => {
     });
 
     setFilteredProducts(result);
-  }, [category, searchTerm, sortBy, selectedCategories]);
+    setCurrentPage(1);
+  }, [selectedCategory, searchTerm, sortBy]);
+
+  // Tính toán sản phẩm cho trang hiện tại
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+
+  const handleCategoryChange = (category) => {
+    setSelectedCategory(category);
+    setIsSidebarOpen(false);
+  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
@@ -317,83 +352,186 @@ const ProductList = () => {
     setViewMode(mode);
   };
 
-  const handleCategoryFilter = (category) => {
-    setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
+  const handleToggleFavorite = (product) => {
+    setFavoriteProducts(prev => {
+      const isFavorite = prev.some(p => p.id === product.id);
+      if (isFavorite) {
+        return prev.filter(p => p.id !== product.id);
+      }
+      return [...prev, product];
+    });
+  };
+
+  // Component phân trang
+  const Pagination = () => {
+    const pageNumbers = [];
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+
+    if (endPage - startPage < 4) {
+      if (currentPage <= 3) {
+        endPage = Math.min(5, totalPages);
+      } else {
+        startPage = Math.max(1, totalPages - 4);
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className="attech-pagination">
+        <button
+          className="attech-pagination-button"
+          onClick={() => handlePageChange(1)}
+          disabled={currentPage === 1}
+        >
+          <i className="fas fa-angle-double-left"></i>
+        </button>
+        
+        <button
+          className="attech-pagination-button"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <i className="fas fa-angle-left"></i>
+        </button>
+
+        {pageNumbers.map(number => (
+          <button
+            key={number}
+            className={`attech-pagination-button ${currentPage === number ? 'active' : ''}`}
+            onClick={() => handlePageChange(number)}
+          >
+            {number}
+          </button>
+        ))}
+
+        <button
+          className="attech-pagination-button"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          <i className="fas fa-angle-right"></i>
+        </button>
+
+        <button
+          className="attech-pagination-button"
+          onClick={() => handlePageChange(totalPages)}
+          disabled={currentPage === totalPages}
+        >
+          <i className="fas fa-angle-double-right"></i>
+        </button>
+
+        <span className="attech-pagination-info">
+          {indexOfFirstProduct + 1}-{Math.min(indexOfLastProduct, filteredProducts.length)} / {filteredProducts.length}
+        </span>
+      </div>
     );
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="product-list-container">
-      <div className="product-controls">
-        <div className="search-container">
-          <i className="fas fa-search search-icon"></i>
-          <input
-            type="text"
-            className="search-input"
-            placeholder="Tìm kiếm sản phẩm..."
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-        </div>
-
-        <div className="product-filters">
-          <select 
-            className="sort-select"
-            value={sortBy}
-            onChange={handleSort}
-          >
-            <option value="name">Sắp xếp theo tên</option>
-            <option value="category">Sắp xếp theo danh mục</option>
-          </select>
-
-          <div className="view-mode">
-            <button
-              className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-              onClick={() => handleViewMode('grid')}
+    <div className="attech-product-list-container">
+      <div className="attech-controls-wrapper">
+        <div className="attech-controls-inner">
+          <div className="attech-controls-top">
+            <button 
+              className="attech-filter-toggle-btn"
+              onClick={() => setIsSidebarOpen(true)}
             >
-              <i className="fas fa-th"></i>
+              <i className="fas fa-filter"></i>
+              <span>Menu</span>
             </button>
-            <button
-              className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
-              onClick={() => handleViewMode('list')}
-            >
-              <i className="fas fa-list"></i>
-            </button>
+
+            <div className="attech-search-container">
+              <i className="fas fa-search attech-search-icon"></i>
+              <input
+                type="text"
+                className="attech-search-input"
+                placeholder="Tìm kiếm sản phẩm..."
+                value={searchTerm}
+                onChange={handleSearch}
+              />
+            </div>
+
+            <div className="attech-product-filters">
+              <select 
+                className="attech-sort-select"
+                value={sortBy}
+                onChange={handleSort}
+              >
+                <option value="name">Sắp xếp theo tên</option>
+                <option value="category">Sắp xếp theo danh mục</option>
+              </select>
+
+              <div className="attech-view-mode">
+                <button
+                  className={`attech-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                  onClick={() => handleViewMode('grid')}
+                >
+                  <i className="fas fa-th"></i>
+                </button>
+                <button
+                  className={`attech-view-btn ${viewMode === 'list' ? 'active' : ''}`}
+                  onClick={() => handleViewMode('list')}
+                >
+                  <i className="fas fa-list"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="attech-controls-bottom">
+            <CategoryNav
+              categories={categorySlugMap}
+              selectedCategory={selectedCategory}
+              onSelectCategory={handleCategoryChange}
+            />
           </div>
         </div>
       </div>
 
-      <div className="category-filters">
-        {Array.from(new Set(products.map(p => p.category))).map(cat => (
-          <button
-            key={cat}
-            className={`category-filter-btn ${selectedCategories.includes(cat) ? 'active' : ''}`}
-            onClick={() => handleCategoryFilter(cat)}
-          >
-            {cat}
-          </button>
-        ))}
+      <div className={`attech-product-grid ${viewMode}`}>
+        {currentProducts.length > 0 ? (
+          currentProducts.map((product, index) => (
+            <div 
+              key={product.id} 
+              className="attech-product-item-wrapper"
+              style={{
+                animation: `fadeIn 0.3s ease-in-out forwards ${index * 0.1}s`
+              }}
+            >
+              <ProductItem
+                product={product}
+                viewMode={viewMode}
+                onToggleFavorite={handleToggleFavorite}
+                isFavorite={favoriteProducts.some(p => p.id === product.id)}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="attech-no-products">
+            <i className="fas fa-box-open"></i>
+            <p>Không tìm thấy sản phẩm phù hợp</p>
+          </div>
+        )}
       </div>
 
-      {filteredProducts.length === 0 ? (
-        <div className="no-products">
-          <i className="fas fa-search"></i>
-          <p>Không tìm thấy sản phẩm phù hợp</p>
-        </div>
-      ) : (
-        <div className={`product-grid ${viewMode}`}>
-          {filteredProducts.map((product) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              viewMode={viewMode}
-            />
-          ))}
-        </div>
-      )}
+      {currentProducts.length > 0 && <Pagination />}
+
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        selectedCategories={[selectedCategory]}
+        onCategoryChange={handleCategoryChange}
+        products={products}
+      />
     </div>
   );
 };

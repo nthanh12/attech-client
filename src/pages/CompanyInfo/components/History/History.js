@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./History.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Map3D from './Map3D';
 
 const History = () => {
+  const [selectedStation, setSelectedStation] = useState(null);
+  const mapSectionRef = useRef(null);
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -115,6 +119,23 @@ const History = () => {
     ],
   };
 
+  const handleStationClick = (stationName) => {
+    setSelectedStation(stationName);
+    
+    // Scroll to exact position of map component
+    if (mapSectionRef.current) {
+      const element = mapSectionRef.current;
+      const headerOffset = 80; // Adjust this value based on your header height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
   return (
     <div className="history-timeline">
       <section className="timeline-section">
@@ -210,16 +231,23 @@ const History = () => {
             ))}
           </div>
         </div>
-        <div className="stations-section" data-aos="fade-up">
-          <h3>Các Đài/Trạm CNS Trên Toàn Quốc</h3>
+        <section className="stations-section" ref={mapSectionRef}>
+          <div className="section-title" data-aos="fade-up">
+            <h2>Các Đài/Trạm CNS Trên Toàn Quốc</h2>
+          </div>
+          <Map3D stations={companyInfo.stations} selectedStation={selectedStation} />
           <div className="stations-list">
             {companyInfo.stations.map((station, index) => (
-              <span key={index} className="station-item">
+              <span
+                key={index}
+                className={`station-item ${selectedStation === station ? 'active' : ''}`}
+                onClick={() => handleStationClick(station)}
+              >
                 {station}
               </span>
             ))}
           </div>
-        </div>
+        </section>
       </section>
     </div>
   );

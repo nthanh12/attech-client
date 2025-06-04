@@ -4,8 +4,7 @@ import "./BackToTopButton.css";
 
 const BackToTopButton = ({
   scrollThreshold = 300,
-  size = 50,
-  backgroundColor = "#0f9fdb",
+  size = 40,
 }) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -19,26 +18,31 @@ const BackToTopButton = ({
   }, [scrollThreshold]);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ 
+      top: 0, 
+      behavior: "smooth",
+      duration: 500
+    });
   };
 
   if (!isVisible) return null;
 
   return (
-    <div
+    <button
       className="back-to-top"
       onClick={scrollToTop}
-      style={{ width: size, height: size, backgroundColor }}
+      style={{ width: size, height: size }}
+      aria-label="Cuộn lên đầu trang"
+      title="Cuộn lên đầu trang"
     >
-      <i className="fas fa-arrow-up"></i>
-    </div>
+      <i className="fas fa-chevron-up"></i>
+    </button>
   );
 };
 
 BackToTopButton.propTypes = {
   scrollThreshold: PropTypes.number,
   size: PropTypes.number,
-  backgroundColor: PropTypes.string,
 };
 
 export default BackToTopButton;

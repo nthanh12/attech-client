@@ -4,6 +4,8 @@ import "./Navbar.css";
 import NavItem from "./NavItem";
 import menuItems from "./menuItems";
 import useIsMobile from "./useIsMobile";
+import { useLanguage } from "../../../../../contexts/LanguageContext";
+import { useTheme } from "../../../../../contexts/ThemeContext";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -11,6 +13,10 @@ const Navbar = () => {
   const isMobile = useIsMobile(768);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
+
+  const { language, switchLanguage, translate } = useLanguage();
+  const { isDarkMode, toggleDarkMode } = useTheme();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     // Nếu không phải trang chủ, luôn set scrolled = true
@@ -42,17 +48,99 @@ const Navbar = () => {
 
   const closeMobileMenu = () => setMobileOpen(false);
 
+  const handleSearchClick = () => {
+    setIsSearchOpen((prev) => !prev);
+  };
+
+  const handleSearchBlur = () => {
+    // Chỉ đóng search khi input trống
+    const searchInput = document.querySelector(".search-input");
+    if (!searchInput?.value) {
+      setIsSearchOpen(false);
+    }
+  };
+
   return (
     <nav className={`navbar${scrolled ? " scrolled" : ""}`}>
       {/* Phần trên - Logo và tên công ty */}
       <div className="navbar-top">
         <div className="navbar-container">
-          <Link to="/" className="logo" onClick={closeMobileMenu}>
-            <img
-              src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
-              alt="ATTECH Logo"
-            />
-          </Link>
+          <div className="navbar-left">
+            <Link to="/" className="logo" onClick={closeMobileMenu}>
+              <img
+                src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
+                alt="ATTECH Logo"
+              />
+            </Link>
+          </div>
+          <div className="navbar-right">
+            {/* Search button/input */}
+            <div className={`search-container${isSearchOpen ? " open" : ""}`}>
+              <button
+                className="search-button"
+                onClick={handleSearchClick}
+                aria-label={translate("search")}
+              >
+                <i className="fa fa-search"></i>
+              </button>
+              {isSearchOpen && (
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder={translate("search")}
+                  aria-label={translate("search")}
+                  onBlur={handleSearchBlur}
+                  autoFocus
+                />
+              )}
+            </div>
+            {/* Dark mode toggle */}
+            <button
+              className="theme-toggle"
+              onClick={toggleDarkMode}
+              aria-label={translate(isDarkMode ? "lightMode" : "darkMode")}
+              title={translate(isDarkMode ? "lightMode" : "darkMode")}
+            >
+              <i
+                className={`fa fa-solid ${
+                  isDarkMode ? "fa fa-moon" : "fa fa-sun"
+                }`}
+              ></i>
+            </button>
+            {/* Language switcher */}
+            <div className="language-switcher">
+              <button
+                className={`lang-btn ${language === "vi" ? "active" : ""}`}
+                onClick={() => switchLanguage("vi")}
+                title="Tiếng Việt"
+              >
+                <img
+                  src={require("../../../../../assets/img/flags/vi.png")}
+                  alt=""
+                />
+              </button>
+              <button
+                className={`lang-btn ${language === "en" ? "active" : ""}`}
+                onClick={() => switchLanguage("en")}
+                title="English"
+              >
+                <img
+                  src={require("../../../../../assets/img/flags/eng.png")}
+                  alt=""
+                />
+              </button>
+            </div>
+
+            {/* Login button */}
+            <Link
+              to="/login"
+              className="login-btn"
+              title={translate("login")}
+              aria-label={translate("login")}
+            >
+              <i className="fa fa-solid fa-user"></i>
+            </Link>
+          </div>
         </div>
       </div>
 

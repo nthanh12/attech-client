@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
@@ -5,10 +6,10 @@ import Public from "./routes/Public";
 import Admin from "./routes/Admin";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import ChatboxButton from "./components/Shared/Navigation/ChatboxButton/ChatboxButton";
+import ChatWidget from "./components/Shared/ChatWidget/ChatWidget";
 import BackToTopButton from "./components/Shared/Navigation/BackToTopButton/BackToTopButton";
-import { openChat } from "./services/chatService";
-import { floatingButtonsConfig } from "./config/floatingButtonsConfig";
+import { ThemeProvider } from './contexts/ThemeContext';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 const ScrollToTop = ({ children }) => {
   const location = useLocation();
@@ -20,13 +21,8 @@ const ScrollToTop = ({ children }) => {
 };
 
 const AppContent = () => {
-  const { chatbox, backToTop } = floatingButtonsConfig;
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
-
-  const handleChatboxClick = () => {
-    openChat(chatbox.defaultService, chatbox.defaultConfig);
-  };
 
   return (
     <>
@@ -36,31 +32,26 @@ const AppContent = () => {
       </Routes>
       {!isAdminRoute && (
         <>
-          <ChatboxButton
-            onClick={handleChatboxClick}
-            iconSrc={chatbox.iconSrc}
-            size={chatbox.size}
-            backgroundColor={chatbox.backgroundColor}
-          />
-          <BackToTopButton
-            scrollThreshold={backToTop.scrollThreshold}
-            size={backToTop.size}
-            backgroundColor={backToTop.backgroundColor}
-          />
+          <ChatWidget />
+          <BackToTopButton scrollThreshold={300} size={40} />
         </>
       )}
     </>
   );
 };
 
-function App() {
+const App = () => {
   return (
     <Router>
-      <ScrollToTop>
-        <AppContent />
-      </ScrollToTop>
+      <ThemeProvider>
+        <LanguageProvider>
+          <ScrollToTop>
+            <AppContent />
+          </ScrollToTop>
+        </LanguageProvider>
+      </ThemeProvider>
     </Router>
   );
-}
+};
 
 export default App;

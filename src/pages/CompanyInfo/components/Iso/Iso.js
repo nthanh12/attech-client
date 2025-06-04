@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import "./Iso.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { Download } from "lucide-react";
+import { Download, Award, Shield, CheckCircle2 } from "lucide-react";
+import "./Iso.css";
 
 const Iso = () => {
   useEffect(() => {
@@ -18,40 +18,72 @@ const Iso = () => {
       year: "2005",
       description:
         "Công ty được tổ chức đánh giá BVQI của Anh cấp giấy chứng nhận đạt tiêu chuẩn Quốc tế ISO 9001:2000.",
+      icon: <Award className="timeline-icon" />,
     },
     {
       year: "2008",
       description:
         "Ngày 29/01/2008, Hệ thống quản lý chất lượng của Công ty được tổ chức Quốc tế TUV NORD của CHLB Đức đánh giá tái chứng nhận và cấp Chứng chỉ Hệ thống quản lý chất lượng ISO 9001:2000 lần 2.",
+      icon: <Shield className="timeline-icon" />,
     },
     {
       year: "2011",
       description:
         "Ngày 15/01/2011, Công ty hoàn thành chuyển đổi từ tiêu chuẩn TCVN ISO 9001:2000 sang TCVN ISO 9001:2008 và được tổ chức Quốc tế BSi của Vương quốc Anh cấp chứng chỉ ISO 9001:2008.",
+      icon: <CheckCircle2 className="timeline-icon" />,
     },
     {
       year: "2017",
       description:
         "Hệ thống quản lý chất lượng của Công ty được duy trì, định kỳ đánh giá giám sát 1 lần/năm và đánh giá tái chứng nhận 3 năm/lần. Lần cấp giấy chứng nhận gần nhất: ngày 15/01/2017.",
+      icon: <Award className="timeline-icon" />,
     },
     {
       year: "2018",
       description:
         "Công ty chuyển đổi hệ thống từ ISO 9001:2008 sang ISO 9001:2015, áp dụng có hiệu lực từ ngày 01/01/2018.",
+      icon: <Shield className="timeline-icon" />,
     },
   ];
 
   const commitments = [
-    "Sáng tạo không ngừng",
-    "Đầu tư hiệu quả",
-    "Nhân viên chuyên nghiệp",
-    "Quản lí tinh thông",
+    {
+      text: "Sáng tạo không ngừng",
+      icon: "💡",
+    },
+    {
+      text: "Đầu tư hiệu quả",
+      icon: "📈",
+    },
+    {
+      text: "Nhân viên chuyên nghiệp",
+      icon: "👥",
+    },
+    {
+      text: "Quản lí tinh thông",
+      icon: "⚡",
+    },
   ];
 
   const documents = [
-    { name: "Hệ thống chứng chỉ ISO 9001:2015", size: "705.16 KB", link: "#" },
-    { name: "Vilas 482 9-2020", size: "495.1 KB", link: "#" },
-    { name: "ISO 14001:2015", size: "187.52 KB", link: "#" },
+    {
+      name: "Hệ thống chứng chỉ ISO 9001:2015",
+      size: "705.16 KB",
+      link: "#",
+      icon: <Award size={24} />,
+    },
+    {
+      name: "Vilas 482 9-2020",
+      size: "495.1 KB",
+      link: "#",
+      icon: <Shield size={24} />,
+    },
+    {
+      name: "ISO 14001:2015",
+      size: "187.52 KB",
+      link: "#",
+      icon: <CheckCircle2 size={24} />,
+    },
   ];
 
   return (
@@ -81,11 +113,12 @@ const Iso = () => {
             <div
               key={index}
               className={`timeline-item ${index % 2 === 0 ? "left" : "right"}`}
-              data-aos="fade-up"
+              data-aos={index % 2 === 0 ? "fade-right" : "fade-left"}
               data-aos-delay={index * 100}
             >
               <div className="timeline-content">
                 <div className="timeline-year">{event.year}</div>
+                <div className="timeline-icon-wrapper">{event.icon}</div>
                 <p>{event.description}</p>
               </div>
             </div>
@@ -118,13 +151,18 @@ const Iso = () => {
             tôi là trở thành tổ hợp công ty đa sở hữu hoạt động kinh doanh trên
             các lĩnh vực: Cung cấp dịch vụ thông tin, dẫn đường, giám sát hàng
             không; Cung cấp dịch vụ bay kiểm tra hiệu chuẩn hàng không; Sản xuất
-            công nghiệp hàng không. Mong muốn của khách hàng là nguồn cảm hứng
-            sáng tạo, động lực đầu tư, mục tiêu quản lí của chúng tôi. Chúng tôi
-            thực hiện:
+            công nghiệp hàng không.
           </p>
           <ul>
             {commitments.map((commitment, index) => (
-              <li key={index}>{commitment}</li>
+              <li
+                key={index}
+                data-aos="zoom-in"
+                data-aos-delay={index * 100}
+              >
+                <span className="commitment-icon">{commitment.icon}</span>
+                {commitment.text}
+              </li>
             ))}
           </ul>
           <p>
@@ -150,9 +188,12 @@ const Iso = () => {
               className="document-item"
               target="_blank"
               rel="noopener noreferrer"
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
             >
+              {doc.icon}
+              <span className="doc-name">{doc.name}</span>
               <Download className="download-icon" />
-              <span>{doc.name}</span>
               <span className="file-size">({doc.size})</span>
             </a>
           ))}

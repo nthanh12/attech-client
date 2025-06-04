@@ -14,12 +14,8 @@ const NewsPage = () => {
     <div className="news-page">
       <div className="container">
         <NewsSection />
-        {/* <SliderSection category="tech" /> */}
-        {/* <ContentSection category="law" /> */}
         <TrendingArea category="activities" />
         <WeeklyNews />
-        {/* <WeeklyNews />
-        <WeeklyNews /> */}
         <WhatsNews />
       </div>
     </div>

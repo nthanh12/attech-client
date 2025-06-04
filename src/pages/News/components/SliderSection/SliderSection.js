@@ -1,12 +1,16 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "../../../../styles/swiper-custom.css";
 import "../SliderSection/SliderSection.css";
 import sliderImg1 from "../../../../assets/img/slider_img1.jpg";
 import sliderImg2 from "../../../../assets/img/slider_img2.jpg";
 import sliderImg3 from "../../../../assets/img/slider_img3.jpg";
 import sliderImg4 from "../../../../assets/img/slider_img4.jpg";
-import { Autoplay } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import { Link } from "react-router-dom";
+import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 
 const SliderSection = () => {
   return (
@@ -21,10 +25,7 @@ const SliderSection = () => {
               disableOnInteraction: false,
             }}
             loop={true}
-            pagination={{
-              clickable: true,
-            }}
-            modules={Autoplay}
+            modules={[Autoplay, Navigation]}
             navigation={true}
             className="swiper_slider"
           >
@@ -111,10 +112,7 @@ const SliderSection = () => {
           <div className="latest_post">
             <div className="d-flex justify-content-between align-items-center m-0">
               <p>Hoạt động công ty</p>
-              <Link to="/news/notification/all" className="more-btn">
-                <span>Xem tất cả</span>
-                <i className="fa fa-angle-down" aria-hidden="true"></i>
-              </Link>
+              <ViewAllButton to="/news/notification/all" />
             </div>
             <div className="fixed_announcement">
               <div className="media">

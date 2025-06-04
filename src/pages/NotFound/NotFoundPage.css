@@ -9,3 +9,6 @@
   .not-found-container p {
     max-width: 500px;
   }
+  .btn-back-home {
+    width: 200px;
+  }

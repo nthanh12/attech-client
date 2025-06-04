@@ -10,7 +10,7 @@ const Fact = () => {
 
   return (
     <div className="fact">
-      <div className="container">
+      <div className="fact__container">
         <a href="#" className="fact__banner">
           <img 
             src="https://vatm.vn/uploads/z6294715350538_ce0d1905bb27dbc45ce85ea076f82d48.jpg" 

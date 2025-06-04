@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./PartNews.css";
 import giai_bong from "../../../../assets/img/giai-bong-26_03_2025.jpg";
+import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 
 const categories = [
   { id: "all", label: "Tất cả", link: "/tin-tuc" },
@@ -72,7 +73,7 @@ const PartNews = () => {
 
   return (
     <section className="part_news">
-      <div className="container">
+      <div className="part_news__container">
         <div className="news__header">
           <h3 className="news__title">Tin tức</h3>
           <div className="news__nav">
@@ -89,10 +90,7 @@ const PartNews = () => {
                 </button>
               ))}
             </div>
-            <a href={activeCategory?.link} className="news__view-more">
-              Xem tất cả
-              <i className="fas fa-chevron-right"></i>
-            </a>
+            <ViewAllButton to={activeCategory?.link} className="news__view-more" />
           </div>
         </div>
         <div className="news__list">

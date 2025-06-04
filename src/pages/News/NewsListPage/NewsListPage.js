@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import "./NewsListPage.css";
 
 const allData = [
@@ -153,6 +153,10 @@ const allData = [
 ];
 const NewsListPage = () => {
   const { category } = useParams();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
 
   // Lọc dữ liệu theo danh mục
   const filteredItems =
@@ -160,53 +164,159 @@ const NewsListPage = () => {
       ? allData.filter((item) => item.id)
       : allData.filter((item) => item.category === category && item.id);
 
+  // Tính toán phân trang
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+
+  useEffect(() => {
+    // Simulate loading
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [category]);
+
   const getCategoryTitle = () => {
     switch (category) {
       case "activities":
-        return "Danh sách tin tức hoạt động công ty";
+        return "Tin tức hoạt động công ty";
       case "party":
-        return "Danh sách tin tức đảng bộ công ty";
+        return "Tin tức đảng bộ công ty";
       case "youth":
-        return "Danh sách tin tức đoàn thanh niên";
+        return "Tin tức đoàn thanh niên";
       case "union":
-        return "Danh sách tin tức công đoàn công ty";
+        return "Tin tức công đoàn công ty";
       case "aviation":
-        return "Danh sách tin ngành hàng không";
+        return "Tin ngành hàng không";
       case "law":
-        return "Danh sách tin tuyên truyền pháp luật";
+        return "Tin tuyên truyền pháp luật";
       default:
-        return "Danh sách tin tức";
+        return "Tất cả tin tức";
     }
   };
+
+  const getCategoryPath = () => {
+    switch (category) {
+      case "activities":
+        return "Hoạt động công ty";
+      case "party":
+        return "Đảng bộ công ty";
+      case "youth":
+        return "Đoàn thanh niên";
+      case "union":
+        return "Công đoàn công ty";
+      case "aviation":
+        return "Tin ngành hàng không";
+      case "law":
+        return "Tuyên truyền pháp luật";
+      default:
+        return "Tất cả tin tức";
+    }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  if (loading) {
+    return (
+      <div className="news-list-page">
+        <div className="container">
+          <div className="loading">
+            <div className="loading-spinner" />
+            <p>Đang tải tin tức...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="news-list-page">
       <div className="container">
+        <nav className="breadcrumb">
+          <ul>
+            <li>
+              <Link to="/">Trang chủ</Link>
+            </li>
+            <li>
+              <Link to="/news/all-act">Tin tức</Link>
+            </li>
+            {category && category !== "all-act" && (
+              <li>
+                <span>{getCategoryPath()}</span>
+              </li>
+            )}
+          </ul>
+        </nav>
+
         <h2 className="page-title">{getCategoryTitle()}</h2>
-        <div className="news-grid">
-          {filteredItems.length > 0 ? (
-            filteredItems.map((item) => (
-              <div className="news-item" key={item.id}>
-                <div className="news-image">
-                  <img src={item.image} alt={item.title} title={item.title} />
-                </div>
-                <div className="news-content">
-                  <span className="news-date">{item.date}</span>
-                  <h3>
+
+        {currentItems.length > 0 ? (
+          <>
+            <div className="news-grid">
+              {currentItems.map((item) => (
+                <div className="news-item" key={item.id}>
+                  <div className="news-image">
+                    <img src={item.image} alt={item.title} title={item.title} />
+                  </div>
+                  <div className="news-content">
+                    <span className="news-date">{item.date}</span>
+                    <h3>
+                      <Link
+                        to={`/news/${item.id}/${item.slug}`}
+                        title={item.title}
+                      >
+                        {item.title}
+                      </Link>
+                    </h3>
                     <Link
                       to={`/news/${item.id}/${item.slug}`}
-                      title={item.title}
+                      className="read-more"
                     >
-                      {item.title}
+                      Đọc thêm
                     </Link>
-                  </h3>
+                  </div>
                 </div>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Trước
+                </button>
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index + 1}
+                    onClick={() => handlePageChange(index + 1)}
+                    className={currentPage === index + 1 ? "active" : ""}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Sau
+                </button>
               </div>
-            ))
-          ) : (
+            )}
+          </>
+        ) : (
+          <div className="empty-state">
             <p>Chưa có tin tức nào trong danh mục này.</p>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

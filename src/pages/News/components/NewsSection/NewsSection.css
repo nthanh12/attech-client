@@ -10,17 +10,17 @@
   .latest_newsarea {
     display: flex;
     align-items: center;
-    gap: 20px; /* Khoảng cách đều giữa các phần tử */
+    gap: 20px;
     border-bottom: 2px solid #ddd;
     padding: 10px 0;
   }
   
   /* Tiêu đề "Tin tức" */
   .latest_newsarea p {
-    flex: 0 0 100px; /* Chiều rộng cố định */
+    flex: 0 0 120px;
     margin: 0;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 18px;
     color: #333;
   }
   

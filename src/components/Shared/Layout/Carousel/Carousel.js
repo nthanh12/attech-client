@@ -2,7 +2,7 @@ import React from "react";
 import "./Carousel.css";
 
 import banner1 from "../../../../assets/img/banner_attech.jpg";
-import banner2 from "../../../../assets/img/cns/about_cns4.jpg";
+import banner2 from "../../../../assets/img/bay-kthc/fi8.jpg";
 import banner3 from "../../../../assets/img/cns/about_cns2.jpg";
 
 const Carousel = () => {
@@ -41,7 +41,7 @@ const Carousel = () => {
             </div>
           ))}
         </div>
-        
+
         <div className="carousel-indicators">
           {slides.map((_, index) => (
             <button

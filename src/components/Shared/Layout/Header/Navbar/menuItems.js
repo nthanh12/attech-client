@@ -120,7 +120,7 @@ const menuItems = [
       { path: "/company/business", label: "Ngành nghề kinh doanh" },
       { path: "/company/iso", label: "Hệ thống chứng chỉ ISO" },
       { path: "/company/finance", label: "Thông tin tài chính" },
-      { path: "/company/library", label: "Thư viện công ty" },
+      { path: "/company/gallery", label: "Thư viện công ty" },
     ],
   },
   { path: "/contact", label: "Liên hệ" },

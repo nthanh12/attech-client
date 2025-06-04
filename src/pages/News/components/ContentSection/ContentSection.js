@@ -1,6 +1,8 @@
 // import "../ContentSection/ContentSection.css";
 import sliderImg1 from "../../../../assets/img/featured_img1.jpg";
 import { Link } from "react-router-dom";
+import React from "react";
+import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 
 const newsData = [
   {
@@ -136,10 +138,7 @@ const ContentSection = () => {
             <div className="single_sidebar">
               <div className="d-flex justify-content-between align-items-center">
                 <p className="d-flex-text">Tuyên truyền pháp luật</p>
-                <Link to="/news/law/all" className="more-btn">
-                  <span>Xem tất cả</span>
-                  <i className="fa fa-angle-down" aria-hidden="true"></i>
-                </Link>
+                <ViewAllButton to="/news/law/all" />
               </div>
               <ul className="spost_nav">
                 {lawNews.map((news, index) => (

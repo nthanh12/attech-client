@@ -1,12 +1,11 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, EffectFade, Pagination } from "swiper/modules";
+import { Autoplay, EffectFade } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-// import "./Map.css";
+import "../../../../styles/swiper-custom.css";
 
 // Import images
 import pic_1 from "../../../../assets/img/ADSB V1.jpg";
@@ -43,7 +42,7 @@ const Map = () => {
             <div className="showcase-media">
               <Swiper
                 ref={swiperRef}
-                modules={[Autoplay, EffectFade, Pagination]}
+                modules={[Autoplay, EffectFade]}
                 effect="fade"
                 spaceBetween={0}
                 slidesPerView={1}
@@ -51,11 +50,6 @@ const Map = () => {
                 autoplay={{
                   delay: 5000,
                   disableOnInteraction: false,
-                }}
-                pagination={{
-                  clickable: true,
-                  type: "bullets",
-                  el: ".custom-pagination",
                 }}
                 className="showcase-swiper"
               >

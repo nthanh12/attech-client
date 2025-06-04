@@ -20,6 +20,14 @@ import NotificationDetailPage from "../pages/Notification/NotificationDetailPage
 
 import ContactPage from "../pages/Contact/ContactPage/ContactPage";
 import CompanyInfoPage from "../pages/CompanyInfo/CompanyInfoPage/CompanyInfoPage";
+import Financial from "../pages/CompanyInfo/components/Financial/Financial";
+import History from "../pages/CompanyInfo/components/History/History";
+import Structure from "../pages/CompanyInfo/components/Structure/Structure";
+import Leadership from "../pages/CompanyInfo/components/Leadership/Leadership";
+import Business from "../pages/CompanyInfo/components/Business/Business";
+import Iso from "../pages/CompanyInfo/components/Iso/Iso";
+import Gallery from "../pages/CompanyInfo/components/Gallery/Gallery";
+import GalleryDetail from "../pages/CompanyInfo/components/Gallery/GalleryDetail";
 
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
 
@@ -60,7 +68,17 @@ const Public = () => {
         />
 
         {/* Company info */}
-        <Route path="/company/*" element={<CompanyInfoPage />} />
+        <Route path="/company" element={<Financial />} />
+        <Route path="/company/finance" element={<Financial />} />
+        <Route path="/company/history" element={<History />} />
+        <Route path="/company/structure" element={<Structure />} />
+        <Route path="/company/leadership" element={<Leadership />} />
+        <Route path="/company/business" element={<Business />} />
+        <Route path="/company/iso" element={<Iso />} />
+        
+        {/* Gallery - Changed from nested routes to flat routes */}
+        <Route path="/company/gallery" element={<Gallery />} />
+        <Route path="/company/gallery/:albumId" element={<GalleryDetail />} />
 
         {/* Contact */}
         <Route path="/contact" element={<ContactPage />} />
