@@ -8,12 +8,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(15, 159, 219, 0.15);
+  box-shadow: 0 4px 12px rgba(15, 159, 219, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 999;
   border: none;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
+  border-radius: 12px;
+  animation: fadeInUp 0.5s ease-out;
 }
 
 .back-to-top::before {
@@ -24,6 +26,7 @@
   background: linear-gradient(135deg, #1a6fc7 0%, #0f9fdb 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
+  border-radius: 12px;
 }
 
 .back-to-top:hover::before {
@@ -31,22 +34,26 @@
 }
 
 .back-to-top:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(15, 159, 219, 0.2);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(15, 159, 219, 0.25);
   background: rgba(255, 255, 255, 1);
+}
+
+.back-to-top:active {
+  transform: translateY(-1px) scale(0.98);
 }
 
 .back-to-top i {
   color: #0f9fdb;
-  font-size: 18px;
+  font-size: 20px;
   position: relative;
   z-index: 1;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .back-to-top:hover i {
-  transform: translateY(-1px);
-  color: #1a6fc7;
+  transform: translateY(-2px);
+  color: white;
 }
 
 @keyframes fadeInUp {
@@ -63,19 +70,21 @@
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   .back-to-top {
-    background: rgba(26, 32, 44, 0.8);
+    background: rgba(26, 32, 44, 0.85);
+    box-shadow: 0 4px 12px rgba(15, 159, 219, 0.15);
   }
   
   .back-to-top:hover {
     background: rgba(26, 32, 44, 0.95);
+    box-shadow: 0 6px 16px rgba(15, 159, 219, 0.2);
   }
 
   .back-to-top i {
-    color: #4dabf7;
+    color: #74c0fc;
   }
 
   .back-to-top:hover i {
-    color: #74c0fc;
+    color: white;
   }
 }
   

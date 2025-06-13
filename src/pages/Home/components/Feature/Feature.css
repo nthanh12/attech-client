@@ -4,14 +4,18 @@
 }
 
 .feature-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 5 cột đều nhau */
+  gap: 20px;
+  align-items: stretch;
   max-width: 1320px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 10px 0px;
+  width: 100%;
 }
 
+/* ============================= */
+/* FEATURE ITEM (3 dịch vụ đầu) */
+/* ============================= */
 .feature-link {
   text-decoration: none;
 }
@@ -21,9 +25,8 @@
   border-radius: 15px;
   padding: 30px 10px;
   text-align: center;
-  transition: all 0.4s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  height: 100%;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -32,6 +35,7 @@
   animation: fadeInUp 0.6s ease-out forwards;
   background-size: cover;
   background-position: center;
+  height: 100%;
 }
 
 .feature-item:nth-child(1) {
@@ -50,18 +54,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3));
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
   z-index: 1;
 }
 
 .feature-item:hover .feature-overlay {
-  background: linear-gradient(135deg, rgba(107, 72, 255, 0.7), rgba(0, 221, 235, 0.7));
+  background: rgba(101, 148, 215, 0.65);
 }
 
 .feature-item:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .feature-icon {
@@ -73,13 +76,7 @@
   font-size: 48px;
   color: #ffffff;
   margin-bottom: 20px;
-  transition: all 0.4s ease;
-}
-
-.feature-item:hover .feature-icon i {
-  color: #ffffff;
-  transform: scale(1.15) rotate(8deg);
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  transition: all 0.3s ease;
 }
 
 .feature-text {
@@ -88,138 +85,210 @@
 }
 
 .feature-text h3 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   color: #ffffff;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: all 0.4s ease;
 }
 
 .feature-text .feature-desc {
   font-size: 14px;
-  color: #e0e0e0;
+  color: rgba(255, 255, 255, 0.9);
   margin-top: 10px;
-  opacity: 0.9;
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover .feature-text .feature-desc {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .feature-item:hover .feature-text h3 {
+  transform: translateY(-5px);
   color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-.feature-item:hover .feature-desc {
-  color: #ffffff;
-  opacity: 1;
+.feature-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 60%;
+  height: 3px;
+  background: #ffffff;
+  transition: transform 0.5s ease;
+  z-index: 2;
 }
 
+.feature-item:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ========================== */
+/* NOTIFY WRAPPER - SWIPER   */
+/* ========================== */
 .notify-wrapper {
   grid-column: span 2;
+  height: 100%;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
   overflow: hidden;
   position: relative;
 }
 
+.notify-wrapper .swiper {
+  height: 100%;
+}
+
 .notify-item {
-  background: #fff5e6;
-  border: 2px solid #ff9900;
+  background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
-  flex: 1;
-  animation: slideIn 0.5s ease-out forwards;
+  height: 100%;
+  position: relative;
+  border: 1px solid #e5e7eb;
+}
+
+.notify-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
 }
 
 .notify-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.1);
+  transform: translateY(-2px);
+}
+
+.notify-item:hover::before {
+  transform: scaleX(1);
 }
 
 .notify-img {
   position: relative;
   width: 100%;
   height: 160px;
+  overflow: hidden;
+}
+
+.notify-img::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(37, 99, 235, 0.02);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .notify-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: all 0.3s ease;
+  transition: transform 0.5s ease;
+}
+
+.notify-item:hover .notify-img::after {
+  opacity: 1;
+}
+
+.notify-item:hover .notify-img img {
+  transform: scale(1.04);
 }
 
 .news-badge {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #ff9900;
+  background: #2563eb;
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
-  padding: 5px 10px;
-  border-radius: 12px;
+  padding: 5px 12px;
+  border-radius: 6px;
   text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
-.notification-dots {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-  grid-column: span 2;
-}
-
-.notification-dots .dot {
-  width: 12px;
-  height: 12px;
-  margin: 0 6px;
-  background-color: #ccc;
-  border-radius: 50%;
-  display: inline-block;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.notification-dots .dot.active {
-  background-color: #ff9900;
+.notify-item:hover .news-badge {
+  background: #1d4ed8;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .notify-title {
-  color: #002a5c;
-  font-size: 16px;
-  margin: 5px 15px;
+  color: #1f2937;
+  font-size: 14px;
+  margin: 8px 12px;
   text-align: left;
   display: -webkit-box;
-  font-family: 'Inter', sans-serif;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .notify-item:hover .notify-title {
-  color: #ff9900;
+  color: #2563eb;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .feature-section {
-    padding: 40px 15px;
-  }
-
+/* ========================== */
+/* RESPONSIVE DESIGN         */
+/* ========================== */
+@media (max-width: 1023px) {
   .feature-container {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(4, 1fr); /* 3 banner + 1 tin tức */
   }
 
+  .notify-wrapper {
+    grid-column: span 1;
+  }
+
+  .feature-text h3 {
+    font-size: 16px;
+  }
+
+  .feature-text .feature-desc {
+    font-size: 13px;
+  }
+
+  .notify-title {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 767px) {
+  .feature-container {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .feature-section {
+    padding: 10px 10px;
+  }
+  
   .feature-item {
-    padding: 25px 15px;
+    min-height: 150px;
+    padding: 20px 15px;
   }
 
   .feature-icon i {
@@ -228,51 +297,46 @@
   }
 
   .feature-text h3 {
-    font-size: 18px;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .feature-text .feature-desc {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-top: 8px;
+  }
+
+  /* Điều chỉnh notify item */
+  .notify-item {
+    min-height: 320px; /* Tăng chiều cao cho notify item */
+    display: flex;
+    flex-direction: column;
   }
 
   .notify-img {
-    max-height: 120px;
+    height: 220px; /* Tăng chiều cao ảnh */
+    flex-shrink: 0;
   }
 
   .notify-title {
-    font-size: 14px;
-    margin: 10px;
+    font-size: 13px;
+    margin: 12px;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-height: 1.4;
   }
 
-  .notify-wrapper {
-    grid-column: auto;
-    flex-direction: column;
+  .news-badge {
+    font-size: 10px;
+    padding: 4px 8px;
   }
 }
 
-@media (max-width: 480px) {
-  .feature-container {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-
-  .feature-item {
-    padding: 20px 15px;
-  }
-
-  .notify-img {
-    height: 120px;
-  }
-}
-
-/* Animation for notification sliding */
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
+/* ========================== */
+/* ANIMATIONS                 */
+/* ========================== */
 @keyframes fadeInUp {
   from {
     opacity: 0;

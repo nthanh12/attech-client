@@ -1,0 +1,271 @@
+/* Service Detail Page */
+.service-content-wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cns-container {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Header Section */
+.service-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.service-header img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.service-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* WYSIWYG Content Styles */
+.cns-container img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+.cns-container p {
+  margin: 15px 0;
+  line-height: 1.6;
+}
+
+.cns-container h1,
+.cns-container h2,
+.cns-container h3,
+.cns-container h4,
+.cns-container h5,
+.cns-container h6 {
+  margin: 1.5em 0 0.8em;
+  line-height: 1.3;
+}
+
+.cns-container ul,
+.cns-container ol {
+  padding-left: 20px;
+  margin: 15px 0;
+}
+
+.cns-container li {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.cns-container table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  overflow-x: auto;
+  display: block;
+}
+
+.cns-container td,
+.cns-container th {
+  border: 1px solid #ddd;
+  padding: 12px;
+}
+
+/* Content Section */
+.service-content {
+  color: #374151;
+  line-height: 1.6;
+}
+
+.service-content p {
+  margin: 16px 0;
+  text-align: justify;
+}
+
+.service-section {
+  margin: 40px 0;
+}
+
+.service-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 20px;
+}
+
+.service-subsection {
+  margin: 24px 0;
+  padding-left: 20px;
+}
+
+.service-subsection h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+.service-content ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 16px 0;
+}
+
+.service-content li {
+  margin: 8px 0;
+}
+
+/* Gallery Section */
+.service-gallery {
+  margin: 40px 0;
+}
+
+.service-gallery figure {
+  margin: 30px 0;
+  text-align: center;
+}
+
+.service-gallery img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+.service-gallery figcaption {
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .service-content-wrap {
+    padding: 16px;
+  }
+
+  .service-header h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-content-wrap {
+    padding: 15px;
+  }
+
+  .cns-container {
+    font-size: 15px;
+  }
+
+  .cns-container img {
+    margin: 15px auto;
+  }
+
+  .cns-container h1 {
+    font-size: 24px;
+  }
+
+  .cns-container h2 {
+    font-size: 20px;
+  }
+
+  .cns-container h3 {
+    font-size: 18px;
+  }
+
+  .cns-container p,
+  .cns-container li {
+    line-height: 1.5;
+  }
+
+  /* Fix table overflow on mobile */
+  .cns-container table {
+    font-size: 14px;
+  }
+
+  .cns-container td,
+  .cns-container th {
+    padding: 8px;
+  }
+
+  /* Handle inline styles from WYSIWYG */
+  .cns-container [style*="text-align: center"] {
+    text-align: left !important;
+  }
+
+  .cns-container [style*="margin-left: auto"],
+  .cns-container [style*="margin-right: auto"] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+  }
+
+  .service-header h1 {
+    font-size: 20px;
+  }
+
+  .service-section h2 {
+    font-size: 18px;
+  }
+
+  .service-subsection h3 {
+    font-size: 16px;
+  }
+
+  .service-content {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .service-content-wrap {
+    padding: 10px;
+  }
+
+  .cns-container {
+    font-size: 14px;
+  }
+
+  .cns-container h1 {
+    font-size: 22px;
+  }
+
+  .cns-container h2 {
+    font-size: 18px;
+  }
+
+  .cns-container h3 {
+    font-size: 16px;
+  }
+
+  .cns-container td,
+  .cns-container th {
+    padding: 6px;
+    font-size: 13px;
+  }
+
+  .service-header h1 {
+    font-size: 18px;
+  }
+
+  .service-section {
+    margin: 30px 0;
+  }
+
+  .service-subsection {
+    padding-left: 16px;
+  }
+
+  .service-content ul {
+    padding-left: 16px;
+  }
+}

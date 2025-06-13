@@ -261,7 +261,7 @@
 
 @media (max-width: 768px) {
     .page-product .product-content .attech-controls-wrapper {
-        top: 60px;
+        top: 48px;
     }
 
     .page-product .product-content .attech-controls-inner {
@@ -382,6 +382,12 @@
 
 .attech-product-item-wrapper {
     opacity: 0;
+}
+
+@media (max-width: 1280px) {
+    .page-product .product-content .attech-controls-wrapper {
+    top: 76px;
+}
 }
 
 /* Responsive adjustments */

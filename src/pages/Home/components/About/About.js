@@ -79,6 +79,9 @@ export default function About() {
 
   return (
     <section className="about-hero">
+        <div className="about-hero-content">
+          <h1 className="about-main-title">Dịch vụ nổi bật</h1>
+        </div>
       <div className="about-hero-container">
         {products.map((product, index) => (
           <div

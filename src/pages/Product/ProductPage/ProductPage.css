@@ -39,7 +39,7 @@
 @media (max-width: 768px) {
   .page-product {
     flex-direction: column;
-    margin-top: 96px;
+    margin-top: 0;
   }
 
   .page-product .product-content {

@@ -38,6 +38,7 @@ const Feature = () => {
   return (
     <section className="feature-section">
       <div className="feature-container">
+        {/* 3 dịch vụ chính */}
         <Link to="/services/cns" className="feature-link">
           <div
             className="feature-item"
@@ -84,6 +85,7 @@ const Feature = () => {
           </div>
         </Link>
 
+        {/* Tin tức nổi bật */}
         <div className="notify-wrapper">
           <Swiper
             modules={[Pagination, Autoplay]}
@@ -94,14 +96,15 @@ const Feature = () => {
             breakpoints={{
               0: {
                 slidesPerView: 1,
-                spaceBetween: 10,
               },
               768: {
+                slidesPerView: 1,
+              },
+              1024: {
                 slidesPerView: 2,
-                spaceBetween: 15,
               },
             }}
-            style={{ width: "100%" }}
+            style={{ width: "100%", height: "100%" }}
           >
             {notifications.map((item, index) => (
               <SwiperSlide key={index}>

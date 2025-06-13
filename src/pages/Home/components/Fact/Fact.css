@@ -63,6 +63,23 @@
     letter-spacing: 0.5px;
 }
 
+@media (max-width: 1022px) {
+    .fact__banner {
+        padding: 20px;
+    }
+
+    .fact__heading {
+        font-size: 20px;
+    }
+    .fact__container {
+        padding: 0 20px;
+    }
+}
+@media (max-width: 1320px) {
+    .fact__container {
+        padding: 0 20px;
+    }
+}
 @media (max-width: 768px) {
     .fact__banner {
         height: auto;
@@ -77,5 +94,8 @@
 @media (max-width: 576px) {
     .fact__heading {
         font-size: 16px;
+    }
+    .fact__container {
+        padding: 0 10px;
     }
 }

@@ -1,207 +1,234 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import "./ServiceDetail.css";
 
 const contentData = {
   cns: `
-  <p><strong><img style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2015/02/DV-ky-thuat-CNS-s.jpg" alt="DV-ky-thuat-CNS-s" /></strong></p>
-<p style="text-align: center;"><strong>C&Ocirc;NG TY TNHH KỸ THUẬT QUẢN L&Yacute; BAY (ATTECH) L&Agrave; NH&Agrave; CUNG CẤP DỊCH VỤ TH&Ocirc;NG TIN, DẪN ĐƯỜNG, GI&Aacute;M S&Aacute;T (CNS) CHO NG&Agrave;NH H&Agrave;NG KH&Ocirc;NG VIỆT NAM</strong></p>
-<p style="text-align: left;">C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay (ATTECH) tự h&agrave;o l&agrave; nh&agrave; cung cấp dịch vụ chuy&ecirc;n ng&agrave;nh Th&ocirc;ng tin (Communication &ndash; C), dẫn đường (Navigation &ndash; N), Gi&aacute;m s&aacute;t (Surveilance- S) h&agrave;ng kh&ocirc;ng h&agrave;ng đầu tại Việt Nam.</p>
-<p style="text-align: left;"><strong>I. C&Aacute;C DỊCH VỤ DO C&Ocirc;NG TY CUNG CẤP:</strong></p>
-<p style="text-align: left;">Với đội ngũ nh&acirc;n vi&ecirc;n tinh nhuệ, chuy&ecirc;n nghiệp gồm h&agrave;ng chục kỹ sư d&agrave;y dạn kinh nghiệm, được đ&agrave;o tạo b&agrave;i bản trong v&agrave; ngo&agrave;i nước, cộng với đội ngũ b&aacute;n h&agrave;ng chuy&ecirc;n nghiệp, C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay hiện l&agrave; đối t&aacute;c tin cậy cung cấp dịch vụ CNS&nbsp;cho Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam, Cục h&agrave;ng kh&ocirc;ng Singapore v&agrave; l&agrave; đối t&aacute;c cung cấp dịch vụ kỹ thuật cho thiết bị dẫn đường VOR, ILS, DME của h&atilde;ng SELEX- Hoa Kỳ tại Việt Nam v&agrave; nhiều nước tr&ecirc;n thế giới. C&aacute;c dịch vụ do C&ocirc;ng ty cung cấp trong lĩnh vực CNS gồm:</p>
-<p style="text-align: left;"><strong>1. Dịch vụ CNS&nbsp;phục vụ điều h&agrave;nh bay:</strong></p>
-<ul style="text-align: left;">
-<li>Dịch vụ th&ocirc;ng tin dẫn đường DVOR/DME &amp; NDB</li>
-<li>Dịch vụ th&ocirc;ng tin VHF/VSAT&nbsp;</li>
-<li>Dịch vụ gi&aacute;m s&aacute;t ADS-B</li>
-<li>Dịch vụ AMHS</li>
-</ul>
-<p style="text-align: left;"><strong>2. Dịch vụ kỹ thuật chuy&ecirc;n ng&agrave;nh CNS:</strong></p>
-<ul style="text-align: left;">
-<li>Khảo s&aacute;t vị tr&iacute; lắp đặt</li>
-<li>Lắp đặt, th&ocirc;ng điện, hiệu chỉnh</li>
-<li>Hỗ trợ bay hiệu chuẩn</li>
-<li>Sửa chữa cấu kiện</li>
-<li>Bảo h&agrave;nh ủy quyền</li>
-<li>Bảo dưỡng định kỳ</li>
-</ul>
-<p style="text-align: left;"><strong>3. Dịch vụ huấn luyện chuy&ecirc;n ng&agrave;nh CNS:</strong></p>
-<p style="text-align: left;">Trung t&acirc;m huấn luyện CNS của ATTECH l&agrave; đơn vị duy nhất tại Việt nam đủ ti&ecirc;u chuẩn được Cục h&agrave;ng kh&ocirc;ng Việt Nam cấp ph&eacute;p huấn luyện dịch vụ chuy&ecirc;n ngh&agrave;nh CNS.</p>
-<ul style="text-align: left;">
-<li>Huấn luyện, đ&agrave;o tạo tại hiện trường</li>
-<li>Huấn luyện đ&agrave;o tạo tại trung t&acirc;m CNS</li>
-</ul>
-<p style="text-align: left;"><strong>II. NĂNG LỰC KINH NGHIỆM</strong>:</p>
-<p style="text-align: left;"><strong>1. Năng lực kinh nghiệm trong lĩnh vực cung cấp dịch vụ CNS phục vụ điều h&agrave;nh bay:&nbsp;</strong>(minh họa bằng h&igrave;nh A.1-1 đến A.1-4)</p>
-<ul style="text-align: left;">
-<li>ATTECH hiện đang quản l&yacute;, khai th&aacute;c v&agrave; cung cấp dịch vụ CNS cho Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam gồm: 25 đ&agrave;i DVOR/DME v&agrave; NDB, 12 trạm ADS-B, 02 trạm VHF/VSAT ngo&agrave;i Biển Đ&ocirc;ng.</li>
-<li>ATTECH hiện đang quản l&yacute;, khai th&aacute;c 02 trạm ADS-B/VHF/VSAT C&ocirc;n Sơn v&agrave; C&agrave; Mau cung cấp dịch vụ ADS-B v&agrave; VHF cho Cục h&agrave;ng kh&ocirc;ng Singapore.</li>
-<li>Lắp đặt v&agrave; cung cấp dịch vụ AMHS cho Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam.</li>
-</ul>
-<p style="text-align: left;"><strong>2. Năng lực kinh nghiệm trong lĩnh vực cung cấp dịch vụ kỹ thuật chuy&ecirc;n ngh&agrave;nh CNS:&nbsp;</strong>(minh họa bằng h&igrave;nh A.2-1 đến A.2-2)</p>
-<ul style="text-align: left;">
-<li>Thi c&ocirc;ng lắp đặt hệ thống th&ocirc;ng tin vệ tinh DOMSAT, VSAT</li>
-<li>Chuyển đổi hệ thống th&ocirc;ng tinh vệ tinh VSAT quản l&yacute; bay từ sử dụng vệ tinh Thaicom 1A sang vệ tinh Thaicom5</li>
-<li>Thi c&ocirc;ng lắp đặt c&aacute;c trạm th&ocirc;ng tin VHF/HF</li>
-<li>Thi c&ocirc;ng lắp đặt hệ thống chuyển mạch thoại VCCS, hệ thống đồng hồ thời gian chuẩn&hellip;</li>
-<li>Khảo s&aacute;t vị tr&iacute; (Site survey), lắp đặt, th&ocirc;ng điện hiệu chỉnh,hỗ trợ bay hiệu chuẩn c&aacute;c hệ thống NDB, DVOR/DME, ILS/DME tại Việt Nam, L&agrave;o, Campuchia, Malaysia, Indonesia, Trung Quốc, Philippines, Ấn Độ, Bangladesh, Kenya, Đ&agrave;i Loan&hellip;</li>
-<li>Thi c&ocirc;ng lắp đặt, hiệu chỉnh mặt đất khi bay hiệu chuẩn c&aacute;c hệ thống đ&egrave;n hiệu s&acirc;n bay tại Việt Nam, L&agrave;o&hellip;</li>
-<li>Khảo s&aacute;t vị tr&iacute;, thi c&ocirc;ng lắp đặt hệ thống gi&aacute;m phụ thuộc tự động quảng b&aacute; ( ADS-B) tại Việt Nam</li>
-<li>Bảo dưỡng, sửa chữa phần cơ kh&iacute; cho c&aacute;c hệ thống radar Vinh, Nội B&agrave;i.</li>
-<li>Bảo dưỡng, sửa chữa hệ thống anten ph&aacute;t DGPS cho Cục Bản Đồ.</li>
-<li>Sửa chữa v&agrave; thay mới radome cho c&aacute;c hệ thống radar Sơn Tr&agrave; v&agrave; một số trạm radar qu&acirc;n sự.</li>
-<li>Sửa chữa c&aacute;c khối card, cấu kiện thiết bị CNS cho kh&aacute;ch h&agrave;ng trong v&agrave; ngo&agrave;i nước.</li>
-</ul>
-<p style="text-align: left;"><strong>3. Năng lực kinh nghiệm trong lĩnh vực cung cấp dịch vụ huấn luyện:</strong></p>
-<ul style="text-align: left;">
-<li>Huấn luyện hiện trường cho h&atilde;ng Selex cấp chứng chỉ tại Kenya, Philippin, Bangladesh, Việt Nam.</li>
-<li>Từ năm 2009 đến nay đ&atilde; tổ chức được 240 lớp huấn luyến, cấp chứng chỉ huấn luyện CNS cho 3960 lượt người cho Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam v&agrave; c&aacute;c đơn vị b&ecirc;n ngo&agrave;i.</li>
-</ul>
-<p style="text-align: left;">&nbsp;<strong>III. TI&Ecirc;U CHUẨN Đ&Aacute;P ỨNG</strong>:</p>
-<p style="text-align: left;">&ndash; C&aacute;c dịch vụ CNS được cung cấp với ti&ecirc;u chuẩn quốc tế, được quản l&yacute; chất lượng theo ti&ecirc;u chuẩn ISO 9001:2015.</p>
-<p style="text-align: left;">&nbsp;&ndash; C&aacute;c hệ thống thiết bị CNS đ&aacute;p ứng ti&ecirc;u chuẩn kỹ thuật của tổ chức h&agrave;ng kh&ocirc;ng d&acirc;n dụng quốc tế ICAO</p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS.jpg" alt="CNS" width="535" height="789" /></a></p>
-<p style="text-align: center;"><em>A.1-1</em></p>
-<p style="text-align: center;"><em>Tầm phủ c&aacute;c đ&agrave;i dẫn đường thuộc ATTECH</em></p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS1.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS1.jpg" alt="CNS1" width="537" height="556" /></a></p>
-<p style="text-align: center;"><em>A.1-2</em></p>
-<p style="text-align: center;"><em>Hệ thống 12 trạm ADS-B ATTECH đang quản l&yacute; v&agrave; khai th&aacute;c tr&ecirc;n to&agrave;n quốc</em></p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS2.png.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS2.png.jpg" alt="CNS2.png" width="536" height="402" /></a></p>
-<p style="text-align: center;"><em>A.1-3</em></p>
-<p style="text-align: center;"><em>02 Trạm VHF/VSAT ATTECH quản l&yacute; v&agrave; khai th&aacute;c tại Đảo Trường Sa Lớn v&agrave; Song Tử T&acirc;y</em></p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS3.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS3.jpg" alt="CNS3" width="545" height="323" /></a></p>
-<p style="text-align: center;"><em>A.1-4</em></p>
-<p style="text-align: center;"><em>Hệ thống đ&agrave;i VOR/DME ATTECH đang quản l&yacute; v&agrave; khai th&aacute;c tr&ecirc;n to&agrave;n quốc</em></p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS4.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS4.jpg" alt="CNS4" width="543" height="389" /></a></p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS5.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS5.jpg" alt="CNS5" width="543" height="382" /></a></p>
-<p style="text-align: center;"><em>A.2-1</em></p>
-<p style="text-align: center;"><em>Thi c&ocirc;ng, lắp đặt hệ thống DVOR/DME</em></p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS6.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS6.jpg" alt="CNS6" width="548" height="642" /></a></p>
-<p style="text-align: center;"><a href="https://attech.com.vn/wp-content/uploads/2015/02/CNS7.jpg"><img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS7.jpg" alt="CNS7" width="548" height="408" /></a></p>
-<p style="text-align: center;"><em>A.2-2</em></p>
-<p style="text-align: center;"><em>Thi c&ocirc;ng lắp đặt hệ thống thiết bị ILS/DME</em></p>
+  <div class="service-header">
+    <img src="https://attech.com.vn/wp-content/uploads/2015/02/DV-ky-thuat-CNS-s.jpg" alt="DV-ky-thuat-CNS-s" />
+    <h1>CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY (ATTECH) LÀ NHÀ CUNG CẤP DỊCH VỤ THÔNG TIN, DẪN ĐƯỜNG, GIÁM SÁT (CNS) CHO NGÀNH HÀNG KHÔNG VIỆT NAM</h1>
+  </div>
+
+  <div class="service-content">
+    <p>Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tự hào là nhà cung cấp dịch vụ chuyên ngành Thông tin (Communication – C), dẫn đường (Navigation – N), Giám sát (Surveilance- S) hàng không hàng đầu tại Việt Nam.</p>
+
+    <section class="service-section">
+      <h2>I. CÁC DỊCH VỤ DO CÔNG TY CUNG CẤP:</h2>
+      <p>Với đội ngũ nhân viên tinh nhuệ, chuyên nghiệp gồm hàng chục kỹ sư dày dạn kinh nghiệm, được đào tạo bài bản trong và ngoài nước, cộng với đội ngũ bán hàng chuyên nghiệp, Công ty TNHH Kỹ thuật Quản lý bay hiện là đối tác tin cậy cung cấp dịch vụ CNS cho Tổng công ty Quản lý bay Việt Nam, Cục hàng không Singapore và là đối tác cung cấp dịch vụ kỹ thuật cho thiết bị dẫn đường VOR, ILS, DME của hãng SELEX- Hoa Kỳ tại Việt Nam và nhiều nước trên thế giới. Các dịch vụ do Công ty cung cấp trong lĩnh vực CNS gồm:</p>
+
+      <div class="service-subsection">
+        <h3>1. Dịch vụ CNS phục vụ điều hành bay:</h3>
+        <ul>
+          <li>Dịch vụ thông tin dẫn đường DVOR/DME & NDB</li>
+          <li>Dịch vụ thông tin VHF/VSAT</li>
+          <li>Dịch vụ giám sát ADS-B</li>
+          <li>Dịch vụ AMHS</li>
+        </ul>
+      </div>
+
+      <div class="service-subsection">
+        <h3>2. Dịch vụ kỹ thuật chuyên ngành CNS:</h3>
+        <ul>
+          <li>Khảo sát vị trí lắp đặt</li>
+          <li>Lắp đặt, thông điện, hiệu chỉnh</li>
+          <li>Hỗ trợ bay hiệu chuẩn</li>
+          <li>Sửa chữa cấu kiện</li>
+          <li>Bảo hành ủy quyền</li>
+          <li>Bảo dưỡng định kỳ</li>
+        </ul>
+      </div>
+
+      <div class="service-subsection">
+        <h3>3. Dịch vụ huấn luyện chuyên ngành CNS:</h3>
+        <p>Trung tâm huấn luyện CNS của ATTECH là đơn vị duy nhất tại Việt nam đủ tiêu chuẩn được Cục hàng không Việt Nam cấp phép huấn luyện dịch vụ chuyên nghành CNS.</p>
+        <ul>
+          <li>Huấn luyện, đào tạo tại hiện trường</li>
+          <li>Huấn luyện đào tạo tại trung tâm CNS</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="service-section">
+      <h2>II. NĂNG LỰC KINH NGHIỆM:</h2>
+      
+      <div class="service-subsection">
+        <h3>1. Năng lực kinh nghiệm trong lĩnh vực cung cấp dịch vụ CNS phục vụ điều hành bay:</h3>
+        <ul>
+          <li>ATTECH hiện đang quản lý, khai thác và cung cấp dịch vụ CNS cho Tổng công ty Quản lý bay Việt Nam gồm: 25 đài DVOR/DME và NDB, 12 trạm ADS-B, 02 trạm VHF/VSAT ngoài Biển Đông.</li>
+          <li>ATTECH hiện đang quản lý, khai thác 02 trạm ADS-B/VHF/VSAT Côn Sơn và Cà Mau cung cấp dịch vụ ADS-B và VHF cho Cục hàng không Singapore.</li>
+          <li>Lắp đặt và cung cấp dịch vụ AMHS cho Tổng công ty Quản lý bay Việt Nam.</li>
+        </ul>
+      </div>
+
+      <div class="service-subsection">
+        <h3>2. Năng lực kinh nghiệm trong lĩnh vực cung cấp dịch vụ kỹ thuật chuyên nghành CNS:</h3>
+        <ul>
+          <li>Thi công lắp đặt hệ thống thông tin vệ tinh DOMSAT, VSAT</li>
+          <li>Chuyển đổi hệ thống thông tinh vệ tinh VSAT quản lý bay từ sử dụng vệ tinh Thaicom 1A sang vệ tinh Thaicom5</li>
+          <li>Thi công lắp đặt các trạm thông tin VHF/HF</li>
+          <li>Thi công lắp đặt hệ thống chuyển mạch thoại VCCS, hệ thống đồng hồ thời gian chuẩn...</li>
+          <li>Khảo sát vị trí (Site survey), lắp đặt, thông điện hiệu chỉnh, hỗ trợ bay hiệu chuẩn các hệ thống NDB, DVOR/DME, ILS/DME tại Việt Nam, Lào, Campuchia, Malaysia, Indonesia, Trung Quốc, Philippines, Ấn Độ, Bangladesh, Kenya, Đài Loan...</li>
+        </ul>
+      </div>
+
+      <div class="service-subsection">
+        <h3>3. Năng lực kinh nghiệm trong lĩnh vực cung cấp dịch vụ huấn luyện:</h3>
+        <ul>
+          <li>Huấn luyện hiện trường cho hãng Selex cấp chứng chỉ tại Kenya, Philippin, Bangladesh, Việt Nam.</li>
+          <li>Từ năm 2009 đến nay đã tổ chức được 240 lớp huấn luyến, cấp chứng chỉ huấn luyện CNS cho 3960 lượt người cho Tổng công ty Quản lý bay Việt Nam và các đơn vị bên ngoài.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="service-section">
+      <h2>III. TIÊU CHUẨN ĐÁP ỨNG:</h2>
+      <ul>
+        <li>Các dịch vụ CNS được cung cấp với tiêu chuẩn quốc tế, được quản lý chất lượng theo tiêu chuẩn ISO 9001:2015.</li>
+        <li>Các hệ thống thiết bị CNS đáp ứng tiêu chuẩn kỹ thuật của tổ chức hàng không dân dụng quốc tế ICAO</li>
+      </ul>
+    </section>
+
+    <div class="service-gallery">
+      <figure>
+        <img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS.jpg" alt="Tầm phủ các đài dẫn đường thuộc ATTECH" />
+        <figcaption>A.1-1: Tầm phủ các đài dẫn đường thuộc ATTECH</figcaption>
+      </figure>
+
+      <figure>
+        <img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS1.jpg" alt="Hệ thống 12 trạm ADS-B ATTECH" />
+        <figcaption>A.1-2: Hệ thống 12 trạm ADS-B ATTECH đang quản lý và khai thác trên toàn quốc</figcaption>
+      </figure>
+
+      <figure>
+        <img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS2.png.jpg" alt="02 Trạm VHF/VSAT ATTECH" />
+        <figcaption>A.1-3: 02 Trạm VHF/VSAT ATTECH quản lý và khai thác tại Đảo Trường Sa Lớn và Song Tử Tây</figcaption>
+      </figure>
+
+      <figure>
+        <img src="https://attech.com.vn/wp-content/uploads/2015/02/CNS3.jpg" alt="Hệ thống đài VOR/DME ATTECH" />
+        <figcaption>A.1-4: Hệ thống đài VOR/DME ATTECH đang quản lý và khai thác trên toàn quốc</figcaption>
+      </figure>
+    </div>
+  </div>
   `,
   flightcheck: `
   <hr /><p style="text-align: center;"><br /><a href="https://attech.com.vn/wp-content/uploads/2015/02/DV-BHC1.jpg"><img class="alignleft  wp-image-2301" src="https://attech.com.vn/wp-content/uploads/2015/02/DV-BHC1.jpg" alt="DV-BHC" width="659" height="215" /></a><span id="more-337"></span></p>
 <p style="text-align: left;"><strong>GIỚI THIỆU:</strong></p>
-<p style="text-align: left;">Đội Bay kiểm tra hiệu chuẩn được th&agrave;nh lập theo Quyết định số 115/QĐ-KTQLB ng&agrave;y 19 th&aacute;ng 08 năm 2010 với nhiệm vụ Tổ chức cung cấp dịch vụ bay kiểm tra hiệu chuẩn c&aacute;c thiết bị dẫn đường gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng v&agrave; bay đ&aacute;nh gi&aacute; phương thức bay.</p>
-<p style="text-align: left;">Năm 2010 Cục H&agrave;ng kh&ocirc;ng Việt Nam đ&atilde; cấp giấy ph&eacute;p c&ocirc;ng nhận ATTECH l&agrave; nh&agrave; cung cấp dịch vụ bay kiểm tra hiệu chuẩn v&agrave; bay đ&aacute;nh gi&aacute; phương thức bay duy nhất tại Việt Nam tu&acirc;n thủ v&agrave; đ&aacute;p ứng đầy đủ c&aacute;c ti&ecirc;u chuẩn khuyến c&aacute;o của tổ chức h&agrave;ng kh&ocirc;ng d&acirc;n dụng quốc tế ICAO, quy định ph&aacute;p luật hiện h&agrave;nh của Nh&agrave; nước.</p>
+<p style="text-align: left;">Đội Bay kiểm tra hiệu chuẩn được thành lập theo Quyết định số 115/QĐ-KTQLB ngày 19 tháng 08 năm 2010 với nhiệm vụ Tổ chức cung cấp dịch vụ bay kiểm tra hiệu chuẩn các thiết bị dẫn đường giám sát hàng không và bay đánh giá phương thức bay.</p>
+<p style="text-align: left;">Năm 2010 Cục Hàng không Việt Nam đã cấp giấy phép công nhận ATTECH là nhà cung cấp dịch vụ bay kiểm tra hiệu chuẩn và bay đánh giá phương thức bay duy nhất tại Việt Nam tuân thủ và đáp ứng đầy đủ các tiêu chuẩn khuyến cáo của tổ chức hàng không dân dụng quốc tế ICAO, quy định pháp luật hiện hành của Nhà nước.</p>
 <p style="text-align: left;"><strong>HỆ THỐNG THIẾT BỊ</strong></p>
-<p style="text-align: left;">Dịch vụ bay kiểm tra hiệu chuẩn, bay đ&aacute;nh gi&aacute; phương thức bay của ATTECH sử dụng t&agrave;u bay hai động cơ cỡ nhỏ đ&atilde; được cải tiến, lắp đặt anten v&agrave; thiết bị bay hiệu chuẩn c&ocirc;ng nghệ ti&ecirc;n tiến tr&ecirc;n thế giới.</p>
-<p style="text-align: left;">Hệ thống thiết bị bay hiệu chuẩn, bay đ&aacute;nh gi&aacute; phương thức bay lắp tr&ecirc;n m&aacute;y bay l&agrave; hệ thống thiết bị bay hiệu chuẩn ho&agrave;n to&agrave;n tự động sử dụng c&ocirc;ng nghệ ti&ecirc;n tiến nhất tr&ecirc;n thế giới hiện nay. Hệ thống tham chiếu vị tr&iacute; DGPS dưới mặt đất c&oacute; độ ch&iacute;nh x&aacute;c cao (sai số dưới 10cm) cho ph&eacute;p thực hiện bay hiệu chuẩn c&aacute;c thiết bị y&ecirc;u cầu độ ch&iacute;nh x&aacute;c cao như ILS/DME, PAPI&hellip;</p>
-<p style="text-align: left;">Bằng việc sử dụng c&ocirc;ng nghệ bay hiệu chuẩn ho&agrave;n to&agrave;n tự động mới, thiết bị bay hiệu chuẩn c&oacute; khả năng:</p>
-<p style="text-align: left;">&ndash;&nbsp; Bay hiệu chuẩn hệ thống ILS đến Cat III</p>
-<p style="text-align: left;">&ndash; Thu thập v&agrave; xử l&yacute; dữ liệu trong thời gian thực, lưu trữ dữ liệu bay hiệu chuẩn li&ecirc;n tục trong qu&aacute; tr&igrave;nh thực hiện nhiệm vụ.</p>
-<p style="text-align: left;">&ndash; Thu thập v&agrave; xử l&yacute; dữ liệu song song đồng thời khi thực hiện bay hiệu chuẩn thiết bị VOR v&agrave; ILS.</p>
-<p style="text-align: left;">&ndash; C&aacute;c th&ocirc;ng số kết quả đo v&agrave; đồ thị được hiển thị trong thời gian thực.</p>
-<p style="text-align: left;">&ndash; In kết quả ngay lập tức trong qu&aacute; tr&igrave;nh bay hiệu chuẩn.</p>
+<p style="text-align: left;">Dịch vụ bay kiểm tra hiệu chuẩn, bay đánh giá phương thức bay của ATTECH sử dụng tàu bay hai động cơ cỡ nhỏ đã được cải tiến, lắp đặt anten và thiết bị bay hiệu chuẩn công nghệ tiên tiến trên thế giới.</p>
+<p style="text-align: left;">Hệ thống thiết bị bay hiệu chuẩn, bay đánh giá phương thức bay lắp trên máy bay là hệ thống thiết bị bay hiệu chuẩn hoàn toàn tự động sử dụng công nghệ tiên tiến nhất trên thế giới hiện nay. Hệ thống tham chiếu vị trí DGPS dưới mặt đất có độ chính xác cao (sai số dưới 10cm) cho phép thực hiện bay hiệu chuẩn các thiết bị yêu cầu độ chính xác cao như ILS/DME, PAPI...</p>
+<p style="text-align: left;">Bằng việc sử dụng công nghệ bay hiệu chuẩn hoàn toàn tự động mới, thiết bị bay hiệu chuẩn có khả năng:</p>
+<p style="text-align: left;">&ndash; Bay hiệu chuẩn hệ thống ILS đến Cat III</p>
+<p style="text-align: left;">&ndash; Thu thập và xử lý dữ liệu trong thời gian thực, lưu trữ dữ liệu bay hiệu chuẩn liên tục trong quá trình thực hiện nhiệm vụ.</p>
+<p style="text-align: left;">&ndash; Thu thập và xử lý dữ liệu song song đồng thời khi thực hiện bay hiệu chuẩn thiết bị VOR và ILS.</p>
+<p style="text-align: left;">&ndash; Các thông số kết quả đo và đồ thị được hiển thị trong thời gian thực.</p>
+<p style="text-align: left;">&ndash; In kết quả ngay lập tức trong quá trình bay hiệu chuẩn.</p>
 <p style="text-align: left;"><strong>ĐỘI BAY</strong></p>
-<p style="text-align: left;">Phi c&ocirc;ng bay hiệu chuẩn (inspector pilot) v&agrave; thanh tra bay hiệu chuẩn (flight inspector) của ATTECH l&agrave; những người c&oacute; hơn 10 năm kinh nghiệm, am hiểu s&acirc;u về thiết bị dẫn đường, phương thức bay, được đ&agrave;o tạo b&agrave;i bản tại c&aacute;c trung t&acirc;m huấn luyện h&agrave;ng đầu Ch&acirc;u &Acirc;u trong lĩnh vực bay kiểm tra hiệu chuẩn, bay đ&aacute;nh gi&aacute; phương thức bay v&agrave; được Cục H&agrave;ng kh&ocirc;ng Việt Nam c&ocirc;ng nhận năng lực v&agrave; cấp giấy ph&eacute;p.</p>
+<p style="text-align: left;">Phi công bay hiệu chuẩn (inspector pilot) và thanh tra bay hiệu chuẩn (flight inspector) của ATTECH là những người có hơn 10 năm kinh nghiệm, am hiểu sâu về thiết bị dẫn đường, phương thức bay, được đào tạo bài bản tại các trung tâm huấn luyện hàng đầu Châu Âu trong lĩnh vực bay kiểm tra hiệu chuẩn, bay đánh giá phương thức bay và được Cục Hàng không Việt Nam công nhận năng lực và cấp giấy phép.</p>
 <p style="text-align: left;"><strong>DỊCH VỤ CUNG CẤP</strong></p>
-<p style="text-align: left;">Với hệ thống thiết bị v&agrave; nguồn lực đội bay hiện c&oacute;, ATTECH c&oacute; khả năng thực hiện bay kiểm tra, hiệu chuẩn c&aacute;c hệ thống dẫn đường gi&aacute;m s&aacute;t:</p>
+<p style="text-align: left;">Với hệ thống thiết bị và nguồn lực đội bay hiện có, ATTECH có khả năng thực hiện bay kiểm tra, hiệu chuẩn các hệ thống dẫn đường giám sát:</p>
 <p style="text-align: left;">&ndash; ILS/DME Cat I, II, III</p>
 <p style="text-align: left;">&ndash; VOR/DME</p>
 <p style="text-align: left;">&ndash; NDB</p>
 <p style="text-align: left;">&ndash; RADAR (PSR, SSR)</p>
 <p style="text-align: left;">&ndash; MARKER Beacon</p>
 <p style="text-align: left;">&ndash; PAPI</p>
-<p style="text-align: left;">&ndash; Hệ thống đ&egrave;n hiệu s&acirc;n bay</p>
-<p style="text-align: left;">Bay kiểm tra hiệu chuẩn, đ&aacute;nh gi&aacute; phương thức dẫn đường theo t&iacute;nh năng PBN:</p>
+<p style="text-align: left;">&ndash; Hệ thống đèn hiệu sân bay</p>
+<p style="text-align: left;">Bay kiểm tra hiệu chuẩn, đánh giá phương thức dẫn đường theo tính năng PBN:</p>
 <p style="text-align: left;">&ndash; RNAV/RNP:</p>
-<p style="text-align: left;">+ RNAV/RNP SID, RNAV/RNP STAR, RNP APCH (LNAV), RNP APCH (LNAV/VNAV)&nbsp;</p>
-<p style="text-align: left;">C&aacute;c h&igrave;nh thức bay hiệu chuẩn:</p>
+<p style="text-align: left;">+ RNAV/RNP SID, RNAV/RNP STAR, RNP APCH (LNAV), RNP APCH (LNAV/VNAV)</p>
+<p style="text-align: left;">Các hình thức bay hiệu chuẩn:</p>
 <p style="text-align: left;">&ndash; Bay hiệu chuẩn cơ bản (Commissionning)</p>
 <p style="text-align: left;">&ndash; Bay hiệu chuẩn định kỳ (Routine)</p>
 <p style="text-align: left;">&ndash; Bay hiệu chuẩn đặc biệt (Special)</p>
-<p style="text-align: left;"><strong>TI&Ecirc;U CHUẨN Đ&Aacute;P ỨNG/ T&Agrave;I LIỆU &Aacute;P DỤNG</strong></p>
-<p style="text-align: left;">&ndash; Luật H&agrave;ng kh&ocirc;ng d&acirc;n dụng Việt Nam.</p>
-<p style="text-align: left;">&ndash; Th&ocirc;ng tư&nbsp;19/2017/TT-BGTVT quy định về quản l&yacute; v&agrave; bảo đảm hoạt động bay.</p>
-<p style="text-align: left;">&ndash; T&agrave;i liệu hướng dẫn cung cấp dịch vụ bay kiểm tra hiệu chuẩn.</p>
-<p style="text-align: left;">&ndash; T&agrave;i liệu ICAO: Annex 10, Doc 8071, Doc 9906 &hellip;</p>
+<p style="text-align: left;"><strong>TIÊU CHUẨN ĐÁP ỨNG/ TÀI LIỆU ÁP DỤNG</strong></p>
+<p style="text-align: left;">&ndash; Luật Hàng không dân dụng Việt Nam.</p>
+<p style="text-align: left;">&ndash; Thông tư 19/2017/TT-BGTVT quy định về quản lý và bảo đảm hoạt động bay.</p>
+<p style="text-align: left;">&ndash; Tài liệu hướng dẫn cung cấp dịch vụ bay kiểm tra hiệu chuẩn.</p>
+<p style="text-align: left;">&ndash; Tài liệu ICAO: Annex 10, Doc 8071, Doc 9906 &hellip;</p>
 <p style="text-align: center;"><strong>&nbsp;</strong></p>
 `,
   testing: `
   <p><a href="https://attech.com.vn/wp-content/uploads/2015/02/anh-thu-nghiem-hieu-chuan-2019.jpg"><img class="aligncenter size-full wp-image-6891" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2015/02/anh-thu-nghiem-hieu-chuan-2019.jpg" alt="anh thu nghiem hieu chuan 2019" /></a></p>
 <p style="text-align: left;"><strong>GIỚI THIỆU</strong></p>
-<p style="text-align: left;">Với mục ti&ecirc;u cung cấp c&aacute;c sản phẩm, dịch vụ c&oacute; chất lượng cao nhất, đ&aacute;p ứng c&aacute;c ti&ecirc;u chuẩn quốc gia v&agrave; quốc tế, ATTECH x&aacute;c định phải kh&ocirc;ng ngừng n&acirc;ng cao năng lực hiệu chuẩn, thử nghiệm của m&igrave;nh. V&igrave; vậy, ATTECH đ&atilde; tập trung đầu tư về cơ sở vật chất v&agrave; con người cho hệ thống ph&ograve;ng th&iacute; nghiệm, &aacute;p dụng hệ thống quản l&yacute; chất lượng ISO/IEC 17025:2017. Đến nay, ph&ograve;ng th&iacute; nghiệm của ATTECH đ&atilde; được Văn ph&ograve;ng c&ocirc;ng nhận chất lượng thuộc Bộ Khoa học c&ocirc;ng nghệ Việt Nam cấp chứng chỉ VILAS. Với hệ thống ph&ograve;ng th&iacute; nghiệm đạt ti&ecirc;u chuẩn c&ugrave;ng với đội ngũ kỹ sư c&oacute; chuy&ecirc;n m&ocirc;n cao, gi&agrave;u kinh nghiệm, ATTECH cam kết cung cấp đến Qu&yacute; kh&aacute;ch h&agrave;ng c&aacute;c dịch vụ hiệu chuẩn, thử nghiệm tốt nhất v&agrave; tin cậy nhất.</p>
+<p style="text-align: left;">Với mục tiêu cung cấp các sản phẩm, dịch vụ có chất lượng cao nhất, đáp ứng các tiêu chuẩn quốc gia và quốc tế, ATTECH xác định phải không ngừng nâng cao năng lực hiệu chuẩn, thử nghiệm của mình. Vì vậy, ATTECH đã tập trung đầu tư về cơ sở vật chất và con người cho hệ thống phòng thí nghiệm, áp dụng hệ thống quản lý chất lượng ISO/IEC 17025:2017. Đến nay, phòng thí nghiệm của ATTECH đã được Văn phòng công nhận chất lượng thuộc Bộ Khoa học công nghệ Việt Nam cấp chứng chỉ VILAS. Với hệ thống phòng thí nghiệm đạt tiêu chuẩn cùng với đội ngũ kỹ sư có chuyên môn cao, giàu kinh nghiệm, ATTECH cam kết cung cấp đến Quý khách hàng các dịch vụ hiệu chuẩn, thử nghiệm tốt nhất và tin cậy nhất.</p>
 <p style="text-align: left;"><strong>NĂNG LỰC KINH NGHIỆM</strong></p>
-<p style="text-align: left;">Với gần 30 năm kinh nghiệm cung cấp dịch vụ, c&ugrave;ng với việc nhanh ch&oacute;ng &aacute;p dụng c&aacute;c hệ thống quản l&yacute; chất lượng ti&ecirc;n tiến như ISO 9001:2015, ISO/IEC 17025:2017, ATTECH đảm bảo đủ năng lực cung cấp dịch vụ thử nghiệm hiệu chuẩn, đ&aacute;p ứng ti&ecirc;u chuẩn của quốc gia v&agrave; quốc tế cho tất cả c&aacute;c kh&aacute;ch h&agrave;ng.</p>
+<p style="text-align: left;">Với gần 30 năm kinh nghiệm cung cấp dịch vụ, cùng với việc nhanh chóng áp dụng các hệ thống quản lý chất lượng tiên tiến như ISO 9001:2015, ISO/IEC 17025:2017, ATTECH đảm bảo đủ năng lực cung cấp dịch vụ thử nghiệm hiệu chuẩn, đáp ứng tiêu chuẩn của quốc gia và quốc tế cho tất cả các khách hàng.</p>
 <p style="text-align: left;"><strong>DỊCH VỤ CUNG CẤP</strong></p>
-<p style="text-align: left;">&ndash; Dịch vụ hiệu chuẩn c&aacute;c thiết bị đo lường</p>
+<p style="text-align: left;">&ndash; Dịch vụ hiệu chuẩn các thiết bị đo lường</p>
 <p style="text-align: left;">&ndash; Dịch vụ đo lường, thử nghiệm quang học</p>
-<p style="text-align: left;">&ndash; Dịch vụ thử nghiệm m&ocirc;i trường</p>
+<p style="text-align: left;">&ndash; Dịch vụ thử nghiệm môi trường</p>
 <p style="text-align: left;"><strong>CƠ SỞ VẬT CHẤT</strong></p>
-<p style="text-align: left;">Ph&ograve;ng thử nghiệm, hiệu chuẩn của ATTECH c&oacute; cơ sở hạ tầng hiện đại v&agrave; đồng bộ, ph&ugrave; hợp với y&ecirc;u cầu của hệ thống chất lượng ISO/IEC 17025:2017, đảm bảo cung cấp c&aacute;c dịch vụ tốt nhất cho kh&aacute;ch h&agrave;ng.</p>
-<p style="text-align: left;">Đối với dịch vụ hiệu chuẩn thiết bị, ph&ograve;ng th&iacute; nghiệm được trang bị đầy đủ c&aacute;c thiết bị đo mẫu hiện đại với độ ch&iacute;nh x&aacute;c cao, dải đo rộng của c&aacute;c h&atilde;ng thiết bị đo h&agrave;ng đầu thế giới như Fluke, Agilent, Rohde&amp;Schwarz&hellip; C&aacute;c thiết bị n&agrave;y thường xuy&ecirc;n được hiệu chuẩn tại Viện đo lường Việt Nam để đảm bảo cung cấp c&aacute;c kết quả hiệu chuẩn ch&iacute;nh x&aacute;c, tin cậy nhất.</p>
-<p style="text-align: left;">Đối với dịch vụ đo lường, thử nghiệm quang học, ph&ograve;ng thử nghiệm được trang bị hệ thống đo quang học hiện đại, điều khiển bằng phần mềm với c&aacute;c phương ph&aacute;p đo được lập tr&igrave;nh sẵn bảo đảm cung cấp c&aacute;c kết quả đo nhanh ch&oacute;ng, ch&iacute;nh x&aacute;c v&agrave; tin cậy nhất.</p>
-<p style="text-align: left;">Đối với dịch vụ thử nghiệm m&ocirc;i trường, buồng thử nghiệm c&oacute; k&iacute;ch thước lớn 5x3x2(m), được trang bị c&aacute;c thiết bị đo v&agrave; điều khiển hiện đại đảm bảo cung cấp c&aacute;c dịch vụ thử nghiệm cho nhiều loại sản phẩm với c&aacute;c k&iacute;ch thước kh&aacute;c nhau.</p>
-<p style="text-align: left;"><strong>TI&Ecirc;U CHUẨN Đ&Aacute;P ỨNG</strong></p>
-<p style="text-align: left;">Hệ thống ph&ograve;ng th&iacute; nghiệm của ATTECH đ&aacute;p ứng ti&ecirc;u chuẩn của quốc gia v&agrave; quốc tế như:</p>
-<p style="text-align: left;">&ndash; Ti&ecirc;u chuẩn ISO 9001:2015</p>
-<p style="text-align: left;">&ndash; Ti&ecirc;u chuẩn ISO/IEC 17025:2017</p>
-<p style="text-align: left;">&ndash; Ti&ecirc;u chuẩn ICAO của Hiệp hội H&agrave;ng kh&ocirc;ng d&acirc;n dụng Quốc tế: ICAO Annex 14</p>
-<p style="text-align: left;">&ndash; Ti&ecirc;u chuẩn Việt Nam: TCVN 5176:1990.</p>
+<p style="text-align: left;">Phòng thử nghiệm, hiệu chuẩn của ATTECH có cơ sở hạ tầng hiện đại và đồng bộ, phù hợp với yêu cầu của hệ thống chất lượng ISO/IEC 17025:2017, đảm bảo cung cấp các dịch vụ tốt nhất cho khách hàng.</p>
+<p style="text-align: left;">Đối với dịch vụ hiệu chuẩn thiết bị, phòng thí nghiệm được trang bị đầy đủ các thiết bị đo mẫu hiện đại với độ chính xác cao, dải đo rộng của các hãng thiết bị đo hàng đầu thế giới như Fluke, Agilent, Rohde&amp;Schwarz&hellip; Các thiết bị này thường xuyên được hiệu chuẩn tại Viện đo lường Việt Nam để đảm bảo cung cấp các kết quả hiệu chuẩn chính xác, tin cậy nhất.</p>
+<p style="text-align: left;">Đối với dịch vụ đo lường, thử nghiệm quang học, phòng thử nghiệm được trang bị hệ thống đo quang học hiện đại, điều khiển bằng phần mềm với các phương pháp đo được lập trình sẵn bảo đảm cung cấp các kết quả đo nhanh chóng, chính xác và tin cậy nhất.</p>
+<p style="text-align: left;">Đối với dịch vụ thử nghiệm môi trường, buồng thử nghiệm có kích thước lớn 5x3x2(m), được trang bị các thiết bị đo và điều khiển hiện đại đảm bảo cung cấp các dịch vụ thử nghiệm cho nhiều loại sản phẩm với các kích thước khác nhau.</p>
+<p style="text-align: left;"><strong>TIÊU CHUẨN ĐÁP ỨNG</strong></p>
+<p style="text-align: left;">Hệ thống phòng thí nghiệm của ATTECH đáp ứng tiêu chuẩn của quốc gia và quốc tế như:</p>
+<p style="text-align: left;">&ndash; Tiêu chuẩn ISO 9001:2015</p>
+<p style="text-align: left;">&ndash; Tiêu chuẩn ISO/IEC 17025:2017</p>
+<p style="text-align: left;">&ndash; Tiêu chuẩn ICAO của Hiệp hội Hàng không dân dụng Quốc tế: ICAO Annex 14</p>
+<p style="text-align: left;">&ndash; Tiêu chuẩn Việt Nam: TCVN 5176:1990.</p>
 `,
   training: `
 <div class="dnconten"><a href="https://attech.com.vn/wp-content/uploads/2015/02/DV-HLDT-small.jpg"><img class="alignnone size-full wp-image-2237" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2015/02/DV-HLDT-small.jpg" alt="DV-HLDT-small" /></a></div>
 <p style="text-align: center;">&nbsp;</p>
 <div class="dnconten">
 <p style="text-align: left;"><strong>GIỚI THIỆU</strong></p>
-<p style="text-align: left;">Với bề dầy hơn 30 năm kinh nghiệm trong lĩnh vực cung cấp c&aacute;c sản phẩm&nbsp;v&agrave; dịch vụ trong ng&agrave;nh H&agrave;ng kh&ocirc;ng, C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay tự h&agrave;o l&agrave; nh&agrave; cung cấp dịch vụ kỹ thuật ng&agrave;nh Th&ocirc;ng tin (Communication &ndash; C), Dẫn đường (Navigation &ndash; N), Gi&aacute;m s&aacute;t (Surveillance &ndash; S) h&agrave;ng đầu Việt Nam.</p>
-<p style="text-align: left;">Để đ&aacute;p ứng nhu cầu n&acirc;ng cao chất lượng nguồn nh&acirc;n lực v&agrave; với chiến lược ph&aacute;t triển ATTECH th&agrave;nh một thương hiệu mạnh trong lĩnh vực kỹ thuật h&agrave;ng kh&ocirc;ng tại thị trường Việt Nam v&agrave; từng bước vươn ra thị trường khu vực v&agrave; thế giới, ng&agrave;y 27/11/2008 Trung t&acirc;m Huấn luyện CNS được th&agrave;nh lập theo QĐ số 2436/QĐ-QLB. Ng&agrave;y 26/05/2020, Cục H&agrave;ng kh&ocirc;ng Việt Nam đ&atilde; ban h&agrave;nh Giấy chứng nhận số 2073/GCN-CHK v&agrave; Quyết định số 805/QĐ-CHK chứng nhận C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay l&agrave; cơ sở đủ điều kiện huấn luyện nghiệp vụ nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng chuy&ecirc;n ng&agrave;nh th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t.</p>
+<p style="text-align: left;">Với bề dầy hơn 30 năm kinh nghiệm trong lĩnh vực cung cấp các sản phẩm và dịch vụ trong ngành Hàng không, Công ty TNHH Kỹ thuật Quản lý bay tự hào là nhà cung cấp dịch vụ kỹ thuật ngành Thông tin (Communication &ndash; C), Dẫn đường (Navigation &ndash; N), Giám sát (Surveillance &ndash; S) hàng đầu Việt Nam.</p>
+<p style="text-align: left;">Để đáp ứng nhu cầu nâng cao chất lượng nguồn nhân lực và với chiến lược phát triển ATTECH thành một thương hiệu mạnh trong lĩnh vực kỹ thuật hàng không tại thị trường Việt Nam và từng bước vươn ra thị trường khu vực và thế giới, ngày 27/11/2008 Trung tâm Huấn luyện CNS được thành lập theo QĐ số 2436/QĐ-QLB. Ngày 26/05/2020, Cục Hàng không Việt Nam đã ban hành Giấy chứng nhận số 2073/GCN-CHK và Quyết định số 805/QĐ-CHK chứng nhận Công ty TNHH Kỹ thuật Quản lý bay là cơ sở đủ điều kiện huấn luyện nghiệp vụ nhân viên hàng không chuyên ngành thông tin, dẫn đường, giám sát.</p>
 <p style="text-align: left;"><strong>NĂNG LỰC KINH NGHIỆM</strong></p>
-<p style="text-align: left;">Với chất lượng giảng dạy cao, kh&oacute;a học được thiết kế ưu việt, cơ sở vật chất thiết bị giảng dạy hiện đại v&agrave; chứng chỉ c&oacute; gi&aacute; trị, Trung t&acirc;m Huấn luyện CNS hiện l&agrave; cơ sở huấn luyện duy nhất trong ng&agrave;nh H&agrave;ng kh&ocirc;ng đủ điều kiện đ&aacute;p ứng nhu cầu huấn luyện nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng chuy&ecirc;n ng&agrave;nh th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng theo Nghị định số 92/2016/NĐ-CP của Ch&iacute;nh phủ v&agrave; Th&ocirc;ng tư số 10/2018/TT-BGTVT của Bộ GTVT.</p>
-<p style="text-align: left;">Trung t&acirc;m huấn luyện CNS đ&atilde; thực hiện được nhiều kh&oacute;a huấn luyện trong v&agrave; ngo&agrave;i C&ocirc;ng ty với h&agrave;ng trăm lượt học vi&ecirc;n. Sau mỗi kh&oacute;a huấn luyện, c&aacute;c học vi&ecirc;n sẽ nắm được những kiến thức cơ bản, những kỹ năng thực tế về khai th&aacute;c, bảo dưỡng thiết bị v&agrave; được cấp Chứng chỉ chuy&ecirc;n m&ocirc;n theo ti&ecirc;u chuẩn của Cục H&agrave;ng kh&ocirc;ng Việt Nam.</p>
+<p style="text-align: left;">Với chất lượng giảng dạy cao, khóa học được thiết kế ưu việt, cơ sở vật chất thiết bị giảng dạy hiện đại và chứng chỉ có giá trị, Trung tâm Huấn luyện CNS hiện là cơ sở huấn luyện duy nhất trong ngành Hàng không đủ điều kiện đáp ứng nhu cầu huấn luyện nhân viên hàng không chuyên ngành thông tin, dẫn đường, giám sát hàng không theo Nghị định số 92/2016/NĐ-CP của Chính phủ và Thông tư số 10/2018/TT-BGTVT của Bộ GTVT.</p>
+<p style="text-align: left;">Trung tâm huấn luyện CNS đã thực hiện được nhiều khóa huấn luyện trong và ngoài Công ty với hàng trăm lượt học viên. Sau mỗi khóa huấn luyện, các học viên sẽ nắm được những kiến thức cơ bản, những kỹ năng thực tế về khai thác, bảo dưỡng thiết bị và được cấp Chứng chỉ chuyên môn theo tiêu chuẩn của Cục Hàng không Việt Nam.</p>
 <p style="text-align: left;"><strong>DỊCH VỤ CUNG CẤP</strong></p>
-<p style="text-align: left;">Trung t&acirc;m Huấn luyện CNS hiện đang triển khai c&aacute;c h&igrave;nh thức huấn luyện gồm: Huấn luyện năng định, định kỳ, phục hồi, chuyển loại chuy&ecirc;n ng&agrave;nh th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng. B&ecirc;n cạnh đ&oacute;, Trung t&acirc;m c&ograve;n c&oacute; c&aacute;c kh&oacute;a huấn luyện cơ bản v&agrave; n&acirc;ng cao được thiết kế ph&ugrave; hợp với y&ecirc;u cầu kh&aacute;ch h&agrave;ng.</p>
-<p style="text-align: left;">Dịch vụ huấn luyện đ&atilde; được &aacute;p dụng hệ thống QLCL ISO 9001:2015 đảm bảo cho kh&aacute;ch h&agrave;ng nhận được dịch vụ một c&aacute;ch ổn định v&agrave; tốt nhất.</p>
+<p style="text-align: left;">Trung tâm Huấn luyện CNS hiện đang triển khai các hình thức huấn luyện gồm: Huấn luyện năng định, định kỳ, phục hồi, chuyển loại chuyên ngành thông tin, dẫn đường, giám sát hàng không. Bên cạnh đó, Trung tâm còn có các khóa huấn luyện cơ bản và nâng cao được thiết kế phù hợp với yêu cầu khách hàng.</p>
+<p style="text-align: left;">Dịch vụ huấn luyện đã được áp dụng hệ thống QLCL ISO 9001:2015 đảm bảo cho khách hàng nhận được dịch vụ một cách ổn định và tốt nhất.</p>
 <p style="text-align: left;"><strong>CƠ SỞ VẬT CHẤT</strong></p>
-<p style="text-align: left;">Trung t&acirc;m huấn luyện c&oacute; hệ thống ph&ograve;ng học, ph&ograve;ng thực h&agrave;nh, ph&ograve;ng thiết bị v&agrave; thư viện đ&aacute;p ứng ti&ecirc;u chuẩn của Bộ GTVT về nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng v&agrave; cơ sở đ&agrave;o tạo nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng tại Th&ocirc;ng tư số 10/2018/TT-BGTVT&nbsp; của Bộ GTVT.</p>
-<p style="text-align: left;"><strong>ĐỘI NGŨ GI&Aacute;O VI&Ecirc;N</strong></p>
-<p style="text-align: left;">Đội ngũ huấn luyện vi&ecirc;n của C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay đ&atilde; được Cục trưởng Cục H&agrave;ng kh&ocirc;ng ph&ecirc; duyệt tại Quyết định số 802/QĐ-CHK ng&agrave;y 25/05/2020 đủ ti&ecirc;u chuẩn tham gia giảng dạy nghiệp vụ nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng chuy&ecirc;n ng&agrave;nh th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t.</p>
+<p style="text-align: left;">Trung tâm huấn luyện có hệ thống phòng học, phòng thực hành, phòng thiết bị và thư viện đáp ứng tiêu chuẩn của Bộ GTVT về nhân viên hàng không và cơ sở đào tạo nhân viên hàng không tại Thông tư số 10/2018/TT-BGTVT của Bộ GTVT.</p>
+<p style="text-align: left;"><strong>ĐỘI NGŨ GIÁO VIÊN</strong></p>
+<p style="text-align: left;">Đội ngũ huấn luyện viên của Công ty TNHH Kỹ thuật Quản lý bay đã được Cục trưởng Cục Hàng không phê duyệt tại Quyết định số 802/QĐ-CHK ngày 25/05/2020 đủ tiêu chuẩn tham gia giảng dạy nghiệp vụ nhân viên hàng không chuyên ngành thông tin, dẫn đường, giám sát.</p>
 </div>
 `,
   consulting: `
 <div class="dnconten">
 <p><a href="https://attech.com.vn/wp-content/uploads/2015/02/TVTK-anhs.jpg"><img class="aligncenter size-full wp-image-5506" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2015/02/TVTK-anhs.jpg" alt="TVTK anhs" /></a><br /><span id="more-356"></span></p>
 <p style="text-align: left;"><strong>GIỚI THIỆU</strong></p>
-<p style="text-align: left;">Dịch vụ Tư vấn đầu tư x&acirc;y dựng v&agrave; QLDA l&agrave; một trong c&aacute;c dịch vụ của c&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay do Ban Quản l&yacute; dự &aacute;n Đầu tư v&agrave; X&acirc;y dựng chuy&ecirc;n ng&agrave;nh &ndash; Chi nh&aacute;nh của c&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay thực hiện, cung cấp. Với tr&ecirc;n 10 năm kinh nghiệm v&agrave; đội ngũ kỹ sư, kiến tr&uacute;c sư v&agrave; c&aacute;n bộ chuy&ecirc;n m&ocirc;n c&oacute; tr&igrave;nh độ, Ban Quản l&yacute; dự &aacute;n Đầu tư v&agrave; X&acirc;y dựng chuy&ecirc;n ng&agrave;nh đ&atilde; tổ chức v&agrave; thực hiện c&aacute;c dịch vụ tư vấn đầu tư x&acirc;y dựng v&agrave; quản l&yacute; dự &aacute;n bao gồm: Khảo s&aacute;t, lập dự &aacute;n đầu tư x&acirc;y dựng, thiết kế x&acirc;y dựng, tổ chức lựa chọn nh&agrave; thầu, gi&aacute;m s&aacute;t thi c&ocirc;ng x&acirc;y dựng v&agrave; lắp đặt thiết bị, quản l&yacute; chi ph&iacute; đầu tư x&acirc;y dựng v&agrave; quản l&yacute; dự &aacute;n theo nhiệm vụ sản xuất kinh doanh của C&ocirc;ng ty.</p>
+<p style="text-align: left;">Dịch vụ Tư vấn đầu tư xây dựng và QLDA là một trong các dịch vụ của công ty TNHH Kỹ thuật Quản lý bay do Ban Quản lý dự án Đầu tư và Xây dựng chuyên ngành &ndash; Chi nhánh của công ty TNHH Kỹ thuật Quản lý bay thực hiện, cung cấp. Với trên 10 năm kinh nghiệm và đội ngũ kỹ sư, kiến trúc sư và cán bộ chuyên môn có trình độ, Ban Quản lý dự án Đầu tư và Xây dựng chuyên ngành đã tổ chức và thực hiện các dịch vụ tư vấn đầu tư xây dựng và quản lý dự án bao gồm: Khảo sát, lập dự án đầu tư xây dựng, thiết kế xây dựng, tổ chức lựa chọn nhà thầu, giám sát thi công xây dựng và lắp đặt thiết bị, quản lý chi phí đầu tư xây dựng và quản lý dự án theo nhiệm vụ sản xuất kinh doanh của Công ty.</p>
 <p style="text-align: left;"><strong>NĂNG LỰC KINH NGHIỆM</strong></p>
-<p style="text-align: left;">&ndash; Tư vấn đầu tư x&acirc;y dựng bao gồm:</p>
-<p style="text-align: left;">+ Khảo s&aacute;t; lập dự &aacute;n đầu tư x&acirc;y dựng v&agrave; lập hồ sơ thiết kế x&acirc;y dựng</p>
-<p style="text-align: left;">+ Tổ chức lựa chọn nh&agrave; thầu</p>
-<p style="text-align: left;">+ Gi&aacute;m s&aacute;t thi c&ocirc;ng x&acirc;y dựng v&agrave; lắp đặt thiết bị</p>
-<p style="text-align: left;">+ Tư vấn quản l&yacute; chi ph&iacute; đầu tư x&acirc;y dựng gồm lập Tổng mức đầu tư, dự to&aacute;n x&acirc;y dựng, gi&aacute; g&oacute;i thầu, gi&aacute; hợp đồng x&acirc;y dựng, định mức x&acirc;y dựng v&agrave; gi&aacute; x&acirc;y dựng, thanh to&aacute;n v&agrave; quyết to&aacute;n hợp đồng x&acirc;y dựng, thanh to&aacute;n v&agrave; quyết to&aacute;n vốn đầu tư x&acirc;y dựng c&ocirc;ng tr&igrave;nh. X&acirc;y dựng định mức, đơn gi&aacute; c&aacute;c sản phẩm, dịch vụ do C&ocirc;ng ty cung cấp tr&ecirc;n cơ sở định mức kinh tế-kỹ thuật, ph&aacute;p quy của Nh&agrave; nước.</p>
-<p style="text-align: left;">&ndash; Tư vấn quản l&yacute; dự &aacute;n đầu tư x&acirc;y dựng bao gồm: Quản l&yacute; về phạm vi, kế hoạch c&ocirc;ng việc; khối lượng c&ocirc;ng việc; chất lượng x&acirc;y dựng; tiến độ thực hiện; chi ph&iacute; đầu tư x&acirc;y dựng; an to&agrave;n trong thi c&ocirc;ng x&acirc;y dựng; bảo vệ m&ocirc;i trường trong x&acirc;y dựng; lựa chọn nh&agrave; thầu v&agrave; hợp đồng x&acirc;y dựng; quản l&yacute; rủi ro v&agrave; c&aacute;c nội dung cần thiết kh&aacute;c được thực hiện theo quy định của Luật x&acirc;y dựng v&agrave; quy định kh&aacute;c của ph&aacute;p luật c&oacute; li&ecirc;n quan.</p>
+<p style="text-align: left;">&ndash; Tư vấn đầu tư xây dựng bao gồm:</p>
+<p style="text-align: left;">+ Khảo sát; lập dự án đầu tư xây dựng và lập hồ sơ thiết kế xây dựng</p>
+<p style="text-align: left;">+ Tổ chức lựa chọn nhà thầu</p>
+<p style="text-align: left;">+ Giám sát thi công xây dựng và lắp đặt thiết bị</p>
+<p style="text-align: left;">+ Tư vấn quản lý chi phí đầu tư xây dựng gồm lập Tổng mức đầu tư, dự toán xây dựng, giá gói thầu, giá hợp đồng xây dựng, định mức xây dựng và giá xây dựng, thanh toán và quyết toán hợp đồng xây dựng, thanh toán và quyết toán vốn đầu tư xây dựng công trình. Xây dựng định mức, đơn giá các sản phẩm, dịch vụ do Công ty cung cấp trên cơ sở định mức kinh tế-kỹ thuật, pháp quy của Nhà nước.</p>
+<p style="text-align: left;">&ndash; Tư vấn quản lý dự án đầu tư xây dựng bao gồm: Quản lý về phạm vi, kế hoạch công việc; khối lượng công việc; chất lượng xây dựng; tiến độ thực hiện; chi phí đầu tư xây dựng; an toàn trong thi công xây dựng; bảo vệ môi trường trong xây dựng; lựa chọn nhà thầu và hợp đồng xây dựng; quản lý rủi ro và các nội dung cần thiết khác được thực hiện theo quy định của Luật xây dựng và quy định khác của pháp luật có liên quan.</p>
 <p style="text-align: left;"><strong>DỊCH VỤ CUNG CẤP</strong></p>
-<p style="text-align: left;">Dịch vụ khảo s&aacute;t, tư vấn lập dự &aacute;n đầu tư, lập hồ sơ thiết kế v&agrave; dự to&aacute;n c&aacute;c c&ocirc;ng tr&igrave;nh, tổ chức lựa chọn nh&agrave; thầu v&agrave; x&acirc;y dựng c&aacute;c định mức kinh tế kỹ thuật cho c&aacute;c sản phẩm, dịch vụ chuy&ecirc;n ng&agrave;nh h&agrave;ng kh&ocirc;ng:</p>
-<p style="text-align: left;">&ndash; Hệ thống thiết bị hạ c&aacute;nh ILS/DME ti&ecirc;u chuẩn CAT I v&agrave; CAT II.</p>
-<p style="text-align: left;">&ndash; Hệ thống đ&agrave;i dẫn đường, c&aacute;c trạm th&ocirc;ng tin NDB, DVOR/DME.</p>
-<p style="text-align: left;">&ndash; Hệ thống điện nguồn, biển b&aacute;o, đ&egrave;n phụ trợ dẫn đường s&acirc;n bay đ&aacute;p ứng ti&ecirc;u chuẩn CAT I, II, III.</p>
-<p style="text-align: left;">&ndash; C&aacute;c trạm th&ocirc;ng tin vệ tinh VSAT, DOMSAT&hellip;</p>
-<p style="text-align: left;">&ndash; C&aacute;c trạm Rađa gi&aacute;m s&aacute;t H&agrave;ng kh&ocirc;ng, ADS-B&hellip;</p>
-<p style="text-align: left;">&ndash; T&iacute;ch hợp hệ thống, triển khai c&aacute;c phần mềm ứng dụng, đảm bảo kỹ thuật cho c&aacute;c mạng c&ocirc;ng nghệ th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t H&agrave;ng kh&ocirc;ng.</p>
-<p style="text-align: left;">&ndash; Hệ thống trang thiết bị phục vụ điều h&agrave;nh hoạt động bay tại Đ&agrave;i kiểm so&aacute;t kh&ocirc;ng lưu (TWR), tại Trung t&acirc;m điều</p>
-<p style="text-align: left;">h&agrave;nh bay kiểm so&aacute;t tiếp cận (APP) v&agrave; Trung t&acirc;m phối hợp điều h&agrave;nh bay đường d&agrave;i (ACC).</p>
-<p style="text-align: left;">&ndash; Hệ thống chống s&eacute;t to&agrave;n diện cho c&aacute;c hạng mục c&ocirc;ng tr&igrave;nh (chống s&eacute;t đ&aacute;nh thẳng, lan truyền, cảm ứng), tiếp đất cho c&aacute;c c&ocirc;ng tr&igrave;nh kỹ thuật, c&aacute;c hệ thống trang thiết bị kỹ thuật.</p>
-<p style="text-align: left;"><strong>TI&Ecirc;U CHUẨN Đ&Aacute;P ỨNG</strong></p>
-<p style="text-align: left;">&ndash; Kh&aacute;ch h&agrave;ng sẽ nhận được sản phẩm tư vấn theo đ&uacute;ng quy định ph&aacute;p l&yacute; hiện h&agrave;nh của Nh&agrave; nước, c&aacute;c quy định khuyến c&aacute;o của Tổ chức H&agrave;ng kh&ocirc;ng d&acirc;n dụng Quốc tế (ICAO).</p>
-<p style="text-align: left;">&ndash; Sản phẩm tư vấn của ATTECH đ&aacute;p ứng c&aacute;c ti&ecirc;u chuẩn của Hệ thống quản l&yacute; chất lượng ISO 9001:2015 v&agrave; thỏa m&atilde;n y&ecirc;u cầu mong muốn c&aacute;c kh&aacute;ch h&agrave;ng.</p>
+<p style="text-align: left;">Dịch vụ khảo sát, tư vấn lập dự án đầu tư, lập hồ sơ thiết kế và dự toán các công trình, tổ chức lựa chọn nhà thầu và xây dựng các định mức kinh tế kỹ thuật cho các sản phẩm, dịch vụ chuyên ngành hàng không:</p>
+<p style="text-align: left;">&ndash; Hệ thống thiết bị hạ cánh ILS/DME tiêu chuẩn CAT I và CAT II.</p>
+<p style="text-align: left;">&ndash; Hệ thống đài dẫn đường, các trạm thông tin NDB, DVOR/DME.</p>
+<p style="text-align: left;">&ndash; Hệ thống điện nguồn, biển báo, đèn phụ trợ dẫn đường sân bay đáp ứng tiêu chuẩn CAT I, II, III.</p>
+<p style="text-align: left;">&ndash; Các trạm thông tin vệ tinh VSAT, DOMSAT&hellip;</p>
+<p style="text-align: left;">&ndash; Các trạm Rađa giám sát Hàng không, ADS-B&hellip;</p>
+<p style="text-align: left;">&ndash; Tích hợp hệ thống, triển khai các phần mềm ứng dụng, đảm bảo kỹ thuật cho các mạng công nghệ thông tin, dẫn đường, giám sát Hàng không.</p>
+<p style="text-align: left;">&ndash; Hệ thống trang thiết bị phục vụ điều hành hoạt động bay tại Đài kiểm soát không lưu (TWR), tại Trung tâm điều hành bay kiểm soát tiếp cận (APP) và Trung tâm phối hợp điều hành bay đường dài (ACC).</p>
+<p style="text-align: left;">&ndash; Hệ thống chống sét toàn diện cho các hạng mục công trình (chống sét đánh thẳng, lan truyền, cảm ứng), tiếp đất cho các công trình kỹ thuật, các hệ thống trang thiết bị kỹ thuật.</p>
+<p style="text-align: left;"><strong>TIÊU CHUẨN ĐÁP ỨNG</strong></p>
+<p style="text-align: left;">&ndash; Khách hàng sẽ nhận được sản phẩm tư vấn theo đúng quy định pháp lý hiện hành của Nhà nước, các quy định khuyến cáo của Tổ chức Hàng không dân dụng Quốc tế (ICAO).</p>
+<p style="text-align: left;">&ndash; Sản phẩm tư vấn của ATTECH đáp ứng các tiêu chuẩn của Hệ thống quản lý chất lượng ISO 9001:2015 và thỏa mãn yêu cầu mong muốn các khách hàng.</p>
 </div>
 `,
 };
+
 const ServiceDetail = () => {
   const { serviceSlug } = useParams();
   const content =
     contentData[serviceSlug] ||
     "<h2>Không thể hiển thị do nội dung không tồn tại hoặc đã bị xóa!</h2>";
-  console.log(content);
 
   return (
     <div className="service-content-wrap">
-      <div className="cns-container">
-        <div dangerouslySetInnerHTML={{ __html: content }} />
-      </div>
-      <div className="sidebar-"></div>
+      <div className="cns-container" dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
 };
