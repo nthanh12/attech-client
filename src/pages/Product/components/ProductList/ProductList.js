@@ -247,16 +247,6 @@ const products = [
   },
 ];
 
-const categorySlugMap = {
-  "CNS/ATM": "cns-atm",
-  "Hệ thống đèn hiệu": "he-thong-den-hieu",
-  Shelter: "shelter",
-  "Bàn console": "ban-console",
-  "Giàn phản xạ VOR": "gian-phan-xa-vor",
-  "Thiết bị ghi âm/ghi hình": "thiet-bi-ghi-am-ghi-hinh",
-  "Các sản phẩm dân dụng khác": "cac-san-pham-dan-dung-khac",
-};
-
 // Thêm component CategoryNav mới
 const CategoryNav = ({ categories, selectedCategory, onSelectCategory }) => {
   return (
@@ -267,15 +257,32 @@ const CategoryNav = ({ categories, selectedCategory, onSelectCategory }) => {
       >
         Tất cả sản phẩm
       </button>
-      {Object.entries(categories).map(([category, slug]) => (
-        <button
-          key={slug}
-          className={`attech-category-btn ${selectedCategory === category ? 'active' : ''}`}
-          onClick={() => onSelectCategory(category)}
-        >
-          {category}
-        </button>
-      ))}
+      {Object.entries(categories).map(([category, value]) => {
+        // Nếu value là một object có chứa url, xử lý như một external link
+        if (typeof value === 'object' && value.url) {
+          return (
+            <a
+              key={value.url}
+              href={value.url}
+              className="attech-category-btn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {category}
+            </a>
+          );
+        }
+        // Xử lý category thông thường
+        return (
+          <button
+            key={value}
+            className={`attech-category-btn ${selectedCategory === category ? 'active' : ''}`}
+            onClick={() => onSelectCategory(category)}
+          >
+            {category}
+          </button>
+        );
+      })}
     </div>
   );
 };
@@ -296,6 +303,20 @@ const ProductList = () => {
   // Thêm state cho phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
+
+  // Định nghĩa categories với cả category thông thường và custom
+  const categories = {
+    "CNS/ATM": "cns-atm",
+    "Hệ thống đèn hiệu": "he-thong-den-hieu",
+    "Shelter": "shelter",
+    "Bàn console": "ban-console",
+    "Giàn phản xạ VOR": "gian-phan-xa-vor",
+    "Thiết bị ghi âm/ghi hình": "thiet-bi-ghi-am-ghi-hinh",
+    "Các sản phẩm dân dụng khác": "san-pham-dan-dung",
+    "VR 360": {
+      url: "https://attech.vr360.one/"
+    }
+  };
 
   useEffect(() => {
     let result = [...products];
@@ -489,7 +510,7 @@ const ProductList = () => {
 
           <div className="attech-controls-bottom">
             <CategoryNav
-              categories={categorySlugMap}
+              categories={categories}
               selectedCategory={selectedCategory}
               onSelectCategory={handleCategoryChange}
             />
