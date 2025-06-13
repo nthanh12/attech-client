@@ -7,40 +7,45 @@ const leadershipData = {
     {
       name: "Lê Tiến Thịnh",
       position: "Chủ tịch công ty",
-      image: "https://attech.com.vn/wp-content/uploads/2015/09/CT-Le-Tien-Thinh.jpg",
-      description: "Là người có rất năm kinh nghiệm trong lĩnh vực điều hành doanh nghiệp. Dưới sự lãnh đạo của ông, công ty đã đạt được nhiều thành tựu quan trọng và phát triển vững mạnh.",
-      education: "Thạc sĩ Quản trị Kinh doanh",
-      experience: [
-        "20+ năm kinh nghiệm quản lý",
-        "Từng đảm nhiệm nhiều vị trí quản lý cấp cao",
-        "Dẫn dắt nhiều dự án công nghệ lớn"
-      ]
-    }
+      image:
+        "https://attech.com.vn/wp-content/uploads/2015/09/CT-Le-Tien-Thinh.jpg",
+      // description: "Là người có rất năm kinh nghiệm trong lĩnh vực điều hành doanh nghiệp. Dưới sự lãnh đạo của ông, công ty đã đạt được nhiều thành tựu quan trọng và phát triển vững mạnh.",
+      // education: "Thạc sĩ Quản trị Kinh doanh",
+      // experience: [
+      //   "20+ năm kinh nghiệm quản lý",
+      //   "Từng đảm nhiệm nhiều vị trí quản lý cấp cao",
+      //   "Dẫn dắt nhiều dự án công nghệ lớn"
+      // ]
+    },
   ],
   director: [
     {
       name: "Nguyễn Hoàng Giang",
       position: "Giám đốc công ty",
-      image: "https://attech.com.vn/wp-content/uploads/2015/09/GD-Hoang-Giang.jpg",
-    }
+      image:
+        "https://attech.com.vn/wp-content/uploads/2015/09/GD-Hoang-Giang.jpg",
+    },
   ],
   viceDirectors: [
     {
       name: "Phan Quốc Hưng",
       position: "Phó giám đốc công ty",
-      image: "https://attech.com.vn/wp-content/uploads/2015/09/PGD-PhanQuocHung.jpg",
+      image:
+        "https://attech.com.vn/wp-content/uploads/2015/09/PGD-PhanQuocHung.jpg",
     },
     {
       name: "Nguyễn Như Thành",
       position: "Phó giám đốc công ty",
-      image: "https://attech.com.vn/wp-content/uploads/2015/09/A-Thanh-PGD-final.jpg",
+      image:
+        "https://attech.com.vn/wp-content/uploads/2015/09/A-Thanh-PGD-final.jpg",
     },
     {
       name: "Đinh Nhật Minh",
       position: "Phó giám đốc công ty",
-      image: "https://attech.com.vn/wp-content/uploads/2015/09/PGD-Dinh-Nhat-Minh.jpg"
-    }
-  ]
+      image:
+        "https://attech.com.vn/wp-content/uploads/2015/09/PGD-Dinh-Nhat-Minh.jpg",
+    },
+  ],
 };
 
 const LeaderDialog = ({ leader, onClose }) => {
@@ -48,12 +53,18 @@ const LeaderDialog = ({ leader, onClose }) => {
 
   return (
     <div className="leader-dialog-overlay" onClick={onClose}>
-      <div className="leader-dialog" onClick={e => e.stopPropagation()}>
-        <button className="dialog-close" onClick={onClose}>&times;</button>
+      <div className="leader-dialog" onClick={(e) => e.stopPropagation()}>
+        <button className="dialog-close" onClick={onClose}>
+          &times;
+        </button>
         <div className="dialog-content">
           <div className="dialog-header">
             <div className="dialog-image-container">
-              <img src={leader.image} alt={leader.name} className="dialog-image" />
+              <img
+                src={leader.image}
+                alt={leader.name}
+                className="dialog-image"
+              />
             </div>
             <div className="dialog-title">
               <h2>{leader.name}</h2>
@@ -93,7 +104,7 @@ const Leadership = () => {
 
   const renderLeaderProfile = (member, idx) => (
     <div className="leader-profile" key={idx}>
-      <div 
+      <div
         className="leader-img-wrap"
         onClick={() => handleLeaderClick(member)}
       >
@@ -106,48 +117,57 @@ const Leadership = () => {
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <linearGradient id={`curve-gradient-${idx}`} x1="100%" y1="0%" x2="0%" y2="80%">
-              <stop offset="0%" stopColor="#1a237e" stopOpacity="0.08"/>
-              <stop offset="40%" stopColor="#1a237e" stopOpacity="0.03"/>
-              <stop offset="80%" stopColor="#ffffff" stopOpacity="0.02"/>
-              <stop offset="100%" stopColor="#ffffff" stopOpacity="0"/>
+            <linearGradient
+              id={`curve-gradient-${idx}`}
+              x1="100%"
+              y1="0%"
+              x2="0%"
+              y2="80%"
+            >
+              <stop offset="0%" stopColor="#1a237e" stopOpacity="0.08" />
+              <stop offset="40%" stopColor="#1a237e" stopOpacity="0.03" />
+              <stop offset="80%" stopColor="#ffffff" stopOpacity="0.02" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
             </linearGradient>
-            <linearGradient id={`curve-gradient-hover-${idx}`} x1="100%" y1="0%" x2="0%" y2="80%">
-              <stop offset="0%" stopColor="#1a237e" stopOpacity="0.15"/>
-              <stop offset="40%" stopColor="#1a237e" stopOpacity="0.08"/>
-              <stop offset="80%" stopColor="#ffffff" stopOpacity="0.04"/>
-              <stop offset="100%" stopColor="#ffffff" stopOpacity="0"/>
+            <linearGradient
+              id={`curve-gradient-hover-${idx}`}
+              x1="100%"
+              y1="0%"
+              x2="0%"
+              y2="80%"
+            >
+              <stop offset="0%" stopColor="#1a237e" stopOpacity="0.15" />
+              <stop offset="40%" stopColor="#1a237e" stopOpacity="0.08" />
+              <stop offset="80%" stopColor="#ffffff" stopOpacity="0.04" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
             </linearGradient>
           </defs>
-          
+
           <path
             className="svg-path main-curve"
             d="M180 0 C 240 0, 300 60, 300 120 V300 H0 V0 H180 Z"
             fill={`url(#curve-gradient-${idx})`}
           />
-          
+
           <path
             className="svg-path curve-1"
             d="M200 0 C 260 0, 320 60, 320 120 V300 H0 V0 H200 Z"
             fill={`url(#curve-gradient-${idx})`}
             opacity="0.7"
-            style={{ mixBlendMode: 'multiply' }}
+            style={{ mixBlendMode: "multiply" }}
           />
-          
+
           <path
             className="svg-path curve-2"
             d="M220 0 C 280 0, 340 60, 340 120 V300 H0 V0 H220 Z"
             fill={`url(#curve-gradient-${idx})`}
             opacity="0.4"
-            style={{ mixBlendMode: 'multiply' }}
+            style={{ mixBlendMode: "multiply" }}
           />
         </svg>
         <img src={member.image} alt={member.name} className="leader-img" />
       </div>
-      <h3 
-        className="leader-name"
-        onClick={() => handleLeaderClick(member)}
-      >
+      <h3 className="leader-name" onClick={() => handleLeaderClick(member)}>
         {member.name}
       </h3>
       <p className="leader-title">{member.position}</p>
@@ -163,23 +183,29 @@ const Leadership = () => {
       <div className="leader-grid">
         {/* Chairman Row */}
         <div className="leader-row chairman-row">
-          {leadershipData.chairman.map((member, idx) => renderLeaderProfile(member, idx))}
+          {leadershipData.chairman.map((member, idx) =>
+            renderLeaderProfile(member, idx)
+          )}
         </div>
 
         {/* Director Row */}
         <div className="leader-row director-row">
-          {leadershipData.director.map((member, idx) => renderLeaderProfile(member, idx + 1))}
+          {leadershipData.director.map((member, idx) =>
+            renderLeaderProfile(member, idx + 1)
+          )}
         </div>
 
         {/* Vice Directors Row */}
         <div className="leader-row vice-directors-row">
-          {leadershipData.viceDirectors.map((member, idx) => renderLeaderProfile(member, idx + 2))}
+          {leadershipData.viceDirectors.map((member, idx) =>
+            renderLeaderProfile(member, idx + 2)
+          )}
         </div>
-        
+
         {selectedLeader && (
-          <LeaderDialog 
-            leader={selectedLeader} 
-            onClose={() => setSelectedLeader(null)} 
+          <LeaderDialog
+            leader={selectedLeader}
+            onClose={() => setSelectedLeader(null)}
           />
         )}
       </div>
