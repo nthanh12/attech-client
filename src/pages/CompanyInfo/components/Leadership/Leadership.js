@@ -7,7 +7,7 @@ const leadershipData = {
     {
       name: "Lê Tiến Thịnh",
       position: "Chủ tịch công ty",
-      image: bld,
+      image: "https://attech.com.vn/wp-content/uploads/2015/09/CT-Le-Tien-Thinh.jpg",
       description: "Là người có rất năm kinh nghiệm trong lĩnh vực điều hành doanh nghiệp. Dưới sự lãnh đạo của ông, công ty đã đạt được nhiều thành tựu quan trọng và phát triển vững mạnh.",
       education: "Thạc sĩ Quản trị Kinh doanh",
       experience: [
@@ -21,24 +21,24 @@ const leadershipData = {
     {
       name: "Nguyễn Hoàng Giang",
       position: "Giám đốc công ty",
-      image: bld,
+      image: "https://attech.com.vn/wp-content/uploads/2015/09/GD-Hoang-Giang.jpg",
     }
   ],
   viceDirectors: [
     {
       name: "Phan Quốc Hưng",
       position: "Phó giám đốc công ty",
-      image: bld,
+      image: "https://attech.com.vn/wp-content/uploads/2015/09/PGD-PhanQuocHung.jpg",
     },
     {
       name: "Nguyễn Như Thành",
       position: "Phó giám đốc công ty",
-      image: bld,
+      image: "https://attech.com.vn/wp-content/uploads/2015/09/A-Thanh-PGD-final.jpg",
     },
     {
       name: "Đinh Nhật Minh",
       position: "Phó giám đốc công ty",
-      image: bld
+      image: "https://attech.com.vn/wp-content/uploads/2015/09/PGD-Dinh-Nhat-Minh.jpg"
     }
   ]
 };

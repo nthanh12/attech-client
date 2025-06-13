@@ -261,29 +261,36 @@
 
 @media (max-width: 768px) {
     .page-product .product-content .attech-controls-wrapper {
-        top: 48px;
+        top: 80px;
     }
 
     .page-product .product-content .attech-controls-inner {
-        padding: 0 16px;
+        padding: 0 12px;
     }
 
     .page-product .product-content .attech-controls-top {
-        flex-direction: column;
-        align-items: stretch;
+        flex-wrap: wrap;
         gap: 12px;
         padding: 12px 0;
     }
 
+    .page-product .product-content .attech-filter-toggle-btn {
+        padding: 8px 12px;
+        min-width: auto;
+    }
+
+    .page-product .product-content .attech-search-container {
+        flex: 1;
+        min-width: 0;
+    }
+
     .page-product .product-content .attech-product-filters {
-        display: flex;
+        width: 100%;
         justify-content: space-between;
-        align-items: center;
     }
 
     .page-product .product-content .attech-sort-select {
-        flex: 1;
-        margin-right: 12px;
+        min-width: 140px;
     }
 
     .page-product .product-content .attech-product-grid {
@@ -311,6 +318,29 @@
 }
 
 @media (max-width: 480px) {
+    .page-product .product-content .attech-controls-top {
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+
+    .page-product .product-content .attech-filter-toggle-btn {
+        padding: 8px;
+        min-width: auto;
+    }
+
+    .page-product .product-content .attech-filter-toggle-btn span {
+        display: none;
+    }
+
+    .page-product .product-content .attech-search-container {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .page-product .product-content .attech-product-filters {
+        display: none;
+    }
+
     .page-product .product-content .attech-product-list-container {
         padding: 16px;
     }
@@ -386,12 +416,15 @@
 
 @media (max-width: 1280px) {
     .page-product .product-content .attech-controls-wrapper {
-    top: 76px;
-}
+        top: 120px;
+    }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .page-product .product-content .attech-controls-wrapper {
+        top: 60px;
+    }
     .attech-category-nav {
         top: 160px;
         padding: 12px;

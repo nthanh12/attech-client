@@ -55,7 +55,7 @@
 
 @media (max-width: 480px) {
   .page-product .product-content {
-    padding: 10px;
+    padding: 50px 10px 0;
   }
 
   .section-header h2 {

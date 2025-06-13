@@ -230,11 +230,11 @@
     }
 
     .company-footer h2 {
-        font-size: 22px;
+        font-size: 16px;
     }
 
     .company-footer h3 {
-        font-size: 14px;
+        font-size: 12px;
     }
 }
 
@@ -268,6 +268,15 @@
     width: 50px;
     height: 2px;
     background: #007bff;
+}
+
+@media (max-width: 768px) {
+    .footer-title::after {
+        display: none;
+    }
+    .footer h2::after {
+        display: none;
+    }
 }
 
 .contact-info p {
@@ -364,7 +373,7 @@
 
 @media (max-width: 768px) {
     .footer {
-        padding: 40px 0 20px;
+        padding: 20px 0 20px;
     }
     
     .company-name {
