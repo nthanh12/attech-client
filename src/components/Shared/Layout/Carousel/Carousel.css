@@ -157,3 +157,11 @@
 .carousel-img-3 {
     object-position: 50% 65%; /* Ảnh 3: căn trên */
 }
+@media (max-width: 768px) {
+    .carousel-img-1 {
+        object-position: 80% 100%; /* Ảnh 3: căn trên */
+    } 
+    .carousel-img-3 {
+        object-position: 50% 100%; /* Ảnh 3: căn trên */
+    }   
+}

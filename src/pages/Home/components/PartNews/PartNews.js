@@ -3,49 +3,7 @@ import "./PartNews.css";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
-const newsGroups = [
-  {
-    id: "activities",
-    title: "Tin hoạt động",
-    link: "/tin-tuc/hoat-dong",
-    featuredNews: {
-      date: "26/03/2025",
-      title: "Xưởng DVKT tổ chức cung cấp dịch vụ kỹ thuật CNS giai đoạn 2020-2025 an toàn, điều hòa và hiệu quả",
-      image: "https://attech.com.vn/wp-content/uploads/2025/04/cung-cap-dv-cns-20-25-25-4-1.jpg",
-    }
-  },
-  {
-    id: "party",
-    title: "Tin đảng bộ công ty",
-    link: "/tin-tuc/dang-bo",
-    featuredNews: {
-      date: "26/03/2025",
-      title: "Lễ kết nạp Đảng viên mới tại chi bộ Ban Quản lý dự án",
-      image: "https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-1.jpg",
-    }
-  },
-  {
-    id: "youth",
-    title: "Tin đoàn thanh niên",
-    link: "/tin-tuc/doan-thanh-nien",
-    featuredNews: {
-      date: "26/03/2025",
-      title: "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức Lễ kỷ niệm 94 năm Ngày thành lập Đoàn TNCS Hồ Chí Minh",
-      image: "https://attech.com.vn/wp-content/uploads/2025/03/doi-thoai-dtn-2025-2.jpg",
-    }
-  },
-  {
-    id: "union",
-    title: "Tin công đoàn",
-    link: "/tin-tuc/cong-doan",
-    featuredNews: {
-      date: "26/03/2025",
-      title: "Nữ công ATTECH hưởng ứng chuỗi hoạt động chào mừng ngày 8/3",
-      image: "https://vatm.vn/uploads/%E1%BA%A2nh%202_BL%C4%90%20%E1%BB%A7ng%20h%E1%BB%99%20gian%20h%C3%A0ng%20h%E1%BB%99i%20ch%E1%BB%A3.jpg",
-    }
-  }
-];
+import { newsGroups } from "../../../../data/postHome";
 
 const PartNews = () => {
   useEffect(() => {
@@ -77,12 +35,14 @@ const PartNews = () => {
               </div>
 
               <div className="news__image-container">
-                <img
-                  src={group.featuredNews.image}
-                  alt={group.featuredNews.title}
-                  className="news__image"
-                  loading="lazy"
-                />
+                <Link to={`/news/${group.featuredNews.id}/${group.featuredNews.slug}`}>
+                  <img
+                    src={group.featuredNews.image}
+                    alt={group.featuredNews.title}
+                    className="news__image"
+                    loading="lazy"
+                  />
+                </Link>
                 <div className="news__date-badge">
                   <i className="far fa-clock"></i>
                   <span>{group.featuredNews.date}</span>
@@ -90,7 +50,7 @@ const PartNews = () => {
               </div>
 
               <div className="news__content">
-                <Link to={group.link} className="news__article-title">
+                <Link to={`/news/${group.featuredNews.id}/${group.featuredNews.slug}`} className="news__article-title">
                   <span>{group.featuredNews.title}</span>
                 </Link>
                 <p className="news__excerpt">{group.featuredNews.excerpt}</p>

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 import cns from "../../../../assets/img/feature-cns.jpg";
 import flightcheck from "../../../../assets/img/feature-fi.jpg";
-import aviation from "../../../../assets/img/feature-ai.jpg";
+import aviation from "../../../../assets/img/cnhk/about_ai5.jpg";
 
 const notifications = [
   {

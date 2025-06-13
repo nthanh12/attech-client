@@ -87,7 +87,7 @@ const Media = () => {
                       }}
                     >
                       <img
-                        src={customImage}
+                        src="https://img.youtube.com/vi/bROog4Jqyzo/maxresdefault.jpg"
                         alt="Sự kiện bóng đá 26/03/2025 - Video 1"
                         className="custom-image"
                         loading="lazy"
@@ -125,7 +125,7 @@ const Media = () => {
                       }}
                     >
                       <img
-                        src={customImage}
+                        src="https://img.youtube.com/vi/szACf6q5SoM/maxresdefault.jpg"
                         alt="Sự kiện bóng đá 26/03/2025 - Video 2"
                         className="custom-image"
                         loading="lazy"

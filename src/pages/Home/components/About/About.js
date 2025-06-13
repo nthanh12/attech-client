@@ -4,14 +4,15 @@ import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import about_cns1 from "../../../../assets/img/cns/about_cns1.jpg";
-import about_cns2 from "../../../../assets/img/cns/about_cns2.jpg";
 import about_cns3 from "../../../../assets/img/cns/about_cns3.jpg";
 import about_cns4 from "../../../../assets/img/cns/about_cns4.jpg";
 import about_cns5 from "../../../../assets/img/cns/about_cns5.jpg";
-import about_fi1 from "../../../../assets/img/bay-kthc/fi1.jpg";
-import about_fi2 from "../../../../assets/img/bay-kthc/fi2.jpg";
+
+import about_fi1 from "../../../../assets/img/bay-kthc/fi8.jpg";
+import about_fi2 from "../../../../assets/img/bay-kthc/fi6.jpg";
 import about_fi3 from "../../../../assets/img/bay-kthc/fi3.jpg";
+import about_fi4 from "../../../../assets/img/bay-kthc/fi4.jpg";
+
 import about_ai1 from "../../../../assets/img/cnhk/about_ai1.jpg";
 import about_ai2 from "../../../../assets/img/cnhk/about_ai2.jpg";
 import about_ai3 from "../../../../assets/img/cnhk/about_ai3.jpg";
@@ -35,14 +36,14 @@ const ArrowIcon = () => (
 const products = [
   {
     title: "CNS / ATM",
-    images: [about_cns1, about_cns2, about_cns3, about_cns4, about_cns5],
+    images: [about_cns3, about_cns4, about_cns5],
     description:
       "Cung cấp giải pháp toàn diện về Thông tin, Dẫn đường, Giám sát hàng không với công nghệ tiên tiến hàng đầu thế giới. Đảm bảo an toàn và hiệu quả cho ngành hàng không Việt Nam.",
     link: "/services/cns",
   },
   {
     title: "BAY KIỂM TRA HIỆU CHUẨN",
-    images: [about_fi1, about_fi2, about_fi3],
+    images: [about_fi1, about_fi2, about_fi3, about_fi4],
     description:
       "Dịch vụ bay hiệu chuẩn đạt chuẩn quốc tế với công nghệ hiện đại. Cung cấp giải pháp toàn diện về kiểm tra, hiệu chuẩn và đánh giá chất lượng thiết bị hàng không.",
     link: "/services/flightcheck",

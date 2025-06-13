@@ -9,28 +9,28 @@ const Carousel = () => {
   const slides = [
     {
       img: banner1,
-      className: "carousel-img-1"
+      className: "carousel-img-1",
     },
     {
       img: banner2,
-      className: "carousel-img-2"
+      className: "carousel-img-2",
     },
     {
-      img: banner3,
-      className: "carousel-img-3"
+      img: "https://attech.com.vn/wp-content/uploads/2015/05/mnuSanPham.png",
+      className: "carousel-img-3",
     },
   ];
 
   useEffect(() => {
     // Initialize carousel
-    const carouselElement = document.querySelector('#carouselId');
+    const carouselElement = document.querySelector("#carouselId");
     if (carouselElement) {
       const carousel = new window.bootstrap.Carousel(carouselElement, {
         interval: 5000,
         wrap: true,
         keyboard: true,
-        pause: 'hover',
-        ride: 'carousel'
+        pause: "hover",
+        ride: "carousel",
       });
     }
   }, []);

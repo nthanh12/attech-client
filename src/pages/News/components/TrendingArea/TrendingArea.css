@@ -227,8 +227,7 @@
 
 .trending-area .trending-main .trending-top .trend-top-img .trend-top-cap {
     position: absolute;
-    bottom: 25px;
-    left: 31px
+
 }
 
 @media (max-width: 767px) {
@@ -252,7 +251,7 @@
 }
 
 .trending-area .trending-main .trending-top .trend-top-img .trend-top-cap h2 {
-    font-size: 30px;
+    font-size: 24px;
     color: #ffffff;
 }
 

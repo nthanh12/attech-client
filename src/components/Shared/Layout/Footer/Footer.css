@@ -302,7 +302,7 @@
     color: #007bff;
 }
 
-.map-container {
+.map-wrapper {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
