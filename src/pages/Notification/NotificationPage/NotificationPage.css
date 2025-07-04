@@ -1,9 +1,112 @@
 .notification {
   max-width: 1320px;
-  margin: 0 auto 40px;
-  padding: 0;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .notification > * {
   width: 100%;
+}
+
+.notification-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.notification-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a365d;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-block;
+}
+
+.notification-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(to right, #4a90e2, #63b3ed);
+  border-radius: 2px;
+}
+
+.notification-search {
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.notification-header .search-box {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.notification-header .search-box input {
+  width: 100%;
+  padding: 15px 50px 15px 25px;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: #f8fafc;
+}
+
+.notification-header .search-box input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1);
+  background: #fff;
+}
+
+.notification-header .search-box i {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #718096;
+  font-size: 18px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notification {
+    padding: 15px;
+  }
+
+  .notification-header {
+    margin-bottom: 30px;
+  }
+
+  .notification-title {
+    font-size: 28px;
+  }
+
+  .notification-header .search-box input {
+    padding: 12px 45px 12px 20px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notification {
+    padding: 12px;
+  }
+
+  .notification-header {
+    margin-bottom: 25px;
+  }
+
+  .notification-title {
+    font-size: 24px;
+  }
+
+  .notification-header .search-box input {
+    padding: 10px 40px 10px 15px;
+    font-size: 14px;
+  }
 }

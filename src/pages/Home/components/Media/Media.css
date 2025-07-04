@@ -1,10 +1,5 @@
 /* Reset và biến chung */
-:root {
-  --border-radius-medium: 10px;
-  --link-hover-color: #4772ff;
-  --primary-color: #ffffff;
-  --secondary-color: #ff6347;
-}
+/* Đã thay thế biến :root bằng giá trị cụ thể */
 
 /* Hero Section */
 .hero-section {
@@ -55,14 +50,14 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
-  color: var(--primary-color);
+  color: #ffffff;
   margin-bottom: 1rem;
 }
 
 .hero-section h2 {
   font-size: 1.5rem;
   font-weight: 400;
-  color: var(--primary-color);
+  color: #ffffff;
   opacity: 0.9;
   margin-bottom: 1.5rem;
 }
@@ -81,7 +76,7 @@
   white-space: nowrap;
   left: 0;
   top: 0;
-  color: var(--link-hover-color);
+  color: #4772ff;
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.5s ease-in-out;

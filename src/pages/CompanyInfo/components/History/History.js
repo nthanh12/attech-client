@@ -1,13 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import "./History.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Map3D from './Map3D';
 
 const History = () => {
-  const [selectedStation, setSelectedStation] = useState(null);
-  const mapSectionRef = useRef(null);
-
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -87,53 +83,6 @@ const History = () => {
         email: "attech-pmu@attech.com.vn",
       },
     ],
-    stations: [
-      "Đài DVOR/DME/ADS-B Điện Biên",
-      "Đài DVOR/DME/ADS-B Cát Bi",
-      "Đài DVOR/DME Đầu Tây Nội Bài",
-      "Đài DVOR/DME/ADS-B Nội Bài",
-      "Đài DVOR/DME và NDB Nam Hà",
-      "Đài DVOR/DME/ADS-B Thọ Xuân",
-      "Đài DVOR/DME/ADS-B Vinh",
-      "Đài DVOR/DME Pleiku",
-      "Đài DVOR/DME/ADS-B Đồng Hới",
-      "Đài DVOR/DME Phú Bài",
-      "Đài DVOR/DME/ADS-B Đà Nẵng",
-      "Đài DVOR/DME Chu Lai",
-      "Đài DVOR/DME/ADS-B Cam Ranh",
-      "Đài DVOR/DME Tuy Hòa",
-      "Đài DVOR/DME/ADS-B Đồng Hới",
-      "Đài DVOR/DME Phù Cát",
-      "Đài DVOR/DME Buôn Ma Thuột",
-      "Đài DVOR/DME Liên Khương",
-      "Đài CVOR/DME Phan Thiết",
-      "Đài NDB Long Khánh",
-      "Trạm ADS-B Mộc Châu",
-      "Đài DVOR/DME Cần Thơ",
-      "Đài DVOR/DME Phú Quốc",
-      "Đài DVOR/DME Vân Đồn",
-      "Trạm CNS Trường Sa",
-      "Trạm CNS Côn Sơn",
-      "Trạm CNS Cà Mau",
-      "Đài DVOR/DME Tân Sơn Nhất",
-    ],
-  };
-
-  const handleStationClick = (stationName) => {
-    setSelectedStation(stationName);
-    
-    // Scroll to exact position of map component
-    if (mapSectionRef.current) {
-      const element = mapSectionRef.current;
-      const headerOffset = 80; // Adjust this value based on your header height
-      const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
-    }
   };
 
   return (
@@ -231,23 +180,6 @@ const History = () => {
             ))}
           </div>
         </div>
-        <section className="stations-section" ref={mapSectionRef}>
-          <div className="section-title" data-aos="fade-up">
-            <h2>Các Đài/Trạm CNS Trên Toàn Quốc</h2>
-          </div>
-          <Map3D stations={companyInfo.stations} selectedStation={selectedStation} />
-          <div className="stations-list">
-            {companyInfo.stations.map((station, index) => (
-              <span
-                key={index}
-                className={`station-item ${selectedStation === station ? 'active' : ''}`}
-                onClick={() => handleStationClick(station)}
-              >
-                {station}
-              </span>
-            ))}
-          </div>
-        </section>
       </section>
     </div>
   );

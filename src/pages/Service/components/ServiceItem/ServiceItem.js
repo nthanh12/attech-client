@@ -20,14 +20,14 @@ const ServiceItem = ({ id, slug, title, description, image }) => {
         <h3 className="service-title">{title}</h3>
       </div>
       <div className="card-footer">
-        <Link
+        <a
           to={`/services/${slug}`}
           className="btn btn-primary"
           aria-label={`Xem chi tiết về dịch vụ ${title}`}
         >
           <span>Xem chi tiết</span>
           <i className="fas fa-arrow-right" aria-hidden="true"></i>
-        </Link>
+        </a>
       </div>
     </article>
   );

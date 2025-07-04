@@ -138,6 +138,7 @@ const NavbarTop = memo(({
                 />
               )}
             </div>
+            {/*
             <button
               className="theme-toggle"
               onClick={toggleDarkMode}
@@ -146,6 +147,7 @@ const NavbarTop = memo(({
             >
               <i className={`fa fa-solid ${isDarkMode ? "fa fa-moon" : "fa fa-sun"}`}></i>
             </button>
+            */}
             <div className="language-switcher">
               <button
                 className={`lang-btn ${language === "vi" ? "active" : ""}`}
@@ -252,14 +254,14 @@ const NavbarTop = memo(({
                       />
                     </button>
                   </div>
-                  <button
+                  {/*<button
                     className="theme-toggle"
                     onClick={toggleDarkMode}
                     aria-label={translate(isDarkMode ? "lightMode" : "darkMode")}
                     title={translate(isDarkMode ? "lightMode" : "darkMode")}
                   >
                     <i className={`fa fa-solid ${isDarkMode ? "fa fa-moon" : "fa fa-sun"}`}></i>
-                  </button>
+                  </button>*/}
                   <Link
                     to="/login"
                     className="login-btn"

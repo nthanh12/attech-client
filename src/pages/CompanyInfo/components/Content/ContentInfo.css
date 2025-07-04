@@ -54,12 +54,12 @@
 }
 
 .custom-navbar-button.active {
-  color: var(--mainColor, #007bff); /* Sử dụng biến màu nếu có */
-  border-bottom: 3px solid var(--mainColor, #007bff);
+  color: #2d5e86;
+  border-bottom: 3px solid #2d5e86;
 }
 
 .custom-navbar-button:hover {
-  color: var(--mainColor, #007bff);
+  color: #2d5e86;
 }
 
 /* Box chứa nội dung */
@@ -99,7 +99,7 @@
 
 .custom-achievement-icon {
   margin-right: 20px;
-  color: var(--mainColor, #007bff);
+  color: #2d5e86;
 }
 
 .custom-achievement-icon .custom-icon {

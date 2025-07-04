@@ -10,4 +10,4 @@ const ScrollToTop = ({ children }) => {
   return children;
 };
 
-export default ScrollToTop; 
+export default ScrollToTop

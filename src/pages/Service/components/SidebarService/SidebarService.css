@@ -1,21 +1,21 @@
 .page-service .sidebar-service {
   position: fixed;
-  width: var(--sp-navbar-width);
-  background-color: var(--sp-navbar-dark-primary);
+  width: 280px;
+  background-color: #18283b;
   height: 100%;
   min-height: 100vh;
-  transition: width var(--sp-transition-normal);
+  transition: width 0.3s;
 }
 
 .page-service .sidebar-service.resize {
-  width: var(--sp-navbar-width-min);
+  width: 60px;
 }
 
 .sidebar-service .sp-nav-button {
   margin: 8px 16px;
   display: flex;
   align-items: center;
-  color: var(--sp-navbar-light-secondary);
+  color: #8392a5;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
   border-radius: 8px;
@@ -47,7 +47,7 @@
 
 .sidebar-service .sp-nav-button:hover {
   background-color: rgba(161, 182, 221, 0.2);
-  color: var(--sp-navbar-light-primary);
+  color: #83c8e7;
 }
 
 .top-sidebar {
@@ -80,25 +80,25 @@
 }
 
 .sidebar {
-  width: var(--sp-navbar-width);
-  transition: width var(--sp-transition-normal);
+  width: 280px;
+  transition: width 0.3s;
 }
 
 .sidebar.collapsed {
-  width: var(--sp-navbar-width-min);
+  width: 60px;
 }
 
 .sidebar-link {
-  color: var(--sp-navbar-light-secondary);
+  color: #8392a5;
 }
 
 .sidebar-link:hover,
 .sidebar-link.active {
-  color: var(--sp-navbar-light-primary);
+  color: #83c8e7;
 }
 
 .sidebar-background {
-  background: var(--sp-navbar-dark-primary);
+  background: #18283b;
 }
 
 /* Responsive */

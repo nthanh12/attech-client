@@ -3,9 +3,13 @@
   --sp-navbar-width: 300px;        /* Chiều rộng navbar khi mở rộng */
   --sp-navbar-width-min: 80px;     /* Chiều rộng navbar khi thu gọn */
 
+  /* ===== Navbar Colors - Dark Theme ===== */
+  --sp-navbar-dark-primary: #18283b;    /* Màu nền chính cho dark theme */
+  --sp-navbar-dark-secondary: #2c3e50;  /* Màu nền phụ cho dark theme */
+
   /* ===== Navbar Colors - Light Theme ===== */
-  --sp-navbar-primary: #83c8e7;
-  --sp-navbar-secondary: #8392a5;
+  --sp-navbar-light-primary: #83c8e7;    /* Màu chữ và icon chính cho light theme */
+  --sp-navbar-light-secondary: #8392a5;  /* Màu chữ và icon phụ cho light theme */
 
   /* ===== Layout Spacing ===== */
   --sp-spacing-xs: 4px;
@@ -36,20 +40,4 @@
   --sp-transition-fast: 0.2s;
   --sp-transition-normal: 0.3s;
   --sp-transition-slow: 0.5s;
-
-  --navbar-bg: #fff;
-  --navbar-text: #222;
-  --app-bg: #fff;
-  --app-text: #222;
-}
-
-.dark-mode {
-  /* ===== Navbar Colors - Dark Theme ===== */
-  --sp-navbar-primary: #18283b;
-  --sp-navbar-secondary: #2c3e50;
-
-  --navbar-bg: #18283b;
-  --navbar-text: #fff;
-  --app-bg: #18191a;
-  --app-text: #f1f1f1;
 } 

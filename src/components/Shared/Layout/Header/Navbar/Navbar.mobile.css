@@ -1,25 +1,5 @@
 /* Mobile Navbar Styling - Modern & Clean */
-:root {
-  --mobile-bg: #ffffff;
-  --mobile-text: #1f2937;
-  --mobile-border: #e5e7eb;
-  --mobile-hover: #f3f4f6;
-  --mobile-active: #2563eb;
-  --mobile-footer-bg: #f9fafb;
-  --mobile-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  --mobile-backdrop: rgba(0, 0, 0, 0.3);
-  --mobile-menu-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  --mobile-animation: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-[data-theme="dark"] {
-  --mobile-bg: #1f2937;
-  --mobile-text: #f3f4f6;
-  --mobile-border: #374151;
-  --mobile-hover: #111827;
-  --mobile-active: #3b82f6;
-  --mobile-footer-bg: #111827;
-}
+/* Đã thay thế biến :root bằng giá trị cụ thể */
 
 /* Hide mobile elements by default */
 .navbar-toggle,
@@ -50,7 +30,7 @@
   .dropdown-menu {
     position: absolute !important;
     display: block !important;
-    background: var(--dropdown-bg) !important;
+    background: #fff !important;
     padding: 8px 0 !important;
     margin: 0 !important;
     transform: none !important;
@@ -72,8 +52,8 @@
 
   .navbar {
     height: auto;
-    background: var(--mobile-bg);
-    box-shadow: var(--mobile-shadow);
+    background: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     padding: 0;
   }
 
@@ -87,10 +67,10 @@
   }
 
   .login-btn {
-    color: var(--color-navy);
+    color: #002a5c;
   }
   .theme-toggle {
-    color: var(--color-navy);
+    color: #002a5c;
   }
   .desktop-controls {
     display: none;
@@ -101,15 +81,15 @@
     display: flex;
     width: 40px;
     height: 40px;
-    border: 1.5px solid var(--mobile-border);
+    border: 1.5px solid #e5e7eb;
     border-radius: 12px;
     align-items: center;
     justify-content: center;
     background: transparent;
     cursor: pointer;
-    color: var(--color-navy);
+    color: #002a5c;
     padding: 0;
-    transition: all var(--mobile-animation);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -124,9 +104,9 @@
     display: block;
     width: 20px;
     height: 2px;
-    background-color: var(--mobile-text);
+    background-color: #1f2937;
     position: relative;
-    transition: all var(--mobile-animation);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 2px;
   }
 
@@ -149,12 +129,12 @@
     height: 100vh;
     width: 100%;
     max-width: 360px;
-    background: var(--mobile-bg);
+    background: #ffffff;
     z-index: 1001;
     transform: translateX(-100%);
-    transition: transform var(--mobile-animation);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     flex-direction: column;
-    box-shadow: var(--mobile-menu-shadow);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     opacity: 0;
     visibility: hidden;
   }
@@ -173,8 +153,8 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 0 0 20px;
-    border-bottom: 1px solid var(--mobile-border);
-    background: var(--mobile-bg);
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
   }
 
   .mobile-menu-header .logo img {
@@ -188,17 +168,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid var(--mobile-border);
+    border: 1.5px solid #e5e7eb;
     border-radius: 10px;
     background: transparent;
-    color: var(--mobile-text);
+    color: #1f2937;
     cursor: pointer;
     padding: 0;
     transition: all 0.2s ease;
   }
 
   .close-menu:hover {
-    background: var(--mobile-hover);
+    background: #f3f4f6;
   }
 
   /* Mobile Menu Content */
@@ -223,9 +203,9 @@
     align-items: center;
     padding: 16px 20px;
     font-size: 1rem;
-    color: var(--mobile-text);
+    color: #1f2937;
     text-decoration: none;
-    transition: all var(--mobile-animation);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -236,11 +216,11 @@
     align-items: center;
     justify-content: center;
     border: none;
-    border-left: 1px solid var(--mobile-border);
+    border-left: 1px solid #e5e7eb;
     background: transparent;
-    color: var(--mobile-text);
+    color: #1f2937;
     cursor: pointer;
-    transition: all var(--mobile-animation);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     -webkit-tap-highlight-color: transparent;
     margin: 0;
     padding: 0;
@@ -257,7 +237,7 @@
   .mobile-nav-items .dropdown-icon::before {
     content: "▼";
     font-size: 0.8em;
-    transition: transform var(--mobile-animation);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .mobile-nav-items .nav-item.open > .nav-link-container .submenu-toggle .dropdown-icon::before {
@@ -265,12 +245,12 @@
   }
 
   .mobile-nav-items .submenu-toggle:hover {
-    background: var(--mobile-hover);
+    background: #f3f4f6;
   }
 
   .mobile-nav-items .dropdown-menu {
     display: none;
-    background: var(--mobile-hover);
+    background: #f3f4f6;
     padding-left: 20px;
   }
 
@@ -281,8 +261,8 @@
   /* Mobile Menu Footer */
   .mobile-menu-footer {
     padding: 20px;
-    background: var(--mobile-footer-bg);
-    border-top: 1px solid var(--mobile-border);
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
   }
 
   .mobile-search {
@@ -292,10 +272,10 @@
   .mobile-search input {
     width: 100%;
     padding: 12px 16px;
-    border: 1px solid var(--mobile-border);
+    border: 1px solid #e5e7eb;
     border-radius: 8px;
-    background: var(--mobile-bg);
-    color: var(--mobile-text);
+    background: #ffffff;
+    color: #1f2937;
     font-size: 1rem;
   }
 
@@ -313,11 +293,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--mobile-backdrop);
+    background: rgba(0, 0, 0, 0.3);
     z-index: 1000;
     opacity: 0;
     visibility: hidden;
-    transition: all var(--mobile-animation);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .mobile-menu-backdrop.open {
@@ -339,5 +319,11 @@
   .mobile-nav-items .nav-link {
     font-size: 0.95rem;
   }
+}
+
+[data-theme="dark"] {
+  /* override cho dark mode */
+  /* ... giữ lại các override dark mode nếu cần ... */
+  /* Nếu muốn cứng luôn thì thay bằng giá trị cụ thể như trên */
 }
   

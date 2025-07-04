@@ -17,9 +17,6 @@ const PartNews = () => {
   return (
     <section className="part_news">
       <div className="part_news__container">
-        <div className="news__header">
-          <h2 className="news__title" data-aos="fade-down">Tin tức & Sự kiện</h2>
-        </div>
         <div className="news__grid">
           {newsGroups.map((group, index) => (
             <article 

@@ -1,8 +1,3 @@
-:root {
-  --sp-navbar-width: 300px;
-  --sp-navbar-width-min: 80px;
-}
-
 .page-product {
   width: 100%;
   background-color: #f8f9fa;
@@ -68,13 +63,13 @@
   }
 }
 
-/* Sử dụng biến từ variables.css */
+/* Sử dụng giá trị cứng thay cho biến */
 .product-page {
-  margin-left: var(--sp-navbar-width);
+  margin-left: 300px;
 }
 
 @media (max-width: 768px) {
   .product-page {
-    margin-left: var(--sp-navbar-width-min);
+    margin-left: 80px;
   }
 }

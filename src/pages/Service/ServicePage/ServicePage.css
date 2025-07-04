@@ -1,11 +1,11 @@
 /* Sử dụng biến từ variables.css */
 .service-page {
-  margin-left: var(--sp-navbar-width);
+  margin-left: 280px;
 }
 
 @media (max-width: 768px) {
   .service-page {
-    margin-left: var(--sp-navbar-width-min);
+    margin-left: 60px;
   }
 }
 
@@ -13,20 +13,34 @@
   min-height: 100vh;
   position: relative;
   display: flex;
+  background: #fff;
+}
+
+.page-service::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 42, 92, 0.1),
+    transparent
+  );
 }
 
 .page-service .service-content {
   position: relative;
-  background-color: #ffffff;
+  background-color: #fff;
   flex-grow: 1;
   transition: margin-left 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
 }
 
 .page-service .service-content.resize {
@@ -37,35 +51,62 @@
 .section-header {
   max-width: 100%;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 3rem;
 }
 
 .section-header h2 {
-  font-size: 24px;
-  color: #444;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #1a365d;
+  margin-bottom: 1rem;
+  line-height: 1.2;
 }
 
 .section-header .general-text {
-  text-align: justify;
-  padding: 0 20px;
+  text-align: center;
+  padding: 0 2rem;
   line-height: 1.6;
-  font-size: 16px;
-  color: #555;
+  font-size: 1.125rem;
+  color: #475569;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .page-service .service-content {
-    padding: 10px;
+    padding: 1.5rem;
+  }
+
+  .section-header {
+    margin-bottom: 2.5rem;
   }
 
   .section-header h2 {
-    font-size: 20px;
+    font-size: 2rem;
   }
 
   .section-header .general-text {
-    font-size: 14px;
-    padding: 0 10px;
+    font-size: 1rem;
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-service .service-content {
+    padding: 1rem;
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.75rem;
+  }
+
+  .section-header .general-text {
+    font-size: 0.95rem;
+    padding: 0 1rem;
   }
 }

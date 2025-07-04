@@ -1,16 +1,7 @@
-:root {
-  --sp-navbar-width: 280px;
-  --sp-navbar-width-min: 60px;
-  --sp-navbar-dark-primary: #18283b;
-  --sp-navbar-dark-secondary: #2c3e50;
-  --sp-navbar-light-primary: #83c8e7;
-  --sp-navbar-light-secondary: #8392a5;
-}
-
 .page-product .sidebar-product {
   position: fixed;
-  width: var(--sp-navbar-width);
-  background-color: var(--mainColor);
+  width: 280px;
+  background-color: #2d5e86;
   height: 100vh;
   transition: width 0.3s ease;
   overflow-y: auto;
@@ -85,7 +76,7 @@
 
 .sp-nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: var(--sp-navbar-light-primary);
+  color: #83c8e7;
 }
 
 .sidebar-product.resize .sp-nav-button span,
@@ -126,7 +117,7 @@
 
 .sub-nav-button:hover {
   background-color: rgba(255, 255, 255, 0.1);
-  color: var(--sp-navbar-light-primary);
+  color: #83c8e7;
 }
 
 .sidebar-product.resize .sub-nav-button span,
@@ -214,21 +205,21 @@
 }
 
 .sidebar-product {
-  width: var(--sp-navbar-width);
-  transition: width var(--sp-transition-normal);
-  background: var(--sp-navbar-dark-primary);
+  width: 280px;
+  transition: width 0.3s;
+  background: #18283b;
 }
 
 .sidebar-product.collapsed {
-  width: var(--sp-navbar-width-min);
+  width: 60px;
 }
 
 .sidebar-link {
-  color: var(--sp-navbar-light-secondary);
+  color: #8392a5;
 }
 
 .sidebar-link:hover,
 .sidebar-link.active {
-  color: var(--sp-navbar-light-primary);
+  color: #83c8e7;
   background: rgba(131, 200, 231, 0.1);
 }

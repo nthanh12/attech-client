@@ -35,19 +35,23 @@ const NewsSection = () => {
     <section id="newsSection">
       <div className="row">
         <div className="col-lg-12 col-md-12">
-          <div className="latest_newsarea">
-            <p>Tin nổi bật</p>
-            <div id="ticker01">
-              <ul className="news_sticker">
-                {newsItems.map((item, index) => (
-                  <li key={index}>
-                    <Link to={`/news/${item.slug}`}>
-                      <img src={item.image} alt={item.title} />
-                      {item.title}
-                    </Link>
-                  </li>
+          <div className="news-section-container">
+            <div className="news-section-header">
+            <span className="trend-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 12l4-4 4 4 4-8" stroke="#219653" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </span>
+              <span className="trend-label">Tin nổi bật</span>
+              <div className="news-section-divider"></div>
+            </div>
+            <div className="trend-ticker">
+              
+              <div className="trend-list">
+                {[...newsItems, ...newsItems].map((item, idx) => (
+                  <a key={idx} href={`/news/${item.slug}`} className="trend-link">
+                    #{item.title}
+                  </a>
                 ))}
-              </ul>
+              </div>
             </div>
           </div>
         </div>

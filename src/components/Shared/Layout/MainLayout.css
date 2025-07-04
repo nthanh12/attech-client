@@ -1,8 +1,4 @@
-:root {
-  --navbar-total-height: 136px; /* Tổng chiều cao của navbar (80px + 56px) */
-  --navbar-total-height-scrolled: 100px; /* Tổng chiều cao khi cuộn (60px + 40px) */
-  --content-spacing: 20px; /* Khoảng cách thêm cho nội dung */
-}
+/* Đã thay thế biến :root bằng giá trị cụ thể */
 
 .main-layout {
   min-height: 100vh;
@@ -12,7 +8,7 @@
 
 .main-content {
   flex: 1;
-  padding-top: calc(var(--navbar-total-height-scrolled) + var(--content-spacing));
+  padding-top: calc(100px + 20px);
   transition: padding-top 0.3s ease;
 }
 
@@ -39,17 +35,17 @@
 }
 
 @media (max-width: 768px) {
-  :root {
-    --navbar-total-height: 120px;
-    --navbar-total-height-scrolled: 90px;
-    --content-spacing: 15px;
-  }
-
+  /* Đã thay thế biến :root bằng giá trị cụ thể */
   .page-container {
     padding: 0 15px;
   }
 
   .section-spacing {
     margin-bottom: 30px;
+  }
+  .main-content {
+    flex: 1;
+    padding-top: 60px;
+    transition: padding-top 0.3s ease;
   }
 } 

@@ -362,38 +362,89 @@
   .news-detail-page {
     grid-template-columns: 250px 1fr;
     gap: 20px;
+    padding: 15px;
   }
 }
 
 @media (max-width: 768px) {
   .news-detail-page {
     grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 15px;
   }
 
   .news-sidebar {
     position: static;
     height: auto;
     margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .news-sidebar h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .news-sidebar-search {
+    margin-bottom: 15px;
+  }
+
+  .news-sidebar ul {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .news-sidebar li {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  .news-sidebar a {
+    font-size: 13px;
   }
 
   .news-detail-container {
     padding: 20px;
   }
+
+  .news-detail-top {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .news-detail-image {
+    padding-top: 56.25%;
+  }
+
+  .related-articles-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 480px) {
   .news-detail-page {
-    margin: 20px auto;
-    padding: 0 15px;
+    margin: 0;
+    padding: 10px;
   }
 
-  .news-share-buttons {
-    flex-direction: column;
+  .news-sidebar {
+    max-height: 250px;
+    margin-bottom: 15px;
   }
 
-  .share-button {
-    width: 100%;
-    justify-content: center;
+  .news-sidebar ul {
+    grid-template-columns: 1fr;
+  }
+
+  .news-sidebar li {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+  }
+
+  .news-detail-container {
+    padding: 15px;
   }
 
   .news-detail-top {
@@ -403,6 +454,38 @@
   .news-detail-title {
     font-size: 20px;
     margin-bottom: 10px;
+  }
+
+  .news-share-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .share-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .related-articles-list {
+    grid-template-columns: 1fr;
+  }
+
+  .news-breadcrumb {
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+
+  .news-detail-content {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .news-detail-content img {
+    margin: 15px 0;
+  }
+
+  .news-detail-content p {
+    margin-bottom: 15px;
   }
 }
 
