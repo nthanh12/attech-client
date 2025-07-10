@@ -1,6 +1,5 @@
 .feature-section {
   padding: 10px 20px;
-  background: #f8f9fa;
 }
 
 .feature-container {
@@ -227,8 +226,8 @@
 
 .notify-title {
   color: #1f2937;
-  font-size: 14px;
-  margin: 8px 12px;
+  font-size: 13px;
+  margin: 8px;
   text-align: left;
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -237,7 +236,7 @@
   text-overflow: ellipsis;
   line-height: 1.5;
   transition: color 0.3s ease;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
 }
 

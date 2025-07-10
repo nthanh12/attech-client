@@ -23,7 +23,7 @@ const ScrollToTop = ({ children }) => {
 const AppContent = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
-
+  console.log('Render AppContent', location.pathname);
   return (
     <>
       <Routes>

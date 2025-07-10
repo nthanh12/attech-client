@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
+import debounce from "lodash/debounce";
 
-const useIsMobile = (breakpoint = 768) => {
+const useIsMobile = (breakpoint = 1024) => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < breakpoint);
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < breakpoint);
+    const handleResize = debounce(() => setIsMobile(window.innerWidth < breakpoint), 100);
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      handleResize.cancel();
+      window.removeEventListener("resize", handleResize);
+    };
   }, [breakpoint]);
 
   return isMobile;

@@ -155,7 +155,12 @@
   color: #002a5c;
   border-left-color: #002a5c;
 }
-
+@media (max-width: 1024px) {
+  .product-sidebar {
+    top: 60px;
+    height: calc(100vh - 60px);
+  }
+}
 /* Responsive */
 @media (max-width: 768px) {
   .product-sidebar {

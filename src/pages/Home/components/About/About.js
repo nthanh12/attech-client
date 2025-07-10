@@ -3,6 +3,11 @@ import "./About.css";
 import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, A11y } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 import about_cns3 from "../../../../assets/img/cns/about_cns3.jpg";
 import about_cns4 from "../../../../assets/img/cns/about_cns4.jpg";
@@ -78,47 +83,66 @@ export default function About() {
     return () => clearInterval(interval);
   }, []);
 
+  // Handler for dot click (không dùng nữa)
+  // const handleDotClick = (productIdx, imgIdx) => {
+  //   setCurrentIndices((prev) =>
+  //     prev.map((val, i) => (i === productIdx ? imgIdx : val))
+  //   );
+  // };
+
   return (
     <section className="about-hero">
-        <div className="about-hero-content">
-          <h1 className="about-main-title">Dịch vụ nổi bật</h1>
-        </div>
-      <div className="about-hero-container">
+      <div className="about-hero-content">
+        <h1 className="about-main-title">Dịch vụ nổi bật</h1>
+      </div>
+      <Swiper
+        modules={[Navigation, Pagination, A11y]}
+        spaceBetween={24}
+        navigation
+        pagination={{ clickable: true }}
+        breakpoints={{
+          0: { slidesPerView: 1 },
+          769: { slidesPerView: 2 },
+          1200: { slidesPerView: 3 }
+        }}
+        className="about-hero-container"
+      >
         {products.map((product, index) => (
-          <div
-            key={index}
-            className="about-hero-column"
-            data-aos="fade-up"
-            data-aos-delay={index * 200}
-          >
-            <div className="about-hero-images">
-              {product.images.map((image, imgIndex) => (
-                <img
-                  key={imgIndex}
-                  src={image}
-                  alt={`${product.title} ${imgIndex + 1}`}
-                  className={`carousel-image ${
-                    imgIndex === currentIndices[index] ? "active" : ""
-                  }`}
-                  loading="lazy"
-                />
-              ))}
-            </div>
-            <div className="about-hero-overlay">
-              <div className="about-hero-content">
-                <h2 className="about-content-title">{product.title}</h2>
-                <p>{product.description}</p>
-                <div className="custom-btn-group">
-                  <Link to={product.link} className="custom-btn-more">
-                    Xem thêm
-                    <ArrowIcon />
-                  </Link>
+          <SwiperSlide key={index}>
+            <div
+              className="about-hero-column"
+              data-aos="fade-up"
+              data-aos-delay={index * 200}
+            >
+              <div className="about-hero-images">
+                {product.images.map((image, imgIndex) => (
+                  <img
+                    key={imgIndex}
+                    src={image}
+                    alt={`${product.title} ${imgIndex + 1}`}
+                    className={`carousel-image ${
+                      imgIndex === currentIndices[index] ? "active" : ""
+                    }`}
+                    loading="lazy"
+                  />
+                ))}
+              </div>
+              <div className="about-hero-overlay">
+                <div className="about-hero-content">
+                  <h2 className="about-content-title">{product.title}</h2>
+                  <p>{product.description}</p>
+                  <div className="custom-btn-group">
+                    <Link to={product.link} className="custom-btn-more">
+                      Xem thêm
+                      <ArrowIcon />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </section>
   );
 }

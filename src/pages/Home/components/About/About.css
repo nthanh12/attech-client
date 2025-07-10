@@ -41,11 +41,65 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .about-hero-column:hover {
-  transform: translateY(-10px);
+  transform: translateY(-16px) scale(1.03);
+  box-shadow: 0 32px 64px -8px rgba(10,55,129,0.18), 0 2px 8px rgba(0,0,0,0.08);
+  z-index: 2;
+}
+
+/* Dot indicator for carousel */
+.carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 3;
+  display: flex;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.5);
+  transition: background 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.carousel-dot.active {
+  background: #0a3781;
+  box-shadow: 0 2px 8px rgba(10,55,129,0.18);
+}
+.carousel-dot:hover {
+  background: #2563eb;
+}
+
+/* Hiệu ứng sóng sáng cho nút Xem thêm */
+.custom-btn-more {
+  position: relative;
+  overflow: hidden;
+}
+.custom-btn-more::after {
+  content: '';
+  position: absolute;
+  left: -50%;
+  top: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0.15) 100%);
+  transform: translateX(-100%) skewX(-20deg);
+  transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+.custom-btn-more:hover::after {
+  transform: translateX(100%) skewX(-20deg);
 }
 
 .about-hero-images {
@@ -239,7 +293,10 @@
   }
 
   .about-hero-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 10px;
   }
 
   .about-hero-column {
@@ -277,7 +334,7 @@
 
   .about-hero-overlay {
     position: relative;
-    padding: 20px 0;
+    padding: 20px 10px;
     background: transparent;
     min-height: auto;
   }

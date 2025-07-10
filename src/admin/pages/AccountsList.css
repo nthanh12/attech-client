@@ -1,0 +1,434 @@
+.admin-account-list {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f7fa;
+}
+
+/* Card Styles */
+.admin-account-list .card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.admin-account-list .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-account-list .card-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-account-list .card-body {
+  padding: 20px;
+}
+
+/* Filter Group */
+.admin-account-list .filter-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Form Controls */
+.admin-account-list .form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.admin-account-list .form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-account-list .form-control.error {
+  border-color: #ef4444;
+}
+
+.admin-account-list .error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Table Styles */
+.admin-account-list .table-container {
+  overflow-x: auto;
+}
+
+.admin-account-list .product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.admin-account-list .product-table th,
+.admin-account-list .product-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-account-list .product-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.admin-account-list .product-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.admin-account-list .sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-account-list .sortable:hover {
+  background: #e5e7eb;
+}
+
+.admin-account-list .no-data {
+  text-align: center;
+  color: #6b7280;
+  padding: 20px;
+}
+
+/* Badges */
+.admin-account-list .badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.admin-account-list .badge-success {
+  background: #22c55e;
+}
+
+.admin-account-list .badge-danger {
+  background: #ef4444;
+}
+
+.admin-account-list .badge-primary {
+  background: #3b82f6;
+}
+
+.admin-account-list .badge-secondary {
+  background: #6b7280;
+}
+
+/* Buttons */
+.admin-account-list .btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-account-list .btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.admin-account-list .btn-primary:hover {
+  background: #2563eb;
+}
+
+.admin-account-list .btn-edit {
+  background: #10b981;
+  color: white;
+}
+
+.admin-account-list .btn-edit:hover {
+  background: #059669;
+}
+
+.admin-account-list .btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.admin-account-list .btn-delete:hover {
+  background: #dc2626;
+}
+
+.admin-account-list .btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.admin-account-list .btn-secondary:hover {
+  background: #4b5563;
+}
+
+.admin-account-list .action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Pagination */
+.admin-account-list .pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.admin-account-list .pagination-info {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.admin-account-list .pagination {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-account-list .page-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-account-list .page-btn:hover:not(.disabled) {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.admin-account-list .page-btn.active {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.admin-account-list .page-btn.disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Modal */
+.admin-account-list .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.admin-account-list .modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.admin-account-list .modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.2);
+}
+
+.admin-account-list .modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 32px 24px;
+  min-width: 320px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.admin-account-list .modal.show .modal-content {
+  animation: slideIn 0.2s;
+}
+
+.admin-account-list .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.admin-account-list .modal-header h5 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-account-list .modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.admin-account-list .modal-close:hover {
+  color: #ef4444;
+}
+
+.admin-account-list .modal-body {
+  padding: 0;
+}
+
+.admin-account-list .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.admin-account-list .form-group {
+  margin-bottom: 16px;
+}
+
+.admin-account-list .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.admin-account-list .form-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-account-list .checkbox-label {
+  font-size: 14px;
+  color: #374151;
+}
+
+.admin-account-list .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.admin-account-list .ck-editor__editable {
+  min-height: 180px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 12px;
+  background: #fff;
+}
+
+.admin-account-list .ck-editor__editable:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-account-list .toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  min-width: 240px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  padding: 16px 24px;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+  animation: slideIn 0.2s;
+}
+
+.admin-account-list .toast-success {
+  border-left: 4px solid #22c55e;
+}
+
+.admin-account-list .toast-error {
+  border-left: 4px solid #ef4444;
+}
+
+.admin-account-list .toast button {
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .admin-account-list .admin-account-list {
+    padding: 8px;
+  }
+  .admin-account-list .filter-group {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .admin-account-list .modal-content {
+    padding: 16px 8px;
+  }
+  .admin-account-list .form-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .admin-account-list .pagination-container {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .admin-account-list .pagination {
+    gap: 4px;
+  }
+} 

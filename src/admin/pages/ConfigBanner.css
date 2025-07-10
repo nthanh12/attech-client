@@ -1,0 +1,254 @@
+.admin-banner-config {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f7fa;
+}
+
+.admin-banner-config .card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.admin-banner-config .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-banner-config .card-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-banner-config .card-body {
+  padding: 20px;
+}
+
+.admin-banner-config .banner-list {
+  margin-top: 8px;
+}
+
+.admin-banner-config .banner-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.admin-banner-config .banner-table th,
+.admin-banner-config .banner-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-banner-config .banner-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.admin-banner-config .banner-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.admin-banner-config .no-data {
+  text-align: center;
+  color: #6b7280;
+  padding: 20px;
+}
+
+.admin-banner-config .btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-right: 6px;
+}
+
+.admin-banner-config .btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.admin-banner-config .btn-primary:hover {
+  background: #2563eb;
+}
+
+.admin-banner-config .btn-edit {
+  background: #10b981;
+  color: white;
+}
+
+.admin-banner-config .btn-edit:hover {
+  background: #059669;
+}
+
+.admin-banner-config .btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.admin-banner-config .btn-delete:hover {
+  background: #dc2626;
+}
+
+.admin-banner-config .btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.admin-banner-config .btn-secondary:hover {
+  background: #4b5563;
+}
+
+/* Modal */
+.admin-banner-config .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.admin-banner-config .modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.admin-banner-config .modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.2);
+}
+
+.admin-banner-config .modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 32px 24px;
+  min-width: 320px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 2;
+}
+
+.admin-banner-config .modal.show .modal-content {
+  animation: slideIn 0.2s;
+}
+
+.admin-banner-config .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.admin-banner-config .modal-header h5 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-banner-config .modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.admin-banner-config .modal-close:hover {
+  color: #ef4444;
+}
+
+.admin-banner-config .modal-body {
+  padding: 0;
+}
+
+.admin-banner-config .form-group {
+  margin-bottom: 16px;
+}
+
+.admin-banner-config .form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.admin-banner-config .form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.admin-banner-config .form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-banner-config .form-control.error {
+  border-color: #ef4444;
+}
+
+.admin-banner-config .error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.admin-banner-config .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .admin-banner-config {
+    padding: 8px;
+  }
+  .admin-banner-config .modal-content {
+    padding: 16px 8px;
+  }
+} 

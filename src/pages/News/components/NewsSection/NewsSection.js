@@ -38,7 +38,7 @@ const NewsSection = () => {
           <div className="news-section-container">
             <div className="news-section-header">
             <span className="trend-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 12l4-4 4 4 4-8" stroke="#219653" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 12l4-4 4 4 4-8" stroke="#002a5c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </span>
               <span className="trend-label">Tin nổi bật</span>
               <div className="news-section-divider"></div>

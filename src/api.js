@@ -153,6 +153,35 @@ export const updateNewsStatus = async ({ id, status }) => {
   return response.data;
 };
 
+// Notification APIs
+export const getNotifications = async () => {
+  const response = await api.get("/notification/find-all");
+  return response.data.data.items || response.data.data || [];
+};
+
+export const createNotification = async (notification) => {
+  const response = await api.post("/notification/create", notification);
+  return response.data.data || response.data;
+};
+
+export const updateNotification = async (notification) => {
+  const response = await api.put("/notification/update", notification);
+  return response.data;
+};
+
+export const deleteNotification = async (id) => {
+  const response = await api.delete(`/notification/delete/${id}`);
+  return response.data;
+};
+
+export const updateNotificationStatus = async ({ id, status }) => {
+  const response = await api.put("/notification/update-status", {
+    id,
+    status,
+  });
+  return response.data;
+};
+
 // Upload APIs
 export const uploadImage = async (file) => {
   const formData = new FormData();
@@ -162,6 +191,64 @@ export const uploadImage = async (file) => {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
+  });
+  return response.data;
+};
+
+// Service Category APIs
+export const getServiceCategories = async () => {
+  const response = await api.get("/service-category/find-all");
+  return response.data.data.items || [];
+};
+
+export const createServiceCategory = async (category) => {
+  const response = await api.post("/service-category/create", category);
+  return response.data.data || response.data;
+};
+
+export const updateServiceCategory = async (category) => {
+  const response = await api.put("/service-category/update", category);
+  return response.data;
+};
+
+export const deleteServiceCategory = async (id) => {
+  const response = await api.delete(`/service-category/delete/${id}`);
+  return response.data;
+};
+
+export const updateServiceCategoryStatus = async ({ id, status }) => {
+  const response = await api.put("/service-category/update-status", {
+    id,
+    status,
+  });
+  return response.data;
+};
+
+// Service APIs
+export const getServices = async () => {
+  const response = await api.get("/service/find-all");
+  return response.data.data.items || response.data.data || [];
+};
+
+export const createService = async (service) => {
+  const response = await api.post("/service/create", service);
+  return response.data.data || response.data;
+};
+
+export const updateService = async (service) => {
+  const response = await api.put("/service/update", service);
+  return response.data;
+};
+
+export const deleteService = async (id) => {
+  const response = await api.delete(`/service/delete/${id}`);
+  return response.data;
+};
+
+export const updateServiceStatus = async ({ id, status }) => {
+  const response = await api.put("/service/update-status", {
+    id,
+    status,
   });
   return response.data;
 };

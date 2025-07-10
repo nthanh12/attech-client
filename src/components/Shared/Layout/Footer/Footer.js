@@ -18,8 +18,7 @@ const Footer = () => {
                 <p>
                   <i className="fa fa-map-marker-alt"></i>
                   <span>
-                    Số 5/200 đường Nguyễn Sơn, phường Bồ Đề, quận Long Biên,
-                    Thành phố Hà Nội
+                    Số 5/200 đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội
                   </span>
                 </p>
                 <p>

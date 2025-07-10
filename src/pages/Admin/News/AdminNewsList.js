@@ -1,49 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { Editor } from '@tinymce/tinymce-react';
 import "./AdminNewsList.css";
 import { getNews, createNews, updateNewsStatus, getNewsCategories, uploadImage } from "../../../api";
 import axios from "axios";
-
-const editorConfiguration = {
-  toolbar: {
-    items: [
-      'heading',
-      '|',
-      'bold',
-      'italic',
-      'link',
-      'bulletedList',
-      'numberedList',
-      '|',
-      'alignment',
-      'outdent',
-      'indent',
-      '|',
-      'blockQuote',
-      'insertTable',
-      'imageUpload',
-      'undo',
-      'redo'
-    ]
-  },
-  language: 'vi',
-  image: {
-    toolbar: [
-      'imageTextAlternative',
-      'imageStyle:inline',
-      'imageStyle:block',
-      'imageStyle:side'
-    ]
-  },
-  table: {
-    contentToolbar: [
-      'tableColumn',
-      'tableRow',
-      'mergeTableCells'
-    ]
-  }
-};
 
 const AdminNewsList = () => {
   const [news, setNews] = useState([]);
@@ -150,10 +109,9 @@ const AdminNewsList = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleEditorChange = (event, editor) => {
-    const data = editor.getData();
-    setCurrentNews({ ...currentNews, content: data });
-    setErrors({ ...errors, content: "" });
+  const handleEditorChange = (content) => {
+    setCurrentNews({ ...currentNews, content });
+    setErrors({ ...errors, content: '' });
   };
 
   const uploadAdapter = (loader) => {
@@ -605,16 +563,25 @@ const AdminNewsList = () => {
 
               <div className="form-group">
                 <label>Nội dung</label>
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={currentNews.content}
-                  onChange={handleEditorChange}
-                  config={editorConfiguration}
-                  onReady={editor => {
-                    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                      return uploadAdapter(loader);
-                    };
+                <Editor
+                  apiKey="1odjd377mh1anpljwb097v4n58bfglpgmj7hggmqzbe173fz"
+                  value={currentNews.content}
+                  init={{
+                    height: 300,
+                    menubar: true,
+                    plugins: [
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
+                      'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                      'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                    ],
+                    toolbar:
+                      'undo redo | formatselect | bold italic backcolor | \\n        alignleft aligncenter alignright alignjustify | \\n        bullist numlist outdent indent | removeformat | help | image media table code',
+                    language: 'vi',
+                    image_title: true,
+                    automatic_uploads: true,
+                    file_picker_types: 'image',
                   }}
+                  onEditorChange={handleEditorChange}
                 />
                 {errors.content && (
                   <span className="error-text">{errors.content}</span>

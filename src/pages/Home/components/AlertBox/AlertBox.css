@@ -1,14 +1,14 @@
 
 .alert-box {
     max-width: 1320px;
-    margin: 20px auto;
-    padding: 0;
+    margin: 0 auto;
+    padding: 10px 0;
     overflow: hidden;
 }
 
 .alert-box .swiper {
     width: 100%;
-    padding: 20px 0;
+    padding: 0;
 }
 
 .alert-box .swiper-slide {
@@ -58,7 +58,6 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     overflow: hidden;
-    min-height: 300px;
 }
 
 .wrap-item:hover {
@@ -85,19 +84,18 @@
 }
 
 .item-description {
-    padding: 14px;
+    padding: 8px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     background: transparent;
     min-height: 120px;
     overflow: hidden;
 }
 
 .item-text {
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 500;
     line-height: 1.4;
     color: #1e293b;
     display: -webkit-box;
@@ -105,11 +103,10 @@
     -webkit-line-clamp: 3;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 0;
+    margin: 10px 0;
     transition: color 0.3s ease;
     order: 1;
     word-break: break-word;
-    min-height: 63px;
 }
 
 .item-time {
@@ -120,8 +117,6 @@
     align-items: center;
     gap: 6px;
     font-weight: 500;
-    order: 2;
-    margin-top: 10px;
 }
 
 .item-time i {
@@ -161,6 +156,7 @@
 .alert-box .swiper-pagination {
     position: relative;
     bottom: 20px !important;
+    top: -25px !important;
 }
 
 .swiper-pagination-bullet {
@@ -209,7 +205,7 @@
 
 @media (max-width: 640px) {
     .alert-box {
-        margin: 16px auto;
+        margin: 0 auto;
         padding: 0 10px;
     }
 

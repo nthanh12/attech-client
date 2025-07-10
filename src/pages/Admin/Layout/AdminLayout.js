@@ -84,10 +84,15 @@ const AdminLayout = ({ children }) => {
 
   return (
     <div className="admin-layout d-flex">
+      {/* Overlay for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
+      )}
       {/* Sidebar */}
-      <div
-        className={`sidebar bg-dark text-white ${sidebarOpen ? "open" : ""}`}
-      >
+      <div className={`sidebar bg-dark  ${sidebarOpen ? "open" : ""}`}>
         <div className="sidebar-header d-flex justify-content-between align-items-center p-3">
           <Link
             to="/admin"
@@ -174,7 +179,7 @@ const AdminLayout = ({ children }) => {
       </div>
 
       {/* Main content */}
-      <div className="main-content flex-grow-1 d-flex flex-column">
+      <div className="main-wrapper flex-grow-1 d-flex flex-column">
         {/* Header */}
         <header className="bg-white p-3 border-bottom d-flex justify-content-between align-items-center main-header">
           <div className="d-flex align-items-center gap-3">

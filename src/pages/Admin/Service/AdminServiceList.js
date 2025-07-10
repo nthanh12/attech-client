@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { Editor } from '@tinymce/tinymce-react';
 import "./AdminServiceList.css";
 
 const AdminServiceList = () => {
@@ -110,10 +109,9 @@ const AdminServiceList = () => {
     setErrors({ ...errors, [name]: "" });
   };
 
-  const handleEditorChange = (event, editor) => {
-    const data = editor.getData();
-    setCurrentService({ ...currentService, content: data });
-    setErrors({ ...errors, content: "" });
+  const handleEditorChange = (content) => {
+    setCurrentService({ ...currentService, content });
+    setErrors({ ...errors, content: '' });
   };
 
   const validateForm = () => {
@@ -531,31 +529,25 @@ const AdminServiceList = () => {
 
               <div className="form-group">
                 <label>Nội dung</label>
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={currentService.content}
-                  onChange={handleEditorChange}
-                  config={{
-                    toolbar: [
-                      "heading",
-                      "|",
-                      "bold",
-                      "italic",
-                      "link",
-                      "bulletedList",
-                      "numberedList",
-                      "|",
-                      "outdent",
-                      "indent",
-                      "|",
-                      "imageUpload",
-                      "blockQuote",
-                      "insertTable",
-                      "mediaEmbed",
-                      "undo",
-                      "redo",
+                <Editor
+                  apiKey="1odjd377mh1anpljwb097v4n58bfglpgmj7hggmqzbe173fz"
+                  value={currentService.content}
+                  init={{
+                    height: 300,
+                    menubar: true,
+                    plugins: [
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
+                      'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                      'insertdatetime', 'media', 'table', 'help', 'wordcount'
                     ],
+                    toolbar:
+                      'undo redo | formatselect | bold italic backcolor | \\n        alignleft aligncenter alignright alignjustify | \\n        bullist numlist outdent indent | removeformat | help | image media table code',
+                    language: 'vi',
+                    image_title: true,
+                    automatic_uploads: true,
+                    file_picker_types: 'image',
                   }}
+                  onEditorChange={handleEditorChange}
                 />
                 {errors.content && (
                   <span className="error-text">{errors.content}</span>

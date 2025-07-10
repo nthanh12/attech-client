@@ -1,11 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Carousel.css";
 
 import banner1 from "../../../../assets/img/banner_attech.jpg";
 import banner2 from "../../../../assets/img/bay-kthc/fi3.jpg";
 import banner3 from "../../../../assets/img/cns/about_cns5.jpg";
+import useIsMobile from '../Header/Navbar/useIsMobile';
 
 const Carousel = () => {
+  const isMobile = useIsMobile(1025);
+  const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth < 600);
+
+  useEffect(() => {
+    const handleResize = () => setIsSmallMobile(window.innerWidth < 600);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const slides = [
     {
       img: banner1,
@@ -35,8 +45,12 @@ const Carousel = () => {
     }
   }, []);
 
+  const carouselStyle = {
+    marginTop: isSmallMobile ? 48 : isMobile ? 60 : 120,
+  };
+
   return (
-    <div className="container-fluid overflow-hidden px-0">
+    <div className="container-fluid overflow-hidden px-0" style={carouselStyle}>
       <div
         id="carouselId"
         className="carousel slide"

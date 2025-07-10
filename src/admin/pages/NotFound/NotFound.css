@@ -1,0 +1,12 @@
+.admin-notfound {
+  text-align: center;
+  margin-top: 100px;
+}
+.admin-notfound h1 {
+  color: #d32f2f;
+  font-size: 2rem;
+}
+.admin-notfound a {
+  color: #1976d2;
+  text-decoration: underline;
+} 

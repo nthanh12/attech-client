@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../Leadership/Leadership.css";
-import bld from "../../../../assets/img/avt/chan-dung.png";
 
 const leadershipData = {
   chairman: [
@@ -9,13 +8,6 @@ const leadershipData = {
       position: "Chủ tịch công ty",
       image:
         "https://attech.com.vn/wp-content/uploads/2015/09/CT-Le-Tien-Thinh.jpg",
-      // description: "Là người có rất năm kinh nghiệm trong lĩnh vực điều hành doanh nghiệp. Dưới sự lãnh đạo của ông, công ty đã đạt được nhiều thành tựu quan trọng và phát triển vững mạnh.",
-      // education: "Thạc sĩ Quản trị Kinh doanh",
-      // experience: [
-      //   "20+ năm kinh nghiệm quản lý",
-      //   "Từng đảm nhiệm nhiều vị trí quản lý cấp cao",
-      //   "Dẫn dắt nhiều dự án công nghệ lớn"
-      // ]
     },
   ],
   director: [

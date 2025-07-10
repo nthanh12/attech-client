@@ -322,7 +322,7 @@
 
 .trend-link {
   margin: 0 20px;
-  color: #219653;
+  color: #002a5c;
   text-decoration: none;
   font-weight: 500;
   font-size: 16px;
@@ -330,7 +330,7 @@
 }
 
 .trend-link:hover {
-  color: #17643b;
+  color: #002a5c;
 }
 
 .trend-ticker:hover .trend-list {
@@ -350,7 +350,7 @@
 
 .trend-label {
   font-weight: 600;
-  color: #219653;
+  color: #002a5c;
   font-size: 15px;
   margin-right: 8px;
 }

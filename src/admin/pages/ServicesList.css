@@ -1,0 +1,445 @@
+/* Đồng bộ toàn bộ style từ ProductsList.css, chỉ đổi tiền tố thành .admin-service-list */
+.admin-service-list {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f5f7fa;
+}
+
+/* Card Styles */
+.admin-service-list .card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.admin-service-list .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-service-list .card-header h3 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-service-list .card-body {
+  padding: 20px;
+}
+
+/* Filter Group */
+.admin-service-list .filter-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Form Controls */
+.admin-service-list .form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background: #ffffff;
+}
+
+.admin-service-list .form-control:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.admin-service-list .form-control.error {
+  border-color: #ef4444;
+}
+
+.admin-service-list .error-text {
+  color: #ef4444;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Table Styles */
+.admin-service-list .table-container {
+  overflow-x: auto;
+}
+
+.admin-service-list .product-table,
+.admin-service-list .service-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+.admin-service-list .product-table th,
+.admin-service-list .product-table td,
+.admin-service-list .service-table th,
+.admin-service-list .service-table td {
+  padding: 14px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-service-list .product-table th,
+.admin-service-list .service-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.admin-service-list .product-table tbody tr:hover,
+.admin-service-list .service-table tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.admin-service-list .sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-service-list .sortable:hover {
+  background: #e5e7eb;
+}
+
+.admin-service-list .no-data {
+  text-align: center;
+  color: #6b7280;
+  padding: 20px;
+}
+
+/* Badges */
+.admin-service-list .badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.admin-service-list .badge-success {
+  background: #22c55e;
+}
+
+.admin-service-list .badge-danger {
+  background: #ef4444;
+}
+
+.admin-service-list .badge-primary {
+  background: #3b82f6;
+}
+
+.admin-service-list .badge-secondary {
+  background: #6b7280;
+}
+
+/* Buttons */
+.admin-service-list .btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-service-list .btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.admin-service-list .btn-primary:hover {
+  background: #2563eb;
+}
+
+.admin-service-list .btn-edit {
+  background: #10b981;
+  color: white;
+}
+
+.admin-service-list .btn-edit:hover {
+  background: #059669;
+}
+
+.admin-service-list .btn-delete {
+  background: #ef4444;
+  color: white;
+}
+
+.admin-service-list .btn-delete:hover {
+  background: #dc2626;
+}
+
+.admin-service-list .btn-secondary {
+  background: #6b7280;
+  color: white;
+}
+
+.admin-service-list .btn-secondary:hover {
+  background: #4b5563;
+}
+
+.admin-service-list .action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+/* Pagination */
+.admin-service-list .pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.admin-service-list .pagination-info {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.admin-service-list .pagination {
+  display: flex;
+  gap: 4px;
+}
+
+.admin-service-list .page-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.admin-service-list .page-btn:hover:not(.disabled) {
+  background: #3b82f6;
+  color: white;
+}
+
+.admin-service-list .page-btn.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.admin-service-list .page-btn.disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.admin-service-list .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.admin-service-list .modal.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.admin-service-list .modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.admin-service-list .modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.admin-service-list .modal.show .modal-content {
+  transform: scale(1);
+}
+
+.admin-service-list .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-service-list .modal-header h5 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.admin-service-list .modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.admin-service-list .modal-close:hover {
+  color: #374151;
+}
+
+.admin-service-list .modal-body {
+  padding: 20px;
+}
+
+.admin-service-list .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.admin-service-list .form-group {
+  margin-bottom: 16px;
+}
+
+.admin-service-list .form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.admin-service-list .form-checkbox {
+  display: flex;
+  align-items: center;
+}
+
+.admin-service-list .checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.admin-service-list .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.admin-service-list .ck-editor__editable {
+  min-height: 180px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 12px;
+  background: #fff;
+}
+
+.admin-service-list .ck-editor__editable:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Toast Styles */
+.admin-service-list .toast {
+  position: fixed;
+  top: 32px;
+  right: 32px;
+  min-width: 240px;
+  background: #fff;
+  color: #1f2937;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  padding: 16px 24px;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 15px;
+  font-weight: 500;
+  animation: slideIn 0.2s;
+}
+
+.admin-service-list .toast-success {
+  border-left: 6px solid #22c55e;
+}
+
+.admin-service-list .toast-error {
+  border-left: 6px solid #ef4444;
+}
+
+.admin-service-list .toast button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.admin-service-list .toast button:hover {
+  color: #ef4444;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .admin-service-list .admin-service-list {
+    padding: 8px;
+  }
+  .admin-service-list .filter-group {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .admin-service-list .modal-content {
+    margin: 12px;
+    max-width: calc(100% - 24px);
+  }
+  .admin-service-list .form-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-service-list .pagination-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .admin-service-list .pagination {
+    flex-wrap: wrap;
+    gap: 2px;
+  }
+}

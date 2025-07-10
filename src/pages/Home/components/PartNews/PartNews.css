@@ -137,19 +137,17 @@
 }
 
 .news__card-title {
-  font-size: 1.2rem;
+  text-align: center;
+  font-size: 1.4rem;
   text-transform: uppercase;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 700;
+  color: #4271bc;
   text-decoration: none;
   display: block;
   position: relative;
   transition: color 0.3s ease;
 }
 
-.news__card-title:hover {
-  color: var(--hover-color);
-}
 
 .news__card-link {
   font-size: 0.875rem;
@@ -162,7 +160,7 @@
 }
 
 .news__card:hover .news__card-link {
-  color: var(--hover-color);
+  color: #0d377b;
 }
 
 /* Image Container */

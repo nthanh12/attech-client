@@ -414,9 +414,9 @@
     opacity: 0;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1024px) {
     .page-product .product-content .attech-controls-wrapper {
-        top: 120px;
+        top: 60px;
     }
 }
 

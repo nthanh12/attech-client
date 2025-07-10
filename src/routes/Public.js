@@ -30,6 +30,7 @@ import Gallery from "../pages/CompanyInfo/components/Gallery/Gallery";
 import GalleryDetail from "../pages/CompanyInfo/components/Gallery/GalleryDetail";
 
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
+import UserLogin from '../pages/Login/Login';
 
 const Public = () => {
   return (
@@ -82,6 +83,9 @@ const Public = () => {
 
         {/* Contact */}
         <Route path="/contact" element={<ContactPage />} />
+
+        {/* Login */}
+        <Route path="/login" element={<UserLogin />} />
 
         {/* 404 Not Found */}
         <Route path="*" element={<NotFoundPage />} />
