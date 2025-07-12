@@ -42,15 +42,15 @@ const AppContent = () => {
 
 const App = () => {
   return (
-    <Router>
-      <ThemeProvider>
-        <LanguageProvider>
+    <LanguageProvider>
+      <Router>
+        <ThemeProvider>
           <ScrollToTop>
             <AppContent />
           </ScrollToTop>
-        </LanguageProvider>
-      </ThemeProvider>
-    </Router>
+        </ThemeProvider>
+      </Router>
+    </LanguageProvider>
   );
 };
 

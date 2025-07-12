@@ -1,11 +1,10 @@
 import React from "react";
 import NavItem from "./NavItem";
-import menuItems from "./menuItem";
 
-const MenuItems = ({ isMobile, closeMobileMenu }) => {
+const MenuItems = ({ menuItems, isMobile, closeMobileMenu }) => {
   return menuItems.map((item, index) => (
     <NavItem
-      key={item.path || `menu-item-${index}`}
+      key={item.pathVi}
       item={item}
       isMobile={isMobile}
       closeMobileMenu={closeMobileMenu}

@@ -1,66 +1,79 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { createPortal } from "react-dom";
 
-const FormModal = ({ isOpen, onClose, onSubmit, fields, values, errors, onChange, loading, title, submitText, cancelText, children }) => {
-  if (!isOpen) return null;
-  return (
-    <div className={`modal ${isOpen ? "show" : ""}`}>
-      <div className="modal-overlay" onClick={onClose}></div>
+const FormModal = ({ 
+  show, 
+  onClose, 
+  onSubmit, 
+  title, 
+  submitText, 
+  cancelText, 
+  loading, 
+  children 
+}) => {
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && show) {
+        onClose();
+      }
+    };
+
+    if (show) {
+      document.addEventListener('keydown', handleEscape);
+      // document.body.style.overflow = 'hidden'; // Loại bỏ dòng này
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      // document.body.style.overflow = 'unset'; // Loại bỏ dòng này
+    };
+  }, [show, onClose]);
+
+  if (!show) return null;
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit();
+  };
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  const modalContent = (
+    <div className="modal show">
       <div className="modal-content">
         <div className="modal-header">
           <h5>{title}</h5>
-          <button className="modal-close" onClick={onClose}>✕</button>
+          <button 
+            type="button"
+            className="modal-close" 
+            onClick={onClose}
+            aria-label="Close"
+          >
+            ✕
+          </button>
         </div>
         <div className="modal-body">
-          <form onSubmit={onSubmit}>
-            {fields.map((field) => (
-              <div className="form-group" key={field.name}>
-                <label>{field.label}</label>
-                {field.type === "textarea" ? (
-                  <textarea
-                    className={`form-control${errors[field.name] ? " error" : ""}`}
-                    name={field.name}
-                    value={values[field.name] || ""}
-                    onChange={onChange}
-                    rows={field.rows || 2}
-                  />
-                ) : field.type === "select" ? (
-                  <select
-                    className={`form-control${errors[field.name] ? " error" : ""}`}
-                    name={field.name}
-                    value={values[field.name] || ""}
-                    onChange={onChange}
-                  >
-                    {field.options.map((opt) => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
-                ) : field.type === "checkbox" ? (
-                  <input
-                    type="checkbox"
-                    name={field.name}
-                    checked={!!values[field.name]}
-                    onChange={onChange}
-                  />
-                ) : field.type === "custom" ? (
-                  field.render(values, onChange, errors)
-                ) : (
-                  <input
-                    type={field.type}
-                    className={`form-control${errors[field.name] ? " error" : ""}`}
-                    name={field.name}
-                    value={values[field.name] || ""}
-                    onChange={onChange}
-                  />
-                )}
-                {errors[field.name] && <span className="error-text">{errors[field.name]}</span>}
-              </div>
-            ))}
+          <form onSubmit={handleSubmit}>
             {children}
             <div className="form-actions">
-              <button type="button" className="btn btn-secondary" onClick={onClose} disabled={loading}>
+              <button 
+                type="button" 
+                className="btn btn-secondary" 
+                onClick={onClose} 
+                disabled={loading}
+              >
                 {cancelText || "Hủy"}
               </button>
-              <button type="submit" className="btn btn-primary" disabled={loading}>
+              <button 
+                type="submit" 
+                className="btn btn-primary" 
+                disabled={loading}
+              >
                 {loading ? "Đang xử lý..." : (submitText || "Lưu")}
               </button>
             </div>
@@ -69,6 +82,8 @@ const FormModal = ({ isOpen, onClose, onSubmit, fields, values, errors, onChange
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 };
 
 export default FormModal; 

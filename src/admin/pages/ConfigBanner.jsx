@@ -1,42 +1,36 @@
 import React, { useState, useCallback } from "react";
+import { mockBannerConfig } from "../../utils/mockData.js";
 import "./ConfigBanner.css";
 
-const initialBanners = [
-  {
-    id: 1,
-    imageUrl: "https://via.placeholder.com/600x200?text=Banner+1",
-    title: "Banner 1",
-    description: "Mô tả banner 1",
-    link: "/gioi-thieu"
-  },
-  {
-    id: 2,
-    imageUrl: "https://via.placeholder.com/600x200?text=Banner+2",
-    title: "Banner 2",
-    description: "Mô tả banner 2",
-    link: "/dich-vu"
-  }
-];
-
 const ConfigBanner = () => {
-  const [banners, setBanners] = useState(initialBanners);
+  const [banners, setBanners] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [currentBanner, setCurrentBanner] = useState({
+  // Định nghĩa object emptyBanner để dùng cho khởi tạo/reset form
+  const emptyBanner = {
     id: null,
     imageUrl: "",
-    title: "",
-    description: "",
+    titleVi: "",
+    titleEn: "",
+    descriptionVi: "",
+    descriptionEn: "",
     link: ""
-  });
+  };
+  const [currentBanner, setCurrentBanner] = useState({ ...emptyBanner });
   const [errors, setErrors] = useState({});
+
+  // Load banners from mock data
+  React.useEffect(() => {
+    const homepageBanners = mockBannerConfig.homepage?.slides || [];
+    setBanners(homepageBanners);
+  }, []);
 
   const handleShowModal = useCallback((banner = null) => {
     if (banner) {
       setCurrentBanner(banner);
       setEditMode(true);
     } else {
-      setCurrentBanner({ id: null, imageUrl: "", title: "", description: "", link: "" });
+      setCurrentBanner({ ...emptyBanner });
       setEditMode(false);
     }
     setShowModal(true);
@@ -66,7 +60,8 @@ const ConfigBanner = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!currentBanner.title) newErrors.title = "Tiêu đề là bắt buộc";
+    if (!currentBanner.titleVi) newErrors.titleVi = "Tiêu đề tiếng Việt là bắt buộc";
+    if (!currentBanner.titleEn) newErrors.titleEn = "Tiêu đề tiếng Anh là bắt buộc";
     if (!currentBanner.imageUrl) newErrors.imageUrl = "Ảnh banner là bắt buộc";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -108,8 +103,10 @@ const ConfigBanner = () => {
                 <thead>
                   <tr>
                     <th>Ảnh</th>
-                    <th>Tiêu đề</th>
-                    <th>Mô tả</th>
+                    <th>Tiêu đề (Vi)</th>
+                    <th>Tiêu đề (En)</th>
+                    <th>Mô tả (Vi)</th>
+                    <th>Mô tả (En)</th>
                     <th>Link</th>
                     <th>Hành động</th>
                   </tr>
@@ -117,9 +114,17 @@ const ConfigBanner = () => {
                 <tbody>
                   {banners.map((banner) => (
                     <tr key={banner.id}>
-                      <td><img src={banner.imageUrl} alt={banner.title} style={{ width: 120, height: 40, objectFit: "cover", borderRadius: 6 }} /></td>
-                      <td>{banner.title}</td>
-                      <td>{banner.description}</td>
+                      <td>
+                        <img 
+                          src={banner.imageUrl} 
+                          alt={banner.titleVi} 
+                          style={{ width: 120, height: 40, objectFit: "cover", borderRadius: 6 }} 
+                        />
+                      </td>
+                      <td>{banner.titleVi}</td>
+                      <td>{banner.titleEn}</td>
+                      <td>{banner.descriptionVi}</td>
+                      <td>{banner.descriptionEn}</td>
                       <td>{banner.link}</td>
                       <td>
                         <button className="btn btn-edit" onClick={() => handleShowModal(banner)}>Sửa</button>
@@ -143,23 +148,66 @@ const ConfigBanner = () => {
             </div>
             <form className="modal-body" onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Tiêu đề *</label>
-                <input type="text" name="title" className="form-control" value={currentBanner.title} onChange={handleInputChange} />
-                {errors.title && <span className="error-text">{errors.title}</span>}
+                <label>Tiêu đề (Tiếng Việt) *</label>
+                <input 
+                  type="text" 
+                  name="titleVi" 
+                  className="form-control" 
+                  value={currentBanner.titleVi} 
+                  onChange={handleInputChange} 
+                />
+                {errors.titleVi && <span className="error-text">{errors.titleVi}</span>}
               </div>
               <div className="form-group">
-                <label>Mô tả</label>
-                <input type="text" name="description" className="form-control" value={currentBanner.description} onChange={handleInputChange} />
+                <label>Tiêu đề (English) *</label>
+                <input 
+                  type="text" 
+                  name="titleEn" 
+                  className="form-control" 
+                  value={currentBanner.titleEn} 
+                  onChange={handleInputChange} 
+                />
+                {errors.titleEn && <span className="error-text">{errors.titleEn}</span>}
+              </div>
+              <div className="form-group">
+                <label>Mô tả (Tiếng Việt)</label>
+                <input 
+                  type="text" 
+                  name="descriptionVi" 
+                  className="form-control" 
+                  value={currentBanner.descriptionVi} 
+                  onChange={handleInputChange} 
+                />
+              </div>
+              <div className="form-group">
+                <label>Mô tả (English)</label>
+                <input 
+                  type="text" 
+                  name="descriptionEn" 
+                  className="form-control" 
+                  value={currentBanner.descriptionEn} 
+                  onChange={handleInputChange} 
+                />
               </div>
               <div className="form-group">
                 <label>Link</label>
-                <input type="text" name="link" className="form-control" value={currentBanner.link} onChange={handleInputChange} />
+                <input 
+                  type="text" 
+                  name="link" 
+                  className="form-control" 
+                  value={currentBanner.link} 
+                  onChange={handleInputChange} 
+                />
               </div>
               <div className="form-group">
                 <label>Ảnh banner *</label>
                 <input type="file" accept="image/*" onChange={handleImageChange} />
                 {currentBanner.imageUrl && (
-                  <img src={currentBanner.imageUrl} alt="preview" style={{ width: 180, height: 60, objectFit: "cover", marginTop: 8, borderRadius: 6 }} />
+                  <img 
+                    src={currentBanner.imageUrl} 
+                    alt="preview" 
+                    style={{ width: 180, height: 60, objectFit: "cover", marginTop: 8, borderRadius: 6 }} 
+                  />
                 )}
                 {errors.imageUrl && <span className="error-text">{errors.imageUrl}</span>}
               </div>

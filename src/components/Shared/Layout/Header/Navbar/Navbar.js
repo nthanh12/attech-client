@@ -8,6 +8,7 @@ import { useLanguage } from "../../../../../contexts/LanguageContext";
 import { useTheme } from "../../../../../contexts/ThemeContext";
 import { useClickOutside } from "../../../../../hooks/useClickOutside";
 import debounce from "lodash/debounce";
+import menuItems from "./menuItem";
 
 const SCROLL_THRESHOLD = 50;
 const MOBILE_BREAKPOINT = 1024;
@@ -91,7 +92,7 @@ const NavbarTop = memo(
             <button
               className="navbar-toggle"
               onClick={toggleMobileMenu}
-              aria-label={translate("toggleMenu")}
+              aria-label={language === "vi" ? "Mở menu" : "Open menu"}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
             >
@@ -102,7 +103,7 @@ const NavbarTop = memo(
                 <button
                   className="search-button"
                   onClick={handleSearchClick}
-                  aria-label={translate("search")}
+                  aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
                   aria-expanded={isSearchOpen}
                 >
                   <i className="fa fa-search"></i>
@@ -111,8 +112,8 @@ const NavbarTop = memo(
                   <input
                     type="text"
                     className="search-input"
-                    placeholder={translate("search")}
-                    aria-label={translate("search")}
+                    placeholder={language === "vi" ? "Tìm kiếm..." : "Search..."}
+                    aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
                     onBlur={handleSearchBlur}
                     autoFocus
                   />
@@ -145,8 +146,8 @@ const NavbarTop = memo(
               <Link
                 to="/login"
                 className="login-btn"
-                title={translate("login")}
-                aria-label={translate("login")}
+                title={language === "vi" ? "Đăng nhập" : "Login"}
+                aria-label={language === "vi" ? "Đăng nhập" : "Login"}
               >
                 <i className="fa fa-solid fa-user"></i>
               </Link>
@@ -157,7 +158,7 @@ const NavbarTop = memo(
               ref={mobileMenuRef}
               role="dialog"
               aria-modal="true"
-              aria-label={translate("mobileMenu")}
+              aria-label={language === "vi" ? "Menu di động" : "Mobile menu"}
             >
               <div className="mobile-menu-header">
                 <Link
@@ -174,7 +175,7 @@ const NavbarTop = memo(
                 <button
                   className="close-menu"
                   onClick={closeMobileMenu}
-                  aria-label={translate("closeMenu")}
+                  aria-label={language === "vi" ? "Đóng menu" : "Close menu"}
                 >
                   ×
                 </button>
@@ -184,8 +185,8 @@ const NavbarTop = memo(
                   <div className="mobile-search">
                     <input
                       type="text"
-                      placeholder={translate("search")}
-                      aria-label={translate("search")}
+                      placeholder={language === "vi" ? "Tìm kiếm..." : "Search..."}
+                      aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
                     />
                   </div>
                   <div className="mobile-actions">
@@ -216,8 +217,8 @@ const NavbarTop = memo(
                     <Link
                       to="/login"
                       className="login-btn"
-                      title={translate("login")}
-                      aria-label={translate("login")}
+                      title={language === "vi" ? "Đăng nhập" : "Login"}
+                      aria-label={language === "vi" ? "Đăng nhập" : "Login"}
                       onClick={closeMobileMenu}
                     >
                       <i className="fa fa-solid fa-user login-user"></i>
@@ -226,7 +227,11 @@ const NavbarTop = memo(
                 </div>
                 <nav>
                   <ul className="mobile-nav-items" role="menu">
-                    <MenuItems isMobile={true} closeMobileMenu={closeMobileMenu} />
+                    <MenuItems
+                      menuItems={menuItems}
+                      isMobile={true}
+                      closeMobileMenu={closeMobileMenu}
+                    />
                   </ul>
                 </nav>
               </div>
@@ -244,13 +249,13 @@ const NavbarTop = memo(
 );
 
 const NavbarBottom = memo(
-  ({ mobileOpen, toggleMobileMenu, isMobile, closeMobileMenu, translate }) => (
+  ({ mobileOpen, toggleMobileMenu, isMobile, closeMobileMenu, language }) => (
     <div className="navbar-menu-wrapper">
       <div className="navbar-container">
         <button
           className="navbar-toggle"
           onClick={toggleMobileMenu}
-          aria-label={translate("toggleMenu")}
+          aria-label={language === "vi" ? "Mở menu" : "Open menu"}
           aria-expanded={mobileOpen}
           aria-controls="main-menu"
         >
@@ -261,7 +266,11 @@ const NavbarBottom = memo(
           id="main-menu"
           role="menubar"
         >
-          <MenuItems isMobile={isMobile} closeMobileMenu={closeMobileMenu} />
+          <MenuItems
+            menuItems={menuItems}
+            isMobile={isMobile}
+            closeMobileMenu={closeMobileMenu}
+          />
         </ul>
       </div>
     </div>
@@ -273,8 +282,8 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useIsMobile(MOBILE_BREAKPOINT);
   const location = useLocation();
-  const isHomePage = location.pathname === "/";
-  const { language, switchLanguage, translate } = useLanguage();
+  const isHomePage = location.pathname === "/" || location.pathname === "/en" || location.pathname === "/en/";
+  const { lang, setLang } = useLanguage();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { isSearchOpen, handleSearchClick, handleSearchBlur } = useSearch();
 
@@ -308,8 +317,24 @@ const Navbar = () => {
   }, []);
 
   const handleLanguageSwitch = useCallback(
-    (lang) => () => switchLanguage(lang),
-    [switchLanguage]
+    (lang) => () => {
+      let newPath = window.location.pathname;
+      if (lang === "en") {
+        if (!newPath.startsWith("/en")) {
+          newPath = "/en" + (newPath === "/" ? "" : newPath);
+        }
+      } else {
+        if (newPath.startsWith("/en/")) {
+          newPath = newPath.replace(/^\/en/, "");
+          if (newPath === "") newPath = "/";
+        } else if (newPath === "/en") {
+          newPath = "/";
+        }
+      }
+      setLang(lang);
+      window.location.pathname = newPath;
+    },
+    [setLang]
   );
 
   return (
@@ -325,9 +350,8 @@ const Navbar = () => {
         handleSearchBlur={handleSearchBlur}
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
-        language={language}
+        language={lang}
         handleLanguageSwitch={handleLanguageSwitch}
-        translate={translate}
         isMobile={isMobile}
         mobileOpen={mobileOpen}
         toggleMobileMenu={toggleMobileMenu}
@@ -338,7 +362,7 @@ const Navbar = () => {
           toggleMobileMenu={toggleMobileMenu}
           isMobile={isMobile}
           closeMobileMenu={closeMobileMenu}
-          translate={translate}
+          language={lang}
         />
       )}
     </nav>

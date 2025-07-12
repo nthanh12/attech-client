@@ -1,35 +1,11 @@
 import React from "react";
 import "../NewsSection/NewsSection.css";
-import news_thumbnail3 from "../../../../assets/img/news_thumbnail3.jpg";
-import news_thumbnail2 from "../../../../assets/img/news_thumbnail2.jpg";
-import { Link } from "react-router-dom"; // Thêm Link nếu muốn dẫn đến trang chi tiết
+import { mockNews } from "../../../../utils/mockNews";
+import { Link } from "react-router-dom";
 
 const NewsSection = () => {
-  const newsItems = [
-    { title: "Tin tuyển dụng", image: news_thumbnail3, slug: "tin-tuyen-dung" },
-    { title: "Thông báo", image: news_thumbnail3, slug: "thong-bao" },
-    {
-      title: "Thông tin tài chính",
-      image: news_thumbnail3,
-      slug: "thong-tin-tai-chinh",
-    },
-    {
-      title: "Thông tin công ty",
-      image: news_thumbnail3,
-      slug: "thong-tin-cong-ty",
-    },
-    { title: "Ban lãnh đạo", image: news_thumbnail2, slug: "ban-lanh-dao" },
-    {
-      title: "Tin hàng không thế giới",
-      image: news_thumbnail2,
-      slug: "tin-hang-khong-the-gioi",
-    },
-    {
-      title: "Cơ cấu tổ chức",
-      image: news_thumbnail2,
-      slug: "co-cau-to-chuc",
-    },
-  ];
+  // Lấy 7 tin nổi bật đầu tiên
+  const trendingNews = mockNews.slice(0, 7);
 
   return (
     <section id="newsSection">
@@ -44,12 +20,11 @@ const NewsSection = () => {
               <div className="news-section-divider"></div>
             </div>
             <div className="trend-ticker">
-              
               <div className="trend-list">
-                {[...newsItems, ...newsItems].map((item, idx) => (
-                  <a key={idx} href={`/news/${item.slug}`} className="trend-link">
+                {[...trendingNews, ...trendingNews].map((item, idx) => (
+                  <Link key={item.id + '-' + idx} to={`/news/${item.id}/${item.slug}`} className="trend-link">
                     #{item.title}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>

@@ -37,38 +37,64 @@ const Public = () => {
     <MainLayout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/en" element={<Home />} />
+        <Route path="/en/" element={<Home />} />
 
-        {/* Product */}
+        {/* Product - Vietnamese */}
+        <Route path="/san-pham/*" element={<Product />}>
+          <Route path="" element={<ProductList />} />
+          <Route path=":category" element={<ProductList />} />
+          <Route path=":productId/:slug" element={<ProductDetail />} />
+        </Route>
+        {/* Product - English */}
         <Route path="/products/*" element={<Product />}>
           <Route path="" element={<ProductList />} />
           <Route path=":category" element={<ProductList />} />
           <Route path=":productId/:slug" element={<ProductDetail />} />
         </Route>
 
-        {/* Service */}
+        {/* Service - Vietnamese */}
+        <Route path="/dich-vu/*" element={<Service />}>
+          <Route path="" element={<ServiceList />} />
+          <Route path=":serviceSlug" element={<ServiceDetail />} />
+        </Route>
+        {/* Service - English */}
         <Route path="/services/*" element={<Service />}>
           <Route path="" element={<ServiceList />} />
           <Route path=":serviceSlug" element={<ServiceDetail />} />
         </Route>
 
-        {/* News */}
+        {/* News - Vietnamese */}
+        <Route path="/tin-tuc" element={<NewsPage />} />
+        <Route path="/tin-tuc/tat-ca" element={<NewsListPage />} />
+        <Route path="/tin-tuc/:category" element={<NewsListPage />} />
+        <Route path="/tin-tuc/:id/:slug" element={<NewsDetailPage />} />
+        {/* News - English */}
         <Route path="/news" element={<NewsPage />} />
         <Route path="/news/all-act" element={<NewsListPage />} />
         <Route path="/news/:category" element={<NewsListPage />} />
         <Route path="/news/:id/:slug" element={<NewsDetailPage />} />
 
-        {/* Notification */}
+        {/* Notification - Vietnamese */}
+        <Route path="/thong-bao" element={<NotificationPage />} />
+        <Route path="/thong-bao/:category" element={<NotificationListPage />} />
+        <Route path="/thong-bao/:id/:slug" element={<NotificationDetailPage />} />
+        {/* Notification - English */}
         <Route path="/notifications" element={<NotificationPage />} />
-        <Route
-          path="/notifications/:category"
-          element={<NotificationListPage />}
-        />
-        <Route
-          path="/notifications/:id/:slug"
-          element={<NotificationDetailPage />}
-        />
+        <Route path="/notifications/:category" element={<NotificationListPage />} />
+        <Route path="/notifications/:id/:slug" element={<NotificationDetailPage />} />
 
-        {/* Company info */}
+        {/* Company info - Vietnamese */}
+        <Route path="/thong-tin-cong-ty" element={<Financial />} />
+        <Route path="/thong-tin-cong-ty/tai-chinh" element={<Financial />} />
+        <Route path="/thong-tin-cong-ty/lich-su" element={<History />} />
+        <Route path="/thong-tin-cong-ty/co-cau-to-chuc" element={<Structure />} />
+        <Route path="/thong-tin-cong-ty/ban-lanh-dao" element={<Leadership />} />
+        <Route path="/thong-tin-cong-ty/nganh-nghe-kinh-doanh" element={<Business />} />
+        <Route path="/thong-tin-cong-ty/he-thong-chung-chi-iso" element={<Iso />} />
+        <Route path="/thong-tin-cong-ty/thu-vien-cong-ty" element={<Gallery />} />
+        <Route path="/thong-tin-cong-ty/thu-vien-cong-ty/:albumId" element={<GalleryDetail />} />
+        {/* Company info - English */}
         <Route path="/company" element={<Financial />} />
         <Route path="/company/finance" element={<Financial />} />
         <Route path="/company/history" element={<History />} />
@@ -76,12 +102,12 @@ const Public = () => {
         <Route path="/company/leadership" element={<Leadership />} />
         <Route path="/company/business" element={<Business />} />
         <Route path="/company/iso" element={<Iso />} />
-        
-        {/* Gallery - Changed from nested routes to flat routes */}
         <Route path="/company/gallery" element={<Gallery />} />
         <Route path="/company/gallery/:albumId" element={<GalleryDetail />} />
 
-        {/* Contact */}
+        {/* Contact - Vietnamese */}
+        <Route path="/lien-he" element={<ContactPage />} />
+        {/* Contact - English */}
         <Route path="/contact" element={<ContactPage />} />
 
         {/* Login */}

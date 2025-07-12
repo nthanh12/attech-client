@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { 
+  mockProducts, 
+  mockServices, 
+  mockNews, 
+  mockNotifications, 
+  mockUsers,
+  mockBannerConfig,
+  getSystemSetting
+} from "../../utils/mockData.js";
 import "./Dashboard.css";
 
 // Khoảng thời gian lựa chọn
@@ -15,37 +24,39 @@ function daysAgo(dateStr) {
   const d = new Date(dateStr);
   return Math.floor((today - d) / (1000 * 60 * 60 * 24));
 }
+
+// Sử dụng mock data thay vì hardcoded
 const mockData = {
-  products: [
-    { id: 1, name: "Thiết bị A", createdAt: "2024-06-01" },
-    { id: 2, name: "Thiết bị B", createdAt: "2024-05-28" },
-    { id: 3, name: "Thiết bị C", createdAt: "2024-05-10" },
-    { id: 4, name: "Thiết bị D", createdAt: "2024-04-20" },
-  ],
-  services: [
-    { id: 1, name: "Dịch vụ A", createdAt: "2024-06-05" },
-    { id: 2, name: "Dịch vụ B", createdAt: "2024-05-15" },
-  ],
-  news: [
-    { id: 1, title: "ATTECH ra mắt sản phẩm mới", createdAt: "2024-06-02" },
-    { id: 2, title: "Hội thảo công nghệ 2024", createdAt: "2024-05-30" },
-    { id: 3, title: "Tin tức cũ", createdAt: "2024-04-15" },
-  ],
-  notifications: [
-    { id: 1, title: "Bảo trì hệ thống ngày 10/6", createdAt: "2024-06-03" },
-    { id: 2, title: "Cập nhật chính sách bảo mật", createdAt: "2024-05-29" },
-  ],
-  accounts: [
-    { id: 1, username: "admin", createdAt: "2024-06-06" },
-    { id: 2, username: "editor", createdAt: "2024-05-10" },
-    { id: 3, username: "viewer", createdAt: "2024-04-01" },
-  ],
-  banners: [
-    { id: 1, title: "Banner 1", createdAt: "2024-06-04" },
-    { id: 2, title: "Banner 2", createdAt: "2024-05-20" },
-    { id: 3, title: "Banner 3", createdAt: "2024-05-01" },
-    { id: 4, title: "Banner 4", createdAt: "2024-04-10" },
-  ],
+  products: mockProducts.map(p => ({
+    id: p.id,
+    name: p.nameVi,
+    createdAt: p.timePosted
+  })),
+  services: mockServices.map(s => ({
+    id: s.id,
+    name: s.nameVi,
+    createdAt: s.timePosted
+  })),
+  news: mockNews.map(n => ({
+    id: n.id,
+    title: n.titleVi,
+    createdAt: n.timePosted
+  })),
+  notifications: mockNotifications.map(notif => ({
+    id: notif.id,
+    title: notif.titleVi,
+    createdAt: notif.timePosted
+  })),
+  accounts: mockUsers.map(u => ({
+    id: u.id,
+    username: u.username,
+    createdAt: u.createdAt
+  })),
+  banners: mockBannerConfig.homepage?.slides?.map((banner, index) => ({
+    id: banner.id,
+    title: banner.titleVi,
+    createdAt: new Date(Date.now() - index * 24 * 60 * 60 * 1000).toISOString()
+  })) || []
 };
 
 const statConfig = [
@@ -53,23 +64,14 @@ const statConfig = [
   { key: "services", label: "Dịch vụ mới", faIcon: "fa-solid fa-cogs", link: "/admin/services", color: "#10b981" },
   { key: "news", label: "Tin tức mới", faIcon: "fa-solid fa-newspaper", link: "/admin/news", color: "#f59e42" },
   { key: "notifications", label: "Thông báo mới", faIcon: "fa-solid fa-bell", link: "/admin/notifications", color: "#ef4444" },
-  { key: "accounts", label: "Tài khoản mới", faIcon: "fa-solid fa-users", link: "/admin/accounts", color: "#6366f1" },
+  { key: "accounts", label: "Tài khoản mới", faIcon: "fa-solid fa-users", link: "/admin/users", color: "#6366f1" },
   { key: "banners", label: "Banner mới", faIcon: "fa-solid fa-image", link: "/admin/config", color: "#fbbf24" },
 ];
 
 const mockRecent = {
-  products: [
-    { id: 1, name: "Thiết bị A", date: "2024-06-01" },
-    { id: 2, name: "Thiết bị B", date: "2024-05-28" },
-  ],
-  news: [
-    { id: 1, title: "ATTECH ra mắt sản phẩm mới", date: "2024-06-02" },
-    { id: 2, title: "Hội thảo công nghệ 2024", date: "2024-05-30" },
-  ],
-  notifications: [
-    { id: 1, title: "Bảo trì hệ thống ngày 10/6", date: "2024-06-03" },
-    { id: 2, title: "Cập nhật chính sách bảo mật", date: "2024-05-29" },
-  ],
+  products: mockData.products.slice(0, 2),
+  news: mockData.news.slice(0, 2),
+  notifications: mockData.notifications.slice(0, 2),
 };
 
 const mockNotices = [
@@ -166,146 +168,144 @@ const Dashboard = () => {
         ))}
       </div>
 
-      <div className="dashboard-main">
-        <div className="dashboard-section system-section">
-          <h4>Trạng thái hệ thống</h4>
-          <ul className="system-status-list">
-            <li><i className="bi bi-plug"></i> API: <span className={mockSystemStatus.api === "Online" ? "status-online" : "status-offline"}>{mockSystemStatus.api}</span></li>
-            <li><i className="bi bi-hdd"></i> Dung lượng lưu trữ: <span>{mockSystemStatus.storage}</span></li>
-            <li><i className="bi bi-exclamation-triangle"></i> Số lỗi hệ thống: <span className={mockSystemStatus.errors > 0 ? "status-error" : "status-ok"}>{mockSystemStatus.errors}</span></li>
-            {mockSystemStatus.errors > 0 && <li><i className="bi bi-bug"></i> Lỗi gần nhất: <span>{mockSystemStatus.lastError}</span></li>}
-          </ul>
-        </div>
-        <div className="dashboard-section audit-section">
-          <h4>Nhật ký hoạt động</h4>
-          <ul className="audit-log-list">
-            {mockAuditLog.map((log) => (
-              <li key={log.id}>
-                <span className="audit-user">{log.user}</span> {log.action} <span className="audit-target">{log.target}</span> <span className="audit-time">({log.time})</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="dashboard-section info-section">
-          <h4>Thông tin hệ thống</h4>
-          <div className="info-card">
-            <div className="info-item">
-              <i className="bi bi-people-fill info-icon"></i>
-              <div>
-                <div className="info-value">{onlineUsers}</div>
-                <div className="info-label">Đang online</div>
+      <div className="dashboard-content">
+        <div className="dashboard-left">
+          <div className="dashboard-section">
+            <h3>Thông tin hệ thống</h3>
+            <div className="info-cards">
+              <div className="info-card">
+                <div className="info-icon">
+                  <i className="bi bi-clock"></i>
+                </div>
+                <div className="info-content">
+                  <div className="info-label">Thời gian hiện tại</div>
+                  <div className="info-value">{now.toLocaleString('vi-VN')}</div>
+                </div>
               </div>
-            </div>
-            <div className="info-item">
-              <i className="bi bi-bar-chart-fill info-icon"></i>
-              <div>
-                <div className="info-value">{todayVisits}</div>
-                <div className="info-label">Lượt truy cập hôm nay</div>
+              <div className="info-card">
+                <div className="info-icon">
+                  <i className="bi bi-people"></i>
+                </div>
+                <div className="info-content">
+                  <div className="info-label">Người dùng online</div>
+                  <div className="info-value">{onlineUsers}</div>
+                </div>
+              </div>
+              <div className="info-card">
+                <div className="info-icon">
+                  <i className="bi bi-graph-up"></i>
+                </div>
+                <div className="info-content">
+                  <div className="info-label">Lượt truy cập hôm nay</div>
+                  <div className="info-value">{todayVisits}</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="dashboard-section event-section">
-          <h4>Lịch sự kiện nội bộ</h4>
-          <ul className="event-list">
-            {mockEvents.map((event) => (
-              <li key={event.id}>
-                <span className="event-date">{event.date}</span> <span className="event-name">{event.name}</span>
-                <div className="event-desc">{event.desc}</div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="dashboard-section traffic-section">
-          <h4>Thống kê truy cập 7 ngày qua</h4>
-          <div className="traffic-summary">
-            <div>Tổng truy cập: <b>{totalVisits}</b></div>
-            <div>Trung bình/ngày: <b>{avgVisits}</b></div>
-            <div>Cao nhất: <b>{maxItem.visits}</b> ({maxItem.date})</div>
-          </div>
-          <div className="traffic-scroll-x">
-            <div className="traffic-line-chart wide">
-              <svg width={mockTraffic.length * 55} height="60" viewBox={`0 0 ${mockTraffic.length * 55} 60`}>
-                {(() => {
-                  const max = Math.max(...mockTraffic.map(i => i.visits));
-                  const points = mockTraffic.map((item, idx) => {
-                    const x = idx * 55 + 27.5;
-                    const y = 55 - (item.visits / max) * 45;
-                    return `${x},${y}`;
-                  }).join(" ");
-                  return <polyline fill="none" stroke="#3b82f6" strokeWidth="2.5" points={points} />;
-                })()}
-                {mockTraffic.map((item, idx) => {
-                  const max = Math.max(...mockTraffic.map(i => i.visits));
-                  const x = idx * 55 + 27.5;
-                  const y = 55 - (item.visits / max) * 45;
-                  return <circle key={item.date} cx={x} cy={y} r="3" fill="#3b82f6" />;
-                })}
-              </svg>
-              <div className="traffic-labels wide" style={{ width: mockTraffic.length * 55, display: 'flex', justifyContent: 'flex-start' }}>
-                {mockTraffic.map((item) => (
-                  <span key={item.date} style={{ width: 55, textAlign: 'center' }}>{item.date}</span>
-                ))}
+
+          <div className="dashboard-section">
+            <h3>Thống kê truy cập</h3>
+            <div className="traffic-stats">
+              <div className="traffic-item">
+                <span className="traffic-label">Tổng lượt truy cập:</span>
+                <span className="traffic-value">{totalVisits}</span>
+              </div>
+              <div className="traffic-item">
+                <span className="traffic-label">Trung bình/ngày:</span>
+                <span className="traffic-value">{avgVisits}</span>
+              </div>
+              <div className="traffic-item">
+                <span className="traffic-label">Cao nhất:</span>
+                <span className="traffic-value">{maxItem.visits} ({maxItem.date})</span>
               </div>
             </div>
           </div>
-        </div>
-        <div className="dashboard-section recent-section">
-          <h4>Sản phẩm mới nhất</h4>
-          <ul>
-            {mockRecent.products.map((item) => (
-              <li key={item.id}>
-                <span className="recent-title">{item.name}</span>
-                <span className="recent-date">{item.date}</span>
-              </li>
-            ))}
-          </ul>
-          <Link to="/admin/products" className="see-all">Xem tất cả</Link>
-        </div>
-        <div className="dashboard-section recent-section">
-          <h4>Tin tức mới nhất</h4>
-          <ul>
-            {mockRecent.news.map((item) => (
-              <li key={item.id}>
-                <span className="recent-title">{item.title}</span>
-                <span className="recent-date">{item.date}</span>
-              </li>
-            ))}
-          </ul>
-          <Link to="/admin/news" className="see-all">Xem tất cả</Link>
-        </div>
-        <div className="dashboard-section recent-section">
-          <h4>Thông báo mới nhất</h4>
-          <ul>
-            {mockRecent.notifications.map((item) => (
-              <li key={item.id}>
-                <span className="recent-title">{item.title}</span>
-                <span className="recent-date">{item.date}</span>
-              </li>
-            ))}
-          </ul>
-          <Link to="/admin/notifications" className="see-all">Xem tất cả</Link>
-        </div>
-        <div className="dashboard-section quick-section">
-          <h4>Truy cập nhanh</h4>
-          <div className="quick-actions">
-            {quickActions.map((action) => (
-              <Link to={action.link} className="quick-btn" key={action.label}>
-                <i className={action.icon}></i>
-                <span>{action.label}</span>
-              </Link>
-            ))}
+
+          <div className="dashboard-section">
+            <h3>Trạng thái hệ thống</h3>
+            <div className="system-status">
+              <div className="status-item">
+                <span className="status-label">API:</span>
+                <span className={`status-value status-${mockSystemStatus.api.toLowerCase()}`}>
+                  {mockSystemStatus.api}
+                </span>
+              </div>
+              <div className="status-item">
+                <span className="status-label">Storage:</span>
+                <span className="status-value">{mockSystemStatus.storage}</span>
+              </div>
+              <div className="status-item">
+                <span className="status-label">Lỗi:</span>
+                <span className="status-value">{mockSystemStatus.errors}</span>
+              </div>
+              {mockSystemStatus.lastError && (
+                <div className="status-item">
+                  <span className="status-label">Lỗi cuối:</span>
+                  <span className="status-value error">{mockSystemStatus.lastError}</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-        <div className="dashboard-section notice-section">
-          <h4>Thông báo nội bộ</h4>
-          <ul>
-            {mockNotices.map((notice, idx) => (
-              <li key={idx} className="notice-item">
-                <i className="bi bi-info-circle"></i> {notice}
-              </li>
-            ))}
-          </ul>
+
+        <div className="dashboard-right">
+          <div className="dashboard-section">
+            <h3>Hoạt động gần đây</h3>
+            <div className="recent-activities">
+              {mockAuditLog.map((log) => (
+                <div key={log.id} className="activity-item">
+                  <div className="activity-icon">
+                    <i className="bi bi-activity"></i>
+                  </div>
+                  <div className="activity-content">
+                    <div className="activity-user">{log.user}</div>
+                    <div className="activity-action">{log.action}</div>
+                    {log.target && <div className="activity-target">{log.target}</div>}
+                    <div className="activity-time">{log.time}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="dashboard-section">
+            <h3>Sự kiện sắp tới</h3>
+            <div className="upcoming-events">
+              {mockEvents.map((event) => (
+                <div key={event.id} className="event-item">
+                  <div className="event-date">{event.date}</div>
+                  <div className="event-content">
+                    <div className="event-name">{event.name}</div>
+                    <div className="event-desc">{event.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="dashboard-section">
+            <h3>Thao tác nhanh</h3>
+            <div className="quick-actions">
+              {quickActions.map((action, index) => (
+                <Link key={index} to={action.link} className="quick-action">
+                  <i className={action.icon}></i>
+                  <span>{action.label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="dashboard-section">
+            <h3>Thông báo</h3>
+            <div className="notices">
+              {mockNotices.map((notice, index) => (
+                <div key={index} className="notice-item">
+                  <i className="bi bi-exclamation-triangle"></i>
+                  <span>{notice}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

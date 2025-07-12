@@ -1,29 +1,43 @@
 import "../Footer/Footer.css";
+import { useLanguage } from "../../../../contexts/LanguageContext";
 
 const Footer = () => {
+  const { lang } = useLanguage();
   return (
     <div className="footer wow fadeIn" data-wow-delay="0.3s">
       <div className="container">
         <div className="company-footer text-center mb-4">
-          <h2 className="company-name">CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY</h2>
+          <h2 className="company-name">
+            {lang === "vi"
+              ? "CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY"
+              : "AIR TRAFFIC TECHNICAL COMPANY LIMITED"}
+          </h2>
           <h3 className="company-name-en">
-            AIR TRAFFIC TECHNICAL COMPANY LIMITED
+            {lang === "vi"
+              ? "AIR TRAFFIC TECHNICAL COMPANY LIMITED"
+              : "CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY"}
           </h3>
         </div>
         <div className="row g-4">
           <div className="col-md-6 col-lg-3">
             <div className="footer-contact">
-              <p className="footer-title">Thông tin liên hệ</p>
+              <p className="footer-title">
+                {lang === "vi" ? "Thông tin liên hệ" : "Contact Information"}
+              </p>
               <div className="contact-info">
                 <p>
                   <i className="fa fa-map-marker-alt"></i>
                   <span>
-                    Số 5/200 đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội
+                    {lang === "vi"
+                      ? "Số 5/200 đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội"
+                      : "5/200 Nguyen Son Street, Bo De Ward, Hanoi City"}
                   </span>
                 </p>
                 <p>
                   <i className="fa fa-phone-alt"></i>
-                  <span>Điện thoại: (84.24) 38271914</span>
+                  <span>
+                    {lang === "vi" ? "Điện thoại: (84.24) 38271914" : "Phone: (84.24) 38271914"}
+                  </span>
                 </p>
                 <p>
                   <i className="fa fa-fax"></i>
@@ -38,7 +52,9 @@ const Footer = () => {
           </div>
           <div className="col-md-6 col-lg-3">
             <div className="footer-links">
-              <p className="footer-title">Liên kết nhanh</p>
+              <p className="footer-title">
+                {lang === "vi" ? "Liên kết nhanh" : "Quick Links"}
+              </p>
               <div className="links-list">
                 <p>
                   <a
@@ -79,19 +95,13 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-6 col-lg-2">
-            {/* <div className="footer-links">
-              <p className="footer-title">Liên kết</p>
-              <div className="links-list">
-                <p><a href="/">Trang chủ</a></p>
-                <p><a href="/lien-he">Liên hệ</a></p>
-              </div>
-            </div> */}
-          </div>
+          <div className="col-md-6 col-lg-2"></div>
           <div className="col-md-6 col-lg-4">
             <div className="newsletter">
               <p className="footer-title">
-                Bản đồ chỉ dẫn công ty TNHH Kỹ thuật Quản lý bay
+                {lang === "vi"
+                  ? "Bản đồ chỉ dẫn công ty TNHH Kỹ thuật Quản lý bay"
+                  : "ATTECH Company Location Map"}
               </p>
               <div className="map-wrapper">
                 <iframe
@@ -124,14 +134,14 @@ const Footer = () => {
           <div className="row align-items-center">
             <div className="col-md-8">
               <p className="copyright-text mb-0">
-                © <a href="#">2025. Bản quyền thuộc sở hữu của ATTECH.</a>
+                © <a href="#">2025. {lang === "vi" ? "Bản quyền thuộc sở hữu của ATTECH." : "Copyright owned by ATTECH."}</a>
               </p>
             </div>
             <div className="col-md-4 text-md-end">
               <div className="footer-bottom-links">
-                <a href="/">Trang chủ</a>
+                <a href={lang === "vi" ? "/" : "/en/"}>{lang === "vi" ? "Trang chủ" : "Home"}</a>
                 <span className="mx-2">|</span>
-                <a href="/lien-he">Liên hệ</a>
+                <a href={lang === "vi" ? "/lien-he" : "/en/contact"}>{lang === "vi" ? "Liên hệ" : "Contact"}</a>
               </div>
             </div>
           </div>

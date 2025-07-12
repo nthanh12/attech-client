@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, memo } from "react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../../../../../contexts/LanguageContext";
 
 const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
-  const key = `menu-${item.path || Math.random()}`; // Đảm bảo key duy nhất
+  const { lang } = useLanguage();
   const hasChildren = item.submenu && item.submenu.length > 0;
-  const [isOpen, setIsOpen] = useState(false); // Trạng thái riêng cho mỗi NavItem
+  const [isOpen, setIsOpen] = useState(false);
   const linkRef = useRef(null);
   const toggleRef = useRef(null);
 
@@ -30,7 +31,6 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
     }
   };
 
-  // Gắn sự kiện touchstart với passive: false
   useEffect(() => {
     const link = linkRef.current;
     const toggle = toggleRef.current;
@@ -58,6 +58,9 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
     }
   };
 
+  const label = lang === "vi" ? item.labelVi : item.labelEn;
+  const path = lang === "vi" ? item.pathVi : item.pathEn;
+
   return (
     <li
       className={`nav-item${hasChildren ? " has-children" : ""}${isOpen ? " open" : ""}`}
@@ -67,14 +70,14 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
     >
       <div className="nav-link-container">
         <Link
-          to={item.path}
+          to={path}
           className="nav-link"
           onClick={isMobile ? handleLinkClick : undefined}
           ref={linkRef}
           aria-haspopup={hasChildren ? "true" : "false"}
           aria-expanded={hasChildren ? isOpen : undefined}
         >
-          {item.label}
+          {label}
         </Link>
         {hasChildren && (isMobile || depthLevel === 0) && (
           <button
@@ -92,7 +95,7 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
         <ul className={`dropdown-menu${isOpen ? " open" : ""}`}>
           {item.submenu.map((child, idx) => (
             <NavItem
-              key={child.path || `child-${idx}`}
+              key={child.pathVi}
               item={child}
               isMobile={isMobile}
               closeMobileMenu={closeMobileMenu}

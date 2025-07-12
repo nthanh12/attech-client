@@ -3,6 +3,7 @@ html, body {
 }
 
 body {
+  margin: 0 !important;
   color: #413f3f;
   background: #ffffff;
   /* font-family: 'Inter', sans-serif; */

@@ -1,6 +1,31 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Editor } from '@tinymce/tinymce-react';
+import 'tinymce/tinymce';
+import 'tinymce/icons/default';
+import 'tinymce/themes/silver';
+import 'tinymce/skins/ui/oxide/skin.min.css';
+import 'tinymce/skins/content/default/content.min.css';
+import 'tinymce/plugins/advlist';
+import 'tinymce/plugins/autolink';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/code';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/help';
+import 'tinymce/plugins/wordcount';
+import 'tinymce/plugins/charmap';
+import 'tinymce/plugins/preview';
+import 'tinymce/plugins/anchor';
+import 'tinymce/plugins/searchreplace';
+import 'tinymce/plugins/visualblocks';
+import 'tinymce/plugins/fullscreen';
+import 'tinymce/plugins/insertdatetime';
+import 'tinymce/plugins/media';
+import 'tinymce/plugins/emoticons';
+import 'tinymce/plugins/codesample';
 import "./ProductsList.css";
+import "../styles/adminTable.css";
+import "../styles/adminCommon.css";
 import {
   getProducts,
   getProductCategories,
@@ -8,10 +33,14 @@ import {
   updateProduct,
   deleteProduct,
 } from "../../api";
+import { mockProducts, mockProductCategories } from "../../utils/mockData.js";
 import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { Link } from "react-router-dom";
+import { Editor } from '@tinymce/tinymce-react';
+import ReactModal from 'react-modal';
 
 const ProductsList = () => {
   const [product, setProduct] = useState([]);
@@ -20,9 +49,11 @@ const ProductsList = () => {
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState({
+  // Định nghĩa object emptyProduct để dùng cho khởi tạo/reset form
+  const emptyProduct = {
     id: null,
-    name: "",
+    nameVi: "",
+    nameEn: "",
     category: "",
     content: "",
     summary: "",
@@ -30,7 +61,8 @@ const ProductsList = () => {
     featured: false,
     status: "active",
     publishDate: new Date().toISOString().split("T")[0],
-  });
+  };
+  const [currentProduct, setCurrentProduct] = useState({ ...emptyProduct });
   const [errors, setErrors] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
@@ -43,128 +75,230 @@ const ProductsList = () => {
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   useEffect(() => {
-    let mounted = true;
-    const fetchProduct = async () => {
-      setIsLoading(true);
-      try {
-        const items = await getProducts();
-        if (mounted) setProduct(items);
-      } catch (error) {
-        setToast({ show: true, message: "Lỗi khi tải sản phẩm!", type: "error" });
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    };
-    const fetchCategories = async () => {
-      try {
-        const items = await getProductCategories();
-        if (mounted) setCategories(items);
-      } catch (error) {
-        setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
-      }
-    };
-    fetchProduct();
-    fetchCategories();
-    return () => { mounted = false; };
+    setProduct(mockProducts);
+    // Sử dụng mock categories thay vì API call
+    setCategories(mockProductCategories);
   }, []);
 
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
     setEditMode(false);
     setErrors({});
-    setCurrentProduct({
-      id: null,
-      name: "",
-      category: "",
-      content: "",
-      summary: "",
-      imageUrl: "",
-      featured: false,
-      status: "active",
-      publishDate: new Date().toISOString().split("T")[0],
-    });
+    setCurrentProduct({ ...emptyProduct });
   }, []);
 
-  const handleShowModal = useCallback((productItem = null) => {
-    if (productItem) {
-      setCurrentProduct(productItem);
-      setEditMode(true);
-    } else {
-      setEditMode(false);
-    }
+  const handleAddNew = () => {
+    setEditMode(false);
+    setCurrentProduct({ ...emptyProduct });
+    setErrors({});
     setShowModal(true);
-  }, []);
-
-  const handleInputChange = useCallback((e) => {
-    const { name, value, type, checked } = e.target;
-    setCurrentProduct((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  }, []);
-
-  const handleEditorChange = useCallback((content) => {
-    setCurrentProduct((prev) => ({ ...prev, content }));
-    setErrors((prev) => ({ ...prev, content: '' }));
-  }, []);
-
-  const validateForm = useCallback(() => {
-    const newErrors = {};
-    if (!currentProduct.name) newErrors.name = "Tên sản phẩm là bắt buộc";
-    if (!currentProduct.category) newErrors.category = "Vui lòng chọn danh mục";
-    if (!currentProduct.content) newErrors.content = "Nội dung là bắt buộc";
-    if (currentProduct.imageUrl && !isValidUrl(currentProduct.imageUrl)) {
-      newErrors.imageUrl = "URL hình ảnh không hợp lệ";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [currentProduct]);
-
-  const isValidUrl = (url) => {
-    try {
-      new URL(url);
-      return true;
-    } catch {
-      return false;
-    }
   };
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const handleEdit = (productItem) => {
+    setEditMode(true);
+    setCurrentProduct({
+      id: productItem.id,
+      nameVi: productItem.nameVi || "",
+      nameEn: productItem.nameEn || "",
+      category: productItem.productCategoryId || "",
+      content: productItem.contentVi || "",
+      summary: productItem.descriptionVi || "",
+      imageUrl: productItem.image || "",
+      featured: productItem.featured || false,
+      status: productItem.status === 1 ? "active" : "inactive",
+      publishDate: productItem.timePosted ? productItem.timePosted.split("T")[0] : new Date().toISOString().split("T")[0],
+    });
+    setErrors({});
+    setShowModal(true);
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!currentProduct.nameVi.trim()) {
+      newErrors.nameVi = 'Tên sản phẩm tiếng Việt là bắt buộc';
+    }
+    
+    if (!currentProduct.nameEn.trim()) {
+      newErrors.nameEn = 'Tên sản phẩm tiếng Anh là bắt buộc';
+    }
+    
+    if (!currentProduct.category) {
+      newErrors.category = 'Danh mục là bắt buộc';
+    }
+    
+    if (!currentProduct.content.trim()) {
+      newErrors.content = 'Nội dung là bắt buộc';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
     if (!validateForm()) return;
+
     setSubmitLoading(true);
     try {
       if (editMode) {
-        await updateProduct(currentProduct.id, currentProduct);
-        setProduct((prev) => prev.map((n) => (n.id === currentProduct.id ? currentProduct : n)));
-        setToast({ show: true, message: "Cập nhật sản phẩm thành công!", type: "success" });
+        // Update product
+        setProduct(prev => prev.map(item => 
+          item.id === currentProduct.id ? {
+            ...item,
+            nameVi: currentProduct.nameVi,
+            nameEn: currentProduct.nameEn,
+            contentVi: currentProduct.content,
+            contentEn: currentProduct.content,
+            descriptionVi: currentProduct.descriptionVi,
+            descriptionEn: currentProduct.descriptionEn,
+            productCategoryId: currentProduct.category,
+            status: currentProduct.status === "active" ? 1 : 0,
+            image: currentProduct.imageUrl,
+            featured: currentProduct.featured
+          } : item
+        ));
+        setToast({ show: true, message: 'Cập nhật sản phẩm thành công!', type: 'success' });
       } else {
-        const newProduct = await createProduct(currentProduct);
-        setProduct((prev) => [...prev, newProduct]);
-        setToast({ show: true, message: "Thêm sản phẩm thành công!", type: "success" });
+        // Create new product
+        const newProduct = {
+          id: Date.now(),
+          nameVi: currentProduct.nameVi,
+          nameEn: currentProduct.nameEn,
+          contentVi: currentProduct.content,
+          contentEn: currentProduct.content,
+          descriptionVi: currentProduct.descriptionVi,
+          descriptionEn: currentProduct.descriptionEn,
+          productCategoryId: currentProduct.category,
+          status: currentProduct.status === "active" ? 1 : 0,
+          image: currentProduct.imageUrl,
+          featured: currentProduct.featured,
+          timePosted: new Date().toISOString()
+        };
+        setProduct(prev => [newProduct, ...prev]);
+        setToast({ show: true, message: 'Thêm sản phẩm thành công!', type: 'success' });
       }
       handleCloseModal();
-      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     } catch (error) {
-      setToast({ show: true, message: "Lỗi khi lưu sản phẩm!", type: "error" });
+      setToast({ show: true, message: 'Lỗi khi lưu sản phẩm!', type: 'error' });
     } finally {
       setSubmitLoading(false);
     }
-  }, [editMode, currentProduct, validateForm, handleCloseModal]);
+  };
 
-  const handleDeleteProduct = useCallback(async (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-      try {
-        await deleteProduct(id);
-        setProduct((prev) => prev.filter((n) => n.id !== id));
-        setToast({ show: true, message: "Xóa sản phẩm thành công!", type: "success" });
-        setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
-      } catch (error) {
-        setToast({ show: true, message: "Lỗi khi xóa sản phẩm!", type: "error" });
-      }
+  const handleDeleteProduct = (id) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) {
+      setProduct(prev => prev.filter(item => item.id !== id));
+      setToast({ show: true, message: 'Xóa sản phẩm thành công!', type: 'success' });
     }
-  }, []);
+  };
+
+  const handleInputChange = (field, value) => {
+    setCurrentProduct(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const filteredProducts = product.filter(item => {
+    const matchesSearch = item.nameVi.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.nameEn.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.descriptionVi.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.descriptionEn.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesCategory = !filters.category || item.productCategoryId === parseInt(filters.category);
+    const matchesStatus = !filters.status || 
+                         (filters.status === "active" && item.status === 1) ||
+                         (filters.status === "inactive" && item.status === 0);
+    
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    const aValue = a[sortConfig.key];
+    const bValue = b[sortConfig.key];
+    
+    if (sortConfig.direction === 'asc') {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
+
+  const paginatedProducts = sortedProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+
+  const columns = [
+    { key: 'nameVi', label: 'Tên sản phẩm (VI)', sortable: true },
+    { key: 'nameEn', label: 'Product Name (EN)', sortable: true },
+    { 
+      key: 'descriptionVi', 
+      label: 'Mô tả (VI)', 
+      render: (value) => value ? <span title={value}>...</span> : ''
+    },
+    { 
+      key: 'descriptionEn', 
+      label: 'Description (EN)', 
+      render: (value) => value ? <span title={value}>...</span> : ''
+    },
+    {
+      key: 'productCategoryNameVi',
+      label: 'Danh mục',
+      sortable: true
+    },
+    {
+      key: 'status',
+      label: 'Trạng thái',
+      sortable: true,
+      render: (value) => (
+        <span className={`status-badge ${value === 1 ? 'active' : 'inactive'}`}>
+          {value === 1 ? 'Hoạt động' : 'Không hoạt động'}
+        </span>
+      )
+    },
+    {
+      key: 'featured',
+      label: 'Nổi bật',
+      sortable: true,
+      render: (value) => (
+        <span className={`featured-badge ${value ? 'featured' : 'normal'}`}>
+          {value ? 'Có' : 'Không'}
+        </span>
+      )
+    },
+    {
+      key: 'timePosted',
+      label: 'Ngày đăng',
+      sortable: true,
+      render: (value) => new Date(value).toLocaleDateString('vi-VN')
+    },
+    {
+      key: 'actions',
+      label: 'Thao tác',
+      render: (value, item) => (
+        <div className="action-buttons">
+          <button
+            className="btn btn-sm btn-primary"
+            onClick={() => handleEdit(item)}
+            title="Chỉnh sửa"
+          >
+            <i className="bi bi-pencil"></i>
+            <span>Sửa</span>
+          </button>
+          <button
+            className="btn btn-sm btn-danger"
+            onClick={() => handleDeleteProduct(item.id)}
+            title="Xóa"
+          >
+            <i className="bi bi-trash"></i>
+            <span>Xóa</span>
+          </button>
+        </div>
+      )
+    }
+  ];
 
   const handleSort = useCallback((key) => {
     setSortConfig((prev) => ({
@@ -173,203 +307,232 @@ const ProductsList = () => {
     }));
   }, []);
 
-  const handleFilterChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-    setCurrentPage(1);
-  }, []);
+  const renderFilters = () => (
+    <div className="filters-section">
+      <div className="filter-group">
+        <input
+          type="text"
+          placeholder="Tìm kiếm sản phẩm..."
+          value={filters.search}
+          onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
+          className="form-control"
+        />
+      </div>
+      <div className="filter-group">
+        <select
+          value={filters.category}
+          onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+          className="form-control"
+        >
+          <option value="">Tất cả danh mục</option>
+          {categories.map(category => (
+            <option key={category.id} value={category.id}>{category.nameVi}</option>
+          ))}
+        </select>
+      </div>
+      <div className="filter-group">
+        <select
+          value={filters.status}
+          onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+          className="form-control"
+        >
+          <option value="">Tất cả trạng thái</option>
+          <option value="active">Hoạt động</option>
+          <option value="inactive">Không hoạt động</option>
+        </select>
+      </div>
+    </div>
+  );
 
-  const getFilteredAndSortedProduct = useCallback(() => {
-    let filteredProduct = [...product];
-    if (filters.search) {
-      filteredProduct = filteredProduct.filter((n) =>
-        n.name.toLowerCase().includes(filters.search.toLowerCase())
-      );
-    }
-    if (filters.category) {
-      filteredProduct = filteredProduct.filter((n) => n.category === filters.category);
-    }
-    if (filters.status) {
-      filteredProduct = filteredProduct.filter((n) => n.status === filters.status);
-    }
-    filteredProduct.sort((a, b) => {
-      const key = sortConfig.key;
-      const direction = sortConfig.direction === "asc" ? 1 : -1;
-      if (key === "name" || key === "category" || key === "status") {
-        return a[key].localeCompare(b[key]) * direction;
-      } else if (key === "featured") {
-        return ((a[key] ? 1 : 0) - (b[key] ? 1 : 0)) * direction;
-      } else if (key === "publishDate") {
-        return (new Date(a[key]) - new Date(b[key])) * direction;
-      }
-      return (a[key] - b[key]) * direction;
-    });
-    return filteredProduct;
-  }, [product, filters, sortConfig]);
+  const renderProductForm = () => (
+    <div className="product-form">
+      <div className="form-row">
+        <div className="form-group">
+          <label>Tên sản phẩm (VI) *</label>
+          <input
+            type="text"
+            value={currentProduct.nameVi}
+            onChange={(e) => handleInputChange('nameVi', e.target.value)}
+            className={`form-control ${errors.nameVi ? 'is-invalid' : ''}`}
+            placeholder="Nhập tên sản phẩm tiếng Việt"
+          />
+          {errors.nameVi && <div className="invalid-feedback">{errors.nameVi}</div>}
+        </div>
+        <div className="form-group">
+          <label>Product Name (EN) *</label>
+          <input
+            type="text"
+            value={currentProduct.nameEn}
+            onChange={(e) => handleInputChange('nameEn', e.target.value)}
+            className={`form-control ${errors.nameEn ? 'is-invalid' : ''}`}
+            placeholder="Enter product name in English"
+          />
+          {errors.nameEn && <div className="invalid-feedback">{errors.nameEn}</div>}
+        </div>
+      </div>
+      <div className="form-row">
+        <div className="form-group">
+          <label>Mô tả (VI)</label>
+          <textarea
+            value={currentProduct.descriptionVi}
+            onChange={(e) => handleInputChange('descriptionVi', e.target.value)}
+            className="form-control"
+            rows="2"
+            placeholder="Nhập mô tả tiếng Việt"
+          />
+        </div>
+        <div className="form-group">
+          <label>Description (EN)</label>
+          <textarea
+            value={currentProduct.descriptionEn}
+            onChange={(e) => handleInputChange('descriptionEn', e.target.value)}
+            className="form-control"
+            rows="2"
+            placeholder="Enter description in English"
+          />
+        </div>
+      </div>
 
-  const filteredProduct = useMemo(() => getFilteredAndSortedProduct(), [getFilteredAndSortedProduct]);
-  const totalPages = Math.ceil(filteredProduct.length / itemsPerPage);
-  const paginatedProduct = useMemo(() => filteredProduct.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage), [filteredProduct, currentPage, itemsPerPage]);
+      <div className="form-group">
+        <label>URL hình ảnh</label>
+        <input
+          type="url"
+          value={currentProduct.imageUrl}
+          onChange={(e) => handleInputChange('imageUrl', e.target.value)}
+          className="form-control"
+          placeholder="Nhập URL hình ảnh"
+        />
+      </div>
 
-  const handlePageChange = useCallback((page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  }, [totalPages]);
+      <div className="form-group">
+        <label>Nội dung *</label>
+        <Editor
+          value={currentProduct.content}
+          onEditorChange={c => handleInputChange('content', c)}
+          init={{
+            menubar: true,
+            plugins: [
+              'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+              'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+              'insertdatetime', 'media', 'table', 'help', 'wordcount',
+              'emoticons', 'codesample'
+            ],
+            toolbar:
+              'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
+              'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
+              'link image media table codesample charmap emoticons | removeformat | help',
+            height: 300,
+            branding: false,
+            promotion: false,
+            appendTo: document.body
+          }}
+        />
+        {errors.content && <div className="invalid-feedback">{errors.content}</div>}
+      </div>
 
-  // Columns config for DataTable
-  const columns = useMemo(() => [
-    { key: "id", title: "ID", sortable: true },
-    { key: "name", title: "Tên sản phẩm", sortable: true },
-    { key: "category", title: "Danh mục", sortable: true },
-    { key: "featured", title: "Nổi bật", sortable: true, render: (val) => <span className={`badge badge-${val ? "success" : "secondary"}`}>{val ? "Nổi bật" : "Bình thường"}</span> },
-    { key: "status", title: "Trạng thái", sortable: true, render: (val) => <span className={`badge badge-${val === "active" ? "success" : "danger"}`}>{val === "active" ? "Hiển thị" : "Ẩn"}</span> },
-    { key: "publishDate", title: "Ngày đăng", sortable: true },
-  ], []);
-
-  // Fields config for FormModal
-  const fields = useMemo(() => [
-    { name: "name", label: "Tên sản phẩm", type: "text", required: true },
-    { name: "category", label: "Danh mục", type: "select", required: true, options: [{ value: "", label: "Chọn danh mục" }, ...categories.map(c => ({ value: c.name, label: c.name }))] },
-    { name: "content", label: "Nội dung", type: "custom", required: true, render: () => (
-      <Editor
-        apiKey="1odjd377mh1anpljwb097v4n58bfglpgmj7hggmqzbe173fz"
-        value={currentProduct.content}
-        init={{
-          height: 300,
-          menubar: true,
-          plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
-            'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount'
-          ],
-          toolbar:
-            'undo redo | formatselect | bold italic backcolor | \n        alignleft aligncenter alignright alignjustify | \n        bullist numlist outdent indent | removeformat | help | image media table code',
-          language: 'vi',
-          image_title: true,
-          automatic_uploads: true,
-          file_picker_types: 'image',
-        }}
-        onEditorChange={handleEditorChange}
-      />
-    ) },
-    { name: "summary", label: "Tóm tắt", type: "textarea" },
-    { name: "imageUrl", label: "Hình ảnh URL", type: "text" },
-    { name: "featured", label: "Nổi bật", type: "checkbox" },
-    { name: "publishDate", label: "Ngày đăng", type: "date" },
-    { name: "status", label: "Trạng thái", type: "select", options: [
-      { value: "active", label: "Hiển thị" },
-      { value: "inactive", label: "Ẩn" },
-    ] },
-  ], [categories, currentProduct.content, handleEditorChange]);
+      <div className="form-row">
+        <div className="form-group">
+          <label>Trạng thái</label>
+          <select
+            value={currentProduct.status}
+            onChange={(e) => handleInputChange('status', e.target.value)}
+            className="form-control"
+          >
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Không hoạt động</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Nổi bật</label>
+          <select
+            value={currentProduct.featured}
+            onChange={(e) => handleInputChange('featured', e.target.value === 'true')}
+            className="form-control"
+          >
+            <option value={false}>Không</option>
+            <option value={true}>Có</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
 
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   return (
-    <div className="admin-product-list">
+    <div className="admin-products-list">
+      {/* Nơi TinyMCE sẽ render toolbar ra ngoài modal */}
+      <div id="tiny-toolbar-container" />
+      <div className="page-header">
+        <h1>Quản lý sản phẩm</h1>
+        <button className="btn btn-primary" onClick={handleAddNew}>
+          <i className="bi bi-plus"></i>
+          Thêm sản phẩm
+        </button>
+      </div>
+
+      {renderFilters()}
+
+      <div className="admin-table-container">
+        <DataTable
+          data={paginatedProducts}
+          columns={columns}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          sortConfig={sortConfig}
+          onSort={handleSort}
+          itemsPerPage={itemsPerPage}
+          totalItems={sortedProducts.length}
+          tableClassName="admin-table"
+        />
+      </div>
+
+      {/* TEST: TinyMCE ngoài modal */}
+      {/* Đã xóa Editor test ngoài modal */}
+
+      <ReactModal
+        isOpen={showModal}
+        onRequestClose={handleCloseModal}
+        contentLabel="Sản phẩm"
+        style={{
+          overlay: { zIndex: 1000, background: 'rgba(0,0,0,0.5)' },
+          content: {
+            zIndex: 1001,
+            maxWidth: '1000px',
+            width: '90vw',
+            minWidth: '320px',
+            margin: 'auto',
+            borderRadius: 12,
+            padding: 0,
+            border: 'none',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.18)'
+          }
+        }}
+        ariaHideApp={false}
+      >
+        <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 24px 0 24px', borderBottom: '1px solid #eee' }}>
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>{editMode ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm mới'}</h2>
+          <button className="modal-close" onClick={handleCloseModal} aria-label="Đóng" style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', color: '#6b7280' }}>✕</button>
+        </div>
+        <div className="modal-body" style={{ padding: '24px' }}>
+          {renderProductForm()}
+        </div>
+        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, padding: '0 24px 24px 24px', borderTop: '1px solid #eee' }}>
+          <button onClick={handleCloseModal} className="btn btn-secondary">Hủy</button>
+          <button onClick={handleSubmit} className="btn btn-primary" disabled={submitLoading}>
+            {submitLoading ? 'Đang xử lý...' : (editMode ? 'Cập nhật' : 'Thêm')}
+          </button>
+        </div>
+      </ReactModal>
+
       <ToastMessage
         show={toast.show}
         message={toast.message}
         type={toast.type}
-        onClose={() => setToast({ show: false, message: "", type: "" })}
-      />
-      <div className="card">
-        <div className="card-header">
-          <h3>Quản lý sản phẩm</h3>
-          <button className="btn btn-primary" onClick={() => handleShowModal()}>
-            Thêm sản phẩm mới
-          </button>
-        </div>
-        <div className="card-body">
-          <div className="filter-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Tìm kiếm tiêu đề..."
-              name="search"
-              value={filters.search}
-              onChange={handleFilterChange}
-            />
-            <select
-              className="form-control"
-              name="category"
-              value={filters.category}
-              onChange={handleFilterChange}
-            >
-              <option value="">Tất cả danh mục</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <select
-              className="form-control"
-              name="status"
-              value={filters.status}
-              onChange={handleFilterChange}
-            >
-              <option value="">Tất cả trạng thái</option>
-              <option value="active">Hiển thị</option>
-              <option value="inactive">Ẩn</option>
-            </select>
-          </div>
-          <DataTable
-            columns={columns}
-            data={paginatedProduct}
-            onEdit={handleShowModal}
-            onDelete={handleDeleteProduct}
-            onSort={handleSort}
-            sortConfig={sortConfig}
-            loading={isLoading}
-            emptyText="Không có sản phẩm nào phù hợp"
-          />
-          <div className="pagination-container">
-            <div className="pagination-info">
-              Hiển thị {paginatedProduct.length} / {filteredProduct.length} sản phẩm
-            </div>
-            <div className="pagination">
-              <button
-                className={`page-btn ${currentPage === 1 ? "disabled" : ""}`}
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Trước
-              </button>
-              {[...Array(totalPages).keys()].map((page) => (
-                <button
-                  key={page + 1}
-                  className={`page-btn ${currentPage === page + 1 ? "active" : ""}`}
-                  onClick={() => handlePageChange(page + 1)}
-                >
-                  {page + 1}
-                </button>
-              ))}
-              <button
-                className={`page-btn ${currentPage === totalPages ? "disabled" : ""}`}
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Sau
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <FormModal
-        isOpen={showModal}
-        onClose={handleCloseModal}
-        onSubmit={handleSubmit}
-        fields={fields}
-        values={currentProduct}
-        errors={errors}
-        onChange={handleInputChange}
-        loading={submitLoading}
-        title={editMode ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}
-        submitText={editMode ? "Cập nhật" : "Thêm mới"}
-        cancelText="Hủy"
+        onClose={() => setToast({ ...toast, show: false })}
       />
     </div>
   );

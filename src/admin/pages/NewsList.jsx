@@ -1,11 +1,46 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { Editor } from '@tinymce/tinymce-react';
+import 'tinymce/tinymce';
+import 'tinymce/icons/default';
+import 'tinymce/themes/silver';
+import 'tinymce/skins/ui/oxide/skin.min.css';
+import 'tinymce/skins/content/default/content.min.css';
+import 'tinymce/plugins/advlist';
+import 'tinymce/plugins/autolink';
+import 'tinymce/plugins/lists';
+import 'tinymce/plugins/link';
+import 'tinymce/plugins/image';
+import 'tinymce/plugins/code';
+import 'tinymce/plugins/table';
+import 'tinymce/plugins/help';
+import 'tinymce/plugins/wordcount';
+import 'tinymce/plugins/charmap';
+import 'tinymce/plugins/preview';
+import 'tinymce/plugins/anchor';
+import 'tinymce/plugins/searchreplace';
+import 'tinymce/plugins/visualblocks';
+import 'tinymce/plugins/fullscreen';
+import 'tinymce/plugins/insertdatetime';
+import 'tinymce/plugins/media';
+import 'tinymce/plugins/emoticons';
+import 'tinymce/plugins/codesample';
 import "./NewsList.css";
-import { getNews, createNews, updateNews, deleteNews, getNewsCategories, uploadImage } from "../../api";
+import "../styles/adminTable.css";
+import "../styles/adminCommon.css";
+import {
+  getNews,
+  getNewsCategories,
+  createNews,
+  updateNews,
+  deleteNews,
+} from "../../api";
+import { mockNews, mockNewsCategories } from "../../utils/mockData.js";
 import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { Link } from "react-router-dom";
+import { Editor } from '@tinymce/tinymce-react';
+import ReactModal from 'react-modal';
 
 const NewsList = () => {
   const [news, setNews] = useState([]);
@@ -14,18 +49,22 @@ const NewsList = () => {
   const [editMode, setEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submitLoading, setSubmitLoading] = useState(false);
-  const [currentNews, setCurrentNews] = useState({
+  // Định nghĩa object emptyNews để dùng cho khởi tạo/reset form
+  const emptyNews = {
     id: null,
-    title: "",
+    titleVi: "",
+    titleEn: "",
     category: "",
     content: "",
-    summary: "",
+    summaryVi: "",
+    summaryEn: "",
     imageUrl: "",
     slug: "",
     featured: false,
     status: "active",
     publishDate: new Date().toISOString().split("T")[0],
-  });
+  };
+  const [currentNews, setCurrentNews] = useState({ ...emptyNews });
   const [errors, setErrors] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
@@ -38,168 +77,241 @@ const NewsList = () => {
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
 
   useEffect(() => {
-    let mounted = true;
-    const fetchNewsData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getNews();
-        if (Array.isArray(response)) {
-          const mappedNews = response.map(item => ({
-            id: item.id,
-            title: item.title,
-            slug: item.slug,
-            summary: item.description,
-            publishDate: item.timePosted ? item.timePosted.split('T')[0] : new Date().toISOString().split("T")[0],
-            status: item.status === 1 ? 'active' : 'inactive',
-            category: item.postCategoryName,
-            featured: item.featured || false,
-            content: item.content || "",
-            imageUrl: item.imageUrl || ""
-          }));
-          if (mounted) setNews(mappedNews);
-        } else {
-          if (mounted) setNews([]);
-        }
-      } catch (error) {
-        if (mounted) setNews([]);
-      } finally {
-        if (mounted) setIsLoading(false);
-      }
-    };
-    const fetchCategories = async () => {
-      try {
-        const items = await getNewsCategories();
-        if (mounted) setCategories(items);
-      } catch (error) {
-        setToast({ show: true, message: "Lỗi khi tải danh mục!", type: "error" });
-      }
-    };
-    fetchNewsData();
-    fetchCategories();
-    return () => { mounted = false; };
+    setNews(mockNews);
+    // Sử dụng mock categories thay vì API call
+    setCategories(mockNewsCategories);
   }, []);
 
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
     setEditMode(false);
     setErrors({});
-    setCurrentNews({
-      id: null,
-      title: "",
-      category: "",
-      content: "",
-      summary: "",
-      imageUrl: "",
-      slug: "",
-      featured: false,
-      status: "active",
-      publishDate: new Date().toISOString().split("T")[0],
-    });
+    setCurrentNews({ ...emptyNews });
   }, []);
 
-  const handleShowModal = useCallback((newsItem = null) => {
-    if (newsItem) {
-      setCurrentNews(newsItem);
-      setEditMode(true);
-    } else {
-      setEditMode(false);
-    }
+  const handleAddNew = () => {
+    setEditMode(false);
+    setCurrentNews({ ...emptyNews });
+    setErrors({});
     setShowModal(true);
-  }, []);
+  };
 
-  const handleInputChange = useCallback((e) => {
-    const { name, value, type, checked } = e.target;
-    setCurrentNews((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  }, []);
+  const handleEdit = (newsItem) => {
+    setEditMode(true);
+    setCurrentNews({
+      id: newsItem.id,
+      titleVi: newsItem.titleVi || "",
+      titleEn: newsItem.titleEn || "",
+      category: newsItem.postCategoryId || "",
+      content: newsItem.contentVi || "",
+      summaryVi: newsItem.descriptionVi || "",
+      summaryEn: newsItem.descriptionEn || "",
+      imageUrl: newsItem.image || "",
+      slug: newsItem.slugVi || "",
+      featured: newsItem.featured || false,
+      status: newsItem.status === 1 ? "active" : "inactive",
+      publishDate: newsItem.timePosted ? newsItem.timePosted.split("T")[0] : new Date().toISOString().split("T")[0],
+    });
+    setErrors({});
+    setShowModal(true);
+  };
 
-  const handleEditorChange = useCallback((content) => {
-    setCurrentNews((prev) => ({ ...prev, content }));
-    setErrors((prev) => ({ ...prev, content: '' }));
-  }, []);
-
-  const handleImageUpload = useCallback(async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    try {
-      const response = await uploadImage(file);
-      if (response && response.location) {
-        setCurrentNews((prev) => ({ ...prev, imageUrl: response.location }));
-        setToast({ show: true, message: "Upload hình ảnh thành công!", type: "success" });
-      }
-    } catch (error) {
-      setToast({ show: true, message: "Lỗi khi upload hình ảnh!", type: "error" });
-    }
-  }, []);
-
-  const generateSlug = useCallback((title) => {
-    const slug = title
-      .toLowerCase()
-      .replace(/[^\w\s]/gi, "")
-      .replace(/\s+/g, "-");
-    setCurrentNews((prev) => ({ ...prev, slug }));
-  }, []);
-
-  const validateForm = useCallback(() => {
+  const validateForm = () => {
     const newErrors = {};
-    if (!currentNews.title) newErrors.title = "Tiêu đề là bắt buộc";
-    if (!currentNews.slug) newErrors.slug = "Slug là bắt buộc";
-    if (!currentNews.category) newErrors.category = "Vui lòng chọn danh mục";
-    if (!currentNews.content) newErrors.content = "Nội dung là bắt buộc";
+    
+    if (!currentNews.titleVi.trim()) {
+      newErrors.titleVi = 'Tiêu đề tiếng Việt là bắt buộc';
+    }
+    if (!currentNews.titleEn.trim()) {
+      newErrors.titleEn = 'Title tiếng Anh là bắt buộc';
+    }
+    
+    if (!currentNews.category) {
+      newErrors.category = 'Danh mục là bắt buộc';
+    }
+    
+    if (!currentNews.content.trim()) {
+      newErrors.content = 'Nội dung là bắt buộc';
+    }
+    if (!currentNews.summaryVi.trim()) {
+      newErrors.summaryVi = 'Tóm tắt tiếng Việt là bắt buộc';
+    }
+    if (!currentNews.summaryEn.trim()) {
+      newErrors.summaryEn = 'Summary tiếng Anh là bắt buộc';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [currentNews]);
+  };
 
-  const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!validateForm()) return;
+
     setSubmitLoading(true);
     try {
-      const newsData = {
-        id: currentNews.id,
-        title: currentNews.title,
-        description: currentNews.summary,
-        content: currentNews.content,
-        postCategoryId: categories.find(cat => cat.name === currentNews.category)?.id || 1,
-        timePosted: new Date(currentNews.publishDate).toISOString(),
-        slug: currentNews.slug,
-        featured: currentNews.featured,
-        status: currentNews.status === "active" ? 1 : 0,
-        imageUrl: currentNews.imageUrl
-      };
       if (editMode) {
-        await updateNews(newsData);
-        setNews((prev) => prev.map((n) => (n.id === currentNews.id ? { ...currentNews } : n)));
-        setToast({ show: true, message: "Cập nhật tin tức thành công!", type: "success" });
+        // Update news
+        setNews(prev => prev.map(item => 
+          item.id === currentNews.id ? {
+            ...item,
+            titleVi: currentNews.titleVi,
+            titleEn: currentNews.titleEn,
+            contentVi: currentNews.content,
+            contentEn: currentNews.content,
+            descriptionVi: currentNews.summaryVi,
+            descriptionEn: currentNews.summaryEn,
+            slugVi: currentNews.slug,
+            slugEn: currentNews.slug,
+            postCategoryId: currentNews.category,
+            status: currentNews.status === "active" ? 1 : 0,
+            image: currentNews.imageUrl,
+            featured: currentNews.featured
+          } : item
+        ));
+        setToast({ show: true, message: 'Cập nhật tin tức thành công!', type: 'success' });
       } else {
-        const response = await createNews(newsData);
-        setNews((prev) => [...prev, { ...currentNews, id: response.id }]);
-        setToast({ show: true, message: "Thêm tin tức thành công!", type: "success" });
+        // Create new news
+        const newNews = {
+          id: Date.now(),
+          titleVi: currentNews.titleVi,
+          titleEn: currentNews.titleEn,
+          contentVi: currentNews.content,
+          contentEn: currentNews.content,
+          descriptionVi: currentNews.summaryVi,
+          descriptionEn: currentNews.summaryEn,
+          slugVi: currentNews.slug,
+          slugEn: currentNews.slug,
+          postCategoryId: currentNews.category,
+          status: currentNews.status === "active" ? 1 : 0,
+          image: currentNews.imageUrl,
+          featured: currentNews.featured,
+          timePosted: new Date().toISOString()
+        };
+        setNews(prev => [newNews, ...prev]);
+        setToast({ show: true, message: 'Thêm tin tức thành công!', type: 'success' });
       }
       handleCloseModal();
-      setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
     } catch (error) {
-      setToast({ show: true, message: "Lỗi khi lưu tin tức!", type: "error" });
+      setToast({ show: true, message: 'Lỗi khi lưu tin tức!', type: 'error' });
     } finally {
       setSubmitLoading(false);
     }
-  }, [editMode, currentNews, validateForm, handleCloseModal, categories]);
+  };
 
-  const handleDeleteNews = useCallback(async (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa tin tức này?")) {
-      try {
-        await deleteNews(id);
-        setNews((prev) => prev.filter((n) => n.id !== id));
-        setToast({ show: true, message: "Xóa tin tức thành công!", type: "success" });
-        setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
-      } catch (error) {
-        setToast({ show: true, message: "Lỗi khi xóa tin tức!", type: "error" });
-      }
+  const handleDeleteNews = (id) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa tin tức này?')) {
+      setNews(prev => prev.filter(item => item.id !== id));
+      setToast({ show: true, message: 'Xóa tin tức thành công!', type: 'success' });
     }
-  }, []);
+  };
+
+  const handleInputChange = (field, value) => {
+    setCurrentNews(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const filteredNews = news.filter(item => {
+    const matchesSearch = item.titleVi.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.titleEn.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.descriptionVi.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.descriptionEn.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesCategory = !filters.category || item.postCategoryId === parseInt(filters.category);
+    const matchesStatus = !filters.status || 
+                         (filters.status === "active" && item.status === 1) ||
+                         (filters.status === "inactive" && item.status === 0);
+    
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  const sortedNews = [...filteredNews].sort((a, b) => {
+    const aValue = a[sortConfig.key];
+    const bValue = b[sortConfig.key];
+    
+    if (sortConfig.direction === 'asc') {
+      return aValue > bValue ? 1 : -1;
+    } else {
+      return aValue < bValue ? 1 : -1;
+    }
+  });
+
+  const paginatedNews = sortedNews.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(sortedNews.length / itemsPerPage);
+
+  const columns = [
+    { key: 'titleVi', label: 'Tiêu đề (VI)', sortable: true },
+    { key: 'titleEn', label: 'Title (EN)', sortable: true },
+    { 
+      key: 'descriptionVi', 
+      label: 'Tóm tắt (VI)', 
+      render: (value) => value ? <span title={value}>...</span> : ''
+    },
+    { 
+      key: 'descriptionEn', 
+      label: 'Summary (EN)', 
+      render: (value) => value ? <span title={value}>...</span> : ''
+    },
+    {
+      key: 'postCategoryNameVi',
+      label: 'Danh mục',
+      sortable: true
+    },
+    {
+      key: 'status',
+      label: 'Trạng thái',
+      sortable: true,
+      render: (value) => (
+        <span className={`status-badge ${value === 1 ? 'active' : 'inactive'}`}>
+          {value === 1 ? 'Hoạt động' : 'Không hoạt động'}
+        </span>
+      )
+    },
+    {
+      key: 'featured',
+      label: 'Nổi bật',
+      sortable: true,
+      render: (value) => (
+        <span className={`featured-badge ${value ? 'featured' : 'normal'}`}>
+          {value ? 'Có' : 'Không'}
+        </span>
+      )
+    },
+    {
+      key: 'timePosted',
+      label: 'Ngày đăng',
+      sortable: true,
+      render: (value) => new Date(value).toLocaleDateString('vi-VN')
+    },
+    {
+      key: 'actions',
+      label: 'Thao tác',
+      render: (value, item) => (
+        <div className="action-buttons">
+          <button
+            className="btn btn-sm btn-primary"
+            onClick={() => handleEdit(item)}
+            title="Chỉnh sửa"
+          >
+            <i className="bi bi-pencil"></i>
+            <span>Sửa</span>
+          </button>
+          <button
+            className="btn btn-sm btn-danger"
+            onClick={() => handleDeleteNews(item.id)}
+            title="Xóa"
+          >
+            <i className="bi bi-trash"></i>
+            <span>Xóa</span>
+          </button>
+        </div>
+      )
+    }
+  ];
 
   const handleSort = useCallback((key) => {
     setSortConfig((prev) => ({
@@ -208,121 +320,170 @@ const NewsList = () => {
     }));
   }, []);
 
-  const handleFilterChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-    setCurrentPage(1);
-  }, []);
-
-  const getFilteredAndSortedNews = useCallback(() => {
-    let filteredNews = [...news];
-    if (filters.search) {
-      filteredNews = filteredNews.filter((n) =>
-        n.title.toLowerCase().includes(filters.search.toLowerCase())
-      );
-    }
-    if (filters.category) {
-      filteredNews = filteredNews.filter((n) => n.category === filters.category);
-    }
-    if (filters.status) {
-      filteredNews = filteredNews.filter((n) => n.status === filters.status);
-    }
-    filteredNews.sort((a, b) => {
-      const key = sortConfig.key;
-      const direction = sortConfig.direction === "asc" ? 1 : -1;
-      if (key === "title" || key === "category" || key === "status") {
-        return a[key].localeCompare(b[key]) * direction;
-      } else if (key === "publishDate") {
-        return (new Date(a[key]) - new Date(b[key])) * direction;
-      }
-      return (a[key] - b[key]) * direction;
-    });
-    return filteredNews;
-  }, [news, filters, sortConfig]);
-
-  const filteredNews = useMemo(() => getFilteredAndSortedNews(), [getFilteredAndSortedNews]);
-  const totalPages = Math.ceil(filteredNews.length / itemsPerPage);
-  const paginatedNews = useMemo(() => filteredNews.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage), [filteredNews, currentPage, itemsPerPage]);
-
-  const handlePageChange = useCallback((page) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  }, [totalPages]);
-
-  // Đặt handleToggleStatus ở đây trước columns
-  const handleToggleStatus = useCallback((newsItem) => {
-    setNews((prev) => prev.map((n) =>
-      n.id === newsItem.id ? { ...n, status: n.status === "active" ? "inactive" : "active" } : n
-    ));
-    setToast({ show: true, message: `Đã ${newsItem.status === "active" ? "tạm dừng" : "kích hoạt"} tin tức!`, type: "success" });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
-  }, []);
-
-  // Columns config for DataTable
-  const columns = useMemo(() => [
-    { key: "id", title: "ID", sortable: true },
-    { key: "title", title: "Tiêu đề", sortable: true },
-    { key: "category", title: "Danh mục", sortable: true },
-    { key: "publishDate", title: "Ngày đăng", sortable: true },
-    { key: "status", title: "Trạng thái", sortable: true, render: (val) => <span className={`badge badge-${val === "active" ? "success" : "danger"}`}>{val === "active" ? "Hiển thị" : "Ẩn"}</span> },
-    { key: "toggleStatus", title: "Đổi trạng thái", sortable: false, render: (val, row) => (
-      <button className="btn btn-toggle-status" onClick={() => handleToggleStatus(row)}>
-        {row.status === "active" ? "Tạm dừng" : "Kích hoạt"}
-      </button>
-    ) },
-  ], [handleToggleStatus]);
-
-  // Fields config for FormModal
-  const fields = useMemo(() => [
-    { name: "title", label: "Tiêu đề", type: "text", required: true, onBlur: () => generateSlug(currentNews.title) },
-    { name: "slug", label: "Slug", type: "text", required: true },
-    { name: "category", label: "Danh mục", type: "select", required: true, options: [{ value: "", label: "Chọn danh mục" }, ...categories.map(c => ({ value: c.name, label: c.name }))] },
-    { name: "summary", label: "Tóm tắt", type: "textarea" },
-    { name: "content", label: "Nội dung", type: "custom", required: true, render: () => (
-      <Editor
-        apiKey="1odjd377mh1anpljwb097v4n58bfglpgmj7hggmqzbe173fz"
-        value={currentNews.content}
-        init={{
-          height: 300,
-          menubar: true,
-          plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
-            'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'help', 'wordcount'
-          ],
-          toolbar:
-            'undo redo | formatselect | bold italic backcolor | \n        alignleft aligncenter alignright alignjustify | \n        bullist numlist outdent indent | removeformat | help | image media table code',
-          language: 'vi',
-          image_title: true,
-          automatic_uploads: true,
-          file_picker_types: 'image',
-        }}
-        onEditorChange={handleEditorChange}
-      />
-    ) },
-    { name: "imageUrl", label: "Hình ảnh", type: "custom", render: () => (
-      <>
+  const renderFilters = () => (
+    <div className="filters-section">
+      <div className="filter-group">
         <input
-          type="file"
+          type="text"
+          placeholder="Tìm kiếm tin tức..."
+          value={filters.search}
+          onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
           className="form-control"
-          accept="image/*"
-          onChange={handleImageUpload}
         />
-        {currentNews.imageUrl && (
-          <div className="image-preview">
-            <img src={currentNews.imageUrl} alt="Preview" style={{ maxWidth: '200px', marginTop: '10px' }} />
-          </div>
-        )}
-      </>
-    ) },
-    { name: "publishDate", label: "Ngày đăng", type: "date" },
-    { name: "status", label: "Trạng thái", type: "select", options: [
-      { value: "active", label: "Hiển thị" },
-      { value: "inactive", label: "Ẩn" },
-    ] },
-    { name: "featured", label: "Nổi bật", type: "checkbox" },
-  ], [categories, currentNews, handleEditorChange, handleImageUpload, generateSlug]);
+      </div>
+      <div className="filter-group">
+        <select
+          value={filters.category}
+          onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+          className="form-control"
+        >
+          <option value="">Tất cả danh mục</option>
+          {categories.map(category => (
+            <option key={category.id} value={category.id}>{category.nameVi}</option>
+          ))}
+        </select>
+      </div>
+      <div className="filter-group">
+        <select
+          value={filters.status}
+          onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+          className="form-control"
+        >
+          <option value="">Tất cả trạng thái</option>
+          <option value="active">Hoạt động</option>
+          <option value="inactive">Không hoạt động</option>
+        </select>
+      </div>
+    </div>
+  );
+
+  const renderNewsForm = () => (
+    <div className="news-form">
+      <div className="form-row">
+        <div className="form-group">
+          <label>Tiêu đề (VI) *</label>
+          <input
+            type="text"
+            value={currentNews.titleVi}
+            onChange={(e) => handleInputChange('titleVi', e.target.value)}
+            className={`form-control ${errors.titleVi ? 'is-invalid' : ''}`}
+            placeholder="Nhập tiêu đề tiếng Việt"
+          />
+          {errors.titleVi && <div className="invalid-feedback">{errors.titleVi}</div>}
+        </div>
+        <div className="form-group">
+          <label>Title (EN) *</label>
+          <input
+            type="text"
+            value={currentNews.titleEn}
+            onChange={(e) => handleInputChange('titleEn', e.target.value)}
+            className={`form-control ${errors.titleEn ? 'is-invalid' : ''}`}
+            placeholder="Enter title in English"
+          />
+          {errors.titleEn && <div className="invalid-feedback">{errors.titleEn}</div>}
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Slug</label>
+          <input
+            type="text"
+            value={currentNews.slug}
+            onChange={(e) => handleInputChange('slug', e.target.value)}
+            className="form-control"
+            placeholder="Nhập slug (tự động tạo nếu để trống)"
+          />
+        </div>
+        <div className="form-group">
+          <label>URL hình ảnh</label>
+          <input
+            type="url"
+            value={currentNews.imageUrl}
+            onChange={(e) => handleInputChange('imageUrl', e.target.value)}
+            className="form-control"
+            placeholder="Nhập URL hình ảnh"
+          />
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Tóm tắt (VI) *</label>
+          <textarea
+            value={currentNews.summaryVi}
+            onChange={(e) => handleInputChange('summaryVi', e.target.value)}
+            className={`form-control ${errors.summaryVi ? 'is-invalid' : ''}`}
+            rows="3"
+            placeholder="Nhập tóm tắt tiếng Việt"
+          />
+          {errors.summaryVi && <div className="invalid-feedback">{errors.summaryVi}</div>}
+        </div>
+        <div className="form-group">
+          <label>Summary (EN) *</label>
+          <textarea
+            value={currentNews.summaryEn}
+            onChange={(e) => handleInputChange('summaryEn', e.target.value)}
+            className={`form-control ${errors.summaryEn ? 'is-invalid' : ''}`}
+            rows="3"
+            placeholder="Enter summary in English"
+          />
+          {errors.summaryEn && <div className="invalid-feedback">{errors.summaryEn}</div>}
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Nội dung *</label>
+        <Editor
+          value={currentNews.content}
+          onEditorChange={c => handleInputChange('content', c)}
+          init={{
+            menubar: true,
+            plugins: [
+              'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+              'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+              'insertdatetime', 'media', 'table', 'help', 'wordcount',
+              'emoticons', 'codesample'
+            ],
+            toolbar:
+              'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
+              'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
+              'link image media table codesample charmap emoticons | removeformat | help',
+            height: 300,
+            branding: false,
+            promotion: false,
+            appendTo: document.body
+          }}
+        />
+        {errors.content && <div className="invalid-feedback">{errors.content}</div>}
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Trạng thái</label>
+          <select
+            value={currentNews.status}
+            onChange={(e) => handleInputChange('status', e.target.value)}
+            className="form-control"
+          >
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Không hoạt động</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Nổi bật</label>
+          <select
+            value={currentNews.featured}
+            onChange={(e) => handleInputChange('featured', e.target.value === 'true')}
+            className="form-control"
+          >
+            <option value={false}>Không</option>
+            <option value={true}>Có</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -330,107 +491,73 @@ const NewsList = () => {
 
   return (
     <div className="admin-news-list">
+      {/* Nơi TinyMCE sẽ render toolbar ra ngoài modal */}
+      <div id="tiny-toolbar-container" />
+      <div className="page-header">
+        <h1>Quản lý tin tức</h1>
+        <button className="btn btn-primary" onClick={handleAddNew}>
+          <i className="bi bi-plus"></i>
+          Thêm tin tức
+        </button>
+      </div>
+
+      {renderFilters()}
+
+      <div className="admin-table-container">
+        <DataTable
+          data={paginatedNews}
+          columns={columns}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          sortConfig={sortConfig}
+          onSort={handleSort}
+          itemsPerPage={itemsPerPage}
+          totalItems={sortedNews.length}
+          tableClassName="admin-table"
+        />
+      </div>
+
+      <ReactModal
+        isOpen={showModal}
+        onRequestClose={handleCloseModal}
+        contentLabel="Tin tức"
+        style={{
+          overlay: { zIndex: 1000, background: 'rgba(0,0,0,0.5)' },
+          content: {
+            zIndex: 1001,
+            maxWidth: '1000px',
+            width: '90vw',
+            minWidth: '320px',
+            margin: 'auto',
+            borderRadius: 12,
+            padding: 0,
+            border: 'none',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.18)'
+          }
+        }}
+        ariaHideApp={false}
+      >
+        <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 24px 0 24px', borderBottom: '1px solid #eee' }}>
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>{editMode ? 'Chỉnh sửa tin tức' : 'Thêm tin tức mới'}</h2>
+          <button className="modal-close" onClick={handleCloseModal} aria-label="Đóng" style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', color: '#6b7280' }}>✕</button>
+        </div>
+        <div className="modal-body" style={{ padding: '24px' }}>
+          {renderNewsForm()}
+        </div>
+        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, padding: '0 24px 24px 24px', borderTop: '1px solid #eee' }}>
+          <button onClick={handleCloseModal} className="btn btn-secondary">Hủy</button>
+          <button onClick={handleSubmit} className="btn btn-primary" disabled={submitLoading}>
+            {submitLoading ? 'Đang xử lý...' : (editMode ? 'Cập nhật' : 'Thêm')}
+          </button>
+        </div>
+      </ReactModal>
+
       <ToastMessage
         show={toast.show}
         message={toast.message}
         type={toast.type}
-        onClose={() => setToast({ show: false, message: "", type: "" })}
-      />
-      <div className="card">
-        <div className="card-header">
-          <h3>Quản lý tin tức</h3>
-          <button className="btn btn-primary" onClick={() => handleShowModal()}>
-            Thêm tin tức mới
-          </button>
-        </div>
-        <div className="card-body">
-          <div className="filter-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Tìm kiếm tiêu đề..."
-              name="search"
-              value={filters.search}
-              onChange={handleFilterChange}
-            />
-            <select
-              className="form-control"
-              name="category"
-              value={filters.category}
-              onChange={handleFilterChange}
-            >
-              <option value="">Tất cả danh mục</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.name}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-            <select
-              className="form-control"
-              name="status"
-              value={filters.status}
-              onChange={handleFilterChange}
-            >
-              <option value="">Tất cả trạng thái</option>
-              <option value="active">Hiển thị</option>
-              <option value="inactive">Ẩn</option>
-            </select>
-          </div>
-          <DataTable
-            columns={columns}
-            data={paginatedNews}
-            onEdit={handleShowModal}
-            onDelete={handleDeleteNews}
-            onSort={handleSort}
-            sortConfig={sortConfig}
-            loading={isLoading}
-            emptyText="Không có tin tức nào phù hợp"
-          />
-          <div className="pagination-container">
-            <div className="pagination-info">
-              Hiển thị {paginatedNews.length} / {filteredNews.length} tin tức
-            </div>
-            <div className="pagination">
-              <button
-                className={`page-btn ${currentPage === 1 ? "disabled" : ""}`}
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Trước
-              </button>
-              {[...Array(totalPages).keys()].map((page) => (
-                <button
-                  key={page + 1}
-                  className={`page-btn ${currentPage === page + 1 ? "active" : ""}`}
-                  onClick={() => handlePageChange(page + 1)}
-                >
-                  {page + 1}
-                </button>
-              ))}
-              <button
-                className={`page-btn ${currentPage === totalPages ? "disabled" : ""}`}
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Sau
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <FormModal
-        isOpen={showModal}
-        onClose={handleCloseModal}
-        onSubmit={handleSubmit}
-        fields={fields}
-        values={currentNews}
-        errors={errors}
-        onChange={handleInputChange}
-        loading={submitLoading}
-        title={editMode ? "Chỉnh sửa tin tức" : "Thêm tin tức mới"}
-        submitText={editMode ? "Cập nhật" : "Thêm mới"}
-        cancelText="Hủy"
+        onClose={() => setToast({ ...toast, show: false })}
       />
     </div>
   );

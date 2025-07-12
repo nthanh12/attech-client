@@ -192,8 +192,8 @@
 
 .trending-area .trand-right-cap h4 a {
     color: #1a1a1a;
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 400;
     text-decoration: none;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -251,7 +251,7 @@
 }
 
 .trending-area .trending-main .trending-top .trend-top-img .trend-top-cap h2 {
-    font-size: 24px;
+    font-size: 18px;
     color: #ffffff;
 }
 

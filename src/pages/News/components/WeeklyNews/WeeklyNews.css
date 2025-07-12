@@ -127,16 +127,16 @@
 }
 
 .weekly-news-area .weekly-caption h4 a {
-  color: #111827;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.5;
-  text-decoration: none;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  transition: color 0.2s ease;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s ease;
 }
 
 .weekly-news-area .weekly-caption h4 a:hover {

@@ -125,7 +125,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 16px;
+  font-size: 15px;
   max-height: 4.2em;
 }
 
@@ -267,4 +267,10 @@
   .news-image {
     padding-top: 50%;
   }
+}
+.home_link {
+  color: #333;
+}
+.home_category {
+  color: #333;
 }

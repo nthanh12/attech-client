@@ -1,11 +1,14 @@
 // AdminLayout.js
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation, Outlet } from "react-router-dom";
+import { usePermissions } from "../hooks/usePermissions";
 import "./AdminLayout.css";
+import "../admin-common.css";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { canAccess } = usePermissions();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [openSubMenus, setOpenSubMenus] = useState({});
@@ -34,27 +37,108 @@ const AdminLayout = () => {
   };
 
   const navItems = [
-    { path: "/admin", label: "Dashboard", icon: "bi bi-speedometer2" },
-    { path: "/admin/products", label: "Sản phẩm", icon: "bi bi-box" },
-    { path: "/admin/services", label: "Dịch vụ", icon: "bi bi-gear" },
-    { path: "/admin/news", label: "Tin tức", icon: "bi bi-newspaper" },
-    { path: "/admin/notifications", label: "Thông báo", icon: "bi bi-bell" },
-    { path: "/admin/config", label: "Cấu hình", icon: "bi bi-sliders" },
-    { path: "/admin/accounts", label: "Tài khoản", icon: "bi bi-people" },
+    { path: "/admin", label: "Dashboard", icon: "bi bi-speedometer2", permission: "view_dashboard" },
+    { 
+      path: "/admin/products", 
+      label: "Sản phẩm", 
+      icon: "bi bi-box",
+      permission: "view_products"
+    },
+    { 
+      path: "/admin/services", 
+      label: "Dịch vụ", 
+      icon: "bi bi-gear",
+      permission: "view_services"
+    },
+    { 
+      path: "/admin/news", 
+      label: "Tin tức", 
+      icon: "bi bi-newspaper",
+      permission: "view_news"
+    },
+    { 
+      path: "/admin/notifications", 
+      label: "Thông báo", 
+      icon: "bi bi-bell",
+      permission: "view_notifications"
+    },
+    { 
+      path: "/admin/users", 
+      label: "Quản lý người dùng", 
+      icon: "bi bi-person-gear",
+      permission: "view_users"
+    },
+    { 
+      path: "/admin/routes", 
+      label: "Quản lý Routes", 
+      icon: "bi bi-diagram-3",
+      permission: "view_routes"
+    },
+    { 
+      path: "/admin/permissions", 
+      label: "Quản lý Quyền hạn", 
+      icon: "bi bi-shield-check",
+      permission: "view_permissions"
+    },
+    { 
+      path: "/admin/media", 
+      label: "Quản lý Media", 
+      icon: "bi bi-images",
+      permission: "view_media"
+    },
+    { 
+      path: "/admin/system-settings", 
+      label: "Cài đặt hệ thống", 
+      icon: "bi bi-gear-wide-connected",
+      permission: "view_system_settings"
+    },
+    { 
+      path: "/admin/config", 
+      label: "Cấu hình Banner", 
+      icon: "bi bi-sliders",
+      permission: "view_banner_config"
+    },
     {
       path: "/admin/menu",
       label: "Danh mục",
       icon: "bi bi-collection-fill",
       subItems: [
-        { path: "/admin/product-category", label: "Loại sản phẩm" },
-        { path: "/admin/news-category", label: "Loại tin tức" },
-        { path: "/admin/notification-category", label: "Loại thông báo" },
+        { 
+          path: "/admin/product-category", 
+          label: "Loại sản phẩm",
+          permission: "view_product_categories"
+        },
+        { 
+          path: "/admin/news-category", 
+          label: "Loại tin tức",
+          permission: "view_news_categories"
+        },
+        { 
+          path: "/admin/notification-category", 
+          label: "Loại thông báo",
+          permission: "view_notification_categories"
+        },
       ],
     },
   ];
 
+  // Filter nav items based on permissions
+  const filteredNavItems = navItems.map(item => {
+    if (item.subItems) {
+      return {
+        ...item,
+        subItems: item.subItems.filter(subItem => 
+          !subItem.permission || canAccess(subItem.permission)
+        )
+      };
+    }
+    return item;
+  }).filter(item => 
+    !item.permission || canAccess(item.permission)
+  );
+
   useEffect(() => {
-    const activeParent = navItems.find(
+    const activeParent = filteredNavItems.find(
       (item) =>
         item.subItems &&
         item.subItems.some((si) => si.path === location.pathname)
@@ -75,32 +159,17 @@ const AdminLayout = () => {
   };
 
   return (
-    <div className="admin-layout d-flex">
-      {sidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
+    <div className="admin-layout">
       <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebar-header d-flex justify-content-between align-items-center p-3">
-          <Link
-            to="/admin"
-            className="d-flex align-items-center gap-2 text-decoration-none"
-          >
-            <i className="bi bi-rocket-takeoff fs-4"></i>
-            <h4 className="mb-0 sidebar-title">ATTECH</h4>
-          </Link>
-          <button
-            className="btn btn-sm d-md-none toggle-sidebar-close-btn"
-            onClick={toggleSidebar}
-          >
-            <i className="bi bi-x-lg fs-5"></i>
-          </button>
+        <div className="sidebar-header">
+          <div className="sidebar-title">
+            <i className="bi bi-rocket-takeoff"></i>
+            <span>Admin Panel</span>
+          </div>
         </div>
 
         <ul className="nav flex-column mt-3">
-          {navItems.map((item) =>
+          {filteredNavItems.map((item) =>
             item.subItems ? (
               <li key={item.path} className="nav-item">
                 <button
@@ -164,28 +233,25 @@ const AdminLayout = () => {
         </ul>
       </div>
 
-      <div className="main-wrapper flex-grow-1 d-flex flex-column">
-        <header className="bg-white p-3 border-bottom d-flex justify-content-between align-items-center main-header sticky-header">
-          <div className="d-flex align-items-center gap-3">
-            <button
-              className="btn d-md-none p-1 toggle-sidebar-open-btn"
-              onClick={toggleSidebar}
-            >
-              <i className="bi bi-list fs-3"></i>
+      <div className="main-wrapper">
+        <header className="header">
+          <div className="header-left">
+            <button className="sidebar-toggle" onClick={toggleSidebar}>
+              <i className="bi bi-list"></i>
             </button>
-            <h5 className="mb-0 header-title">Trang quản trị</h5>
-          </div>
-          <div className="d-flex align-items-center gap-3">
-            <div className="header-clock">
-              <i className="bi bi-clock"></i> {now.toLocaleTimeString()}
+            <div className="breadcrumb">
+              <span>Admin Panel</span>
+              <i className="bi bi-chevron-right"></i>
+              <span>{now.toLocaleDateString("vi-VN")}</span>
             </div>
-            <Link
-              to="/"
-              className="btn btn-outline-primary d-flex align-items-center gap-2"
-              title="Về trang chủ"
-            >
-              <span>Trang chủ</span>
-            </Link>
+          </div>
+
+          <div className="header-right">
+            <div className="time-display">
+              <i className="bi bi-clock"></i>
+              <span>{now.toLocaleTimeString("vi-VN")}</span>
+            </div>
+
             <div className="dropdown position-relative">
               <button
                 className="btn btn-outline-secondary d-flex align-items-center gap-2"
