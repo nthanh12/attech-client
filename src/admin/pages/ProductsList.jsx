@@ -41,6 +41,24 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
 import ReactModal from 'react-modal';
+import ImageUpload from "../../components/UI/ImageUpload";
+
+// Hàm dịch gọi backend proxy
+async function translateProxy(text) {
+  if (!text) return '';
+  const res = await fetch('/api/translate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      text,
+      source: 'vi',
+      target: 'en'
+    })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+  return data.translatedText;
+}
 
 const ProductsList = () => {
   const [product, setProduct] = useState([]);
@@ -54,13 +72,18 @@ const ProductsList = () => {
     id: null,
     nameVi: "",
     nameEn: "",
-    category: "",
-    content: "",
-    summary: "",
-    imageUrl: "",
-    featured: false,
-    status: "active",
-    publishDate: new Date().toISOString().split("T")[0],
+    slugVi: "",
+    slugEn: "",
+    descriptionVi: "",
+    descriptionEn: "",
+    contentVi: "",
+    contentEn: "",
+    productCategoryId: "",
+    productCategoryNameVi: "",
+    productCategoryNameEn: "",
+    image: "",
+    timePosted: new Date().toISOString(),
+    status: 1,
   };
   const [currentProduct, setCurrentProduct] = useState({ ...emptyProduct });
   const [errors, setErrors] = useState({});
@@ -73,11 +96,38 @@ const ProductsList = () => {
     status: "",
   });
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [translating, setTranslating] = useState({});
+  const [activeTab, setActiveTab] = useState('vi');
 
   useEffect(() => {
-    setProduct(mockProducts);
-    // Sử dụng mock categories thay vì API call
-    setCategories(mockProductCategories);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const [productRes, categoryRes] = await Promise.all([
+          getProducts(),
+          getProductCategories()
+        ]);
+        if (productRes && productRes.success) {
+          setProduct(productRes.data);
+        } else {
+          setProduct(mockProducts);
+          setToast({ show: true, message: 'Đang hiển thị dữ liệu mẫu sản phẩm!', type: 'warning' });
+        }
+        if (categoryRes && categoryRes.success) {
+          setCategories(categoryRes.data);
+        } else {
+          setCategories(mockProductCategories);
+          setToast({ show: true, message: 'Đang hiển thị dữ liệu mẫu danh mục!', type: 'warning' });
+        }
+      } catch (error) {
+        setProduct(mockProducts);
+        setCategories(mockProductCategories);
+        setToast({ show: true, message: 'Không kết nối được API, đang dùng dữ liệu mẫu!', type: 'error' });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
   const handleCloseModal = useCallback(() => {
@@ -100,13 +150,18 @@ const ProductsList = () => {
       id: productItem.id,
       nameVi: productItem.nameVi || "",
       nameEn: productItem.nameEn || "",
-      category: productItem.productCategoryId || "",
-      content: productItem.contentVi || "",
-      summary: productItem.descriptionVi || "",
-      imageUrl: productItem.image || "",
-      featured: productItem.featured || false,
-      status: productItem.status === 1 ? "active" : "inactive",
-      publishDate: productItem.timePosted ? productItem.timePosted.split("T")[0] : new Date().toISOString().split("T")[0],
+      slugVi: productItem.slugVi || "",
+      slugEn: productItem.slugEn || "",
+      descriptionVi: productItem.descriptionVi || "",
+      descriptionEn: productItem.descriptionEn || "",
+      contentVi: productItem.contentVi || "",
+      contentEn: productItem.contentEn || "",
+      productCategoryId: productItem.productCategoryId || "",
+      productCategoryNameVi: productItem.productCategoryNameVi || "",
+      productCategoryNameEn: productItem.productCategoryNameEn || "",
+      image: productItem.image || "",
+      timePosted: productItem.timePosted || new Date().toISOString(),
+      status: productItem.status,
     });
     setErrors({});
     setShowModal(true);
@@ -114,65 +169,38 @@ const ProductsList = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
-    if (!currentProduct.nameVi.trim()) {
-      newErrors.nameVi = 'Tên sản phẩm tiếng Việt là bắt buộc';
-    }
-    
-    if (!currentProduct.nameEn.trim()) {
-      newErrors.nameEn = 'Tên sản phẩm tiếng Anh là bắt buộc';
-    }
-    
-    if (!currentProduct.category) {
-      newErrors.category = 'Danh mục là bắt buộc';
-    }
-    
-    if (!currentProduct.content.trim()) {
-      newErrors.content = 'Nội dung là bắt buộc';
-    }
-
+    if (!currentProduct.nameVi.trim()) newErrors.nameVi = 'Tên sản phẩm tiếng Việt là bắt buộc';
+    if (!currentProduct.nameEn.trim()) newErrors.nameEn = 'Tên sản phẩm tiếng Anh là bắt buộc';
+    if (!currentProduct.slugVi.trim()) newErrors.slugVi = 'Slug tiếng Việt là bắt buộc';
+    if (!currentProduct.slugEn.trim()) newErrors.slugEn = 'Slug tiếng Anh là bắt buộc';
+    if (!currentProduct.productCategoryId) newErrors.productCategoryId = 'Danh mục là bắt buộc';
+    if (!currentProduct.contentVi.trim()) newErrors.contentVi = 'Nội dung tiếng Việt là bắt buộc';
+    if (!currentProduct.contentEn.trim()) newErrors.contentEn = 'Nội dung tiếng Anh là bắt buộc';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
     setSubmitLoading(true);
     try {
       if (editMode) {
-        // Update product
-        setProduct(prev => prev.map(item => 
+        setProduct(prev => prev.map(item =>
           item.id === currentProduct.id ? {
             ...item,
-            nameVi: currentProduct.nameVi,
-            nameEn: currentProduct.nameEn,
-            contentVi: currentProduct.content,
-            contentEn: currentProduct.content,
-            descriptionVi: currentProduct.descriptionVi,
-            descriptionEn: currentProduct.descriptionEn,
-            productCategoryId: currentProduct.category,
-            status: currentProduct.status === "active" ? 1 : 0,
-            image: currentProduct.imageUrl,
-            featured: currentProduct.featured
+            ...currentProduct,
+            productCategoryNameVi: categories.find(c => c.id === parseInt(currentProduct.productCategoryId))?.nameVi || '',
+            productCategoryNameEn: categories.find(c => c.id === parseInt(currentProduct.productCategoryId))?.nameEn || '',
           } : item
         ));
         setToast({ show: true, message: 'Cập nhật sản phẩm thành công!', type: 'success' });
       } else {
-        // Create new product
         const newProduct = {
+          ...currentProduct,
           id: Date.now(),
-          nameVi: currentProduct.nameVi,
-          nameEn: currentProduct.nameEn,
-          contentVi: currentProduct.content,
-          contentEn: currentProduct.content,
-          descriptionVi: currentProduct.descriptionVi,
-          descriptionEn: currentProduct.descriptionEn,
-          productCategoryId: currentProduct.category,
-          status: currentProduct.status === "active" ? 1 : 0,
-          image: currentProduct.imageUrl,
-          featured: currentProduct.featured,
-          timePosted: new Date().toISOString()
+          productCategoryNameVi: categories.find(c => c.id === parseInt(currentProduct.productCategoryId))?.nameVi || '',
+          productCategoryNameEn: categories.find(c => c.id === parseInt(currentProduct.productCategoryId))?.nameEn || '',
+          timePosted: new Date().toISOString(),
         };
         setProduct(prev => [newProduct, ...prev]);
         setToast({ show: true, message: 'Thêm sản phẩm thành công!', type: 'success' });
@@ -196,6 +224,42 @@ const ProductsList = () => {
     setCurrentProduct(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  // Thêm hàm giả lập upload ảnh
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    // Hiển thị preview ngay
+    const localUrl = URL.createObjectURL(file);
+    setCurrentProduct(prev => ({ ...prev, image: localUrl }));
+    // Giả lập upload lên server (1s), trả về URL giả
+    setTimeout(() => {
+      // Giả lập URL trả về từ server
+      const fakeServerUrl = localUrl; // Có thể thay bằng `https://cdn.example.com/` + file.name
+      setCurrentProduct(prev => ({ ...prev, image: fakeServerUrl }));
+    }, 1000);
+  };
+
+  // Hàm dịch sử dụng backend proxy, fallback copy text
+  const handleTranslate = async (fromField, toField) => {
+    const text = currentProduct[fromField] || '';
+    if (!text) return;
+    setTranslating(prev => ({ ...prev, [toField]: true }));
+    try {
+      const translated = await translateProxy(text);
+      setCurrentProduct(prev => ({
+        ...prev,
+        [toField]: translated
+      }));
+    } catch (err) {
+      setCurrentProduct(prev => ({
+        ...prev,
+        [toField]: text // fallback: copy text nếu backend chưa có
+      }));
+    } finally {
+      setTranslating(prev => ({ ...prev, [toField]: false }));
     }
   };
 
@@ -231,73 +295,18 @@ const ProductsList = () => {
   const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
 
   const columns = [
+    { key: 'id', label: 'ID', sortable: true },
     { key: 'nameVi', label: 'Tên sản phẩm (VI)', sortable: true },
-    { key: 'nameEn', label: 'Product Name (EN)', sortable: true },
-    { 
-      key: 'descriptionVi', 
-      label: 'Mô tả (VI)', 
-      render: (value) => value ? <span title={value}>...</span> : ''
-    },
-    { 
-      key: 'descriptionEn', 
-      label: 'Description (EN)', 
-      render: (value) => value ? <span title={value}>...</span> : ''
-    },
-    {
-      key: 'productCategoryNameVi',
-      label: 'Danh mục',
-      sortable: true
-    },
-    {
-      key: 'status',
-      label: 'Trạng thái',
-      sortable: true,
-      render: (value) => (
-        <span className={`status-badge ${value === 1 ? 'active' : 'inactive'}`}>
-          {value === 1 ? 'Hoạt động' : 'Không hoạt động'}
-        </span>
-      )
-    },
-    {
-      key: 'featured',
-      label: 'Nổi bật',
-      sortable: true,
-      render: (value) => (
-        <span className={`featured-badge ${value ? 'featured' : 'normal'}`}>
-          {value ? 'Có' : 'Không'}
-        </span>
-      )
-    },
-    {
-      key: 'timePosted',
-      label: 'Ngày đăng',
-      sortable: true,
-      render: (value) => new Date(value).toLocaleDateString('vi-VN')
-    },
-    {
-      key: 'actions',
-      label: 'Thao tác',
-      render: (value, item) => (
-        <div className="action-buttons">
-          <button
-            className="btn btn-sm btn-primary"
-            onClick={() => handleEdit(item)}
-            title="Chỉnh sửa"
-          >
-            <i className="bi bi-pencil"></i>
-            <span>Sửa</span>
-          </button>
-          <button
-            className="btn btn-sm btn-danger"
-            onClick={() => handleDeleteProduct(item.id)}
-            title="Xóa"
-          >
-            <i className="bi bi-trash"></i>
-            <span>Xóa</span>
-          </button>
-        </div>
-      )
-    }
+    { key: 'productCategoryNameVi', label: 'Danh mục', sortable: true },
+    { key: 'image', label: 'Ảnh', render: (value) => value ? <img src={value} alt="Ảnh" style={{width: 60, height: 40, objectFit: 'cover'}} /> : '' },
+    { key: 'timePosted', label: 'Ngày đăng', sortable: true, render: (value) => new Date(value).toLocaleDateString('vi-VN') },
+    { key: 'status', label: 'Trạng thái', sortable: true, render: (value) => (<span className={`status-badge ${value === 1 ? 'active' : 'inactive'}`}>{value === 1 ? 'Hoạt động' : 'Không hoạt động'}</span>) },
+    { key: 'actions', label: 'Thao tác', render: (value, item) => (
+      <div className="action-buttons">
+        <button className="btn btn-sm btn-primary" onClick={() => handleEdit(item)} title="Chỉnh sửa"><i className="bi bi-pencil"></i><span>Sửa</span></button>
+        <button className="btn btn-sm btn-danger" onClick={() => handleDeleteProduct(item.id)} title="Xóa"><i className="bi bi-trash"></i><span>Xóa</span></button>
+      </div>
+    )}
   ];
 
   const handleSort = useCallback((key) => {
@@ -346,114 +355,142 @@ const ProductsList = () => {
 
   const renderProductForm = () => (
     <div className="product-form">
-      <div className="form-row">
-        <div className="form-group">
-          <label>Tên sản phẩm (VI) *</label>
-          <input
-            type="text"
-            value={currentProduct.nameVi}
-            onChange={(e) => handleInputChange('nameVi', e.target.value)}
-            className={`form-control ${errors.nameVi ? 'is-invalid' : ''}`}
-            placeholder="Nhập tên sản phẩm tiếng Việt"
-          />
-          {errors.nameVi && <div className="invalid-feedback">{errors.nameVi}</div>}
-        </div>
-        <div className="form-group">
-          <label>Product Name (EN) *</label>
-          <input
-            type="text"
-            value={currentProduct.nameEn}
-            onChange={(e) => handleInputChange('nameEn', e.target.value)}
-            className={`form-control ${errors.nameEn ? 'is-invalid' : ''}`}
-            placeholder="Enter product name in English"
-          />
-          {errors.nameEn && <div className="invalid-feedback">{errors.nameEn}</div>}
-        </div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button type="button" className={`btn btn-tab${activeTab === 'vi' ? ' active' : ''}`} onClick={() => setActiveTab('vi')}>Thông tin & Tiếng Việt</button>
+        <button type="button" className={`btn btn-tab${activeTab === 'en' ? ' active' : ''}`} onClick={() => setActiveTab('en')}>Tiếng Anh</button>
       </div>
-      <div className="form-row">
-        <div className="form-group">
-          <label>Mô tả (VI)</label>
-          <textarea
-            value={currentProduct.descriptionVi}
-            onChange={(e) => handleInputChange('descriptionVi', e.target.value)}
-            className="form-control"
-            rows="2"
-            placeholder="Nhập mô tả tiếng Việt"
-          />
-        </div>
-        <div className="form-group">
-          <label>Description (EN)</label>
-          <textarea
-            value={currentProduct.descriptionEn}
-            onChange={(e) => handleInputChange('descriptionEn', e.target.value)}
-            className="form-control"
-            rows="2"
-            placeholder="Enter description in English"
-          />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label>URL hình ảnh</label>
-        <input
-          type="url"
-          value={currentProduct.imageUrl}
-          onChange={(e) => handleInputChange('imageUrl', e.target.value)}
-          className="form-control"
-          placeholder="Nhập URL hình ảnh"
-        />
-      </div>
-
-      <div className="form-group">
-        <label>Nội dung *</label>
-        <Editor
-          value={currentProduct.content}
-          onEditorChange={c => handleInputChange('content', c)}
-          init={{
-            menubar: true,
-            plugins: [
-              'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-              'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-              'insertdatetime', 'media', 'table', 'help', 'wordcount',
-              'emoticons', 'codesample'
-            ],
-            toolbar:
-              'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
-              'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-              'link image media table codesample charmap emoticons | removeformat | help',
-            height: 300,
-            branding: false,
-            promotion: false,
-            appendTo: document.body
-          }}
-        />
-        {errors.content && <div className="invalid-feedback">{errors.content}</div>}
-      </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label>Trạng thái</label>
-          <select
-            value={currentProduct.status}
-            onChange={(e) => handleInputChange('status', e.target.value)}
-            className="form-control"
-          >
-            <option value="active">Hoạt động</option>
-            <option value="inactive">Không hoạt động</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Nổi bật</label>
-          <select
-            value={currentProduct.featured}
-            onChange={(e) => handleInputChange('featured', e.target.value === 'true')}
-            className="form-control"
-          >
-            <option value={false}>Không</option>
-            <option value={true}>Có</option>
-          </select>
-        </div>
-      </div>
+      {activeTab === 'vi' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Tên sản phẩm (VI) *</label>
+              <input type="text" value={currentProduct.nameVi} onChange={e => handleInputChange('nameVi', e.target.value)} className={`form-control ${errors.nameVi ? 'is-invalid' : ''}`} placeholder="Nhập tên sản phẩm tiếng Việt" />
+              {errors.nameVi && <div className="invalid-feedback">{errors.nameVi}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Slug (VI) *</label>
+              <input type="text" value={currentProduct.slugVi} onChange={e => handleInputChange('slugVi', e.target.value)} className={`form-control ${errors.slugVi ? 'is-invalid' : ''}`} placeholder="Nhập slug tiếng Việt" />
+              {errors.slugVi && <div className="invalid-feedback">{errors.slugVi}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Mô tả (VI)</label>
+              <textarea value={currentProduct.descriptionVi} onChange={e => handleInputChange('descriptionVi', e.target.value)} className="form-control" rows="2" placeholder="Nhập mô tả tiếng Việt" />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Nội dung (VI) *</label>
+              <Editor value={currentProduct.contentVi} onEditorChange={c => handleInputChange('contentVi', c)} init={{
+                menubar: true,
+                plugins: [
+                  'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                  'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                  'insertdatetime', 'media', 'table', 'help', 'wordcount',
+                  'emoticons', 'codesample'
+                ],
+                toolbar:
+                  'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
+                  'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
+                  'link image media table codesample charmap emoticons | removeformat | help',
+                height: 300,
+                branding: false,
+                promotion: false,
+                appendTo: document.body
+              }} />
+              {errors.contentVi && <div className="invalid-feedback">{errors.contentVi}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Danh mục *</label>
+              <select value={currentProduct.productCategoryId} onChange={e => handleInputChange('productCategoryId', e.target.value)} className={`form-control ${errors.productCategoryId ? 'is-invalid' : ''}`}> <option value="">Chọn danh mục</option> {categories.map(cat => (<option key={cat.id} value={cat.id}>{cat.nameVi} / {cat.nameEn}</option>))} </select>
+              {errors.productCategoryId && <div className="invalid-feedback">{errors.productCategoryId}</div>}
+            </div>
+            <div className="form-group">
+              <ImageUpload
+                value={currentProduct.image}
+                onChange={url => handleInputChange('image', url)}
+                label="Ảnh *"
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Trạng thái</label>
+              <select value={currentProduct.status} onChange={e => handleInputChange('status', parseInt(e.target.value))} className="form-control">
+                <option value={1}>Hoạt động</option>
+                <option value={0}>Không hoạt động</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Ngày đăng</label>
+              <input type="date" value={(currentProduct.timePosted ? currentProduct.timePosted.split('T')[0] : '')} onChange={e => handleInputChange('timePosted', e.target.value + 'T00:00:00Z')} className="form-control" />
+            </div>
+          </div>
+        </>
+      )}
+      {activeTab === 'en' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Product Name (EN) *</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input type="text" value={currentProduct.nameEn} onChange={e => handleInputChange('nameEn', e.target.value)} className={`form-control ${errors.nameEn ? 'is-invalid' : ''}`} placeholder="Enter product name in English" />
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('nameVi', 'nameEn')} title="Dịch từ tiếng Việt" disabled={!!translating.nameEn}>{translating.nameEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+              {errors.nameEn && <div className="invalid-feedback">{errors.nameEn}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Slug (EN) *</label>
+              <input type="text" value={currentProduct.slugEn} onChange={e => handleInputChange('slugEn', e.target.value)} className={`form-control ${errors.slugEn ? 'is-invalid' : ''}`} placeholder="Enter slug in English" />
+              {errors.slugEn && <div className="invalid-feedback">{errors.slugEn}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Description (EN)</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <textarea value={currentProduct.descriptionEn} onChange={e => handleInputChange('descriptionEn', e.target.value)} className="form-control" rows="2" placeholder="Enter description in English" />
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('descriptionVi', 'descriptionEn')} title="Dịch từ tiếng Việt" disabled={!!translating.descriptionEn}>{translating.descriptionEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Content (EN) *</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ flex: 1 }}>
+                  <Editor value={currentProduct.contentEn} onEditorChange={c => handleInputChange('contentEn', c)} init={{
+                    menubar: true,
+                    plugins: [
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                      'insertdatetime', 'media', 'table', 'help', 'wordcount',
+                      'emoticons', 'codesample'
+                    ],
+                    toolbar:
+                      'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
+                      'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
+                      'link image media table codesample charmap emoticons | removeformat | help',
+                    height: 300,
+                    branding: false,
+                    promotion: false,
+                    appendTo: document.body
+                  }} />
+                </div>
+                <button type="button" className="btn btn-sm btn-secondary" style={{ height: 40, alignSelf: 'flex-start', marginTop: 4 }} onClick={() => handleTranslate('contentVi', 'contentEn')} title="Dịch từ tiếng Việt" disabled={!!translating.contentEn}>{translating.contentEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+              {errors.contentEn && <div className="invalid-feedback">{errors.contentEn}</div>}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 

@@ -41,6 +41,7 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
 import ReactModal from 'react-modal';
+import ImageUpload from "../../components/UI/ImageUpload";
 
 const NotificationsList = () => {
   const [notification, setNotification] = useState([]);
@@ -75,6 +76,39 @@ const NotificationsList = () => {
     status: "",
   });
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [translating, setTranslating] = useState({});
+  const [activeTab, setActiveTab] = useState('vi');
+
+  // Hàm dịch sử dụng backend proxy, fallback copy text
+  const translateProxy = async (text) => {
+    if (!text) return '';
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text,
+        source: 'vi',
+        target: 'en'
+      })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.translatedText;
+  };
+
+  const handleTranslate = async (fromField, toField) => {
+    const text = currentNotification[fromField] || '';
+    if (!text) return;
+    setTranslating(prev => ({ ...prev, [toField]: true }));
+    try {
+      const translated = await translateProxy(text);
+      setCurrentNotification(prev => ({ ...prev, [toField]: translated }));
+    } catch (err) {
+      setCurrentNotification(prev => ({ ...prev, [toField]: text }));
+    } finally {
+      setTranslating(prev => ({ ...prev, [toField]: false }));
+    }
+  };
 
   useEffect(() => {
     setNotification(mockNotifications);
@@ -103,7 +137,8 @@ const NotificationsList = () => {
       titleVi: notificationItem.titleVi || "",
       titleEn: notificationItem.titleEn || "",
       category: notificationItem.notificationCategoryId || "",
-      content: notificationItem.contentVi || "",
+      contentVi: notificationItem.contentVi || "",
+      contentEn: notificationItem.contentEn || "",
       summaryVi: notificationItem.descriptionVi || "",
       summaryEn: notificationItem.descriptionEn || "",
       imageUrl: notificationItem.image || "",
@@ -130,8 +165,11 @@ const NotificationsList = () => {
       newErrors.category = 'Danh mục là bắt buộc';
     }
     
-    if (!currentNotification.content.trim()) {
-      newErrors.content = 'Nội dung là bắt buộc';
+    if (!currentNotification.contentVi.trim()) {
+      newErrors.contentVi = 'Nội dung tiếng Việt là bắt buộc';
+    }
+    if (!currentNotification.contentEn.trim()) {
+      newErrors.contentEn = 'Nội dung tiếng Anh là bắt buộc';
     }
     if (!currentNotification.summaryVi.trim()) {
       newErrors.summaryVi = 'Tóm tắt tiếng Việt là bắt buộc';
@@ -156,8 +194,8 @@ const NotificationsList = () => {
             ...item,
             titleVi: currentNotification.titleVi,
             titleEn: currentNotification.titleEn,
-            contentVi: currentNotification.content,
-            contentEn: currentNotification.content,
+            contentVi: currentNotification.contentVi,
+            contentEn: currentNotification.contentEn,
             descriptionVi: currentNotification.summaryVi,
             descriptionEn: currentNotification.summaryEn,
             slugVi: currentNotification.slug,
@@ -175,8 +213,8 @@ const NotificationsList = () => {
           id: Date.now(),
           titleVi: currentNotification.titleVi,
           titleEn: currentNotification.titleEn,
-          contentVi: currentNotification.content,
-          contentEn: currentNotification.content,
+          contentVi: currentNotification.contentVi,
+          contentEn: currentNotification.contentEn,
           descriptionVi: currentNotification.summaryVi,
           descriptionEn: currentNotification.summaryEn,
           slugVi: currentNotification.slug,
@@ -244,22 +282,19 @@ const NotificationsList = () => {
   const totalPages = Math.ceil(sortedNotifications.length / itemsPerPage);
 
   const columns = [
+    { key: 'id', label: 'ID', sortable: true },
     { key: 'titleVi', label: 'Tiêu đề (VI)', sortable: true },
-    { key: 'titleEn', label: 'Title (EN)', sortable: true },
-    { 
-      key: 'descriptionVi', 
-      label: 'Tóm tắt (VI)', 
-      render: (value) => value ? <span title={value}>...</span> : ''
-    },
-    { 
-      key: 'descriptionEn', 
-      label: 'Summary (EN)', 
-      render: (value) => value ? <span title={value}>...</span> : ''
-    },
     {
       key: 'notificationCategoryNameVi',
       label: 'Danh mục',
       sortable: true
+    },
+    { key: "imageUrl", label: "Ảnh", render: (value) => value ? <img src={value} alt="Ảnh" style={{width: 60, height: 40, objectFit: 'cover'}} /> : '' },
+    {
+      key: 'timePosted',
+      label: 'Ngày đăng',
+      sortable: true,
+      render: (value) => new Date(value).toLocaleDateString('vi-VN')
     },
     {
       key: 'status',
@@ -270,22 +305,6 @@ const NotificationsList = () => {
           {value === 1 ? 'Hoạt động' : 'Không hoạt động'}
         </span>
       )
-    },
-    {
-      key: 'featured',
-      label: 'Nổi bật',
-      sortable: true,
-      render: (value) => (
-        <span className={`featured-badge ${value ? 'featured' : 'normal'}`}>
-          {value ? 'Có' : 'Không'}
-        </span>
-      )
-    },
-    {
-      key: 'timePosted',
-      label: 'Ngày đăng',
-      sortable: true,
-      render: (value) => new Date(value).toLocaleDateString('vi-VN')
     },
     {
       key: 'actions',
@@ -359,129 +378,183 @@ const NotificationsList = () => {
 
   const renderNotificationForm = () => (
     <div className="notification-form">
-      <div className="form-row">
-        <div className="form-group">
-          <label>Tiêu đề (VI) *</label>
-          <input
-            type="text"
-            value={currentNotification.titleVi}
-            onChange={(e) => handleInputChange('titleVi', e.target.value)}
-            className={`form-control ${errors.titleVi ? 'is-invalid' : ''}`}
-            placeholder="Nhập tiêu đề tiếng Việt"
-          />
-          {errors.titleVi && <div className="invalid-feedback">{errors.titleVi}</div>}
-        </div>
-        <div className="form-group">
-          <label>Title (EN) *</label>
-          <input
-            type="text"
-            value={currentNotification.titleEn}
-            onChange={(e) => handleInputChange('titleEn', e.target.value)}
-            className={`form-control ${errors.titleEn ? 'is-invalid' : ''}`}
-            placeholder="Enter title in English"
-          />
-          {errors.titleEn && <div className="invalid-feedback">{errors.titleEn}</div>}
-        </div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button type="button" className={`btn btn-tab${activeTab === 'vi' ? ' active' : ''}`} onClick={() => setActiveTab('vi')}>Thông tin & Tiếng Việt</button>
+        <button type="button" className={`btn btn-tab${activeTab === 'en' ? ' active' : ''}`} onClick={() => setActiveTab('en')}>Tiếng Anh</button>
       </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label>Slug</label>
-          <input
-            type="text"
-            value={currentNotification.slug}
-            onChange={(e) => handleInputChange('slug', e.target.value)}
-            className="form-control"
-            placeholder="Nhập slug (tự động tạo nếu để trống)"
-          />
-        </div>
-        <div className="form-group">
-          <label>URL hình ảnh</label>
-          <input
-            type="url"
-            value={currentNotification.imageUrl}
-            onChange={(e) => handleInputChange('imageUrl', e.target.value)}
-            className="form-control"
-            placeholder="Nhập URL hình ảnh"
-          />
-        </div>
-      </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label>Tóm tắt (VI) *</label>
-          <textarea
-            value={currentNotification.summaryVi}
-            onChange={(e) => handleInputChange('summaryVi', e.target.value)}
-            className={`form-control ${errors.summaryVi ? 'is-invalid' : ''}`}
-            rows="3"
-            placeholder="Nhập tóm tắt tiếng Việt"
-          />
-          {errors.summaryVi && <div className="invalid-feedback">{errors.summaryVi}</div>}
-        </div>
-        <div className="form-group">
-          <label>Summary (EN) *</label>
-          <textarea
-            value={currentNotification.summaryEn}
-            onChange={(e) => handleInputChange('summaryEn', e.target.value)}
-            className={`form-control ${errors.summaryEn ? 'is-invalid' : ''}`}
-            rows="3"
-            placeholder="Enter summary in English"
-          />
-          {errors.summaryEn && <div className="invalid-feedback">{errors.summaryEn}</div>}
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label>Nội dung *</label>
-        <Editor
-          value={currentNotification.content}
-          onEditorChange={c => handleInputChange('content', c)}
-          init={{
-            menubar: true,
-            plugins: [
-              'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-              'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-              'insertdatetime', 'media', 'table', 'help', 'wordcount',
-              'emoticons', 'codesample'
-            ],
-            toolbar:
-              'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
-              'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-              'link image media table codesample charmap emoticons | removeformat | help',
-            height: 300,
-            branding: false,
-            promotion: false,
-            appendTo: document.body
-          }}
-        />
-        {errors.content && <div className="invalid-feedback">{errors.content}</div>}
-      </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label>Trạng thái</label>
-          <select
-            value={currentNotification.status}
-            onChange={(e) => handleInputChange('status', e.target.value)}
-            className="form-control"
-          >
-            <option value="active">Hoạt động</option>
-            <option value="inactive">Không hoạt động</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>Nổi bật</label>
-          <select
-            value={currentNotification.featured}
-            onChange={(e) => handleInputChange('featured', e.target.value === 'true')}
-            className="form-control"
-          >
-            <option value={false}>Không</option>
-            <option value={true}>Có</option>
-          </select>
-        </div>
-      </div>
+      {activeTab === 'vi' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Tiêu đề (VI) *</label>
+              <input
+                type="text"
+                value={currentNotification.titleVi}
+                onChange={(e) => handleInputChange('titleVi', e.target.value)}
+                className={`form-control ${errors.titleVi ? 'is-invalid' : ''}`}
+                placeholder="Nhập tiêu đề tiếng Việt"
+              />
+              {errors.titleVi && <div className="invalid-feedback">{errors.titleVi}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Slug</label>
+              <input
+                type="text"
+                value={currentNotification.slug}
+                onChange={(e) => handleInputChange('slug', e.target.value)}
+                className="form-control"
+                placeholder="Nhập slug (tự động tạo nếu để trống)"
+              />
+            </div>
+            <div className="form-group">
+              <ImageUpload
+                value={currentNotification.imageUrl}
+                onChange={url => handleInputChange('imageUrl', url)}
+                label="Ảnh *"
+              />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Tóm tắt (VI) *</label>
+              <textarea
+                value={currentNotification.summaryVi}
+                onChange={(e) => handleInputChange('summaryVi', e.target.value)}
+                className={`form-control ${errors.summaryVi ? 'is-invalid' : ''}`}
+                rows="3"
+                placeholder="Nhập tóm tắt tiếng Việt"
+              />
+              {errors.summaryVi && <div className="invalid-feedback">{errors.summaryVi}</div>}
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Nội dung (VI) *</label>
+            <Editor
+              value={currentNotification.contentVi}
+              onEditorChange={c => handleInputChange('contentVi', c)}
+              init={{
+                menubar: true,
+                plugins: [
+                  'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                  'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                  'insertdatetime', 'media', 'table', 'help', 'wordcount',
+                  'emoticons', 'codesample'
+                ],
+                toolbar:
+                  'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
+                  'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
+                  'link image media table codesample charmap emoticons | removeformat | help',
+                height: 300,
+                branding: false,
+                promotion: false,
+                appendTo: document.body
+              }}
+            />
+            {errors.contentVi && <div className="invalid-feedback">{errors.contentVi}</div>}
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Trạng thái</label>
+              <select
+                value={currentNotification.status}
+                onChange={(e) => handleInputChange('status', e.target.value)}
+                className="form-control"
+              >
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Không hoạt động</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Nổi bật</label>
+              <select
+                value={currentNotification.featured}
+                onChange={(e) => handleInputChange('featured', e.target.value === 'true')}
+                className="form-control"
+              >
+                <option value={false}>Không</option>
+                <option value={true}>Có</option>
+              </select>
+            </div>
+          </div>
+        </>
+      )}
+      {activeTab === 'en' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Title (EN) *</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input
+                  type="text"
+                  value={currentNotification.titleEn}
+                  onChange={(e) => handleInputChange('titleEn', e.target.value)}
+                  className={`form-control ${errors.titleEn ? 'is-invalid' : ''}`}
+                  placeholder="Enter title in English"
+                />
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('titleVi', 'titleEn')} title="Dịch từ tiếng Việt" disabled={!!translating.titleEn}>{translating.titleEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+              {errors.titleEn && <div className="invalid-feedback">{errors.titleEn}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Summary (EN) *</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <textarea
+                  value={currentNotification.summaryEn}
+                  onChange={(e) => handleInputChange('summaryEn', e.target.value)}
+                  className={`form-control ${errors.summaryEn ? 'is-invalid' : ''}`}
+                  rows="3"
+                  placeholder="Enter summary in English"
+                />
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('summaryVi', 'summaryEn')} title="Dịch từ tiếng Việt" disabled={!!translating.summaryEn}>{translating.summaryEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+              {errors.summaryEn && <div className="invalid-feedback">{errors.summaryEn}</div>}
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Content (EN) *</label>
+            <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+              <div style={{ flex: 1 }}>
+                <Editor
+                  value={currentNotification.contentEn}
+                  onEditorChange={c => handleInputChange('contentEn', c)}
+                  init={{
+                    menubar: true,
+                    plugins: [
+                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                      'insertdatetime', 'media', 'table', 'help', 'wordcount',
+                      'emoticons', 'codesample'
+                    ],
+                    toolbar:
+                      'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
+                      'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
+                      'link image media table codesample charmap emoticons | removeformat | help',
+                    height: 300,
+                    branding: false,
+                    promotion: false,
+                    appendTo: document.body
+                  }}
+                />
+              </div>
+              <button
+                type="button"
+                className="btn btn-sm btn-secondary"
+                style={{ height: 36, marginTop: 4 }}
+                onClick={() => handleTranslate('contentVi', 'contentEn')}
+                title="Dịch từ tiếng Việt"
+                disabled={!!translating.contentEn || !currentNotification.contentVi}
+              >
+                {translating.contentEn ? "Đang dịch..." : "Dịch"}
+              </button>
+            </div>
+            {errors.contentEn && <div className="invalid-feedback">{errors.contentEn}</div>}
+          </div>
+        </>
+      )}
     </div>
   );
 

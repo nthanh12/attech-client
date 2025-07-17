@@ -67,7 +67,7 @@ const NewsSection = () => {
           {news.map((item) => (
             <div className="news-item" key={item.id}>
               <div className="news-image">
-                <Link to={`/news/${item.id}/${item.slug}`}>
+                <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}>
                   <img 
                     src={item.image} 
                     alt={item.title}
@@ -79,13 +79,13 @@ const NewsSection = () => {
                 <div className="news-meta">
                   <span className="news-date">{formatDate(item.timePosted)}</span>
                   <span className="news-category">
-                    <Link to={`/news/${item.postCategorySlug}`}>
+                    <Link to={`/tin-tuc/${item.postCategorySlugVi}`}>
                       {item.postCategoryName}
                     </Link>
                   </span>
                 </div>
                 <h3 className="news-title">
-                  <Link to={`/news/${item.id}/${item.slug}`}>
+                  <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}>
                     {item.title}
                   </Link>
                 </h3>

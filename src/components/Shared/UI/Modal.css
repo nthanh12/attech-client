@@ -1,0 +1,69 @@
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  min-width: 320px;
+  max-width: 96vw;
+  width: 420px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  animation: popIn 0.2s;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 0 24px;
+  border-bottom: 1px solid #eee;
+}
+.modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.2s;
+}
+.modal-close:hover {
+  color: #007bff;
+}
+.modal-body {
+  padding: 20px 24px 24px 24px;
+  overflow-y: auto;
+}
+@media (max-width: 600px) {
+  .modal-content {
+    width: 98vw;
+    min-width: 0;
+    padding: 0;
+  }
+  .modal-header, .modal-body {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes popIn {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+} 

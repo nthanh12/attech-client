@@ -44,7 +44,7 @@ const Public = () => {
         <Route path="/san-pham/*" element={<Product />}>
           <Route path="" element={<ProductList />} />
           <Route path=":category" element={<ProductList />} />
-          <Route path=":productId/:slug" element={<ProductDetail />} />
+          <Route path=":category/:slug" element={<ProductDetail />} />
         </Route>
         {/* Product - English */}
         <Route path="/products/*" element={<Product />}>
@@ -68,17 +68,16 @@ const Public = () => {
         <Route path="/tin-tuc" element={<NewsPage />} />
         <Route path="/tin-tuc/tat-ca" element={<NewsListPage />} />
         <Route path="/tin-tuc/:category" element={<NewsListPage />} />
-        <Route path="/tin-tuc/:id/:slug" element={<NewsDetailPage />} />
+        <Route path="/tin-tuc/:categorySlug/:newsSlug" element={<NewsDetailPage />} />
         {/* News - English */}
-        <Route path="/news" element={<NewsPage />} />
-        <Route path="/news/all-act" element={<NewsListPage />} />
-        <Route path="/news/:category" element={<NewsListPage />} />
-        <Route path="/news/:id/:slug" element={<NewsDetailPage />} />
+        <Route path="/tin-tuc/all-act" element={<NewsListPage />} />
+        <Route path="/tin-tuc/:category" element={<NewsListPage />} />
+        <Route path="/tin-tuc/:categorySlug/:newsSlug" element={<NewsDetailPage />} />
 
         {/* Notification - Vietnamese */}
         <Route path="/thong-bao" element={<NotificationPage />} />
         <Route path="/thong-bao/:category" element={<NotificationListPage />} />
-        <Route path="/thong-bao/:id/:slug" element={<NotificationDetailPage />} />
+        <Route path="/thong-bao/:category/:slug" element={<NotificationDetailPage />} />
         {/* Notification - English */}
         <Route path="/notifications" element={<NotificationPage />} />
         <Route path="/notifications/:category" element={<NotificationListPage />} />
@@ -86,8 +85,9 @@ const Public = () => {
 
         {/* Company info - Vietnamese */}
         <Route path="/thong-tin-cong-ty" element={<Financial />} />
-        <Route path="/thong-tin-cong-ty/tai-chinh" element={<Financial />} />
+        <Route path="/thong-tin-cong-ty/thong-tin-tai-chinh" element={<Financial />} />
         <Route path="/thong-tin-cong-ty/lich-su" element={<History />} />
+        <Route path="/thong-tin-cong-ty/lich-su-ra-doi" element={<History />} />
         <Route path="/thong-tin-cong-ty/co-cau-to-chuc" element={<Structure />} />
         <Route path="/thong-tin-cong-ty/ban-lanh-dao" element={<Leadership />} />
         <Route path="/thong-tin-cong-ty/nganh-nghe-kinh-doanh" element={<Business />} />

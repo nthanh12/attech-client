@@ -15,6 +15,78 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  min-height: 44px;
+  line-height: 1;
+}
+
+.header-actions .btn-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.header-actions .btn-primary:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.header-actions .btn-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+}
+
+.header-actions .btn-secondary:hover {
+  background: linear-gradient(135deg, #545b62 0%, #3d4449 100%);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.4);
+  transform: translateY(-1px);
+}
+
+.header-actions .btn i {
+  font-size: 16px;
+  line-height: 1;
+  display: inline-block;
+}
+
+.upload-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  margin: 0;
+}
+
+.upload-section .file-input {
+  display: none;
+}
+
+.upload-section label {
+  margin: 0;
+  cursor: pointer;
+}
+
 .page-header h1 {
   margin: 0;
   color: #333;
@@ -40,7 +112,6 @@
   background: white;
   padding: 20px;
   border-radius: 8px;
-  margin-bottom: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -478,6 +549,23 @@
 
   .page-header h1 {
     font-size: 20px;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .header-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .upload-section {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
   }
 
   .header-stats {

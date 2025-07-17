@@ -27,17 +27,59 @@
     margin-bottom: 10px;
   }
   .leadership-description {
-    margin-top: 15px;
-    font-size: 16px;
-    color: #555; /* Màu chữ dịu nhẹ */
-    line-height: 1.5;
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin: 0 auto 2.5rem auto;
+    max-width: 600px;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.08);
   }
   
-/* Main Container */
+.leadership-background {
+  background: radial-gradient(circle at 50% 30%, #fff 0%, #fff 60%, #eaf1fb 100%);
+  min-height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
 .leader-container {
-  padding: 2rem 8rem;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
+  padding: 10px 8vw 40px 8vw;
+}
+.leadership-intro h1 {
+  font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;
+  line-height: 1.4;
+  margin: 1rem;
+  letter-spacing: 2px;
+  font-weight: 800;
+  font-size: 2.2rem;
+  color: #1a365d;
+  margin-bottom: 2.5rem;
+  text-shadow: 0 2px 8px #e3eaf6, 0 1px 0 #fff;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  text-transform: none;
+}
+.leadership-intro h1::after {
+  content: "";
+  display: block;
+  width: 60%;
+  height: 4px;
+  margin: 10px auto 0 auto;
+  background: linear-gradient(90deg, #4a90e2 0%, #1a365d 100%);
+  border-radius: 2px;
+}
+.leadership-intro {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
 /* Hero Banner Section */
@@ -118,7 +160,112 @@
 
 /* Leadership Sections */
 .leadership-section {
-  margin-bottom: 50px;
+  margin-bottom: 2.5rem;
+}
+.leader-section-title {
+  font-size: 1.08rem;
+  color: #4a90e2;
+  font-weight: 600;
+  margin: 2.2rem 0 1.1rem 0;
+  text-align: left;
+  letter-spacing: 0.02em;
+}
+.leader-row {
+  display: flex;
+  justify-content: center;
+  gap: 2.2rem;
+  flex-wrap: wrap;
+}
+/* Chủ tịch */
+.leader-profile-chairman {
+  border: 2.5px solid #1a365d;
+  background: #fff;
+  font-size: 1.13rem;
+  box-shadow: 0 4px 18px rgba(26,54,93,0.10);
+  width: 270px;
+  border-radius: 20px;
+  padding: 2.2rem 1.5rem 1.7rem 1.5rem;
+}
+.leader-img-wrap-chairman {
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1.1rem auto;
+  background: #e9ecef;
+  border: 1px solid #1a365d;
+}
+.leader-name-chairman {
+  font-size: 1.18rem;
+  color: #1a365d;
+  font-weight: 700;
+  margin: 0.5rem 0 0.1rem 0;
+}
+.leader-title-chairman {
+  font-size: 1.05rem;
+  color: #4a90e2;
+  font-weight: 600;
+}
+/* Giám đốc */
+.leader-profile-director {
+  border: 2px solid #4a90e2;
+  background: #fff;
+  font-size: 1.08rem;
+  box-shadow: 0 2px 10px rgba(74,144,226,0.10);
+  width: 230px;
+  border-radius: 16px;
+  padding: 1.7rem 1.2rem 1.2rem 1.2rem;
+}
+.leader-img-wrap-director {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 1rem auto;
+  background: #e9ecef;
+  border: 1px solid #4a90e2;
+
+}
+.leader-name-director {
+  font-size: 1.08rem;
+  color: #1a237e;
+  font-weight: 600;
+  margin: 0.3rem 0 0.1rem 0;
+}
+.leader-title-director {
+  font-size: 0.98rem;
+  color: #4a90e2;
+  font-weight: 500;
+}
+/* Phó giám đốc */
+.leader-profile-vice {
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 1rem;
+  box-shadow: 0 1px 6px rgba(52,152,219,0.06);
+  width: 200px;
+  border-radius: 14px;
+  padding: 1.2rem 1rem 1rem 1rem;
+}
+.leader-img-wrap-vice {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 0.8rem auto;
+  background: #e9ecef;
+  border: 1.5px solid #e2e8f0;
+}
+.leader-name-vice {
+  font-size: 0.98rem;
+  color: #1a237e;
+  font-weight: 500;
+  margin: 0.2rem 0 0.1rem 0;
+}
+.leader-title-vice {
+  font-size: 0.93rem;
+  color: #4a90e2;
+  font-weight: 400;
 }
 
 .leader-container .section-header {
@@ -135,14 +282,16 @@
 /* Leadership Grid */
 .leader-grid {
   display: flex;
-  flex-direction: column;
-  gap: 3rem;
+  flex-wrap: wrap;
+  gap: 2.2rem;
+  justify-content: center;
 }
 
 .leader-row {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 2.2rem;
+  flex-wrap: wrap;
 }
 
 .chairman-row {
@@ -161,23 +310,30 @@
 
 /* Leadership Card */
 .leader-profile {
+  background: none;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
   text-align: center;
-  max-width: 300px;
-  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 .leader-profile:hover {
-  transform: translateY(-5px);
+  /* Không hiệu ứng hover */
+  transform: none;
+  box-shadow: none;
+  border: none;
 }
 
 .leader-img-wrap {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  margin: 0 auto 1rem;
-  cursor: pointer;
-  overflow: hidden;
+  /* width: 110px; */
+  /* height: 110px; */
   border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: #e9ecef;
 }
 
 .leader-svg-bg {
@@ -188,24 +344,36 @@
 }
 
 .leader-img {
-  position: relative;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 2;
+  image-rendering: auto;
+  filter: none;
+  box-shadow: none;
+  border: none;
 }
 
 .leader-name {
-  font-size: 1.25rem;
-  color: #1a237e;
-  margin: 0.5rem 0;
-  cursor: pointer;
+  font-size: 1.2rem;
+  color: #1a365d;
+  font-weight: 700;
+  margin: 0.3rem 0 0.1rem 0;
 }
 
 .leader-title {
-  color: #666;
   font-size: 1rem;
-  margin: 0;
+  color: #4a90e2;
+  margin-bottom: 0.2rem;
+  font-weight: 500;
+}
+
+.leader-quote {
+  font-size: 0.98rem;
+  color: #6c757d;
+  font-style: italic;
+  margin-top: 0.7rem;
+  margin-bottom: 0.2rem;
+  line-height: 1.5;
 }
 
 .leader-name-black { color: #222; }
@@ -308,28 +476,33 @@
   }
 }
 
-.leadership-intro {
+@media (max-width: 600px) {
+  .leader-container { padding: 10px 2vw; }
+  .leader-profile { width: 98vw; max-width: 320px; }
+  .leader-img-wrap { width: 80px; height: 80px; }
+  .leader-img-wrap-chairman { width: 110px; height: 110px; }
+  .leader-img-wrap-director { width: 90px; height: 90px; }
+  .leader-img-wrap-vice { width: 70px; height: 70px; }
+}
+
+@media (max-width: 900px) {
+  .leader-profile-chairman, .leader-profile-director, .leader-profile-vice { width: 98vw; max-width: 320px; }
+  .leader-img-wrap-chairman, .leader-img-wrap-director, .leader-img-wrap-vice { width: 110px; height: 110px; }
+}
+  
+.leader-profile-chairman, .leader-profile-director, .leader-profile-vice {
+  width: 230px;
+}
+.leader-img-wrap-chairman, .leader-img-wrap-director, .leader-img-wrap-vice {
+  width: 160px;
+  height: 160px;
+}
+.leadership-title {
   text-align: center;
-  margin-bottom: 3rem;
+  font-size: 2rem;
+  margin-top: 32px;
+  color: #1a365d;
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
-
-.leadership-intro h1 {
-  font-size: 2.5rem;
-  color: #1a237e;
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 768px) {
-  .leader-container {
-    padding: 20px 15px;
-  }
-  
-  .leadership-intro {
-    margin-bottom: 20px;
-  }
-
-  .leadership-intro h1 {
-    font-size: 24px;
-  }
-}
-  

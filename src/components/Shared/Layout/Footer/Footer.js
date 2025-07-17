@@ -18,8 +18,8 @@ const Footer = () => {
               : "CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY"}
           </h3>
         </div>
-        <div className="row g-4">
-          <div className="col-md-6 col-lg-3">
+        <div className="row g-4 justify-content-center">
+          <div className="col-md-6 col-lg-4">
             <div className="footer-contact">
               <p className="footer-title">
                 {lang === "vi" ? "Thông tin liên hệ" : "Contact Information"}
@@ -50,7 +50,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-6 col-lg-3">
+          <div className="col-md-6 col-lg-4">
             <div className="footer-links">
               <p className="footer-title">
                 {lang === "vi" ? "Liên kết nhanh" : "Quick Links"}
@@ -95,8 +95,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="col-md-6 col-lg-2"></div>
-          <div className="col-md-6 col-lg-4">
+          <div className="col-md-12 col-lg-4">
             <div className="newsletter">
               <p className="footer-title">
                 {lang === "vi"
@@ -107,10 +106,11 @@ const Footer = () => {
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1565.6549300951995!2d105.88089418363363!3d21.041648374720946!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135a97c7dc6d877%3A0x1a140cbe4ea2cdd!2sCo.%20Management%20Engineering%20Flight!5e0!3m2!1sen!2sus!4v1741315536945!5m2!1sen!2sus"
                   width="100%"
-                  height="200"
+                  height="180"
                   style={{ border: 0 }}
                   allowFullScreen=""
                   loading="lazy"
+                  title="ATTECH Map"
                 ></iframe>
               </div>
             </div>
@@ -130,20 +130,13 @@ const Footer = () => {
             <i className="fab fa-youtube"></i>
           </a>
         </div>
-        <div className="container copyright mt-4">
-          <div className="row align-items-center">
-            <div className="col-md-8">
-              <p className="copyright-text mb-0">
-                © <a href="#">2025. {lang === "vi" ? "Bản quyền thuộc sở hữu của ATTECH." : "Copyright owned by ATTECH."}</a>
-              </p>
-            </div>
-            <div className="col-md-4 text-md-end">
-              <div className="footer-bottom-links">
-                <a href={lang === "vi" ? "/" : "/en/"}>{lang === "vi" ? "Trang chủ" : "Home"}</a>
-                <span className="mx-2">|</span>
-                <a href={lang === "vi" ? "/lien-he" : "/en/contact"}>{lang === "vi" ? "Liên hệ" : "Contact"}</a>
-              </div>
-            </div>
+        <div className="copyright mt-4">
+          <div className="copyright-text">
+            © <a href="#">2025. {lang === "vi" ? "Bản quyền thuộc sở hữu của ATTECH." : "Copyright owned by ATTECH."}</a>
+            <span className="mx-2">|</span>
+            <a href={lang === "vi" ? "/" : "/en/"}>{lang === "vi" ? "Trang chủ" : "Home"}</a>
+            <span className="mx-2">|</span>
+            <a href={lang === "vi" ? "/lien-he" : "/en/contact"}>{lang === "vi" ? "Liên hệ" : "Contact"}</a>
           </div>
         </div>
       </div>

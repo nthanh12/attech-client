@@ -69,16 +69,18 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
       onMouseLeave={handleMouseLeave}
     >
       <div className="nav-link-container">
-        <Link
-          to={path}
-          className="nav-link"
-          onClick={isMobile ? handleLinkClick : undefined}
-          ref={linkRef}
-          aria-haspopup={hasChildren ? "true" : "false"}
-          aria-expanded={hasChildren ? isOpen : undefined}
-        >
-          {label}
-        </Link>
+        {label && (
+          <Link
+            to={path}
+            className="nav-link"
+            onClick={isMobile ? handleLinkClick : undefined}
+            ref={linkRef}
+            aria-haspopup={hasChildren ? "true" : "false"}
+            aria-expanded={hasChildren ? isOpen : undefined}
+          >
+            {label}
+          </Link>
+        )}
         {hasChildren && (isMobile || depthLevel === 0) && (
           <button
             className="submenu-toggle"
@@ -95,7 +97,7 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
         <ul className={`dropdown-menu${isOpen ? " open" : ""}`}>
           {item.submenu.map((child, idx) => (
             <NavItem
-              key={child.pathVi}
+              key={child.key || child.pathVi || idx}
               item={child}
               isMobile={isMobile}
               closeMobileMenu={closeMobileMenu}

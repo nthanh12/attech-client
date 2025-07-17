@@ -252,7 +252,6 @@
 .close-btn:focus-visible,
 .nav-btn:focus-visible {
   background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
   outline: none;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
 }

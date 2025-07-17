@@ -2,25 +2,24 @@
 // This file serves as a central export point for all mock data
 
 // Import all mock data
-import { mockNews } from './mockNews.js';
-import { mockProducts } from './mockProducts.js';
-import { mockServices } from './mockServices.js';
-import { mockNotifications } from './mockNotifications.js';
-import { mockRoutes } from './mockRoutes.js';
-import { mockUsers } from './mockUsers.js';
-import { mockSystemSettings } from './mockSystemSettings.js';
-import { mockPermissions } from './mockPermissions.js';
-import { mockMedia } from './mockMedia.js';
+import { mockNews } from "./mockNews.js";
+import { mockProducts } from "./mockProducts.js";
+import { mockServices } from "./mockServices.js";
+import { mockNotifications } from "./mockNotifications.js";
+import { mockRoutes } from "./mockRoutes.js";
+import { mockUsers } from "./mockUsers.js";
+import { mockSystemSettings } from "./mockSystemSettings.js";
+import { mockPermissions } from "./mockPermissions.js";
+import { mockMedia } from "./mockMedia.js";
 
 // Import categories
-import { mockNewsCategories } from './mockNewsCategories.js';
-import { mockProductCategories } from './mockProductCategories.js';
-import { mockServiceCategories } from './mockServiceCategories.js';
-import { mockNotificationCategories } from './mockNotificationCategories.js';
+import { mockNewsCategories } from "./mockNewsCategories.js";
+import { mockProductCategories } from "./mockProductCategories.js";
+import { mockNotificationCategories } from "./mockNotificationCategories.js";
 
 // Import utilities
-import { generateSlug, validateSlug } from './slugGenerator.js';
-import { generateRoutes } from './routeGenerator.js';
+import { generateSlug, validateSlug } from "./slugGenerator.js";
+import { generateRoutes } from "./routeGenerator.js";
 
 // Export all mock data
 export {
@@ -34,49 +33,73 @@ export {
   mockSystemSettings,
   mockPermissions,
   mockMedia,
-  
+
   // Categories
   mockNewsCategories,
   mockProductCategories,
-  mockServiceCategories,
   mockNotificationCategories,
-  
+
   // Utilities
   generateSlug,
   validateSlug,
-  generateRoutes
+  generateRoutes,
 };
 
 // Mock roles
 export const mockRoles = [
-  { id: 1, name: 'Super Admin', description: 'Quản trị viên cao cấp', permissions: ['*'] },
-  { id: 2, name: 'Admin', description: 'Quản trị viên', permissions: ['dashboard', 'content', 'users', 'settings'] },
-  { id: 3, name: 'Editor', description: 'Biên tập viên', permissions: ['dashboard', 'content'] },
-  { id: 4, name: 'Author', description: 'Tác giả', permissions: ['dashboard', 'content.create', 'content.edit'] },
-  { id: 5, name: 'User', description: 'Người dùng', permissions: ['dashboard'] }
+  {
+    id: 1,
+    name: "Super Admin",
+    description: "Quản trị viên cao cấp",
+    permissions: ["*"],
+  },
+  {
+    id: 2,
+    name: "Admin",
+    description: "Quản trị viên",
+    permissions: ["dashboard", "content", "users", "settings"],
+  },
+  {
+    id: 3,
+    name: "Editor",
+    description: "Biên tập viên",
+    permissions: ["dashboard", "content"],
+  },
+  {
+    id: 4,
+    name: "Author",
+    description: "Tác giả",
+    permissions: ["dashboard", "content.create", "content.edit"],
+  },
+  {
+    id: 5,
+    name: "User",
+    description: "Người dùng",
+    permissions: ["dashboard"],
+  },
 ];
 
 // Mock departments
 export const mockDepartments = [
-  { id: 1, name: 'IT', description: 'Phòng Công nghệ thông tin' },
-  { id: 2, name: 'Marketing', description: 'Phòng Marketing' },
-  { id: 3, name: 'Sales', description: 'Phòng Kinh doanh' },
-  { id: 4, name: 'HR', description: 'Phòng Nhân sự' },
-  { id: 5, name: 'Finance', description: 'Phòng Tài chính' },
-  { id: 6, name: 'Operations', description: 'Phòng Vận hành' },
-  { id: 7, name: 'Legal', description: 'Phòng Pháp chế' },
-  { id: 8, name: 'Customer Service', description: 'Phòng Chăm sóc khách hàng' }
+  { id: 1, name: "IT", description: "Phòng Công nghệ thông tin" },
+  { id: 2, name: "Marketing", description: "Phòng Marketing" },
+  { id: 3, name: "Sales", description: "Phòng Kinh doanh" },
+  { id: 4, name: "HR", description: "Phòng Nhân sự" },
+  { id: 5, name: "Finance", description: "Phòng Tài chính" },
+  { id: 6, name: "Operations", description: "Phòng Vận hành" },
+  { id: 7, name: "Legal", description: "Phòng Pháp chế" },
+  { id: 8, name: "Customer Service", description: "Phòng Chăm sóc khách hàng" },
 ];
 
 export const mockPositions = [
-  { id: 1, name: 'Quản trị viên', description: 'Quản trị hệ thống' },
-  { id: 2, name: 'Biên tập viên', description: 'Biên tập nội dung' },
-  { id: 3, name: 'Tác giả', description: 'Viết nội dung' },
-  { id: 4, name: 'Nhân viên', description: 'Nhân viên thường' },
-  { id: 5, name: 'Trưởng phòng', description: 'Quản lý phòng ban' },
-  { id: 6, name: 'Phó phòng', description: 'Phó trưởng phòng' },
-  { id: 7, name: 'Chuyên viên', description: 'Chuyên viên kỹ thuật' },
-  { id: 8, name: 'Thực tập sinh', description: 'Thực tập sinh' }
+  { id: 1, name: "Quản trị viên", description: "Quản trị hệ thống" },
+  { id: 2, name: "Biên tập viên", description: "Biên tập nội dung" },
+  { id: 3, name: "Tác giả", description: "Viết nội dung" },
+  { id: 4, name: "Nhân viên", description: "Nhân viên thường" },
+  { id: 5, name: "Trưởng phòng", description: "Quản lý phòng ban" },
+  { id: 6, name: "Phó phòng", description: "Phó trưởng phòng" },
+  { id: 7, name: "Chuyên viên", description: "Chuyên viên kỹ thuật" },
+  { id: 8, name: "Thực tập sinh", description: "Thực tập sinh" },
 ];
 
 // Mock banner config
@@ -85,54 +108,54 @@ export const mockBannerConfig = {
     slides: [
       {
         id: 1,
-        titleVi: 'Banner chính trang chủ',
-        titleEn: 'Main homepage banner',
-        descriptionVi: 'Banner giới thiệu công ty',
-        descriptionEn: 'Company introduction banner',
-        imageUrl: 'https://picsum.photos/1200/400?random=1',
-        link: '/about',
+        titleVi: "Banner chính trang chủ",
+        titleEn: "Main homepage banner",
+        descriptionVi: "Banner giới thiệu công ty",
+        descriptionEn: "Company introduction banner",
+        imageUrl: "https://picsum.photos/1200/400?random=1",
+        link: "/about",
         order: 1,
-        isActive: true
+        isActive: true,
       },
       {
         id: 2,
-        titleVi: 'Banner sản phẩm',
-        titleEn: 'Product banner',
-        descriptionVi: 'Banner giới thiệu sản phẩm',
-        descriptionEn: 'Product introduction banner',
-        imageUrl: 'https://picsum.photos/1200/400?random=2',
-        link: '/products',
+        titleVi: "Banner sản phẩm",
+        titleEn: "Product banner",
+        descriptionVi: "Banner giới thiệu sản phẩm",
+        descriptionEn: "Product introduction banner",
+        imageUrl: "https://picsum.photos/1200/400?random=2",
+        link: "/products",
         order: 2,
-        isActive: true
+        isActive: true,
       },
       {
         id: 3,
-        titleVi: 'Banner dịch vụ',
-        titleEn: 'Service banner',
-        descriptionVi: 'Banner giới thiệu dịch vụ',
-        descriptionEn: 'Service introduction banner',
-        imageUrl: 'https://picsum.photos/1200/400?random=3',
-        link: '/services',
+        titleVi: "Banner dịch vụ",
+        titleEn: "Service banner",
+        descriptionVi: "Banner giới thiệu dịch vụ",
+        descriptionEn: "Service introduction banner",
+        imageUrl: "https://picsum.photos/1200/400?random=3",
+        link: "/services",
         order: 3,
-        isActive: true
-      }
-    ]
+        isActive: true,
+      },
+    ],
   },
   about: {
     slides: [
       {
         id: 4,
-        titleVi: 'Banner giới thiệu',
-        titleEn: 'About banner',
-        descriptionVi: 'Banner trang giới thiệu',
-        descriptionEn: 'About page banner',
-        imageUrl: 'https://picsum.photos/1200/400?random=4',
-        link: '/about',
+        titleVi: "Banner giới thiệu",
+        titleEn: "About banner",
+        descriptionVi: "Banner trang giới thiệu",
+        descriptionEn: "About page banner",
+        imageUrl: "https://picsum.photos/1200/400?random=4",
+        link: "/about",
         order: 1,
-        isActive: true
-      }
-    ]
-  }
+        isActive: true,
+      },
+    ],
+  },
 };
 
 // Utility functions
@@ -141,32 +164,36 @@ export const getSystemSetting = (key) => {
 };
 
 export const getCategoryById = (categories, id) => {
-  return categories.find(cat => cat.id === id);
+  return categories.find((cat) => cat.id === id);
 };
 
-export const getCategoryBySlug = (categories, slug, lang = 'vi') => {
-  const slugKey = lang === 'en' ? 'slugEn' : 'slugVi';
-  return categories.find(cat => cat[slugKey] === slug);
+export const getCategoryBySlug = (categories, slug, lang = "vi") => {
+  const slugKey = lang === "en" ? "slugEn" : "slugVi";
+  return categories.find((cat) => cat[slugKey] === slug);
 };
 
 export const filterByStatus = (items, status = 1) => {
-  return items.filter(item => item.status === status);
+  return items.filter((item) => item.status === status);
 };
 
-export const sortByTimePosted = (items, direction = 'desc') => {
+export const sortByTimePosted = (items, direction = "desc") => {
   return [...items].sort((a, b) => {
     const dateA = new Date(a.timePosted);
     const dateB = new Date(b.timePosted);
-    return direction === 'desc' ? dateB - dateA : dateA - dateB;
+    return direction === "desc" ? dateB - dateA : dateA - dateB;
   });
 };
 
-export const searchItems = (items, searchTerm, fields = ['titleVi', 'titleEn', 'nameVi', 'nameEn']) => {
+export const searchItems = (
+  items,
+  searchTerm,
+  fields = ["titleVi", "titleEn", "nameVi", "nameEn"]
+) => {
   if (!searchTerm) return items;
   const term = searchTerm.toLowerCase();
-  return items.filter(item => 
-    fields.some(field => 
-      item[field] && item[field].toLowerCase().includes(term)
+  return items.filter((item) =>
+    fields.some(
+      (field) => item[field] && item[field].toLowerCase().includes(term)
     )
   );
 };
@@ -264,4 +291,4 @@ Lưu ý:
 - Users có permissions array để quản lý quyền
 - System settings có cấu trúc nested object
 - Permissions có cấu trúc tree với parent-child relationship
-*/ 
+*/

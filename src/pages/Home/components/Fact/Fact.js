@@ -13,7 +13,7 @@ const Fact = () => {
       <div className="fact__container">
         <a href="#" className="fact__banner">
           <img 
-            src="https://vatm.vn/uploads/z6294715350538_ce0d1905bb27dbc45ce85ea076f82d48.jpg" 
+            src="/assets/images/event/thong_tin_1.webp" 
             alt="Đại hội Đảng"
             className={`fact__image ${imageLoaded ? 'loaded' : ''}`}
             loading="lazy"

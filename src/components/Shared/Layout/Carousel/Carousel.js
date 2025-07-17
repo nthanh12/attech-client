@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Carousel.css";
 
-import banner1 from "../../../../assets/img/banner_attech.jpg";
-import banner2 from "../../../../assets/img/bay-kthc/fi3.jpg";
-import banner3 from "../../../../assets/img/cns/about_cns5.jpg";
 import useIsMobile from '../Header/Navbar/useIsMobile';
 
 const Carousel = () => {
@@ -18,11 +15,11 @@ const Carousel = () => {
 
   const slides = [
     {
-      img: banner1,
+      img: "/assets/images/banner/banner_attech_1.webp",
       className: "carousel-img-1",
     },
     {
-      img: banner2,
+      img: "/assets/images/banner/banner_attech_2.webp",
       className: "carousel-img-2",
     },
     {

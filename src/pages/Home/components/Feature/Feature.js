@@ -5,44 +5,23 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "./Feature.css";
 import { Link } from "react-router-dom";
-
-import cns from "../../../../assets/img/feature-cns.jpg";
-import flightcheck from "../../../../assets/img/feature-fi.jpg";
-import aviation from "../../../../assets/img/cnhk/about_ai5.jpg";
-
-const notifications = [
-  {
-    title:
-      "Đoàn thanh niên công ty Kỹ thuật Quản lý bay tổ chức Lễ kỷ niệm 94 năm Ngày thành lập đoàn TNCS Hồ Chí Minh",
-    image:
-      "https://attech.com.vn/wp-content/uploads/2025/03/doi-thoai-dtn-2025-2.jpg",
-    alt: "Bài viết 1",
-  },
-  {
-    title:
-      "Công đoàn Công ty TNHH Kỹ thuật Quản lý bay vinh dự nhận bằng khen của Tổng Liên đoàn Lao động Việt Nam",
-    image:
-      "https://attech.com.vn/wp-content/uploads/2019/08/Hội-nghị-BCH-CĐTCT-2019.jpg",
-    alt: "Bài viết 2",
-  },
-  {
-    title:
-      "Công ty TNHH Kỹ thuật Quản lý bay tổ chức thành công Hội nghị Đài trạm trưởng CNS năm 2025",
-    image:
-      "https://attech.com.vn/wp-content/uploads/2025/04/HN-dai-tram-truong-18-4-1.jpg",
-    alt: "Bài viết 3",
-  },
-];
+import { mockNews } from "../../../../utils/mockNews";
 
 const Feature = () => {
   return (
     <section className="feature-section">
       <div className="feature-container">
         {/* 3 dịch vụ chính */}
-        <Link to="/services/cns" className="feature-link">
+        <Link
+          to="/dich-vu/thong-tin-dan-duong-giam-sat"
+          className="feature-link"
+        >
           <div
             className="feature-item"
-            style={{ backgroundImage: `url(${cns})` }}
+            style={{
+              backgroundImage:
+                "url(/assets/images/cns_atm/dvor_dme_van_don.webp)",
+            }}
           >
             <div className="feature-overlay"></div>
             <div className="feature-icon">
@@ -54,10 +33,10 @@ const Feature = () => {
             </div>
           </div>
         </Link>
-        <Link to="/services/flightcheck" className="feature-link">
+        <Link to="/dich-vu/bay-kiem-tra-hieu-chuan" className="feature-link">
           <div
             className="feature-item"
-            style={{ backgroundImage: `url(${flightcheck})` }}
+            style={{ backgroundImage: "url(/assets/images/bhc/bhc_1.webp)" }}
           >
             <div className="feature-overlay"></div>
             <div className="feature-icon">
@@ -69,10 +48,10 @@ const Feature = () => {
             </div>
           </div>
         </Link>
-        <Link to="/services/aviation-tech" className="feature-link">
+        <Link to="/san-pham" className="feature-link">
           <div
             className="feature-item"
-            style={{ backgroundImage: `url(${aviation})` }}
+            style={{ backgroundImage: "url(/assets/images/cnhk/cnhk_6.webp)" }}
           >
             <div className="feature-overlay"></div>
             <div className="feature-icon">
@@ -91,7 +70,6 @@ const Feature = () => {
             modules={[Pagination, Autoplay]}
             spaceBetween={15}
             slidesPerView={2}
-            pagination={{ clickable: true }}
             autoplay={{ delay: 7000, disableOnInteraction: false }}
             breakpoints={{
               0: {
@@ -106,14 +84,16 @@ const Feature = () => {
             }}
             style={{ width: "100%", height: "100%" }}
           >
-            {notifications.map((item, index) => (
+            {mockNews.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="notify-item" title={item.title}>
+                <div className="notify-item" title={item.titleVi}>
                   <div className="notify-img">
                     <img src={item.image} alt={item.alt} loading="lazy" />
                     <span className="news-badge">Tin nổi bật</span>
                   </div>
-                  <p className="notify-title">{item.title}</p>
+                  <p className="notify-title" title={item.titleVi}>
+                    {item.titleVi}
+                  </p>
                 </div>
               </SwiperSlide>
             ))}

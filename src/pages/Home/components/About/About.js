@@ -9,20 +9,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import about_cns3 from "../../../../assets/img/cns/about_cns3.jpg";
-import about_cns4 from "../../../../assets/img/cns/about_cns4.jpg";
-import about_cns5 from "../../../../assets/img/cns/about_cns5.jpg";
-
-import about_fi1 from "../../../../assets/img/bay-kthc/fi8.jpg";
-import about_fi2 from "../../../../assets/img/bay-kthc/fi6.jpg";
-import about_fi3 from "../../../../assets/img/bay-kthc/fi3.jpg";
-import about_fi4 from "../../../../assets/img/bay-kthc/fi4.jpg";
-
-import about_ai1 from "../../../../assets/img/cnhk/about_ai1.jpg";
-import about_ai2 from "../../../../assets/img/cnhk/about_ai2.jpg";
-import about_ai3 from "../../../../assets/img/cnhk/about_ai3.jpg";
-import about_ai4 from "../../../../assets/img/cnhk/about_ai4.jpg";
-
 const ArrowIcon = () => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
@@ -41,24 +27,42 @@ const ArrowIcon = () => (
 const products = [
   {
     title: "CNS / ATM",
-    images: [about_cns3, about_cns4, about_cns5],
-    description:
-      "Cung cấp giải pháp toàn diện về Thông tin, Dẫn đường, Giám sát hàng không với công nghệ tiên tiến hàng đầu thế giới. Đảm bảo an toàn và hiệu quả cho ngành hàng không Việt Nam.",
-    link: "/services/cns",
+    images: [
+      "/assets/images/cns_atm/cns_atm_1.webp",
+      "/assets/images/cns_atm/cns_atm_2.webp",
+      "/assets/images/cns_atm/cns_atm_3.webp",
+      "/assets/images/cns_atm/dvor_dme_da_nang.webp",
+      "/assets/images/cns_atm/dvor_dme_dien_bien.webp",
+      "/assets/images/cns_atm/dvor_dme_van_don.webp",
+    ],
+    link: "/dich-vu/thong-tin-dan-duong-giam-sat",
   },
   {
     title: "BAY KIỂM TRA HIỆU CHUẨN",
-    images: [about_fi1, about_fi2, about_fi3, about_fi4],
-    description:
-      "Dịch vụ bay hiệu chuẩn đạt chuẩn quốc tế với công nghệ hiện đại. Cung cấp giải pháp toàn diện về kiểm tra, hiệu chuẩn và đánh giá chất lượng thiết bị hàng không.",
-    link: "/services/flightcheck",
+    images: [
+      "/assets/images/bhc/bhc_1.webp",
+      "/assets/images/bhc/bhc_2.webp",
+      "/assets/images/bhc/bhc_3.webp",
+      "/assets/images/bhc/bhc_4.webp",
+      "/assets/images/bhc/bhc_5.webp",
+      "/assets/images/bhc/bhc_6.webp",
+      
+    ],
+    link: "/dich-vu/bay-kiem-tra-hieu-chuan",
   },
   {
     title: "CÔNG NGHIỆP HÀNG KHÔNG",
-    images: [about_ai4, about_ai2, about_ai3, about_ai1],
-    description:
-      "Tiên phong trong nghiên cứu và phát triển công nghệ hàng không mới. Tối ưu hóa quy trình vận hành và nâng cao hiệu quả hoạt động bay thông qua các giải pháp công nghệ đột phá.",
-    link: "/services/aviation-tech",
+    images: [
+      "/assets/images/cnhk/cnhk_1.webp",
+      "/assets/images/cnhk/cnhk_2.webp",
+      "/assets/images/cnhk/cnhk_3.webp",
+      "/assets/images/cnhk/cnhk_4.webp",
+      "/assets/images/cnhk/cnhk_5.webp",
+      "/assets/images/cnhk/cnhk_6.webp",
+      "/assets/images/cnhk/cnhk_7.webp",
+      "/assets/images/cnhk/cnhk_8.webp",
+    ],
+    link: "/dich-vu/ky-thuat-hang-khong",
   },
 ];
 
@@ -130,7 +134,6 @@ export default function About() {
               <div className="about-hero-overlay">
                 <div className="about-hero-content">
                   <h2 className="about-content-title">{product.title}</h2>
-                  <p>{product.description}</p>
                   <div className="custom-btn-group">
                     <Link to={product.link} className="custom-btn-more">
                       Xem thêm

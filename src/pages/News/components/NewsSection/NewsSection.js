@@ -22,8 +22,8 @@ const NewsSection = () => {
             <div className="trend-ticker">
               <div className="trend-list">
                 {[...trendingNews, ...trendingNews].map((item, idx) => (
-                  <Link key={item.id + '-' + idx} to={`/news/${item.id}/${item.slug}`} className="trend-link">
-                    #{item.title}
+                  <Link key={item.id + '-' + idx} to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} className="trend-link">
+                    #{item.titleVi}
                   </Link>
                 ))}
               </div>

@@ -315,8 +315,24 @@ div[style*="position: fixed"] {
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .timeline::after {
-    left: 31px;
+  .timeline::after,
+  .timeline::before {
+    display: none !important;
+  }
+  .timeline-item {
+    width: 100%;
+    padding: 0 0 2rem 0 !important;
+    left: 0 !important;
+  }
+  .timeline-item.left,
+  .timeline-item.right {
+    left: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .timeline-content {
+    margin: 0 auto;
+    max-width: 95vw;
   }
   
   .timeline-item {

@@ -43,6 +43,39 @@ const NotificationCategory = () => {
     status: "",
   });
   const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [translating, setTranslating] = useState({});
+  const [activeTab, setActiveTab] = useState('vi');
+
+  // Hàm dịch sử dụng backend proxy, fallback copy text
+  const translateProxy = async (text) => {
+    if (!text) return '';
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text,
+        source: 'vi',
+        target: 'en'
+      })
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.translatedText;
+  };
+
+  const handleTranslate = async (fromField, toField) => {
+    const text = currentCategory[fromField] || '';
+    if (!text) return;
+    setTranslating(prev => ({ ...prev, [toField]: true }));
+    try {
+      const translated = await translateProxy(text);
+      setCurrentCategory(prev => ({ ...prev, [toField]: translated }));
+    } catch (err) {
+      setCurrentCategory(prev => ({ ...prev, [toField]: text }));
+    } finally {
+      setTranslating(prev => ({ ...prev, [toField]: false }));
+    }
+  };
 
   useEffect(() => {
     setCategories(mockNotificationCategories);
@@ -182,25 +215,17 @@ const NotificationCategory = () => {
   const totalPages = Math.ceil(sortedCategories.length / itemsPerPage);
 
   const columns = [
+    { key: 'id', label: 'ID', sortable: true },
     { key: 'nameVi', label: 'Tên danh mục (VI)', sortable: true },
-    { key: 'nameEn', label: 'Category Name (EN)', sortable: true },
-    { 
-      key: 'descriptionVi', 
-      label: 'Mô tả (VI)', 
-      render: (value) => value ? <span title={value}>...</span> : ''
-    },
-    { 
-      key: 'descriptionEn', 
-      label: 'Description (EN)', 
-      render: (value) => value ? <span title={value}>...</span> : ''
-    },
+    { key: 'nameEn', label: 'Tên danh mục (EN)', sortable: true },
+    { key: 'descriptionVi', label: 'Mô tả (VI)', render: value => value ? <span title={value}>{value.length > 30 ? value.slice(0, 30) + '...' : value}</span> : '' },
     {
       key: 'status',
       label: 'Trạng thái',
       sortable: true,
-      render: (value) => (
-        <span className={`status-badge ${value === 1 ? 'active' : 'inactive'}`}>
-          {value === 1 ? 'Hoạt động' : 'Không hoạt động'}
+      render: value => (
+        <span className={`status-badge ${value === 1 || value === 'active' ? 'active' : 'inactive'}`}>
+          {value === 1 || value === 'active' ? 'Hoạt động' : 'Không hoạt động'}
         </span>
       )
     },
@@ -209,19 +234,11 @@ const NotificationCategory = () => {
       label: 'Thao tác',
       render: (value, item) => (
         <div className="action-buttons">
-          <button
-            className="btn btn-sm btn-primary"
-            onClick={() => handleEdit(item)}
-            title="Chỉnh sửa"
-          >
+          <button className="btn btn-sm btn-primary" onClick={() => handleEdit(item)} title="Chỉnh sửa">
             <i className="bi bi-pencil"></i>
             <span>Sửa</span>
           </button>
-          <button
-            className="btn btn-sm btn-danger"
-            onClick={() => handleDeleteCategory(item.id)}
-            title="Xóa"
-          >
+          <button className="btn btn-sm btn-danger" onClick={() => handleDeleteCategory(item.id)} title="Xóa">
             <i className="bi bi-trash"></i>
             <span>Xóa</span>
           </button>
@@ -264,88 +281,74 @@ const NotificationCategory = () => {
 
   const renderCategoryForm = () => (
     <div className="category-form">
-      <div className="form-row">
-        <div className="form-group">
-          <label>Tên danh mục (VI) *</label>
-          <input
-            type="text"
-            value={currentCategory.nameVi}
-            onChange={(e) => handleInputChange('nameVi', e.target.value)}
-            className={`form-control ${errors.nameVi ? 'is-invalid' : ''}`}
-            placeholder="Nhập tên danh mục tiếng Việt"
-          />
-          {errors.nameVi && <div className="invalid-feedback">{errors.nameVi}</div>}
-        </div>
-        <div className="form-group">
-          <label>Category Name (EN) *</label>
-          <input
-            type="text"
-            value={currentCategory.nameEn}
-            onChange={(e) => handleInputChange('nameEn', e.target.value)}
-            className={`form-control ${errors.nameEn ? 'is-invalid' : ''}`}
-            placeholder="Enter category name in English"
-          />
-          {errors.nameEn && <div className="invalid-feedback">{errors.nameEn}</div>}
-        </div>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button type="button" className={`btn btn-tab${activeTab === 'vi' ? ' active' : ''}`} onClick={() => setActiveTab('vi')}>Thông tin & Tiếng Việt</button>
+        <button type="button" className={`btn btn-tab${activeTab === 'en' ? ' active' : ''}`} onClick={() => setActiveTab('en')}>Tiếng Anh</button>
       </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label>Slug (VI)</label>
-          <input
-            type="text"
-            value={currentCategory.slugVi}
-            onChange={(e) => handleInputChange('slugVi', e.target.value)}
-            className="form-control"
-            placeholder="Nhập slug tiếng Việt"
-          />
-        </div>
-        <div className="form-group">
-          <label>Slug (EN)</label>
-          <input
-            type="text"
-            value={currentCategory.slugEn}
-            onChange={(e) => handleInputChange('slugEn', e.target.value)}
-            className="form-control"
-            placeholder="Enter slug in English"
-          />
-        </div>
-      </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label>Mô tả (VI)</label>
-          <textarea
-            value={currentCategory.descriptionVi}
-            onChange={(e) => handleInputChange('descriptionVi', e.target.value)}
-            className="form-control"
-            rows="3"
-            placeholder="Nhập mô tả tiếng Việt"
-          />
-        </div>
-        <div className="form-group">
-          <label>Description (EN)</label>
-          <textarea
-            value={currentCategory.descriptionEn}
-            onChange={(e) => handleInputChange('descriptionEn', e.target.value)}
-            className="form-control"
-            rows="3"
-            placeholder="Enter description in English"
-          />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label>Trạng thái</label>
-        <select
-          value={currentCategory.status}
-          onChange={(e) => handleInputChange('status', e.target.value)}
-          className="form-control"
-        >
-          <option value="active">Hoạt động</option>
-          <option value="inactive">Không hoạt động</option>
-        </select>
-      </div>
+      {activeTab === 'vi' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Tên danh mục (VI) *</label>
+              <input type="text" value={currentCategory.nameVi} onChange={e => handleInputChange('nameVi', e.target.value)} className={`form-control ${errors.nameVi ? 'is-invalid' : ''}`} placeholder="Nhập tên danh mục tiếng Việt" />
+              {errors.nameVi && <div className="invalid-feedback">{errors.nameVi}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Mô tả (VI)</label>
+              <textarea value={currentCategory.descriptionVi} onChange={e => handleInputChange('descriptionVi', e.target.value)} className="form-control" rows="2" placeholder="Nhập mô tả tiếng Việt" />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Slug (VI)</label>
+              <input type="text" value={currentCategory.slugVi} onChange={e => handleInputChange('slugVi', e.target.value)} className="form-control" placeholder="Nhập slug tiếng Việt" />
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Trạng thái</label>
+              <select value={currentCategory.status} onChange={e => handleInputChange('status', e.target.value)} className="form-control">
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Không hoạt động</option>
+              </select>
+            </div>
+          </div>
+        </>
+      )}
+      {activeTab === 'en' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Category Name (EN) *</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input type="text" value={currentCategory.nameEn} onChange={e => handleInputChange('nameEn', e.target.value)} className={`form-control ${errors.nameEn ? 'is-invalid' : ''}`} placeholder="Enter category name in English" />
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('nameVi', 'nameEn')} title="Dịch từ tiếng Việt" disabled={!!translating.nameEn}>{translating.nameEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+              {errors.nameEn && <div className="invalid-feedback">{errors.nameEn}</div>}
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Description (EN)</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <textarea value={currentCategory.descriptionEn} onChange={e => handleInputChange('descriptionEn', e.target.value)} className="form-control" rows="2" placeholder="Enter description in English" />
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('descriptionVi', 'descriptionEn')} title="Dịch từ tiếng Việt" disabled={!!translating.descriptionEn}>{translating.descriptionEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+            </div>
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Slug (EN)</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <input type="text" value={currentCategory.slugEn} onChange={e => handleInputChange('slugEn', e.target.value)} className="form-control" placeholder="Enter slug in English" />
+                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('slugVi', 'slugEn')} title="Dịch từ tiếng Việt" disabled={!!translating.slugEn}>{translating.slugEn ? 'Đang dịch...' : 'Dịch'}</button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 
@@ -354,7 +357,7 @@ const NotificationCategory = () => {
   }
 
   return (
-    <div className="admin-notification-category">
+    <div className="admin-category-list">
       <div className="page-header">
         <h1>Quản lý danh mục thông báo</h1>
         <button className="btn btn-primary" onClick={handleAddNew}>
@@ -385,32 +388,71 @@ const NotificationCategory = () => {
         onRequestClose={handleCloseModal}
         contentLabel="Danh mục thông báo"
         style={{
-          overlay: { zIndex: 1000, background: 'rgba(0,0,0,0.5)' },
+          overlay: { zIndex: 1000, background: "rgba(0,0,0,0.5)" },
           content: {
             zIndex: 1001,
-            maxWidth: '800px',
-            width: '90vw',
-            minWidth: '320px',
-            margin: 'auto',
+            maxWidth: "800px",
+            width: "90vw",
+            minWidth: "320px",
+            margin: "auto",
             borderRadius: 12,
             padding: 0,
-            border: 'none',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.18)'
-          }
+            border: "none",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+          },
         }}
         ariaHideApp={false}
       >
-        <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 24px 0 24px', borderBottom: '1px solid #eee' }}>
-          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>{editMode ? 'Chỉnh sửa danh mục' : 'Thêm danh mục mới'}</h2>
-          <button className="modal-close" onClick={handleCloseModal} aria-label="Đóng" style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', color: '#6b7280' }}>✕</button>
+        <div
+          className="modal-header"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "24px 24px 0 24px",
+            borderBottom: "1px solid #eee",
+          }}
+        >
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>
+            {editMode ? "Chỉnh sửa danh mục" : "Thêm danh mục mới"}
+          </h2>
+          <button
+            className="modal-close"
+            onClick={handleCloseModal}
+            aria-label="Đóng"
+            style={{
+              background: "none",
+              border: "none",
+              fontSize: 24,
+              cursor: "pointer",
+              color: "#6b7280",
+            }}
+          >
+            ✕
+          </button>
         </div>
-        <div className="modal-body" style={{ padding: '24px' }}>
+        <div className="modal-body" style={{ padding: "24px" }}>
           {renderCategoryForm()}
         </div>
-        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, padding: '0 24px 24px 24px', borderTop: '1px solid #eee' }}>
-          <button onClick={handleCloseModal} className="btn btn-secondary">Hủy</button>
-          <button onClick={handleSubmit} className="btn btn-primary" disabled={submitLoading}>
-            {submitLoading ? 'Đang xử lý...' : (editMode ? 'Cập nhật' : 'Thêm')}
+        <div
+          className="modal-footer"
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: 12,
+            padding: "0 24px 24px 24px",
+            borderTop: "1px solid #eee",
+          }}
+        >
+          <button onClick={handleCloseModal} className="btn btn-secondary">
+            Hủy
+          </button>
+          <button
+            onClick={handleSubmit}
+            className="btn btn-primary"
+            disabled={submitLoading}
+          >
+            {submitLoading ? "Đang xử lý..." : editMode ? "Cập nhật" : "Thêm"}
           </button>
         </div>
       </ReactModal>

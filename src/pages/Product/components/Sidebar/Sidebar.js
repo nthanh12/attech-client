@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import './Sidebar.css';
+import menuItems from '../../../../components/Shared/Layout/Header/Navbar/menuItem';
+import { Link } from 'react-router-dom';
 
 const Sidebar = ({ isOpen, onClose, selectedCategories, onCategoryChange, products }) => {
-  const categories = [
-    "CNS/ATM",
-    "Hệ thống đèn hiệu",
-    "Shelter",
-    "Bàn console",
-    "Giàn phản xạ VOR",
-    "Thiết bị ghi âm/ghi hình",
-    "Các sản phẩm dân dụng khác",
-    {
-      name: "VR 360",
-      url: "https://attech.vr360.one/"
-    }
-  ];
+  // Lấy danh mục sản phẩm từ menuItem.js
+  const productMenu = menuItems.find(item => item.key === 'products');
+  const categories = productMenu?.submenu || [];
+
+  // Log kiểm tra dữ liệu categories
+  console.log('Sidebar categories:', categories);
 
   const [expandedCategory, setExpandedCategory] = useState(null);
 
@@ -33,61 +28,46 @@ const Sidebar = ({ isOpen, onClose, selectedCategories, onCategoryChange, produc
   };
 
   const getProductsByCategory = (category) => {
-    return products.filter(product => product.category === category);
+    // Nếu là object đặc biệt (VR 360), không lọc
+    if (category.url) return [];
+    return products.filter(product => product.categorySlug === category.slug);
   };
 
+  // Render danh mục cha/con
   return (
     <>
-      <div className={`product-sidebar ${isOpen ? 'open' : ''}`}>
+      <div className={`product-sidebar${isOpen ? ' open' : ''}`}>
         <div className="sidebar-header">
           <h3>Danh mục sản phẩm</h3>
           <button className="close-btn" onClick={onClose}>
             <i className="fas fa-times"></i>
           </button>
         </div>
-
         <div className="sidebar-content">
           <nav className="sidebar-nav">
-            {categories.map(category => {
-              const categoryName = typeof category === 'object' ? category.name : category;
-              return (
-                <div key={categoryName} className="menu-category">
-                  <div 
-                    className={`menu-item ${expandedCategory === categoryName ? 'active' : ''}`}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    <span className="menu-text">{categoryName}</span>
-                    {typeof category !== 'object' && (
-                      <i className={`fas fa-chevron-${expandedCategory === categoryName ? 'up' : 'down'}`}></i>
-                    )}
-                  </div>
-                  
-                  {expandedCategory === categoryName && typeof category !== 'object' && (
-                    <div className="submenu">
-                      {getProductsByCategory(category).map(product => (
-                        <div 
-                          key={product.id}
-                          className="submenu-item"
-                          onClick={() => {
-                            onCategoryChange(category);
-                            if (window.innerWidth <= 768) {
-                              onClose();
-                            }
-                          }}
-                        >
-                          {product.title}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {categories
+              .filter(
+                sub =>
+                  sub &&
+                  typeof sub === 'object' &&
+                  !!sub.labelVi &&
+                  !!sub.pathVi &&
+                  typeof sub.pathVi === 'string' &&
+                  sub.pathVi.trim() !== ''
+              )
+              .map((sub, idx) => (
+                <Link
+                  to={sub.pathVi}
+                  key={sub.key || sub.pathVi || idx}
+                  className="menu-item"
+                  onClick={onClose}
+                >
+                  <span className="menu-text">{sub.labelVi}</span>
+                </Link>
+              ))}
           </nav>
         </div>
       </div>
-      
-      {/* Overlay để click outside đóng sidebar */}
       {isOpen && <div className="sidebar-overlay" onClick={onClose}></div>}
     </>
   );

@@ -69,14 +69,4 @@ export const mockNewsCategories = [
     descriptionEn: "News about legal propaganda and regulations",
     status: 1
   },
-  { 
-    id: 17, 
-    nameVi: "Y tế sức khỏe", 
-    slugVi: "yte-suc-khoe", 
-    nameEn: "Healthcare", 
-    slugEn: "healthcare",
-    descriptionVi: "Tin tức về y tế, sức khỏe và phúc lợi nhân viên",
-    descriptionEn: "News about healthcare and employee welfare",
-    status: 1
-  }
 ]; 

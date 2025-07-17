@@ -36,7 +36,6 @@
 }
 
 .back-button {
-  position: absolute;
   left: 0;
   top: 0;
   display: flex;
@@ -151,10 +150,10 @@
   font-size: 0.9rem;
 }
 
-/* Navigation Buttons */
+/* Navigation Buttons (outside fullscreen) */
 .nav-btn {
   position: absolute;
-  top: 50%;
+  top: 75%; /* thấp hơn tâm ảnh */
   transform: translateY(-50%);
   background: rgba(0, 0, 0, 0.5);
   border: none;
@@ -162,11 +161,10 @@
   padding: 1rem 0.5rem;
   cursor: pointer;
   z-index: 2;
-  transition: background-color 0.2s;
-}
-
-.nav-btn:hover {
-  background: rgba(0, 0, 0, 0.8);
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
 }
 
 .nav-btn.prev {
@@ -177,6 +175,12 @@
 .nav-btn.next {
   right: 0;
   border-radius: 4px 0 0 4px;
+}
+
+.nav-btn:hover,
+.nav-btn:focus {
+  background: rgba(59, 130, 246, 0.85);
+  outline: none;
 }
 
 /* Thumbnail List */
@@ -272,6 +276,45 @@
   background: rgba(0, 0, 0, 0.8);
 }
 
+.fullscreen-view .nav-btn {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  cursor: pointer;
+  z-index: 1100;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.fullscreen-view .nav-btn.prev {
+  left: 24px;
+  right: auto;
+  border-radius: 50%;
+}
+
+.fullscreen-view .nav-btn.next {
+  right: 24px;
+  left: auto;
+  border-radius: 50%;
+}
+
+.fullscreen-view .nav-btn:hover,
+.fullscreen-view .nav-btn:focus {
+  background: rgba(59, 130, 246, 0.85);
+  outline: none;
+  transform: translateY(-50%) scale(1.08);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .gallery-detail {
@@ -279,9 +322,15 @@
   }
 
   .back-button {
-    position: relative;
+    position: static;
     margin-bottom: 1rem;
     justify-content: center;
+    width: 100%;
+    display: flex;
+  }
+
+  .album-header {
+    padding-top: 2.5rem;
   }
 
   .featured-image-container {
@@ -301,6 +350,19 @@
   .fullscreen-caption {
     position: relative;
     background: #000;
+  }
+  .fullscreen-view .nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    left: 8px;
+    right: 8px;
+  }
+  .fullscreen-view .nav-btn.prev {
+    left: 8px;
+  }
+  .fullscreen-view .nav-btn.next {
+    right: 8px;
   }
 }
 

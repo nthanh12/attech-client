@@ -3,93 +3,59 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import sanitizeHtml from "sanitize-html";
 import "./NotificationDetailPage.css";
+import { mockNotifications } from "../../../utils/mockNotifications";
 
 const NotificationDetailPage = () => {
-  const { slug } = useParams();
+  const { category, slug } = useParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [tableOfContents, setTableOfContents] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Dữ liệu giả lập (notificationData)
-  const notificationData = [
-    {
-      id: 1,
-      slug: "thong-bao-lich-nghi-tet-nguyen-dan-2025",
-      title: "Thông báo lịch nghỉ Tết Nguyên đán 2025",
-      image: "https://attech.com.vn/wp-content/uploads/2025/01/lich-nghi-tet-2025.jpg",
-      date: "15/01/2025",
-      content: `
-<p style="text-align: justify;"><strong>Kính gửi: Toàn thể CBNV Công ty</strong></p>
-<p style="text-align: justify;">Căn cứ Bộ luật Lao động số 45/2019/QH14 ngày 20/11/2019;</p>
-<p style="text-align: justify;">Căn cứ Thông báo số 13/TB-LĐTBXH ngày 10/01/2025 của Bộ Lao động - Thương binh và Xã hội về việc nghỉ Tết Âm lịch và Quốc khánh trong năm 2025 đối với cán bộ, công chức, viên chức và người lao động;</p>
-<p style="text-align: justify;">Ban Giám đốc Công ty thông báo lịch nghỉ Tết Nguyên đán Giáp Thìn năm 2025 như sau:</p>
-<p style="text-align: justify;">1. Thời gian nghỉ: từ ngày 08/02/2025 đến hết ngày 14/02/2025 (tức là từ ngày 29 tháng Chạp năm Quý Mão đến hết ngày mùng 5 tháng Giêng năm Giáp Thìn).</p>
-<p style="text-align: justify;">2. Trong thời gian nghỉ Tết, các đơn vị phải bố trí cán bộ trực để giải quyết công việc, đảm bảo an toàn tài sản, phòng chống cháy nổ.</p>
-<p style="text-align: justify;">3. Yêu cầu Trưởng các đơn vị:</p>
-<p style="text-align: justify;">- Thông báo lịch nghỉ Tết đến toàn thể CBNV.</p>
-<p style="text-align: justify;">- Lập danh sách cán bộ trực Tết gửi về phòng Tổ chức - Hành chính trước ngày 01/02/2025.</p>
-<p style="text-align: justify;">- Quán triệt CBNV thực hiện nghiêm túc nội quy, quy định của Công ty trong dịp nghỉ Tết.</p>
-<p style="text-align: right;"><strong><em>Ban Giám đốc</em></strong></p>
-      `,
-    },
-    {
-      id: 2,
-      slug: "thong-bao-lich-tap-huan-pccc-2025",
-      title: "Thông báo lịch tập huấn PCCC năm 2025",
-      image: "https://attech.com.vn/wp-content/uploads/2025/01/tap-huan-pccc.jpg",
-      date: "10/01/2025",
-      content: `<p>Nội dung thông báo tập huấn PCCC...</p>`,
-    },
-    {
-      id: 3,
-      slug: "thong-bao-to-chuc-dai-hoi-cong-doan",
-      title: "Thông báo tổ chức Đại hội Công đoàn nhiệm kỳ 2025-2030",
-      image: "https://attech.com.vn/wp-content/uploads/2025/01/dai-hoi-cong-doan.jpg",
-      date: "05/01/2025",
-      content: `<p>Nội dung thông báo đại hội công đoàn...</p>`,
-    },
-    {
-      id: 4,
-      slug: "thong-bao-kiem-tra-suc-khoe-dinh-ky",
-      title: "Thông báo kế hoạch khám sức khỏe định kỳ năm 2025",
-      image: "https://attech.com.vn/wp-content/uploads/2025/01/kham-suc-khoe.jpg",
-      date: "02/01/2025",
-      content: `<p>Nội dung thông báo khám sức khỏe...</p>`,
-    },
-    {
-      id: 5,
-      slug: "thong-bao-hop-tong-ket-nam-2024",
-      title: "Thông báo họp tổng kết năm 2024",
-      image: "https://attech.com.vn/wp-content/uploads/2024/12/hop-tong-ket.jpg",
-      date: "25/12/2024",
-      content: `<p>Nội dung thông báo họp tổng kết...</p>`,
-    }
-  ];
+  // Lấy thông báo từ mockNotifications theo category và slug
+  const notificationItem = useMemo(() =>
+    mockNotifications.find(
+      (item) => item.notificationCategorySlugVi === category && item.slugVi === slug
+    ),
+    [category, slug]
+  );
 
-  // Tìm thông báo theo slug
-  const notificationItem = useMemo(() => notificationData.find((item) => item.slug === slug), [slug]);
-
-  // Lọc thông báo cho sidebar theo tìm kiếm
+  // Lọc thông báo cùng chuyên mục cho sidebar
   const filteredNotifications = useMemo(() => {
-    return notificationData.filter(
+    if (!notificationItem) return [];
+    let filtered = mockNotifications.filter(
       (item) =>
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.content.toLowerCase().includes(searchTerm.toLowerCase())
+        item.notificationCategorySlugVi === notificationItem.notificationCategorySlugVi &&
+        (item.titleVi.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.contentVi.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-  }, [searchTerm]);
+    filtered = filtered.sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted));
+    let top10 = filtered.slice(0, 10);
+    if (notificationItem && !top10.some((item) => item.id === notificationItem.id)) {
+      top10 = [notificationItem, ...top10];
+    }
+    // Loại trùng
+    const unique = [];
+    const ids = new Set();
+    for (const item of top10) {
+      if (!ids.has(item.id)) {
+        unique.push(item);
+        ids.add(item.id);
+      }
+    }
+    return unique;
+  }, [searchTerm, notificationItem]);
 
   // Lọc thông báo liên quan
   const relatedNotifications = useMemo(() => {
     if (!notificationItem) return [];
-    return notificationData
+    return mockNotifications
       .filter(
         (item) =>
-          item.slug !== slug &&
-          (item.date.includes("2025") ||
-            item.content.toLowerCase().includes(notificationItem.title.toLowerCase()))
+          item.id !== notificationItem.id &&
+          item.notificationCategorySlugVi === category
       )
       .slice(0, 3);
-  }, [notificationItem, slug]);
+  }, [notificationItem, category]);
 
   useEffect(() => {
     if (!notificationItem) {
@@ -100,7 +66,7 @@ const NotificationDetailPage = () => {
     const generateTableOfContents = () => {
       try {
         const parser = new DOMParser();
-        const doc = parser.parseFromString(notificationItem.content, "text/html");
+        const doc = parser.parseFromString(notificationItem.contentVi, "text/html");
         const headings = Array.from(doc.querySelectorAll("h2, h3, h4"));
         return headings.map((heading, index) => ({
           id: `section-${index}`,
@@ -134,7 +100,7 @@ const NotificationDetailPage = () => {
         <div className="not-found">
           <h2>Không tìm thấy thông báo!</h2>
           <p>Thông báo bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.</p>
-          <Link to="/notifications" className="back-to-notifications">
+          <Link to="/thong-bao" className="back-to-notifications">
             Quay lại trang thông báo
           </Link>
         </div>
@@ -142,175 +108,153 @@ const NotificationDetailPage = () => {
     );
   }
 
-  // Extract author info from content
-  const authorMatch = notificationItem.content.match(/([^–\n]+)$/m);
-  const author = authorMatch ? authorMatch[1].trim() : "Ban Giám đốc";
+  // Extract author info from content (nếu có)
+  const author = "Ban Giám đốc";
 
   return (
-    <div className="notification-detail-page">
-      <Helmet>
-        <title>{notificationItem.title} | ATTECH Notifications</title>
-        <meta
-          name="description"
-          content={sanitizeHtml(notificationItem.content, { allowedTags: [] }).slice(0, 160)}
-        />
-        <meta property="og:title" content={notificationItem.title} />
-        <meta property="og:image" content={notificationItem.image} />
-        <meta property="og:type" content="article" />
-        <meta name="author" content={author} />
-        <meta name="publish_date" content={notificationItem.date} />
-      </Helmet>
-
-      <aside className="notification-sidebar">
-        <h3>Danh mục thông báo</h3>
-        <input
-          type="text"
-          placeholder="Tìm kiếm thông báo..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="notification-sidebar-search"
-          aria-label="Tìm kiếm thông báo"
-        />
-        <ul>
-          {filteredNotifications.length > 0 ? (
-            filteredNotifications.map((item) => (
-              <li key={item.id}>
-                <Link
-                  to={`/notifications/${item.id}/${item.slug}`}
-                  className={item.slug === slug ? "active" : ""}
-                >
-                  {item.title}
-                </Link>
-              </li>
-            ))
-          ) : (
-            <li className="no-results">
-              Không tìm thấy thông báo phù hợp.
-              {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm("")}
-                  className="clear-search"
-                >
-                  Xóa tìm kiếm
-                </button>
-              )}
-            </li>
-          )}
-        </ul>
-      </aside>
-
-      <main className="notification-detail-container">
-        <nav className="notification-breadcrumb">
-          <Link to="/">Trang chủ</Link> &gt; <Link to="/notifications">Thông báo</Link>{" "}
-          &gt; {notificationItem.title}
-        </nav>
-
-        <div className="notification-detail-top">
-          <div className="notification-detail-image">
-            <img src={notificationItem.image} alt={notificationItem.title} loading="lazy" />
-          </div>
-          <div className="notification-detail-header">
-            <h1 className="notification-detail-title">{notificationItem.title}</h1>
-            <span className="notification-detail-date">Ngày đăng: {notificationItem.date}</span>
-          </div>
-        </div>
-
-        {tableOfContents.length > 0 && (
-          <nav className="table-of-contents">
-            <h3>Nội dung chính</h3>
-            <ul>
-              {tableOfContents.map((item) => (
-                <li
-                  key={item.id}
-                  style={{ marginLeft: `${(item.level - 2) * 20}px` }}
-                >
-                  <a href={`#${item.id}`}>{item.text}</a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        )}
-
-        <article
-          className="notification-detail-content"
-          dangerouslySetInnerHTML={{
-            __html: sanitizeHtml(notificationItem.content, {
-              allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
-              allowedAttributes: {
-                ...sanitizeHtml.defaults.allowedAttributes,
-                img: ["src", "alt", "title", "class"],
-              },
-            }),
-          }}
-        />
-
-        <div className="author-info">
-          <div className="author-avatar">
-            <img
-              src="/images/default-avatar.png"
-              alt={author}
-              loading="lazy"
-            />
-          </div>
-          <div className="author-details">
-            <h4>{author}</h4>
-            <p>Người ký</p>
-          </div>
-        </div>
-
-        <div className="notification-share">
-          <h4>Chia sẻ thông báo:</h4>
-          <div className="notification-share-buttons">
-            <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                window.location.href
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="share-button facebook"
-            >
-              Chia sẻ Facebook
-            </a>
-            <a
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                window.location.href
-              )}&text=${encodeURIComponent(notificationItem.title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="share-button twitter"
-            >
-              Chia sẻ Twitter
-            </a>
-            <a
-              href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(
-                window.location.href
-              )}&title=${encodeURIComponent(notificationItem.title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="share-button linkedin"
-            >
-              Chia sẻ LinkedIn
-            </a>
-          </div>
-        </div>
-
-        {relatedNotifications.length > 0 && (
-          <section className="related-notifications">
-            <h2>Thông báo liên quan</h2>
-            <div className="related-notifications-list">
-              {relatedNotifications.map((item) => (
-                <div key={item.id} className="related-notification-item">
-                  <Link to={`/notifications/${item.id}/${item.slug}`}>
-                    <img src={item.image} alt={item.title} loading="lazy" />
-                    <h4>{item.title}</h4>
-                    <span>{item.date}</span>
+    <div className="news-detail-page">
+      <div className="news-detail-layout">
+        {/* Sidebar */}
+        <aside className="news-sidebar">
+          <h3>Thông báo cùng chuyên mục</h3>
+          <input
+            type="text"
+            placeholder="Tìm kiếm thông báo..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="news-sidebar-search"
+            aria-label="Tìm kiếm thông báo"
+          />
+          <ul>
+            {filteredNotifications.length > 0 ? (
+              filteredNotifications.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    to={`/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`}
+                    className={item.id === notificationItem.id ? "active" : ""}
+                  >
+                    {item.titleVi}
                   </Link>
-                </div>
-              ))}
+                </li>
+              ))
+            ) : (
+              <li className="no-results">
+                Không tìm thấy thông báo phù hợp.
+                {searchTerm && (
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="clear-search"
+                  >
+                    Xóa tìm kiếm
+                  </button>
+                )}
+              </li>
+            )}
+          </ul>
+        </aside>
+
+        {/* Main content */}
+        <div className="news-detail-container">
+          {/* Breadcrumb */}
+          <nav className="breadcrumb-nav">
+            <Link to="/">Trang chủ</Link> &gt;{' '}
+            <Link to="/thong-bao">Thông báo</Link> &gt;{' '}
+            <Link to={`/thong-bao/${notificationItem.notificationCategorySlugVi}`}>{notificationItem.notificationCategoryNameVi}</Link> &gt;{' '}
+            <span>{notificationItem.titleVi}</span>
+          </nav>
+
+          {/* Article Header */}
+          <article className="news-article">
+            <header className="article-header">
+              <h1 className="article-title">{notificationItem.titleVi}</h1>
+              <div className="article-meta">
+                <span className="article-date">
+                  <i className="bi bi-calendar"></i>
+                  {notificationItem.timePosted ? new Date(notificationItem.timePosted).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+                </span>
+                <span className="article-category">
+                  <i className="bi bi-tag"></i>
+                  <Link to={`/thong-bao/${notificationItem.notificationCategorySlugVi}`}>{notificationItem.notificationCategoryNameVi}</Link>
+                </span>
+              </div>
+            </header>
+
+            {/* Article Image */}
+            {notificationItem.image && (
+              <div className="article-image">
+                <img
+                  src={notificationItem.image}
+                  alt={notificationItem.titleVi}
+                  title={notificationItem.titleVi}
+                />
+              </div>
+            )}
+
+            {/* Article Description */}
+            {notificationItem.descriptionVi && (
+              <div className="article-description">
+                <p>{notificationItem.descriptionVi}</p>
+              </div>
+            )}
+
+            {/* Article Content */}
+            <div className="article-content">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeHtml(notificationItem.contentVi, {
+                    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+                    allowedAttributes: {
+                      ...sanitizeHtml.defaults.allowedAttributes,
+                      img: ["src", "alt", "title", "class"],
+                    },
+                  }),
+                }}
+              />
             </div>
-          </section>
-        )}
-      </main>
+
+            {/* Article Footer */}
+            <footer className="article-footer">
+              <div className="article-tags">
+                <span className="tag-label">Chuyên mục:</span>
+                <Link to={`/thong-bao/${notificationItem.notificationCategorySlugVi}`} className="tag">
+                  {notificationItem.notificationCategoryNameVi}
+                </Link>
+              </div>
+              <div className="article-navigation">
+                <Link to="/thong-bao" className="back-link">
+                  <i className="bi bi-arrow-left"></i>
+                  Quay lại danh sách thông báo
+                </Link>
+              </div>
+            </footer>
+          </article>
+
+          {/* Related Notifications */}
+          {relatedNotifications.length > 0 && (
+            <section className="related-news">
+              <h2>Thông báo liên quan</h2>
+              <div className="related-news-list">
+                {relatedNotifications.map((item) => (
+                  <div className="related-news-item" key={item.id}>
+                    <Link
+                      to={`/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`}
+                      className="related-news-link"
+                    >
+                      <div className="related-news-thumb">
+                        <img src={item.image} alt={item.titleVi} />
+                      </div>
+                      <div className="related-news-info">
+                        <h4>{item.titleVi}</h4>
+                        <span className="related-news-date">{item.timePosted ? new Date(item.timePosted).toLocaleDateString('vi-VN', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}</span>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

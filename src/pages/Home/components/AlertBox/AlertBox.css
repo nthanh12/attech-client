@@ -201,30 +201,83 @@
     .swiper-button-prev:after {
         font-size: 14px;
     }
+    .swiper-slide {
+        min-width: 180px !important;
+    }
+    .item-img {
+        min-height: 100px;
+        background: #f2f2f2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .item-img img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+    }
 }
 
 @media (max-width: 640px) {
-    .alert-box {
-        margin: 0 auto;
-        padding: 0 10px;
-    }
-
-    .item-description {
-        padding: 12px;
-        min-height: 100px;
-    }
-
-    .item-text {
-        font-size: 13px;
-        line-height: 1.35;
-    }
-
-    .item-time {
-        font-size: 12px;
-    }
-    .alert-box .swiper-pagination {
-        bottom: 20px !important;
-    }
+  .alert-box {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .alert-box,
+  .alert-box .swiper,
+  .alert-box .swiper-slide,
+  .wrap-item,
+  .wrap-item .item-img {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-sizing: border-box;
+  }
+  .wrap-item .item-img {
+    aspect-ratio: 5 / 3;
+    min-height: 120px;
+    background: #f8f9fa;
+    overflow: hidden;
+    display: block;
+  }
+  .wrap-item .item-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .item-description {
+    padding: 12px;
+    min-height: 100px;
+  }
+  .item-text {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #1e293b;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 10px 0;
+    word-break: break-word;
+  }
+  body, html {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow-x: hidden;
+  }
 }
 
 @media (max-width: 480px) {

@@ -4,13 +4,16 @@ import FormModal from '../components/FormModal';
 import ToastMessage from '../components/ToastMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { mockMedia } from '../../utils/mockMedia.js';
+import { uploadImage } from '../../api';
 import './MediaManagement.css';
+import ImageUpload from '../../components/UI/ImageUpload';
 
 const MediaManagement = () => {
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [previewFiles, setPreviewFiles] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentMedia, setCurrentMedia] = useState({
@@ -59,6 +62,9 @@ const MediaManagement = () => {
   const handleFileSelect = (event) => {
     const files = Array.from(event.target.files);
     setSelectedFiles(files);
+    // Tạo preview cho ảnh
+    const previews = files.map(file => file.type.startsWith('image/') ? URL.createObjectURL(file) : null);
+    setPreviewFiles(previews);
   };
 
   const handleUpload = async () => {
@@ -69,25 +75,34 @@ const MediaManagement = () => {
 
     setUploading(true);
     try {
-      // Simulate upload process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      const newMedia = selectedFiles.map((file, index) => ({
-        id: Date.now() + index,
-        name: file.name,
-        type: file.type.startsWith('image/') ? 'image' : 'document',
-        size: file.size,
-        url: URL.createObjectURL(file),
-        thumbnail: file.type.startsWith('image/') ? URL.createObjectURL(file) : '/icons/file-icon.png',
-        uploadedAt: new Date().toISOString(),
-        uploadedBy: 'admin',
-        description: '',
-        tags: []
-      }));
-
-      setMedia(prev => [...newMedia, ...prev]);
+      const uploadedMedia = [];
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
+        try {
+          const res = await uploadImage(file);
+          // res có thể là { url, thumbnail, ... } hoặc chỉ url, tuỳ backend
+          uploadedMedia.push({
+            id: Date.now() + i,
+            name: file.name,
+            type: file.type.startsWith('image/') ? 'image' : 'document',
+            size: file.size,
+            url: res.url || res,
+            thumbnail: res.thumbnail || res.url || res,
+            uploadedAt: new Date().toISOString(),
+            uploadedBy: 'admin',
+            description: '',
+            tags: []
+          });
+        } catch (err) {
+          setToast({ show: true, message: `Lỗi upload file: ${file.name}`, type: 'error' });
+        }
+      }
+      if (uploadedMedia.length > 0) {
+        setMedia(prev => [...uploadedMedia, ...prev]);
+        setToast({ show: true, message: 'Upload file thành công!', type: 'success' });
+      }
       setSelectedFiles([]);
-      setToast({ show: true, message: 'Upload file thành công!', type: 'success' });
+      setPreviewFiles([]);
     } catch (error) {
       setToast({ show: true, message: 'Lỗi khi upload file!', type: 'error' });
     } finally {
@@ -137,6 +152,18 @@ const MediaManagement = () => {
           item.id === currentMedia.id ? { ...item, ...currentMedia } : item
         ));
         setToast({ show: true, message: 'Cập nhật thông tin thành công!', type: 'success' });
+      } else {
+        // Thêm mới file
+        setMedia(prev => [
+          {
+            ...currentMedia,
+            id: Date.now(),
+            uploadedAt: new Date().toISOString(),
+            uploadedBy: 'admin',
+          },
+          ...prev
+        ]);
+        setToast({ show: true, message: 'Thêm file thành công!', type: 'success' });
       }
       handleCloseModal();
     } catch (error) {
@@ -209,13 +236,14 @@ const MediaManagement = () => {
   const totalPages = Math.ceil(sortedMedia.length / itemsPerPage);
 
   const columns = [
+    { key: 'id', label: 'ID', sortable: true },
     {
       key: 'thumbnail',
       label: 'Preview',
       render: (value, item) => (
         <div className="media-thumbnail">
           {item.type === 'image' ? (
-            <img src={item.thumbnail} alt={item.name} />
+            <img src={item.thumbnail} alt={item.name} style={{width: 60, height: 40, objectFit: 'cover'}} />
           ) : (
             <i className={getFileIcon(item.type)}></i>
           )}
@@ -226,6 +254,11 @@ const MediaManagement = () => {
       key: 'name',
       label: 'Tên file',
       sortable: true
+    },
+    {
+      key: 'description',
+      label: 'Mô tả',
+      render: (value) => value ? <span title={value}>{value.length > 30 ? value.substring(0, 30) + '...' : value}</span> : ''
     },
     {
       key: 'type',
@@ -247,15 +280,10 @@ const MediaManagement = () => {
       render: (value) => formatFileSize(value)
     },
     {
-      key: 'uploadedBy',
-      label: 'Người upload',
-      sortable: true
-    },
-    {
       key: 'uploadedAt',
       label: 'Ngày upload',
       sortable: true,
-      render: (value) => new Date(value).toLocaleString('vi-VN')
+      render: (value) => new Date(value).toLocaleDateString('vi-VN')
     },
     {
       key: 'actions',
@@ -326,22 +354,6 @@ const MediaManagement = () => {
           <option value="author1">Author 1</option>
         </select>
       </div>
-      <div className="filter-group">
-        <div className="view-mode-toggle">
-          <button
-            className={`btn btn-sm ${viewMode === 'grid' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => setViewMode('grid')}
-          >
-            <i className="bi bi-grid"></i>
-          </button>
-          <button
-            className={`btn btn-sm ${viewMode === 'list' ? 'btn-primary' : 'btn-outline-primary'}`}
-            onClick={() => setViewMode('list')}
-          >
-            <i className="bi bi-list"></i>
-          </button>
-        </div>
-      </div>
     </div>
   );
 
@@ -386,36 +398,90 @@ const MediaManagement = () => {
 
   const renderMediaForm = () => (
     <div className="media-form">
-      <div className="form-group">
-        <label>Tên file</label>
-        <input
-          type="text"
-          value={currentMedia.name}
-          onChange={(e) => handleInputChange('name', e.target.value)}
-          className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-          placeholder="Nhập tên file"
-        />
-        {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+      <div className="form-row">
+        <div className="form-group">
+          <label>Tên file *</label>
+          <input
+            type="text"
+            value={currentMedia.name}
+            onChange={(e) => handleInputChange('name', e.target.value)}
+            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+            placeholder="Nhập tên file"
+          />
+          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+        </div>
+        <div className="form-group">
+          <label>Loại file</label>
+          <select
+            value={currentMedia.type}
+            onChange={(e) => handleInputChange('type', e.target.value)}
+            className="form-control"
+          >
+            <option value="image">Hình ảnh</option>
+            <option value="document">Tài liệu</option>
+            <option value="video">Video</option>
+            <option value="audio">Âm thanh</option>
+          </select>
+        </div>
+      </div>
+      <div className="form-row">
+        <div className="form-group">
+          <label>Mô tả</label>
+          <textarea
+            value={currentMedia.description}
+            onChange={(e) => handleInputChange('description', e.target.value)}
+            className="form-control"
+            rows="3"
+            placeholder="Nhập mô tả file"
+          />
+        </div>
+      </div>
+      <div className="form-row">
+        <div className="form-group">
+          <label>Tags</label>
+          <input
+            type="text"
+            value={currentMedia.tags.join(', ')}
+            onChange={(e) => handleInputChange('tags', e.target.value.split(',').map(tag => tag.trim()))}
+            className="form-control"
+            placeholder="Nhập tags, phân cách bằng dấu phẩy"
+          />
+        </div>
+        <div className="form-group">
+          <label>Người upload</label>
+          <input
+            type="text"
+            value={currentMedia.uploadedBy}
+            onChange={(e) => handleInputChange('uploadedBy', e.target.value)}
+            className="form-control"
+            placeholder="Nhập tên người upload"
+          />
+        </div>
       </div>
       <div className="form-group">
-        <label>Mô tả</label>
-        <textarea
-          value={currentMedia.description}
-          onChange={(e) => handleInputChange('description', e.target.value)}
-          className="form-control"
-          rows="3"
-          placeholder="Nhập mô tả file"
+        <label>File/Ảnh *</label>
+        <ImageUpload
+          value={currentMedia.url}
+          onChange={async (url) => {
+            // Nếu là ảnh, cập nhật cả thumbnail
+            setCurrentMedia(prev => ({
+              ...prev,
+              url,
+              thumbnail: url // hoặc có thể gọi API lấy thumbnail nếu backend trả về
+            }));
+          }}
+          label="Tải lên file/ảnh mới"
+          uploadApi={uploadImage}
         />
-      </div>
-      <div className="form-group">
-        <label>Tags</label>
-        <input
-          type="text"
-          value={currentMedia.tags.join(', ')}
-          onChange={(e) => handleInputChange('tags', e.target.value.split(',').map(tag => tag.trim()))}
-          className="form-control"
-          placeholder="Nhập tags, phân cách bằng dấu phẩy"
-        />
+        {currentMedia.url && (
+          <div style={{ marginTop: 8 }}>
+            {currentMedia.type === 'image' ? (
+              <img src={currentMedia.url} alt="Preview" style={{ width: 80, height: 60, objectFit: 'cover', borderRadius: 4, border: '1px solid #eee' }} />
+            ) : (
+              <a href={currentMedia.url} target="_blank" rel="noopener noreferrer">Xem file</a>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -428,28 +494,41 @@ const MediaManagement = () => {
     <div className="admin-media-management">
       <div className="page-header">
         <h1>Quản lý Media</h1>
-        <div className="upload-section">
-          <input
-            type="file"
-            multiple
-            onChange={handleFileSelect}
-            className="file-input"
-            id="file-upload"
-          />
-          <label htmlFor="file-upload" className="btn btn-primary">
-            <i className="bi bi-upload"></i>
-            Chọn file
-          </label>
-          {selectedFiles.length > 0 && (
-            <button
-              className="btn btn-success"
-              onClick={handleUpload}
-              disabled={uploading}
-            >
-              <i className="bi bi-cloud-upload"></i>
-              {uploading ? 'Đang upload...' : `Upload ${selectedFiles.length} file`}
-            </button>
-          )}
+        <div className="header-actions">
+          <button className="btn btn-primary" onClick={() => handleShowModal()}>
+            <i className="bi bi-plus"></i>
+            Thêm file mới
+          </button>
+          <div className="upload-section">
+            <input
+              type="file"
+              multiple
+              onChange={handleFileSelect}
+              className="file-input"
+              id="file-upload"
+            />
+            <label htmlFor="file-upload" className="btn btn-secondary">
+              <i className="bi bi-upload"></i>
+              Chọn file
+            </label>
+            {previewFiles.length > 0 && (
+              <div style={{ display: 'flex', gap: 8, margin: '8px 0' }}>
+                {previewFiles.map((src, idx) => src && (
+                  <img key={idx} src={src} alt="preview" style={{ width: 60, height: 40, objectFit: 'cover', borderRadius: 4, border: '1px solid #eee' }} />
+                ))}
+              </div>
+            )}
+            {selectedFiles.length > 0 && (
+              <button
+                className="btn btn-success"
+                onClick={handleUpload}
+                disabled={uploading}
+              >
+                <i className="bi bi-cloud-upload"></i>
+                {uploading ? 'Đang upload...' : `Upload ${selectedFiles.length} file`}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -476,6 +555,7 @@ const MediaManagement = () => {
         title={editMode ? 'Chỉnh sửa thông tin file' : 'Thêm file mới'}
         onSubmit={handleSubmit}
         submitText={editMode ? 'Cập nhật' : 'Thêm'}
+        width={1000}
       >
         {renderMediaForm()}
       </FormModal>

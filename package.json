@@ -17,6 +17,7 @@
     "counterup": "^1.0.2",
     "counterup2": "^2.0.2",
     "framer-motion": "^12.6.3",
+    "google-translate-api-browser": "^5.0.0",
     "gsap": "^3.12.7",
     "jquery": "^3.7.1",
     "jwt-decode": "^4.0.0",

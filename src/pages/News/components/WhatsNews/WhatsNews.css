@@ -297,8 +297,9 @@
 
 .whats-news-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    width: 100%;
 }
 
 .whats-news-card {
@@ -462,4 +463,26 @@
         max-width: 100%;
         flex: 1 1 100%;
     }
+}
+
+.whats-news-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+@media (max-width: 1200px) {
+  .whats-news-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 800px) {
+  .whats-news-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 500px) {
+  .whats-news-list {
+    grid-template-columns: 1fr;
+  }
 }

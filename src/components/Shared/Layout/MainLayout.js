@@ -9,7 +9,7 @@ const MainLayout = ({ children }) => {
   const location = useLocation();
   const { setLang } = useLanguage();
   const isHomePage = location.pathname === '/' || location.pathname === '/en' || location.pathname === '/en/';
-
+  console.log('Render MainLayout');
   useEffect(() => {
     if (location.pathname.startsWith('/en')) {
       setLang('en');

@@ -2,7 +2,7 @@
 import React from "react";
 import ServiceItem from "../ServiceItem/ServiceItem";
 import "../ServiceList/ServiceList.css";
-import { services } from "../../../../../src/data/servicesData";
+import { mockServices } from "../../../../utils/mockServices";
 
 const ServiceList = () => {
   return (
@@ -11,15 +11,14 @@ const ServiceList = () => {
         <h2>Dịch vụ</h2>
       </div>
       <div className="row service-row">
-        {services.map((service, index) => (
+        {mockServices.filter(s => s.status === 1).map((service, index) => (
           <ServiceItem
-            key={index}
+            key={service.id}
             id={service.id}
-            slug={service.slug}
-            title={service.title}
-            description={service.description}
+            slug={service.slugVi}
+            title={service.nameVi}
+            description={service.descriptionVi}
             image={service.image}
-            actionLink={service.actionLink}
           />
         ))}
       </div>

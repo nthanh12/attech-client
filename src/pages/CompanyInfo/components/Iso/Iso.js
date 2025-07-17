@@ -46,25 +46,6 @@ const Iso = () => {
     },
   ];
 
-  const commitments = [
-    {
-      text: "Sáng tạo không ngừng",
-      icon: "💡",
-    },
-    {
-      text: "Đầu tư hiệu quả",
-      icon: "📈",
-    },
-    {
-      text: "Nhân viên chuyên nghiệp",
-      icon: "👥",
-    },
-    {
-      text: "Quản lí tinh thông",
-      icon: "⚡",
-    },
-  ];
-
   const documents = [
     {
       name: "Hệ thống chứng chỉ ISO 9001:2015",
@@ -153,18 +134,7 @@ const Iso = () => {
             không; Cung cấp dịch vụ bay kiểm tra hiệu chuẩn hàng không; Sản xuất
             công nghiệp hàng không.
           </p>
-          <ul>
-            {commitments.map((commitment, index) => (
-              <li
-                key={index}
-                data-aos="zoom-in"
-                data-aos-delay={index * 100}
-              >
-                <span className="commitment-icon">{commitment.icon}</span>
-                {commitment.text}
-              </li>
-            ))}
-          </ul>
+          
           <p>
             Để đảm bảo rằng{" "}
             <strong>

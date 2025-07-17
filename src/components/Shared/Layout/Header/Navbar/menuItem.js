@@ -24,24 +24,24 @@ const menuItems = [
             key: "ads-b",
             labelVi: "Hệ thống ADS-B",
             labelEn: "ADS-B System",
-            pathVi: "/san-pham/1/he-thong-ads-b",
-            pathEn: "/en/products/1/ads-b-system"
+            pathVi: "/san-pham/cns-atm/he-thong-ads-b",
+            pathEn: "/en/products/ads-b-system",
           },
           {
             key: "amhs",
             labelVi: "Hệ thống AMHS",
             labelEn: "AMHS System",
-            pathVi: "/san-pham/2/he-thong-amhs",
-            pathEn: "/en/products/2/amhs-system"
+            pathVi: "/san-pham/cns-atm/he-thong-amhs",
+            pathEn: "/en/products/amhs-system",
           },
           {
             key: "amss",
             labelVi: "Hệ thống AMSS",
             labelEn: "AMSS System",
-            pathVi: "/san-pham/3/he-thong-amss",
-            pathEn: "/en/products/3/amss-system"
+            pathVi: "/san-pham/cns-atm/he-thong-amss",
+            pathEn: "/en/products/amss-system",
           },
-        ]
+        ],
       },
       {
         key: "traffic-lights",
@@ -54,45 +54,60 @@ const menuItems = [
             key: "papi",
             labelVi: "Đèn chỉ thị góc tiếp cận chính xác - PAPI",
             labelEn: "PAPI Light",
-            pathVi: "/san-pham/4/den-papi",
-            pathEn: "/en/products/4/papi-light"
+            pathVi: "/san-pham/he-thong-den-hieu/den-papi",
+            pathEn: "/en/products/traffic-lights/papi-light",
           },
           {
             key: "chc-two-way",
             labelVi: "Đèn lề đường CHC hai hướng lắp nổi",
             labelEn: "CHC Two-Way Light",
-            pathVi: "/san-pham/5/den-chc-hai-huong",
-            pathEn: "/en/products/5/chc-two-way-light"
+            pathVi: "/san-pham/he-thong-den-hieu/den-chc-hai-huong",
+            pathEn: "/en/products/traffic-lights/chc-two-way-light",
           },
           {
             key: "led-road-edge",
             labelVi: "Đèn lề đường lăn lắp nổi LED",
             labelEn: "LED Road Edge Light",
-            pathVi: "/san-pham/6/den-le-duong-noi-led",
-            pathEn: "/en/products/6/led-road-edge-light"
+            pathVi: "/san-pham/he-thong-den-hieu/den-le-duong-noi-led",
+            pathEn: "/en/products/traffic-lights/led-road-edge-light",
+          },
+          {
+            key: "road-edge",
+            labelVi: "Đèn lề đường lăn lắp nổi",
+            labelEn: "Road Edge Light",
+            pathVi: "/san-pham/he-thong-den-hieu/den-le-duong-noi",
+            pathEn: "/en/products/traffic-lights/road-edge-light",
           },
           {
             key: "flashing",
             labelVi: "Đèn chớp lắp nổi",
-            labelEn: "Flashing Light",
-            pathVi: "/san-pham/7/den-chop-lap-noi",
-            pathEn: "/en/products/7/flashing-light"
+            labelEn: "Unidirectional Elevated Flashing Light",
+            pathVi: "/san-pham/he-thong-den-hieu/den-chop-lap-noi",
+            pathEn: "/en/products/traffic-lights/flashing-light",
           },
           {
             key: "single-phase",
             labelVi: "Đèn pha 1 hướng lắp nổi",
-            labelEn: "Single-Phase Light",
-            pathVi: "/san-pham/8/den-1-pha-lap-noi",
-            pathEn: "/en/products/8/single-phase-light"
+            labelEn: "Unidirectional Light",
+            pathVi: "/san-pham/he-thong-den-hieu/den-1-pha-lap-noi",
+            pathEn: "/en/products/traffic-lights/unidirectional-light",
           },
           {
             key: "rotating",
             labelVi: "Đèn pha xoay",
             labelEn: "Rotating Light",
-            pathVi: "/san-pham/9/den-pha-xoay",
-            pathEn: "/en/products/9/rotating-light"
+            pathVi: "/san-pham/he-thong-den-hieu/den-pha-xoay",
+            pathEn: "/en/products/traffic-lights/rotating-light",
           },
-        ]
+          {
+            key: "double-obstruction",
+            labelVi: "Đèn pha xoay",
+            labelEn: "Rotating Light",
+            pathVi:
+              "/san-pham/he-thong-den-hieu/den-cao-khong-led-cau-truc-kep",
+            pathEn: "/en/products/traffic-lights/double-obstruction-light",
+          },
+        ],
       },
       {
         key: "shelter",
@@ -105,146 +120,146 @@ const menuItems = [
             key: "composite",
             labelVi: "Shelter Composite",
             labelEn: "Composite Shelter",
-            pathVi: "/san-pham/10/shelter-composite",
-            pathEn: "/en/products/10/composite-shelter"
+            pathVi: "/san-pham/shelter/shelter-composite",
+            pathEn: "/en/products/traffic-lights/composite-shelter",
           },
           {
             key: "steel",
             labelVi: "Shelter Thép",
             labelEn: "Steel Shelter",
-            pathVi: "/san-pham/11/shelter-thep",
-            pathEn: "/en/products/11/steel-shelter"
+            pathVi: "/san-pham/shelter/shelter-thep",
+            pathEn: "/en/products/traffic-lights/steel-shelter",
           },
-        ]
+        ],
       },
       {
-        key: "console-table",
+        key: "console",
         labelVi: "Bàn console",
         labelEn: "Console Table",
         pathVi: "/san-pham/ban-console",
-        pathEn: "/en/products/console-table",
+        pathEn: "/en/products/console",
         submenu: [
-          {
-            key: "aic-console",
-            labelVi: "ATC consoles",
-            labelEn: "ATC Consoles",
-            pathVi: "/san-pham/12/aic-console",
-            pathEn: "/en/products/12/aic-consoles"
-          },
+          // {
+          //   key: "aic-console",
+          //   labelVi: "ATC consoles",
+          //   labelEn: "ATC Consoles",
+          //   pathVi: "/san-pham/ban-console/aic-console",
+          //   pathEn: "/en/products/console/aic-consoles",
+          // },
           {
             key: "technical-console",
             labelVi: "Technical console",
             labelEn: "Technical Console",
-            pathVi: "/san-pham/13/technical-console",
-            pathEn: "/en/products/13/technical-console"
+            pathVi: "/san-pham/ban-console/technical-console",
+            pathEn: "/en/products/console/technical-console",
           },
-        ]
+        ],
       },
       {
         key: "vor-reflector",
         labelVi: "Giàn phản xạ VOR",
         labelEn: "VOR Reflector",
-        pathVi: "/san-pham/gian-phan-xa-vor",
-        pathEn: "/en/products/vor-reflector",
+        pathVi: "/san-pham/gian-phan-xa",
+        pathEn: "/en/products/reflector",
         submenu: [
           {
             key: "easy-to-destroy",
             labelVi: "Giàn phản xạ dễ phá hủy",
             labelEn: "Easy-to-Destroy Reflector",
-            pathVi: "/san-pham/14/gian-phan-xa-de-pha-huy",
-            pathEn: "/en/products/14/easy-to-destroy-reflector"
+            pathVi: "/san-pham/gian-phan-xa/gian-phan-xa-de-pha-huy",
+            pathEn: "/en/products/reflector/easy-to-destroy-reflector",
           },
           {
             key: "steel",
             labelVi: "Giàn phản xạ thép",
             labelEn: "Steel Reflector",
-            pathVi: "/san-pham/15/gian-phan-xa-thep",
-            pathEn: "/en/products/15/steel-reflector"
+            pathVi: "/san-pham/gian-phan-xa/gian-phan-xa-thep",
+            pathEn: "/en/products/reflector/steel-reflector",
           },
-        ]
+        ],
       },
       {
-        key: "audio-video-recording-equipment",
+        key: "audio-video-recording",
         labelVi: "Thiết bị ghi âm/ghi hình",
         labelEn: "Audio/Video Recording Equipment",
-        pathVi: "/san-pham/thiet-bi-ghi-am-ghi-hinh",
-        pathEn: "/en/products/audio-video-recording-equipment",
+        pathVi: "/san-pham/ghi-am-ghi-hinh",
+        pathEn: "/en/products/audio-video-recording",
         submenu: [
           {
             key: "specialized-audio-recorder",
             labelVi: "Thiết bị ghi âm chuyên dụng",
             labelEn: "Specialized Audio Recorder",
-            pathVi: "/san-pham/16/ghi-am-chuyen-dung-hang-khong",
-            pathEn: "/en/products/16/specialized-audio-recorder"
+            pathVi: "/san-pham/ghi-am-ghi-hinh/ghi-am-chuyen-dung",
+            pathEn: "/en/products/audio-video-recording/audio-recorder",
           },
           {
             key: "voice-data-recorder",
             labelVi: "Thiết bị ghi thoại dữ liệu",
-            labelEn: "Voice Data Recorder",
-            pathVi: "/san-pham/17/ghi-thoai-du-lieu",
-            pathEn: "/en/products/17/voice-data-recorder"
+            labelEn: "Data Voice Recorder",
+            pathVi: "/san-pham/ghi-am-ghi-hinh/ghi-thoai-du-lieu",
+            pathEn: "/en/products/audio-video-recording/data-voice-recorder",
           },
-        ]
+        ],
       },
       {
         key: "other-consumer-products",
         labelVi: "Các sản phẩm dân dụng khác",
         labelEn: "Other Consumer Products",
-        pathVi: "/san-pham/cac-san-pham-dan-dung-khac",
-        pathEn: "/en/products/other-consumer-products",
+        pathVi: "/san-pham/thiet-bi-dan-dung",
+        pathEn: "/en/products/others",
         submenu: [
           {
             key: "standard-gps-timepiece",
             labelVi: "Đồng hồ thời gian chuẩn GPS",
             labelEn: "Standard GPS Timepiece",
-            pathVi: "/san-pham/18/dong-ho-thoi-gian-chuan-gps",
-            pathEn: "/en/products/18/standard-gps-timepiece"
+            pathVi: "/san-pham/thiet-bi-dan-dung/dong-ho-thoi-gian-chuan-gps",
+            pathEn: "/en/products/others/standard-gps-timepiece",
           },
           {
-            key: "drill-machine",
+            key: "drill",
             labelVi: "Máy cắt vấu",
             labelEn: "Drill Machine",
-            pathVi: "/san-pham/19/may-cat-vau",
-            pathEn: "/en/products/19/drill-machine"
+            pathVi: "/san-pham/thiet-bi-dan-dung/may-cat-vau",
+            pathEn: "/en/products/others/drill-machine",
           },
           {
             key: "may-la",
             labelVi: "Máy là",
-            labelEn: "Máy là",
-            pathVi: "/san-pham/20/may-la",
-            pathEn: "/en/products/20/may-la"
+            labelEn: "Ironing machine",
+            pathVi: "/san-pham/thiet-bi-dan-dung/may-la",
+            pathEn: "/en/products/others/ironing-machine",
           },
           {
-            key: "tig-welding-machine",
+            key: "tig-welding",
             labelVi: "Máy hàn TIG",
             labelEn: "TIG Welding Machine",
-            pathVi: "/san-pham/21/may-han-tig",
-            pathEn: "/en/products/21/tig-welding-machine"
+            pathVi: "/san-pham/thiet-bi-dan-dung/may-han-tig",
+            pathEn: "/en/products/others/tig-welding-machine",
           },
           {
             key: "may-loc",
             labelVi: "Máy lốc",
-            labelEn: "Máy lốc",
-            pathVi: "/san-pham/22/may-loc",
-            pathEn: "/en/products/22/may-loc"
+            labelEn: "Rolling Machine",
+            pathVi: "/san-pham/thiet-bi-dan-dung/may-loc",
+            pathEn: "/en/products/others/rolling-machine",
           },
           {
-            key: "rotary-welding-machine",
+            key: "rotary-welding",
             labelVi: "Máy hàn quay",
             labelEn: "Rotary Welding Machine",
-            pathVi: "/san-pham/23/may-han-quay",
-            pathEn: "/en/products/23/rotary-welding-machine"
+            pathVi: "/san-pham/thiet-bi-dan-dung/may-han-quay",
+            pathEn: "/en/products/others/rotary-welding",
           },
-        ]
+        ],
       },
       {
         key: "vr360",
         labelVi: "VR 360",
         labelEn: "VR 360",
         pathVi: "https://attech.vr360.one/",
-        pathEn: "https://attech.vr360.one/en"
+        pathEn: "https://attech.vr360.one/en",
       },
-    ]
+    ],
   },
   {
     key: "services",
@@ -258,44 +273,44 @@ const menuItems = [
         labelVi: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
         labelEn: "CNS Service",
         pathVi: "/dich-vu/thong-tin-dan-duong-giam-sat",
-        pathEn: "/en/services/cns-service"
+        pathEn: "/en/services/cns-service",
       },
       {
         key: "calibration-service",
         labelVi: "Dịch vụ Bay kiểm tra hiệu chuẩn",
         labelEn: "Calibration Service",
         pathVi: "/dich-vu/bay-kiem-tra-hieu-chuan",
-        pathEn: "/en/services/calibration-service"
+        pathEn: "/en/services/calibration-service",
       },
       {
         key: "testing-calibration-service",
         labelVi: "Dịch vụ Thử nghiệm - Hiệu chuẩn",
         labelEn: "Testing - Calibration Service",
         pathVi: "/dich-vu/thu-nghiem-hieu-chuan",
-        pathEn: "/en/services/testing-calibration-service"
+        pathEn: "/en/services/testing-calibration-service",
       },
       {
         key: "aviation-service",
         labelVi: "Dịch vụ Kỹ thuật (Hàng không)",
         labelEn: "Aviation Service",
         pathVi: "/dich-vu/ky-thuat-hang-khong",
-        pathEn: "/en/services/aviation-service"
+        pathEn: "/en/services/aviation-service",
       },
       {
         key: "training-education-service",
         labelVi: "Dịch vụ Huấn luyện - Đào tạo",
         labelEn: "Training - Education Service",
         pathVi: "/dich-vu/huan-luyen-dao-tao",
-        pathEn: "/en/services/training-education-service"
+        pathEn: "/en/services/training-education-service",
       },
       {
         key: "consulting-qlda-service",
         labelVi: "Dịch vụ Tư vấn đầu tư và xây dựng QLDA",
         labelEn: "Consulting - QLDA Service",
         pathVi: "/dich-vu/tu-van-dau-tu-xay-dung-qlda",
-        pathEn: "/en/services/consulting-qlda-service"
+        pathEn: "/en/services/consulting-qlda-service",
       },
-    ]
+    ],
   },
   {
     key: "news",
@@ -316,46 +331,46 @@ const menuItems = [
             labelVi: "Hoạt động công ty",
             labelEn: "Company Activities",
             pathVi: "/tin-tuc/hoat-dong-cong-ty",
-            pathEn: "/en/news/company-activities"
+            pathEn: "/en/news/company-activities",
           },
           {
             key: "company-party",
             labelVi: "Đảng bộ công ty",
             labelEn: "Company Party",
             pathVi: "/tin-tuc/dang-bo-cong-ty",
-            pathEn: "/en/news/company-party"
+            pathEn: "/en/news/company-party",
           },
           {
             key: "company-youth-union",
             labelVi: "Đoàn thanh niên công ty",
             labelEn: "Company Youth Union",
             pathVi: "/tin-tuc/doan-thanh-nien-cong-ty",
-            pathEn: "/en/news/company-youth-union"
+            pathEn: "/en/news/company-youth-union",
           },
           {
             key: "company-union",
             labelVi: "Công đoàn công ty",
             labelEn: "Company Union",
             pathVi: "/tin-tuc/cong-doan-cong-ty",
-            pathEn: "/en/news/company-union"
+            pathEn: "/en/news/company-union",
           },
-        ]
+        ],
       },
       {
         key: "aviation-news",
         labelVi: "Tin ngành hàng không",
         labelEn: "Aviation News",
         pathVi: "/tin-tuc/tin-nganh-hang-khong",
-        pathEn: "/en/news/aviation-news"
+        pathEn: "/en/news/aviation-news",
       },
       {
         key: "legal-propaganda",
         labelVi: "Tuyên truyền pháp luật",
         labelEn: "Legal Propaganda",
         pathVi: "/tin-tuc/tuyen-truyen-phap-luat",
-        pathEn: "/en/news/legal-propaganda"
+        pathEn: "/en/news/legal-propaganda",
       },
-    ]
+    ],
   },
   {
     key: "notifications",
@@ -369,23 +384,23 @@ const menuItems = [
         labelVi: "Tuyển dụng",
         labelEn: "Recruitment",
         pathVi: "/thong-bao/tuyen-dung",
-        pathEn: "/en/notifications/recruitment"
+        pathEn: "/en/notifications/recruitment",
       },
       {
         key: "supplier-notice",
         labelVi: "Thông báo mời nhà cung cấp",
         labelEn: "Supplier Notice",
         pathVi: "/thong-bao/moi-nha-cung-cap",
-        pathEn: "/en/notifications/supplier-notice"
+        pathEn: "/en/notifications/supplier-notice",
       },
       {
         key: "other-notices",
         labelVi: "Thông báo khác",
         labelEn: "Other Notices",
         pathVi: "/thong-bao/thong-bao-khac",
-        pathEn: "/en/notifications/other-notices"
+        pathEn: "/en/notifications/other-notices",
       },
-    ]
+    ],
   },
   {
     key: "company",
@@ -399,60 +414,59 @@ const menuItems = [
         labelVi: "Lịch sử ra đời",
         labelEn: "History",
         pathVi: "/thong-tin-cong-ty/lich-su-ra-doi",
-        pathEn: "/en/company-info/history"
+        pathEn: "/en/company-info/history",
       },
       {
         key: "structure",
         labelVi: "Cơ cấu tổ chức",
         labelEn: "Structure",
         pathVi: "/thong-tin-cong-ty/co-cau-to-chuc",
-        pathEn: "/en/company-info/structure"
+        pathEn: "/en/company-info/structure",
       },
       {
         key: "leadership",
         labelVi: "Ban lãnh đạo",
         labelEn: "Leadership",
         pathVi: "/thong-tin-cong-ty/ban-lanh-dao",
-        pathEn: "/en/company-info/leadership"
+        pathEn: "/en/company-info/leadership",
       },
       {
         key: "business",
         labelVi: "Ngành nghề kinh doanh",
         labelEn: "Business",
         pathVi: "/thong-tin-cong-ty/nganh-nghe-kinh-doanh",
-        pathEn: "/en/company-info/business"
+        pathEn: "/en/company-info/business",
       },
       {
         key: "iso",
         labelVi: "Hệ thống chứng chỉ ISO",
         labelEn: "ISO Certificates",
         pathVi: "/thong-tin-cong-ty/he-thong-chung-chi-iso",
-        pathEn: "/en/company-info/iso-certificates"
+        pathEn: "/en/company-info/iso-certificates",
       },
       {
         key: "financial-info",
         labelVi: "Thông tin tài chính",
         labelEn: "Financial Info",
         pathVi: "/thong-tin-cong-ty/thong-tin-tai-chinh",
-        pathEn: "/en/company-info/financial-info"
+        pathEn: "/en/company-info/financial-info",
       },
       {
         key: "gallery",
         labelVi: "Thư viện công ty",
         labelEn: "Company Gallery",
         pathVi: "/thong-tin-cong-ty/thu-vien-cong-ty",
-        pathEn: "/en/company-info/gallery"
-      }
-    ]
+        pathEn: "/en/company-info/gallery",
+      },
+    ],
   },
   {
     key: "contact",
     labelVi: "Liên hệ",
     labelEn: "Contact",
     pathVi: "/lien-he",
-    pathEn: "/en/contact"
-  }
+    pathEn: "/en/contact",
+  },
 ];
 
 export default menuItems;
-  

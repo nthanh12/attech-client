@@ -16,11 +16,15 @@ const NotificationSection = ({ title, notifications, type }) => {
     setCurrentPage(page);
   };
 
+  // Lấy slug category từ notification đầu tiên (nếu có)
+  const categorySlug = currentNotifications[0]?.notificationCategorySlugVi || type;
+
   return (
     <div className="notification-section">
       <div className="section-tittle-flex">
         <h3>{title}</h3>
-        <ViewAllButton to={`/notification/${type}`} />
+        {/* Sửa đường dẫn sang /thong-bao/[categorySlug] */}
+        <ViewAllButton to={`/thong-bao/${categorySlug}`} />
       </div>
 
       <div className="notification-grid">
@@ -32,7 +36,8 @@ const NotificationSection = ({ title, notifications, type }) => {
             </div>
             <div className="content-wrapper">
               <h2>
-                <Link className="notification_title" to={`/notification/${type}/${notification.id}`}>
+                {/* Sửa đường dẫn sang /thong-bao/[categorySlug]/[slug] */}
+                <Link className="notification_title" to={`/thong-bao/${notification.notificationCategorySlugVi}/${notification.slug}`}>
                   {notification.title}
                 </Link>
               </h2>

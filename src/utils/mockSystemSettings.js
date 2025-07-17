@@ -33,12 +33,12 @@ export const mockSystemSettings = {
       en: 'ATTECH'
     },
     address: {
-      vi: 'Số 1 Đường Trần Hưng Đạo, Quận 1, TP. Hồ Chí Minh',
-      en: '1 Tran Hung Dao Street, District 1, Ho Chi Minh City'
+      vi: 'Số 5/200 đường Nguyễn Sơn, phường Bồ Đề, thành phố Hà Nội',
+      en: '5/200 Nguyen Son Street, Bo De Ward, Ha Noi City'
     },
-    phone: '+84 28 3822 1234',
-    fax: '+84 28 3822 1235',
-    email: 'info@attech.com.vn',
+    phone: '(84.4) 38271914',
+    fax: '(84.4) 38730398',
+    email: 'attech@attech.com.vn',
     website: 'https://attech.com.vn',
     taxCode: '0123456789',
     businessLicense: 'GP123456789',
@@ -54,12 +54,12 @@ export const mockSystemSettings = {
   },
   contact: {
     officeAddress: {
-      vi: 'Số 1 Đường Trần Hưng Đạo, Quận 1, TP. Hồ Chí Minh',
-      en: '1 Tran Hung Dao Street, District 1, Ho Chi Minh City'
+      vi: 'Số 5/200 đường Nguyễn Sơn, phường Bồ Đề, thành phố Hà Nội',
+      en: '5/200 Nguyen Son Street, Bo De Ward, Ha Noi City'
     },
-    phone: '+84 28 3822 1234',
-    fax: '+84 28 3822 1235',
-    email: 'info@attech.com.vn',
+    phone: '(84.4) 38271914',
+    fax: '(84.4) 38730398',
+    email: 'attech@attech.com.vn',
     hotline: '1900 1234',
     workingHours: {
       vi: 'Thứ 2 - Thứ 6: 8:00 - 17:30',

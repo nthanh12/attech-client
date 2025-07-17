@@ -206,6 +206,7 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   padding-bottom: 12px;
+  font-size: 1.5rem;
 }
 
 .about-hero-overlay .about-content-title::after {

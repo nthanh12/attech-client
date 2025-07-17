@@ -20,7 +20,7 @@ const ProductItem = ({
         <div className="attech-product-category">{product.category}</div>
         <h3 className="attech-product-title">{product.fullTitle || product.title}</h3>
         <Link 
-          to={`/products/${product.slug}`} 
+          to={`/san-pham/${product.categorySlug}/${product.slug}`} 
           className="attech-product-link"
         >
           Xem chi tiết

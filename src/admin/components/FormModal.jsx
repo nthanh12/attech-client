@@ -9,7 +9,8 @@ const FormModal = ({
   submitText, 
   cancelText, 
   loading, 
-  children 
+  children,
+  width = 800
 }) => {
   // Handle escape key
   useEffect(() => {
@@ -45,7 +46,7 @@ const FormModal = ({
 
   const modalContent = (
     <div className="modal show">
-      <div className="modal-content">
+      <div className="modal-content" style={{ width, maxWidth: '96vw' }}>
         <div className="modal-header">
           <h5>{title}</h5>
           <button 

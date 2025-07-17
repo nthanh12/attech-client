@@ -72,7 +72,7 @@ const ContentSection = () => {
             <div className="single_post_content">
               <div className="d-flex justify-content-between align-items-center">
                 <p className="d-flex-text-bg">Tin ngành hàng không</p>
-                <Link to={`/news/list?category=aviation`} className="more-btn">
+                <Link to={`/tin-tuc/tin-nganh-hang-khong`} className="more-btn">
                   <span>Xem tất cả</span>
                   <i className="fa fa-angle-down" aria-hidden="true"></i>
                 </Link>

@@ -47,7 +47,7 @@
     padding: 0;
     margin: 0;
     white-space: nowrap;
-    animation: tickerScroll 20s linear infinite;
+    animation: tickerScroll 45s linear infinite;
     gap: 28px;
   }
   

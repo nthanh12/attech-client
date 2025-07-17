@@ -107,27 +107,96 @@ const SystemSettings = () => {
     try {
       // Sử dụng mock data thay vì API call
       const settings = mockSystemSettings;
-      
-      // Load settings từ mock data
+      // Map dữ liệu cho General Settings
       if (settings.general) {
-        setGeneralSettings(prev => ({ ...prev, ...settings.general }));
+        setGeneralSettings(prev => ({
+          ...prev,
+          siteNameVi: settings.general.siteName?.vi || '',
+          siteNameEn: settings.general.siteName?.en || '',
+          siteDescriptionVi: settings.general.siteDescription?.vi || '',
+          siteDescriptionEn: settings.general.siteDescription?.en || '',
+          siteKeywordsVi: settings.general.siteKeywords?.vi || '',
+          siteKeywordsEn: settings.general.siteKeywords?.en || '',
+          maintenanceMode: settings.general.maintenanceMode || false,
+          maintenanceMessageVi: settings.general.maintenanceMessage?.vi || '',
+          maintenanceMessageEn: settings.general.maintenanceMessage?.en || '',
+          // Các trường khác nếu có
+        }));
       }
+      // Map dữ liệu cho Company Info
       if (settings.company) {
-        setCompanyInfo(prev => ({ ...prev, ...settings.company }));
+        setCompanyInfo(prev => ({
+          ...prev,
+          companyNameVi: settings.company.name?.vi || '',
+          companyNameEn: settings.company.name?.en || '',
+          companyAddressVi: settings.company.address?.vi || '',
+          companyAddressEn: settings.company.address?.en || '',
+          companyPhone: settings.company.phone || '',
+          companyEmail: settings.company.email || '',
+          companyWebsite: settings.company.website || '',
+          companyTaxCode: settings.company.taxCode || '',
+          companyLicense: settings.company.businessLicense || '',
+          companyDescriptionVi: settings.company.description?.vi || '',
+          companyDescriptionEn: settings.company.description?.en || '',
+        }));
       }
+      // Map dữ liệu cho Contact Settings
       if (settings.contact) {
-        setContactSettings(prev => ({ ...prev, ...settings.contact }));
+        setContactSettings(prev => ({
+          ...prev,
+          contactEmail: settings.contact.email || '',
+          supportEmail: '', // Không có trong mock, để trống
+          salesEmail: '', // Không có trong mock, để trống
+          contactPhone: settings.contact.phone || '',
+          contactAddressVi: settings.contact.officeAddress?.vi || '',
+          contactAddressEn: settings.contact.officeAddress?.en || '',
+          workingHoursVi: settings.contact.workingHours?.vi || '',
+          workingHoursEn: settings.contact.workingHours?.en || '',
+          mapEmbed: '', // Không có trong mock, để trống
+        }));
       }
+      // Map dữ liệu cho SEO Settings
       if (settings.seo) {
-        setSeoSettings(prev => ({ ...prev, ...settings.seo }));
+        setSeoSettings(prev => ({
+          ...prev,
+          googleAnalytics: settings.seo.googleAnalytics || '',
+          googleTagManager: settings.seo.googleTagManager || '',
+          facebookPixel: settings.seo.facebookPixel || '',
+          metaTitleVi: settings.seo.metaTitle?.vi || '',
+          metaTitleEn: settings.seo.metaTitle?.en || '',
+          metaDescriptionVi: settings.seo.metaDescription?.vi || '',
+          metaDescriptionEn: settings.seo.metaDescription?.en || '',
+          ogImage: '', // Không có trong mock, để trống
+          twitterCard: '', // Không có trong mock, để trống
+          robotsTxt: settings.seo.robotsTxt || '',
+          sitemapUrl: settings.seo.sitemapUrl || '',
+        }));
       }
+      // Map dữ liệu cho Email Settings
       if (settings.email) {
-        setEmailSettings(prev => ({ ...prev, ...settings.email }));
+        setEmailSettings(prev => ({
+          ...prev,
+          smtpHost: settings.email.smtpHost || '',
+          smtpPort: settings.email.smtpPort || '',
+          smtpUsername: settings.email.smtpUsername || '',
+          smtpPassword: settings.email.smtpPassword || '',
+          smtpEncryption: settings.email.smtpEncryption || '',
+          fromName: settings.email.fromName?.vi || '',
+          fromEmail: settings.email.fromEmail || '',
+          replyToEmail: settings.email.replyTo || '',
+        }));
       }
+      // Map dữ liệu cho Social Settings
       if (settings.social) {
-        setSocialSettings(prev => ({ ...prev, ...settings.social }));
+        setSocialSettings(prev => ({
+          ...prev,
+          facebookUrl: settings.social.facebook || '',
+          twitterUrl: settings.social.twitter || '',
+          linkedinUrl: settings.social.linkedin || '',
+          youtubeUrl: settings.social.youtube || '',
+          instagramUrl: settings.social.instagram || '',
+        }));
       }
-      
       setToast({ show: true, message: 'Tải cấu hình thành công!', type: 'success' });
     } catch (error) {
       setToast({ show: true, message: 'Lỗi khi tải cấu hình!', type: 'error' });
