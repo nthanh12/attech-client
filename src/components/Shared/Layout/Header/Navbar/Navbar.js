@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, memo, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import "./Navbar.mobile.css";
-import MenuItems from "./MenuItems";
+import MenuItems from "./menuItemsComponent";
 import useIsMobile from "./useIsMobile";
 import { useLanguage } from "../../../../../contexts/LanguageContext";
 import { useTheme } from "../../../../../contexts/ThemeContext";
@@ -112,7 +112,9 @@ const NavbarTop = memo(
                   <input
                     type="text"
                     className="search-input"
-                    placeholder={language === "vi" ? "Tìm kiếm..." : "Search..."}
+                    placeholder={
+                      language === "vi" ? "Tìm kiếm..." : "Search..."
+                    }
                     aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
                     onBlur={handleSearchBlur}
                     autoFocus
@@ -185,14 +187,18 @@ const NavbarTop = memo(
                   <div className="mobile-search">
                     <input
                       type="text"
-                      placeholder={language === "vi" ? "Tìm kiếm..." : "Search..."}
+                      placeholder={
+                        language === "vi" ? "Tìm kiếm..." : "Search..."
+                      }
                       aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
                     />
                   </div>
                   <div className="mobile-actions">
                     <div className="language-switcher">
                       <button
-                        className={`lang-btn ${language === "vi" ? "active" : ""}`}
+                        className={`lang-btn ${
+                          language === "vi" ? "active" : ""
+                        }`}
                         onClick={handleLanguageSwitch("vi")}
                         title="Tiếng Việt"
                         aria-pressed={language === "vi"}
@@ -203,7 +209,9 @@ const NavbarTop = memo(
                         />
                       </button>
                       <button
-                        className={`lang-btn ${language === "en" ? "active" : ""}`}
+                        className={`lang-btn ${
+                          language === "en" ? "active" : ""
+                        }`}
                         onClick={handleLanguageSwitch("en")}
                         title="English"
                         aria-pressed={language === "en"}
@@ -282,7 +290,10 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const isMobile = useIsMobile(MOBILE_BREAKPOINT);
   const location = useLocation();
-  const isHomePage = location.pathname === "/" || location.pathname === "/en" || location.pathname === "/en/";
+  const isHomePage =
+    location.pathname === "/" ||
+    location.pathname === "/en" ||
+    location.pathname === "/en/";
   const { lang, setLang } = useLanguage();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { isSearchOpen, handleSearchClick, handleSearchBlur } = useSearch();
@@ -292,7 +303,10 @@ const Navbar = () => {
       setScrolled(true);
       return;
     }
-    const handleScroll = debounce(() => setScrolled(window.scrollY > SCROLL_THRESHOLD), 100);
+    const handleScroll = debounce(
+      () => setScrolled(window.scrollY > SCROLL_THRESHOLD),
+      100
+    );
     window.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => {
