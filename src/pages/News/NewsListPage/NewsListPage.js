@@ -99,7 +99,7 @@ const NewsListPage = () => {
   }
 
   return (
-    <div className="news-list-page newslist-minimal">
+    <div className="news-list-root news-list-page newslist-minimal">
       <div className="container">
         <h1 className="page-title-minimal">{getCategoryTitle()}</h1>
         <div style={{display:'flex',justifyContent:'flex-end',marginBottom:18}}>

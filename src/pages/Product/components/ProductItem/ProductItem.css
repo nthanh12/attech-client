@@ -377,7 +377,6 @@
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   width: 100%;
   height: 380px;
@@ -405,7 +404,7 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  padding: 16px;
+  padding: 40px;
   background: #fff;
   transition: transform 0.3s ease;
 }
@@ -557,5 +556,8 @@
   .page-product .product-content .attech-product-title {
     font-size: 14px;
     line-height: 20px;
+  }
+  .page-product .product-content .attech-product-image {
+  padding: 30px;
   }
 }

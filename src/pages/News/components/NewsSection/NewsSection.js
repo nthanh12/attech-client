@@ -10,11 +10,19 @@ const NewsSection = () => {
   return (
     <section id="newsSection">
       <div className="row">
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-12 col-md-12 p-0">
           <div className="news-section-container">
             <div className="news-section-header">
-            <span className="trend-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 12l4-4 4 4 4-8" stroke="#002a5c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <span className="trend-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M4 12l4-4 4 4 4-8"
+                    stroke="#002a5c"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </span>
               <span className="trend-label">Tin nổi bật</span>
               <div className="news-section-divider"></div>
@@ -22,7 +30,11 @@ const NewsSection = () => {
             <div className="trend-ticker">
               <div className="trend-list">
                 {[...trendingNews, ...trendingNews].map((item, idx) => (
-                  <Link key={item.id + '-' + idx} to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} className="trend-link">
+                  <Link
+                    key={item.id + "-" + idx}
+                    to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}
+                    className="trend-link"
+                  >
                     #{item.titleVi}
                   </Link>
                 ))}

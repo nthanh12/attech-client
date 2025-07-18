@@ -238,7 +238,7 @@
 
 @media (max-width: 575px) {
   .weekly-news-area .container {
-    padding: 0 12px;
+    padding: 0;
   }
 
   .weekly-news-area .weekly-news-active {

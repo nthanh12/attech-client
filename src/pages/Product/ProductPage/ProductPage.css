@@ -46,11 +46,11 @@
   .page-product .product-content.resize {
     margin-left: 0;
   }
-}
-
-@media (max-width: 480px) {
+  .product-page {
+    margin-left: 80px;
+  }
   .page-product .product-content {
-    padding: 50px 10px 0;
+    padding: 50px 0;
   }
 
   .section-header h2 {
@@ -61,6 +61,11 @@
     font-size: 14px;
     padding: 0 10px;
   }
+  .page-product .product-content .attech-product-grid.grid {
+        grid-template-columns: 1fr;
+        margin-top: 100px;
+        padding: 0;
+    }
 }
 
 /* Sử dụng giá trị cứng thay cho biến */
@@ -69,7 +74,5 @@
 }
 
 @media (max-width: 768px) {
-  .product-page {
-    margin-left: 80px;
-  }
+  
 }

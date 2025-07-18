@@ -25,7 +25,7 @@ const TrendingArea = () => {
       <div className="container">
         <div className="trending-main">
           <div className="row">
-            <div className="col-12">
+            <div className="col-12 p-0">
               <div className="section-tittle">
                 <h3>Tin hoạt động công ty</h3>
                 <ViewAllButton to="/tin-tuc/hoat-dong-cong-ty" />
@@ -33,7 +33,7 @@ const TrendingArea = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-8 col-md-12">
+            <div className="col-lg-8 col-md-12 p-0">
               <div className="trending-top-wrapper">
                 <Swiper
                   className="trending-top mb-30"
@@ -68,7 +68,7 @@ const TrendingArea = () => {
                   breakpoints={{
                     320: { slidesPerView: 1.1, spaceBetween: 12 },
                     576: { slidesPerView: 2, spaceBetween: 15 },
-                    1248: { slidesPerView: 3, spaceBetween: 20 }
+                    1248: { slidesPerView: 3, spaceBetween: 20 },
                   }}
                   className="trending-bottom-swiper"
                 >
@@ -83,7 +83,11 @@ const TrendingArea = () => {
                           />
                         </div>
                         <div className="trend-bottom-cap">
-                          <span className="color1">{new Date(item.timePosted).toLocaleDateString("vi-VN")}</span>
+                          <span className="color1">
+                            {new Date(item.timePosted).toLocaleDateString(
+                              "vi-VN"
+                            )}
+                          </span>
                           <h4>
                             <Link
                               to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}
@@ -99,7 +103,7 @@ const TrendingArea = () => {
                 </Swiper>
               </div>
             </div>
-            <div className="col-lg-4 col-md-12">
+            <div className="col-lg-4 col-md-12 p-0">
               <Swiper
                 direction="vertical"
                 spaceBetween={10}
@@ -112,18 +116,18 @@ const TrendingArea = () => {
                   320: {
                     direction: "horizontal",
                     slidesPerView: 1.2,
-                    spaceBetween: 12
+                    spaceBetween: 12,
                   },
                   576: {
                     direction: "horizontal",
                     slidesPerView: 2,
-                    spaceBetween: 15
+                    spaceBetween: 15,
                   },
                   992: {
                     direction: "vertical",
                     slidesPerView: 6,
-                    spaceBetween: 10
-                  }
+                    spaceBetween: 10,
+                  },
                 }}
               >
                 {trendingRight.map((item) => (
@@ -137,7 +141,11 @@ const TrendingArea = () => {
                         />
                       </div>
                       <div className="trand-right-cap">
-                        <span className="color3">{new Date(item.timePosted).toLocaleDateString("vi-VN")}</span>
+                        <span className="color3">
+                          {new Date(item.timePosted).toLocaleDateString(
+                            "vi-VN"
+                          )}
+                        </span>
                         <h4>
                           <Link
                             to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}

@@ -226,6 +226,10 @@
     margin: 0 !important;
     padding: 0 !important;
   }
+  .alert-box .swiper-button-prev,
+  .alert-box .swiper-button-next {
+    top: 35%;
+  }
   .alert-box,
   .alert-box .swiper,
   .alert-box .swiper-slide,
@@ -254,7 +258,7 @@
     display: block;
     border-radius: 0 !important;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 12px !important;
   }
   .item-description {
     padding: 12px;
@@ -270,7 +274,7 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 10px 0;
+    margin: 10px 12px;
     word-break: break-word;
   }
   body, html {
@@ -293,6 +297,6 @@
 
     .item-time {
         font-size: 12px;
-        margin-top: 8px;
+        margin: 5px 12px 0;
     }
 }

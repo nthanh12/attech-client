@@ -485,7 +485,7 @@ export const mockNotifications = [
   },
   // Mời nhà cung cấp
   {
-    id: 3,
+    id: 5,
     titleVi: "Mời thầu cung cấp thiết bị văn phòng",
     slugVi: "moi-thau-cung-cap-thiet-bi-van-phong",
     titleEn: "Office Equipment Tender Invitation",
@@ -504,7 +504,7 @@ export const mockNotifications = [
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4OT9TgLy4r-hMSwLkEq9JjmVlBYmoH8kTA&s"
   },
   {
-    id: 4,
+    id: 6,
     titleVi: "Mời thầu dịch vụ bảo trì hệ thống mạng",
     slugVi: "moi-thau-dich-vu-bao-tri-he-thong-mang",
     titleEn: "Network Maintenance Service Tender",
@@ -524,7 +524,7 @@ export const mockNotifications = [
   },
   // Thông báo khác
   {
-    id: 5,
+    id: 7,
     titleVi: "Thông báo nghỉ lễ Quốc khánh 2/9",
     slugVi: "thong-bao-nghi-le-quoc-khanh-2-9",
     titleEn: "National Day Holiday Notice",
@@ -543,7 +543,7 @@ export const mockNotifications = [
     image: "https://vlute.edu.vn/cdn/files/THONG%20BAO/11_2021-12-09-042032.png"
   },
   {
-    id: 6,
+    id: 8,
     titleVi: "Thông báo thay đổi chính sách làm việc từ xa",
     slugVi: "thong-bao-thay-doi-chinh-sach-lam-viec-tu-xa",
     titleEn: "Remote Work Policy Change Notice",

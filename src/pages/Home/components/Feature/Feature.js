@@ -86,15 +86,17 @@ const Feature = () => {
           >
             {mockNews.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="notify-item" title={item.titleVi}>
-                  <div className="notify-img">
-                    <img src={item.image} alt={item.alt} loading="lazy" />
-                    <span className="news-badge">Tin nổi bật</span>
+                <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <div className="notify-item" title={item.titleVi}>
+                    <div className="notify-img">
+                      <img src={item.image} alt={item.alt} loading="lazy" />
+                      <span className="news-badge">Tin nổi bật</span>
+                    </div>
+                    <p className="notify-title" title={item.titleVi}>
+                      {item.titleVi}
+                    </p>
                   </div>
-                  <p className="notify-title" title={item.titleVi}>
-                    {item.titleVi}
-                  </p>
-                </div>
+                </Link>
               </SwiperSlide>
             ))}
           </Swiper>

@@ -193,7 +193,7 @@
     gap: 10px;
   }
   .newslist-card-minimal {
-    height: 210px;
+    height: 270px;
   }
   .newslist-img-link-minimal {
     height: 130px;
@@ -213,5 +213,8 @@
   .pagination-newslist-minimal {
     gap: 4px;
     margin-top: 14px;
+  }
+  .news-list-root .newslist-img-link-minimal {
+    height: 180px;
   }
 }

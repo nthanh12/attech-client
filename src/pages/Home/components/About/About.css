@@ -309,6 +309,10 @@
   .about-hero {
     padding: 40px 0;
   }
+  .about-hero .swiper-button-prev,
+  .about-hero .swiper-button-next {
+    top: 35%;
+  }
 
   .about-hero-container {
     grid-template-columns: 1fr;

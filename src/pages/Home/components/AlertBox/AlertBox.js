@@ -32,13 +32,13 @@ const AlertBox = () => {
         className="mySwiper"
         breakpoints={{
           320: { slidesPerView: 1, spaceBetween: 0 },
-          640: { slidesPerView: 2, spaceBetween: 10 },
+          640: { slidesPerView: 2, spaceBetween: 0 },
           768: { slidesPerView: 3, spaceBetween: 15 },
           1024: { slidesPerView: 4, spaceBetween: 20 },
           1200: { slidesPerView: 5, spaceBetween: 20 },
         }}
       >
-        {mockNews.map((item) => (
+        {mockNews.slice(4, 16).map((item) => (
           <SwiperSlide key={item.id}>
             <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} aria-label={`Read more about ${item.title}`}>
               <div className="wrap-item">
