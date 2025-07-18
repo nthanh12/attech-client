@@ -84,7 +84,7 @@ const Feature = () => {
             }}
             style={{ width: "100%", height: "100%" }}
           >
-            {mockNews.map((item, index) => (
+            {mockNews.filter(item => item.isOutstanding).map((item, index) => (
               <SwiperSlide key={index}>
                 <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                   <div className="notify-item" title={item.titleVi}>

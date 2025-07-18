@@ -34,6 +34,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/07/sx-cot-gio-18-7-1.jpg",
   },
@@ -72,6 +73,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/07/phong-chong-tham-nhung-16-7-1.jpg",
   },
@@ -110,6 +112,7 @@ export const mockNews = [
     postCategoryNameEn: "Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "activities",
+    isOutstanding: true,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/07/nhgd-2025-phia-nam-14-7-1.jpg",
   },
@@ -145,6 +148,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/07/tuyen-truyen-pho-bien-QD-dong-phuc-9-7-2.jpg",
   },
@@ -185,6 +189,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Youth Union",
     postCategorySlugVi: "doan-thanh-nien-cong-ty",
     postCategorySlugEn: "company-youth-union",
+    isOutstanding: true,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/07/hn-tuyen-truyen-VHATHK-9-7-3.jpg",
   },
@@ -212,6 +217,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/07/cot-an-toan-9-7.jpg",
   },
@@ -252,6 +258,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/06/cabin-robot-30-6-2.jpg",
   },
@@ -296,6 +303,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/06/shelter-composite-30-6.jpg",
   },
@@ -333,6 +341,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-3.jpg",
   },
@@ -372,6 +381,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: true,
     image: "https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-5.jpg",
   },
   {
@@ -405,6 +415,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image: "https://attech.com.vn/wp-content/uploads/2025/06/bhc-25-6-2.jpg",
   },
   {
@@ -460,6 +471,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/06/ngay-moi-truong-20-6-3.jpg",
   },
@@ -492,6 +504,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/06/HN-pho-bien-qd-yc-ND-13-6-1.jpg",
   },
@@ -543,6 +556,7 @@ export const mockNews = [
     postCategoryNameEn: "Charity",
     postCategorySlugVi: "tuyen-truyen-phap-luat",
     postCategorySlugEn: "charity",
+    isOutstanding: false,
     image: "https://attech.com.vn/wp-content/uploads/2025/06/dl-13-6-1.jpg",
   },
   {
@@ -575,6 +589,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image: "https://attech.com.vn/wp-content/uploads/2025/06/qttn-4-6-2.jpg",
   },
   {
@@ -605,6 +620,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/06/attech-tang-mo-hinh-2-6-1.jpg",
   },
@@ -636,6 +652,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image: "https://attech.com.vn/wp-content/uploads/2025/06/1.6-CN-2-6-1.jpg",
   },
   {
@@ -669,6 +686,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/05/kiem-tra-TS-STT-27-5-1.jpg",
   },
@@ -706,6 +724,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Youth Union",
     postCategorySlugVi: "doan-thanh-nien-cong-ty",
     postCategorySlugEn: "company-youth-union",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/05/vieng-lang-bac-20-5-2.jpg",
   },
@@ -734,6 +753,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Party",
     postCategorySlugVi: "dang-bo-cong-ty",
     postCategorySlugEn: "company-party",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-2.jpg",
   },
@@ -767,6 +787,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/05/HN-quan-triet-7-5-3.jpg",
   },
@@ -797,6 +818,7 @@ export const mockNews = [
     postCategoryNameEn: "Company Youth Union",
     postCategorySlugVi: "doan-thanh-nien-cong-ty",
     postCategorySlugEn: "company-youth-union",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2025/04/hd-KHCN-30-4-2.jpg",
   },
@@ -834,6 +856,7 @@ export const mockNews = [
     postCategoryNameEn: "Union",
     postCategorySlugVi: "cong-doan-cong-ty",
     postCategorySlugEn: "unions",
+    isOutstanding: false,
     image: "https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-3.jpg",
   },
   {
@@ -856,6 +879,7 @@ export const mockNews = [
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
     postCategorySlugEn: "aviations",
+    isOutstanding: false,
     image:
       "https://i1-vnexpress.vnecdn.net/2025/03/26/dscf2195-jpeg-1742964488-9432-1742964646.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=rdW-ecy_PkZfo0BvWIhEYw",
   },
@@ -904,6 +928,7 @@ export const mockNews = [
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
     postCategorySlugEn: "aviations",
+    isOutstanding: false,
     image:
       "https://i1-vnexpress.vnecdn.net/2025/01/21/may-bay-sieu-thanh-moi-1737460-3193-1420-1737460593.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=iz_0y1tc-sAmjaNAOr5kzg",
   },
@@ -928,6 +953,7 @@ export const mockNews = [
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
     postCategorySlugEn: "aviations",
+    isOutstanding: false,
     image:
       "https://i1-vnexpress.vnecdn.net/2024/12/22/VNE-Plane-3-1734830968-9113-1734831213.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=WEE5lOSxNzRs8E9EH4O5fA",
   },
@@ -952,6 +978,7 @@ export const mockNews = [
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
     postCategorySlugEn: "aviations",
+    isOutstanding: false,
     image:
       "https://i1-kinhdoanh.vnecdn.net/2024/12/13/ic3a9923-1734103107-1770-1734103117.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=RMWTo32rrFuDezw_GCfI6g",
   },

@@ -10,7 +10,7 @@ import { mockNews } from "../../../../utils/mockNews";
 
 function formatDate(isoString) {
   const d = new Date(isoString);
-  return d.toLocaleDateString('vi-VN');
+  return d.toLocaleDateString("vi-VN");
 }
 
 const AlertBox = () => {
@@ -24,7 +24,7 @@ const AlertBox = () => {
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
-          pauseOnMouseEnter: true
+          pauseOnMouseEnter: true,
         }}
         navigation={true}
         pagination={{ clickable: true }}
@@ -38,16 +38,20 @@ const AlertBox = () => {
           1200: { slidesPerView: 5, spaceBetween: 20 },
         }}
       >
-        {mockNews.slice(4, 16).map((item) => (
+        {mockNews.slice(0, 12).map((item) => (
           <SwiperSlide key={item.id}>
-            <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} aria-label={`Read more about ${item.title}`}>
+            <Link
+              to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}
+              aria-label={`Read more about ${item.title}`}
+            >
               <div className="wrap-item">
                 <div className="item-img" title={item.titleVi}>
                   <img src={item.image} alt={item.titleVi} loading="lazy" />
                 </div>
                 <div className="item-description" title={item.titleVi}>
                   <p className="item-time">
-                    <i className="fa fa-calendar-days" aria-hidden="true"></i> {formatDate(item.timePosted)}
+                    <i className="fa fa-calendar-days" aria-hidden="true"></i>{" "}
+                    {formatDate(item.timePosted)}
                   </p>
                   <p className="item-text">{item.titleVi}</p>
                 </div>
