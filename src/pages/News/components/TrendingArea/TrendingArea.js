@@ -25,7 +25,7 @@ const TrendingArea = () => {
       <div className="container">
         <div className="trending-main">
           <div className="row">
-            <div className="col-12 p-0">
+            <div className="col-12 pd_0">
               <div className="section-tittle">
                 <h3>Tin hoạt động công ty</h3>
                 <ViewAllButton to="/tin-tuc/hoat-dong-cong-ty" />
@@ -33,7 +33,7 @@ const TrendingArea = () => {
             </div>
           </div>
           <div className="row">
-            <div className="col-lg-8 col-md-12 p-0">
+            <div className="col-lg-8 col-md-12 pd_0">
               <div className="trending-top-wrapper">
                 <Swiper
                   className="trending-top mb-30"
@@ -103,7 +103,7 @@ const TrendingArea = () => {
                 </Swiper>
               </div>
             </div>
-            <div className="col-lg-4 col-md-12 p-0">
+            <div className="col-lg-4 col-md-12 pd_0">
               <Swiper
                 direction="vertical"
                 spaceBetween={10}

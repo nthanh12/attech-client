@@ -701,4 +701,7 @@
     .trending-bottom-swiper .trend-bottom-img {
         height: 100px;
     }
+    .pd_0 {
+        padding: 0;
+    }
 }
