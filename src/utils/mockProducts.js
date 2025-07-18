@@ -91,7 +91,7 @@ export const mockProducts = [
 <li>C&oacute; thể cập nhật th&ocirc;ng tin AMHS từ AMC (ATS Management Centre).</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-01-20T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 1,
     productCategoryNameVi: "CNS/ATM",
@@ -121,7 +121,7 @@ export const mockProducts = [
 </ul>`,
     contentEn:
       "Detailed content for air traffic surveillance device in English...",
-    timePosted: "2024-02-01T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 1,
     productCategoryNameVi: "CNS/ATM",
@@ -142,7 +142,7 @@ export const mockProducts = [
     contentVi:
       "Đèn chỉ thị góc tiếp cận chính xác - PAPI là hệ thống đèn chỉ thị góc tiếp cận chính xác - PAPI gồm tổ hợp của 4 bộ đèn PAPI có chức năng trợ giúp phi công tiếp cận bằng mắt theo góc hạ cánh tiêu chuẩn và thường được lắp đặt ở bên trái đường CHC theo hướng hạ cánh.",
     contentEn: "Detailed content for aviation information system in English...",
-    timePosted: "2024-02-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -197,7 +197,7 @@ export const mockProducts = [
 </li>
 </ul>`,
     contentEn: "Detailed content for network security solution in English...",
-    timePosted: "2024-03-01T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -243,7 +243,7 @@ export const mockProducts = [
 <li>Sử dụng nguồn 6.6A v&agrave; một biến d&ograve;ng c&aacute;ch ly 25W/1.1A</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-03-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -275,7 +275,7 @@ export const mockProducts = [
 <li>Chiều cao lắp đặt ph&ugrave; hợp với ti&ecirc;u chuẩn ICAO</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-01T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -324,7 +324,7 @@ export const mockProducts = [
 <li>Gi&oacute;: 278 km/h</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -372,7 +372,7 @@ export const mockProducts = [
 <li>Sử dụng d&acirc;y 2 cực 2,5mm<sup>2</sup>&nbsp;(hoặc AWG 12) giữa biến d&ograve;ng c&aacute;ch ly v&agrave; đ&egrave;n, nguồn 6.6A v&agrave; một biến d&ograve;ng c&aacute;ch ly 100W, 150W hoặc 200W.</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -420,7 +420,7 @@ export const mockProducts = [
 <li>Nguồn điện 1 pha 220 VAC 50Hz</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -447,7 +447,7 @@ export const mockProducts = [
 <li>Ti&ecirc;u chuẩn TCVN 7699-2-30:2007</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 2,
     productCategoryNameVi: "Hệ thống đèn hiệu",
@@ -477,7 +477,7 @@ export const mockProducts = [
 <li>M&aacute;i shelter được chế tạo bằng vật liệu Composite, m&aacute;i dốc tho&aacute;t nước tốt, giảm khả năng đ&oacute;ng tuyết tr&ecirc;n m&aacute;i v&agrave; bền vững, chống thấm nước trong mọi điều kiện thời tiết khắc nghiệt.</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 3,
     productCategoryNameVi: "Shelter",
@@ -497,7 +497,7 @@ export const mockProducts = [
       "The equipment room (Shelter) is used for installation at stations/stations such as: DVOR/DME, ADS-B, Localizer (LLZ), Glide Path, ILS, BTS telecommunication station,... The equipment room must ensure that the equipment inside operates safely in all weather conditions, ensuring continuous information at the stations.",
     contentVi: `Phòng đặt thiết bị (Shelter) được sử dụng để lắp đặt tại các đài/trạm như: DVOR/DME, ADS-B, Localizer (LLZ), Glide Path, ILS, trạm viễn thông BTS,...Phòng đặt thiết bị phải đảm bảo cho các thiết bị bên trong hoạt động an toàn trong mọi điều kiện thời tiết, đảm bảo thông tin tại các trạm được liên tục.`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 3,
     productCategoryNameVi: "Shelter",
@@ -523,7 +523,7 @@ export const mockProducts = [
 <p><strong>M&ocirc; tả sản phẩm:</strong></p>
 <p>B&agrave;n Console được thiết kế, lắp đặt ph&ugrave; hợp với kh&ocirc;ng gian của đ&agrave;i kiểm so&aacute;t kh&ocirc;ng lưu để người kiểm so&aacute;t vi&ecirc;n c&oacute; thể dễ d&agrave;ng truy cập sử dụng c&aacute;c thiết bị v&agrave; đảm bảo c&oacute; g&oacute;c nh&igrave;n, tầm nh&igrave;n tối ưu trong to&agrave;n bộ qu&aacute; tr&igrave;nh điều h&agrave;nh hoạt động bay.</p>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 4,
     productCategoryNameVi: "Bàn console",
@@ -567,7 +567,7 @@ export const mockProducts = [
 <li>Điện trở tiếp đất của gi&agrave;n: &lt;5 Ohms.</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 5,
     productCategoryNameVi: "Giàn phản xạ",
@@ -600,7 +600,7 @@ export const mockProducts = [
 <li>Đồng bộ thời gian theo chuẩn IRIG-B/ RS-232</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 6,
     productCategoryNameVi: "Thiết bị ghi âm/ ghi hình",
@@ -644,7 +644,7 @@ export const mockProducts = [
 </li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 6,
     productCategoryNameVi: "Thiết bị ghi âm/ ghi hình",
@@ -666,7 +666,7 @@ export const mockProducts = [
       "GPS Clock system is an equipment system providing real-time information received from GPS receiver with high precise up to nanoseconds.",
     contentVi: `<p>Thời gian c&oacute; thể được hiển thị tr&ecirc;n c&aacute;c thiết bị đồng hồ Slave phục vụ hoạt động tại c&aacute;c cảng h&agrave;ng kh&ocirc;ng, trung t&acirc;m điều h&agrave;nh quản l&yacute; hoạt động bay v&agrave; một số đơn vị kh&aacute;c. Ngo&agrave;i ra, hệ thống đồng hồ thời gian chuẩn GPS cung cấp t&iacute;n hiệu đồng bộ thời gian chuẩn cho c&aacute;c hệ thống thiết bị kh&aacute;c phục vụ hoạt động tại c&aacute;c cảng h&agrave;ng kh&ocirc;ng hoặc hoạt động điều h&agrave;nh bay như hệ thống ghi thoại v&agrave; ghi dữ liệu, hệ thống AMHS, hệ thống gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng v&agrave; c&aacute;c hệ thống thiết bị kh&aacute;c như hệ thống an ninh h&agrave;ng kh&ocirc;ng, mạng m&aacute;y t&iacute;nh v&agrave; truyền th&ocirc;ng, hệ thống c&ocirc;ng nghiệp.</p>`,
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 1,
     productCategoryNameVi: "CNS/ATM",
@@ -685,9 +685,10 @@ export const mockProducts = [
     descriptionVi: "",
     descriptionEn:
       "Jaw cutting machine designed, manufactured and installed by Attech according to the order of Sakura company - Japan",
-    contentVi: "Máy cắt Vấu do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
+    contentVi:
+      "Máy cắt Vấu do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 7,
     productCategoryNameVi: "Thiết bị dân dụng khác",
@@ -705,9 +706,10 @@ export const mockProducts = [
     slugEn: "ironing-machine",
     descriptionVi: "",
     descriptionEn: "",
-    contentVi: "Máy là do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
+    contentVi:
+      "Máy là do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 7,
     productCategoryNameVi: "Thiết bị dân dụng khác",
@@ -725,9 +727,10 @@ export const mockProducts = [
     descriptionVi: "",
     descriptionEn:
       "Voice data recorder is one of the important devices used in the aviation industry to record image data and voice communication signals during information and flight control communication to ensure the safety of civil aviation operations as well as provide evidence for investigation when an incident occurs.",
-    contentVi: "Máy hàn TIG do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
+    contentVi:
+      "Máy hàn TIG do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 7,
     productCategoryNameVi: "Thiết bị dân dụng khác",
@@ -745,9 +748,10 @@ export const mockProducts = [
     slugEn: "rolling-machine",
     descriptionVi: "",
     descriptionEn: "",
-    contentVi: "Máy lốc do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura Nhật Bản",
+    contentVi:
+      "Máy lốc do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura Nhật Bản",
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 7,
     productCategoryNameVi: "Thiết bị dân dụng khác",
@@ -765,9 +769,10 @@ export const mockProducts = [
     descriptionVi: "",
     descriptionEn:
       "Voice data recorder is one of the important devices used in the aviation industry to record image data and voice communication signals during information and flight control communication to ensure the safety of civil aviation operations as well as provide evidence for investigation when an incident occurs.",
-    contentVi: "Máy hàn quay do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
+    contentVi:
+      "Máy hàn quay do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-07-15T00:00:00Z",
     status: 1,
     productCategoryId: 7,
     productCategoryNameVi: "Thiết bị dân dụng khác",

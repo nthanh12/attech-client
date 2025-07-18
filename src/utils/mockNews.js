@@ -1,9 +1,50 @@
 export const mockNews = [
   {
     id: 1,
-    titleVi: "Kiểm tra công tác phòng, chống tham nhũng, lãng phí, tiêu cực tại Phòng Tổ chức cán bộ – Lao động",
-    slugVi: "kiem-tra-cong-tac-phong-chong-tham-nhung-lang-phi-tieu-cuc-tai-phong-to-chuc-can-bo-lao-dong",
-    descriptionVi: "Ngày 15/07/2025, tại trụ sở Công ty TNHH Kỹ thuật Quản lý bay, Đoàn kiểm tra công tác phòng, chống tham nhũng, lãng phí, tiêu cực của Công ty thực hiện kiểm tra tại Phòng Tổ chức cán bộ – Lao động theo Quyết định số 427/QĐ-CTCT ngày 20/06/2025 của Chủ tịch Công ty",
+    titleVi:
+      "Hoàn thành sản xuất 02 cột gió có tính năng dễ gãy cho cảng hàng không Côn Đảo",
+    slugVi:
+      "hoan-thanh-san-xuat-02-cot-gio-co-tinh-nang-de-gay-cho-cang-hang-khong-con-dao",
+    descriptionVi:
+      "Nắm bắt nhu cầu của thị trường Hàng không trong nước về việc chuyển đổi các loại cột gió cũ, không có tính năng dễ gãy bằng cột gió có tính năng dễ gãy, Xí nghiệp Chế tạo Thiết bị Hàng Không được Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) giao thực hiện nghiên cứu, thiết kế và chế tạo thử nghiệm 01 cột gió có tính năng dễ gãy để cung cấp ra thị trường Hàng không trong và ngoài nước.",
+    contentVi: `<p>Sau thời gian gấp r&uacute;t thực hiện, ng&agrave;y 10 th&aacute;ng 07 năm 2025, sản phẩm&nbsp;đ&atilde; được ATTECH nghiệm thu kỹ thuật v&agrave; đề nghị Cục H&agrave;ng kh&ocirc;ng Việt Nam cấp giấy chứng nhận đủ điều kiện kỹ thuật để sớm cung cấp ra thị trường H&agrave;ng kh&ocirc;ng trong v&agrave; ngo&agrave;i nước.</p>
+<p style="padding-left: 60px;"><a href="https://attech.com.vn/wp-content/uploads/2025/07/sx-cot-gio-18-7-1.jpg"><img class="aligncenter size-full wp-image-11826" src="https://attech.com.vn/wp-content/uploads/2025/07/sx-cot-gio-18-7-1.jpg" alt="sx cot gio 18-7 1" /></a></p>
+<p align="center"><em>Sản phẩm được lắp đặt phục vụ nghiệm thu v&agrave; cấp giấy chứng nhận</em></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Cột gi&oacute; l&agrave; thiết bị hỗ trợ thị gi&aacute;c để cung cấp th&ocirc;ng tin về hướng gi&oacute; ở thời điểm cất hạ c&aacute;nh tại c&aacute;c Cảng h&agrave;ng kh&ocirc;ng, s&acirc;n bay. Qua đ&oacute; gi&uacute;p phi c&ocirc;ng x&aacute;c định được hướng cất, hạ c&aacute;nh ph&ugrave; hợp, an to&agrave;n. Cột gi&oacute; c&oacute; t&iacute;nh năng dễ g&atilde;y nhằm đảm bảo an to&agrave;n cho T&agrave;u bay v&agrave; c&aacute;c thiết bị trong khu bay khi xảy ra va chạm ngo&agrave;i &yacute; muốn.</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Theo thiết kế, ngo&agrave;i bổ sung t&iacute;nh năng dễ g&atilde;y, cột gi&oacute; mới c&ograve;n c&oacute; một số cải tiến về mẫu m&atilde;, vật liệu sử dụng, t&iacute;nh năng kỹ thuật để đ&aacute;p ứng tốt v&agrave; đầy đủ hơn c&aacute;c ti&ecirc;u chuẩn kỹ thuật, an to&agrave;n H&agrave;ng kh&ocirc;ng, cụ thể:</p>
+<p>&ndash; Phần cột: Bằng nh&ocirc;m hợp kim, c&oacute; trọng lượng nhẹ, chống gỉ s&eacute;t, n&acirc;ng hạ bằng tời dễ lắp đặt; Cột được thiết kế theo module c&oacute; tiết diện h&igrave;nh vu&ocirc;ng để tăng khả năng chống uốn, xoắn; Hoạt động tốt trong điều kiện thời tiết khắc nghiệt: đ&aacute;p ứng nhiệt độ: 0&ordm;C đến +55&ordm;C, độ ẩm đến 100% v&agrave; tốc độ gi&oacute; l&ecirc;n đến 200 km/h; Cột c&oacute; cấu tr&uacute;c dễ g&atilde;y ở ch&acirc;n cột v&agrave; mặt b&iacute;ch nối module, đảm bảo g&atilde;y khi c&oacute; va chạm với t&agrave;u bay trọng lượng 3000 kg bay ở tốc độ 140 km/h (75 knot) hoặc di chuyển tr&ecirc;n mặt đất với tốc độ 50 km/h (27 knot); C&aacute;c mặt b&iacute;ch bằng th&eacute;p được mạ kẽm nh&uacute;ng n&oacute;ng theo ti&ecirc;u chuẩn ASTM A123; bul&ocirc;ng ốc v&iacute;t l&agrave;m bằng vật liệu inox chống gỉ SUS 304.</p>
+<p>&ndash; T&uacute;i gi&oacute;: Gồm t&uacute;i v&agrave; khung t&uacute;i gi&oacute; thiết kế để quay tự do xung quanh trục thẳng đứng của cột đỡ với tốc độ tối thiểu của gi&oacute; l&agrave; 5,6 km/h (3 knot), độ ch&iacute;nh x&aacute;c chỉ thị hướng gi&oacute; l&agrave; &plusmn; 5 độ.</p>
+<p>&ndash; Ngo&agrave;i ra cột gi&oacute; được trang bị đ&egrave;n cảnh b&aacute;o chướng ngại vật lắp tr&ecirc;n đỉnh cột v&agrave; đ&egrave;n chiếu s&aacute;ng t&uacute;i gi&oacute;, gi&uacute;p quan s&aacute;t tốt khi trời tối v&agrave; ban đ&ecirc;m. C&aacute;c b&oacute;ng đ&egrave;n chiếu s&aacute;ng được sử dụng c&ocirc;ng nghệ Led tiết kiệm năng lượng.</p>
+<p>&ndash; Cột gi&oacute; theo thiết kế mới đ&aacute;p ứng đầy đủ c&aacute;c ti&ecirc;u chuẩn ICAO v&agrave; FAA.</p>
+<p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11827" src="https://attech.com.vn/wp-content/uploads/2025/07/sx-cot-gio-18-7-2.jpg" alt="sx cot gio 18-7 2" /></p>
+<p align="center"><em>Cục H&agrave;ng kh&ocirc;ng VN kiểm tra hồ sơ phục vụ cấp chứng nhận cho sản phẩm</em></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Ng&agrave;y 15/7/2025 Cục H&agrave;ng Kh&ocirc;ng Việt Nam đ&atilde; kiểm tra, x&aacute;c nhận sản phẩm đạt y&ecirc;u cầu để cấp giấy chứng nhận đủ điều kiện kỹ thuật khai th&aacute;c trong ng&agrave;nh H&agrave;ng kh&ocirc;ng d&acirc;n dụng.</p>
+<p style="text-align: right;"><strong><em>Nguyễn Ho&agrave;ng</em></strong></p>`,
+    titleEn:
+      "Completed production of 02 fragile wind columns for Con Dao airport",
+    slugEn:
+      "completed-production-of-02-fragile-wind-columns-for-con-dao-airport",
+    descriptionEn:
+      "To meet the needs of the domestic aviation market in converting old wind columns that do not have brittle features to wind columns with brittle features, the Aviation Equipment Manufacturing Enterprise was assigned by the Air Traffic Management Engineering Company Limited (ATTECH) to conduct research, design and test manufacture of 01 wind column with brittle features to supply to the domestic and foreign aviation markets.",
+    contentEn: "",
+    timePosted: "2025-07-18T00:00:00Z",
+    status: 1,
+    postCategoryId: 1,
+    postCategoryNameVi: "Hoạt động công ty",
+    postCategoryNameEn: "Company Activities",
+    postCategorySlugVi: "hoat-dong-cong-ty",
+    postCategorySlugEn: "company-activities",
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/sx-cot-gio-18-7-1.jpg",
+  },
+  {
+    id: 2,
+    titleVi:
+      "Kiểm tra công tác phòng, chống tham nhũng, lãng phí, tiêu cực tại Phòng Tổ chức cán bộ – Lao động",
+    slugVi:
+      "kiem-tra-cong-tac-phong-chong-tham-nhung-lang-phi-tieu-cuc-tai-phong-to-chuc-can-bo-lao-dong",
+    descriptionVi:
+      "Ngày 15/07/2025, tại trụ sở Công ty TNHH Kỹ thuật Quản lý bay, Đoàn kiểm tra công tác phòng, chống tham nhũng, lãng phí, tiêu cực của Công ty thực hiện kiểm tra tại Phòng Tổ chức cán bộ – Lao động theo Quyết định số 427/QĐ-CTCT ngày 20/06/2025 của Chủ tịch Công ty",
     contentVi: `<p>Thay mặt Đo&agrave;n kiểm tra, &ocirc;ng Phan Quốc Hưng &ndash; Trưởng đo&agrave;n đ&atilde; c&ocirc;ng bố Quyết định kiểm tra, phổ biến kế hoạch l&agrave;m việc, thống nhất lịch tr&igrave;nh tiến h&agrave;nh kiểm tra v&agrave; ph&acirc;n c&ocirc;ng b&agrave; Nguyễn Th&ugrave;y Chi l&agrave;m thư k&yacute; Hội nghị.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B&agrave; Trần Thị Phương Loan &ndash; Trưởng Ph&ograve;ng Tổ chức c&aacute;n bộ &ndash; Lao động tr&igrave;nh b&agrave;y B&aacute;o c&aacute;o kết quả thực hiện nhiệm vụ ph&ograve;ng, chống tham nhũng, l&atilde;ng ph&iacute;, ti&ecirc;u cực tại Ph&ograve;ng Tổ chức c&aacute;n bộ &ndash; Lao động từ ng&agrave;y 01/01/2024 đến nay.</p>
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11821" src="https://attech.com.vn/wp-content/uploads/2025/07/phong-chong-tham-nhung-16-7-1.jpg" alt="phong chong tham nhung 16-7 1" /></p>
@@ -17,9 +58,12 @@ export const mockNews = [
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11822" src="https://attech.com.vn/wp-content/uploads/2025/07/phong-chong-tham-nhung-16-7-2.jpg" alt="phong chong tham nhung 16-7 2" /></p>
 <p><em>Đo&agrave;n kiểm tra thực hiện kiểm tra trực tiếp c&aacute;c hồ sơ, t&agrave;i liệu c&oacute; li&ecirc;n quan</em></p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Với tinh thần tr&aacute;ch nhiệm cao, bản lĩnh ch&iacute;nh trị vững v&agrave;ng v&agrave; sự quyết t&acirc;m trong thực hiện nhiệm vụ, Ph&ograve;ng Tổ chức c&aacute;n bộ &ndash; Lao động khẳng định sẽ tiếp tục ph&aacute;t huy những kết quả đạt được, kh&ocirc;ng ngừng ho&agrave;n thiện cơ chế, ch&iacute;nh s&aacute;ch v&agrave; n&acirc;ng cao chất lượng nguồn nh&acirc;n lực. C&ocirc;ng t&aacute;c ph&ograve;ng, chống tham nhũng, l&atilde;ng ph&iacute;, ti&ecirc;u cực được x&aacute;c định l&agrave; nhiệm vụ thường xuy&ecirc;n, gắn liền với c&aacute;c hoạt động chuy&ecirc;n m&ocirc;n, g&oacute;p phần x&acirc;y dựng C&ocirc;ng ty ph&aacute;t triển theo hướng bền vững, minh bạch v&agrave; hiệu quả.</p>`,
-    titleEn: "Inspection of Anti-Corruption, Waste Prevention, and Misconduct Measures at the Human Resources and Labor Department",
-    slugEn: "inspection-of-anti-corruption-waste-prevention-and-misconduct-measures-at-the-human-resources-and-labor-department",
-    descriptionEn: "On July 15, 2025, at the headquarters of ATTECH, the inspection team conducted an audit of anti-corruption, waste prevention, and misconduct measures at the Human Resources and Labor Department, pursuant to Decision No. 427/QĐ-CTCT dated June 20, 2025, issued by the company's Chairman.",
+    titleEn:
+      "Inspection of Anti-Corruption, Waste Prevention, and Misconduct Measures at the Human Resources and Labor Department",
+    slugEn:
+      "inspection-of-anti-corruption-waste-prevention-and-misconduct-measures-at-the-human-resources-and-labor-department",
+    descriptionEn:
+      "On July 15, 2025, at the headquarters of ATTECH, the inspection team conducted an audit of anti-corruption, waste prevention, and misconduct measures at the Human Resources and Labor Department, pursuant to Decision No. 427/QĐ-CTCT dated June 20, 2025, issued by the company's Chairman.",
     contentEn: "",
     timePosted: "2025-07-15T00:00:00Z",
     status: 1,
@@ -28,13 +72,15 @@ export const mockNews = [
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/07/phong-chong-tham-nhung-16-7-1.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/phong-chong-tham-nhung-16-7-1.jpg",
   },
   {
-    id: 2,
+    id: 3,
     titleVi: "Ngày hội Gia đình 2025 khu vực phía Nam",
     slugVi: "ngay-hoi-gia-dinh-2025-khu-vuc-phia-nam",
-    descriptionVi: "Ngày 12/07/2025, tại Khu du lịch Bến Xưa (TP.HCM), sự kiện Ngày hội Gia đình 2025 khu vực phía Nam đã được tổ chức thành công, với sự hiện diện của Giám đốc Nguyễn Hoàng Giang, Phó Giám đốc Nguyễn Như Thành, Kiểm soát viên Đỗ Công Đà, đại diện các bộ phận, đơn vị, đài, trạm cùng toàn thể gia đình cán bộ, nhân viên tại Chi nhánh.",
+    descriptionVi:
+      "Ngày 12/07/2025, tại Khu du lịch Bến Xưa (TP.HCM), sự kiện Ngày hội Gia đình 2025 khu vực phía Nam đã được tổ chức thành công, với sự hiện diện của Giám đốc Nguyễn Hoàng Giang, Phó Giám đốc Nguyễn Như Thành, Kiểm soát viên Đỗ Công Đà, đại diện các bộ phận, đơn vị, đài, trạm cùng toàn thể gia đình cán bộ, nhân viên tại Chi nhánh.",
     contentVi: `<p>Sự kiện đặc biệt n&agrave;y kh&ocirc;ng chỉ l&agrave; dịp gặp gỡ, giao lưu m&agrave; c&ograve;n hướng tới kỷ niệm 15 năm chuyển đổi m&ocirc; h&igrave;nh hoạt động của C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay, đ&aacute;nh dấu một chặng đường ph&aacute;t triển mạnh mẽ v&agrave; bền vững</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chương tr&igrave;nh bắt đầu với hoạt động tham quan ATTECH Building v&agrave; chụp h&igrave;nh lưu niệm trước khi khởi h&agrave;nh. Tại khu du lịch, buổi tiệc ch&iacute;nh thức diễn ra l&uacute;c 11h00 với c&aacute;c b&agrave;i ph&aacute;t biểu &yacute; nghĩa từ l&atilde;nh đạo Chi nh&aacute;nh v&agrave; C&ocirc;ng ty, c&ugrave;ng nghi thức khui champagne khai tiệc trang trọng.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Nhiều tr&ograve; chơi vui nhộn d&agrave;nh cho trẻ em v&agrave; người lớn đ&atilde; g&oacute;p phần khuấy động kh&ocirc;ng kh&iacute;, mang lại tiếng cười v&agrave; sự gắn kết. Phần giao lưu văn nghệ, karaoke đ&atilde; kh&eacute;p lại chương tr&igrave;nh trong kh&ocirc;ng kh&iacute; vui tươi, th&acirc;n mật.</p>
@@ -54,7 +100,8 @@ export const mockNews = [
     `,
     titleEn: "Family Day 2025 in the Southern Region",
     slugEn: "family-day-2025-in-the-southern-region",
-    descriptionEn: "On July 12, 2025, at Ben Xua Tourist Area (Ho Chi Minh City), the Family Day 2025 event for the southern region was successfully held, attended by Director Nguyễn Hoàng Giang, Deputy Director Nguyễn Như Thành, Controller Đỗ Công Đà, representatives from various departments, units, stations, and families of employees at the branch.",
+    descriptionEn:
+      "On July 12, 2025, at Ben Xua Tourist Area (Ho Chi Minh City), the Family Day 2025 event for the southern region was successfully held, attended by Director Nguyễn Hoàng Giang, Deputy Director Nguyễn Như Thành, Controller Đỗ Công Đà, representatives from various departments, units, stations, and families of employees at the branch.",
     contentEn: "",
     timePosted: "2025-07-12T00:00:00Z",
     status: 1,
@@ -63,13 +110,17 @@ export const mockNews = [
     postCategoryNameEn: "Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/07/nhgd-2025-phia-nam-14-7-1.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/nhgd-2025-phia-nam-14-7-1.jpg",
   },
   {
-    id: 3,
-    titleVi: "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định mua sắm, cấp phát và sử dụng đồng phục tại Công ty",
-    slugVi: "cong-ty-tnhh-ky-thuat-quan-ly-bay-tuyen-truyen-pho-bien-quy-dinh-mua-sam-cap-phat-va-su-dung-dong-phuc-tai-cong-ty",
-    descriptionVi: "Sáng ngày 09/7/2025, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị tuyên truyền, phổ biến Quy định mua sắm, cấp phát và sử dụng đồng phục tại Công ty. Hội nghị diễn ra tại trụ sở Công ty (Tòa B Tổng công ty Quản lý bay Việt Nam) và được kết nối trực tuyến tới các cơ sở đài/trạm của Công ty trên cả nước và Chi nhánh TP. Hồ Chí Minh. Tham dự Hội nghị có các đồng chí lãnh đạo các bộ phận/đơn vị, Tổ trưởng các Tổ Công đoàn và đại diện người lao động của các bộ phận/đơn vị.",
+    id: 4,
+    titleVi:
+      "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định mua sắm, cấp phát và sử dụng đồng phục tại Công ty",
+    slugVi:
+      "cong-ty-tnhh-ky-thuat-quan-ly-bay-tuyen-truyen-pho-bien-quy-dinh-mua-sam-cap-phat-va-su-dung-dong-phuc-tai-cong-ty",
+    descriptionVi:
+      "Sáng ngày 09/7/2025, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị tuyên truyền, phổ biến Quy định mua sắm, cấp phát và sử dụng đồng phục tại Công ty. Hội nghị diễn ra tại trụ sở Công ty (Tòa B Tổng công ty Quản lý bay Việt Nam) và được kết nối trực tuyến tới các cơ sở đài/trạm của Công ty trên cả nước và Chi nhánh TP. Hồ Chí Minh. Tham dự Hội nghị có các đồng chí lãnh đạo các bộ phận/đơn vị, Tổ trưởng các Tổ Công đoàn và đại diện người lao động của các bộ phận/đơn vị.",
     contentVi: `<p>Quy định mua sắm, cấp ph&aacute;t v&agrave; sử dụng đồng phục tại C&ocirc;ng ty được ban h&agrave;nh tại Quyết định số 477/QĐ-KTQLB ng&agrave;y 02/7/2025 của Gi&aacute;m đốc C&ocirc;ng ty. Đ&acirc;y l&agrave; văn bản quy định tổng thể về việc thực hiện mua sắm, cấp ph&aacute;t v&agrave; sử dụng đồng phục c&ocirc;ng sở, quần &aacute;o Bảo hộ lao động, Sắc phục bảo vệ&nbsp; tại C&ocirc;ng ty. Việc người lao động l&agrave;m việc tại C&ocirc;ng ty tu&acirc;n thủ nghi&ecirc;m t&uacute;c Quy định nhằm mục đ&iacute;ch t&ocirc;n vinh h&igrave;nh ảnh của C&ocirc;ng ty v&agrave; g&oacute;p phần quảng b&aacute; thương hiệu một c&aacute;ch hiệu quả.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tại Hội nghị, b&agrave; Trần Thị Phương Loan &ndash; Trưởng ph&ograve;ng TCCB-LĐ đ&atilde; phổ biến với Hội nghị c&aacute;c nội dung cơ bản của Quy định, b&ecirc;n cạnh đ&oacute; nhấn mạnh v&agrave; l&agrave;m r&otilde; một số nội dung li&ecirc;n quan trực tiếp đến tr&aacute;ch nhiệm, nghĩa vụ v&agrave; quyền lợi của người lao động.</p>
 <p align="center"><img class="aligncenter size-full wp-image-11801" src="https://attech.com.vn/wp-content/uploads/2025/07/tuyen-truyen-pho-bien-QD-dong-phuc-9-7-1.jpg" alt="tuyen truyen, pho bien QD dong phuc 9-7 1" /></p>
@@ -80,24 +131,31 @@ export const mockNews = [
 <p align="center"><em>NLĐ trực tuyến tại c&aacute;c đ&agrave;i/trạm CNS v&agrave; Chi nh&aacute;nh TP. Hồ Ch&iacute; Minh</em></p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tại Hội nghị, c&oacute; một số &yacute; kiến trao đổi của người lao động để được hiểu cụ thể hơn Quy định, b&agrave; Trần Thị Phương Loan &ndash; Trưởng ph&ograve;ng TCCB-LĐ đại diện cho cơ quan chuy&ecirc;n m&ocirc;n đ&atilde; trao đổi, giải th&iacute;ch gi&uacute;p cho người lao động nắm bắt, hiểu r&otilde; chủ trương, quy định của C&ocirc;ng ty. Sau khi được phổ biến, qu&aacute;n triệt, người lao động b&agrave;y tỏ sự đồng t&igrave;nh, ủng hộ v&agrave; sẵn s&agrave;ng thực hiện nghi&ecirc;m t&uacute;c Quy định của C&ocirc;ng ty.</p>
 <p style="text-align: right;"><strong><em>Nguyễn Thị Hương Giang &ndash; P. TCCB-LĐ</em></strong></p>`,
-    titleEn: "ATTECH Promotes Regulations on Procurement, Distribution, and Use of Company Uniforms",
-    slugEn: "attech-promotes-regulations-on-procurement-distribution-and-use-of-company-uniforms",
-    descriptionEn: "On the morning of July 9, 2025, ATTECH held a conference to promote regulations on the procurement, distribution, and use of company uniforms. The event took place at the company’s headquarters (Building B, Vietnam Air Traffic Management Corporation) and was connected online to stations nationwide and the Ho Chi Minh City branch.",
+    titleEn:
+      "ATTECH Promotes Regulations on Procurement, Distribution, and Use of Company Uniforms",
+    slugEn:
+      "attech-promotes-regulations-on-procurement-distribution-and-use-of-company-uniforms",
+    descriptionEn:
+      "On the morning of July 9, 2025, ATTECH held a conference to promote regulations on the procurement, distribution, and use of company uniforms. The event took place at the company’s headquarters (Building B, Vietnam Air Traffic Management Corporation) and was connected online to stations nationwide and the Ho Chi Minh City branch.",
     contentEn: "",
-    timePosted: "2024-02-10T00:00:00Z",
+    timePosted: "2025-07-09T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/07/tuyen-truyen-pho-bien-QD-dong-phuc-9-7-2.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/tuyen-truyen-pho-bien-QD-dong-phuc-9-7-2.jpg",
   },
   {
-    id: 4,
-    titleVi: "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức “Hội nghị tuyên truyền, nâng cao nhận thức về văn hóa an toàn hàng không và hệ thống quản lý án toàn tại Công ty”",
-    slugVi: "doan-thanh-nien-cong-ty-tnhh-ky-thuat-quan-ly-bay-to-chuc-hoi-nghi-tuyen-truyen-nang-cao-nhan-thuc-ve-van-hoa-an-toan-hang-khong-va-he-thong-quan-ly-an-toan-tai-cong-ty",
-    descriptionVi: "Sáng ngày 07/7/2025, tại trụ sở Công ty TNHH Kỹ thuật Quản lý bay (ATTECH), Đoàn Thanh niên Công ty đã tổ chức Hội nghị tuyên truyền, nâng cao nhận thức về văn hóa an toàn hàng không và hệ thống quản lý an toàn tại Công ty.",
+    id: 5,
+    titleVi:
+      "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức “Hội nghị tuyên truyền, nâng cao nhận thức về văn hóa an toàn hàng không và hệ thống quản lý án toàn tại Công ty”",
+    slugVi:
+      "doan-thanh-nien-cong-ty-tnhh-ky-thuat-quan-ly-bay-to-chuc-hoi-nghi-tuyen-truyen-nang-cao-nhan-thuc-ve-van-hoa-an-toan-hang-khong-va-he-thong-quan-ly-an-toan-tai-cong-ty",
+    descriptionVi:
+      "Sáng ngày 07/7/2025, tại trụ sở Công ty TNHH Kỹ thuật Quản lý bay (ATTECH), Đoàn Thanh niên Công ty đã tổ chức Hội nghị tuyên truyền, nâng cao nhận thức về văn hóa an toàn hàng không và hệ thống quản lý an toàn tại Công ty.",
     contentVi: `<p>Hội nghị l&agrave; hoạt động thiết thực nhằm tuy&ecirc;n truyền, gi&aacute;o dục n&acirc;ng cao nhận thức về văn h&oacute;a an to&agrave;n h&agrave;ng kh&ocirc;ng trong đo&agrave;n vi&ecirc;n thanh ni&ecirc;n, g&oacute;p phần x&acirc;y dựng một nền văn h&oacute;a an to&agrave;n t&iacute;ch cực, đồng thời th&uacute;c đẩy tinh thần tr&aacute;ch nhiệm cao của mỗi c&aacute; nh&acirc;n trong c&ocirc;ng t&aacute;c bảo đảm an to&agrave;n của ATTECH.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Đến dự Hội nghị c&oacute; đồng ch&iacute; L&ecirc; Tiến Thịnh &ndash; UV BCH Đảng bộ Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam, B&iacute; thư Đảng ủy, Chủ tịch C&ocirc;ng ty; đồng ch&iacute; Nguyễn Ho&agrave;ng Giang &ndash; Ph&oacute; B&iacute; thư Đảng ủy, Gi&aacute;m đốc C&ocirc;ng ty; đồng ch&iacute; Ph&ugrave;ng Đức Nguy&ecirc;n &ndash; Ph&oacute; B&iacute; thư Đo&agrave;n Thanh ni&ecirc;n Bộ X&acirc;y dựng, B&iacute; thư Đo&agrave;n Thanh ni&ecirc;n Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam; đồng ch&iacute; Dương Ngọc Anh &ndash; Ph&oacute; B&iacute; thư Đo&agrave;n Thanh ni&ecirc;n Tổng c&ocirc;ng ty v&agrave; c&aacute;c đo&agrave;n vi&ecirc;n thanh ni&ecirc;n của C&ocirc;ng ty đang c&ocirc;ng t&aacute;c tại H&agrave; Nội.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Ph&aacute;t biểu tại Hội nghị, đồng ch&iacute; Nguyễn Ho&agrave;ng Giang &ndash; Ph&oacute; B&iacute; thư Đảng ủy, Gi&aacute;m đốc C&ocirc;ng ty v&agrave; đồng ch&iacute; Ph&ugrave;ng Đức Nguy&ecirc;n &ndash; Ph&oacute; B&iacute; thư Đo&agrave;n Thanh ni&ecirc;n Bộ X&acirc;y dựng, B&iacute; thư Đo&agrave;n Thanh ni&ecirc;n Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam đ&atilde; nhấn mạnh tầm quan trọng của c&ocirc;ng t&aacute;c đảm bảo an to&agrave;n trong lĩnh vực cung cấp dịch vụ CNS&nbsp;của C&ocirc;ng ty, đồng thời khẳng định vai tr&ograve; của lực lượng đo&agrave;n vi&ecirc;n thanh ni&ecirc;n trong việc g&oacute;p phần duy tr&igrave; v&agrave; n&acirc;ng cao hiệu quả hệ thống quản l&yacute; an to&agrave;n tại đơn vị. C&aacute;c đồng ch&iacute; đ&atilde; y&ecirc;u cầu c&aacute;c đo&agrave;n vi&ecirc;n thanh ni&ecirc;n cần tiếp tục kh&ocirc;ng ngừng học hỏi, n&acirc;ng cao năng lực chuy&ecirc;n m&ocirc;n, đồng thời cũng định hướng cho Đo&agrave;n Thanh ni&ecirc;n C&ocirc;ng ty c&aacute;c nhiệm vụ, giải ph&aacute;p trong việc tham gia x&acirc;y dựng, thực thi, duy tr&igrave; v&agrave; lan tỏa văn h&oacute;a an to&agrave;n, g&oacute;p phần bảo đảm sự ph&aacute;t triển bền vững của C&ocirc;ng ty.</p>
@@ -113,24 +171,29 @@ export const mockNews = [
 <p align="center"><img class="aligncenter size-full wp-image-11794" src="https://attech.com.vn/wp-content/uploads/2025/07/hn-tuyen-truyen-VHATHK-9-7-4.jpg" alt="hn tuyen truyen VHATHK 9-7 4" /></p>
 <p align="center"><em>Đồng ch&iacute; Nguyễn Thị Huyền Trang &ndash; Ph&oacute; B&iacute; thư Đo&agrave;n Thanh ni&ecirc;n C&ocirc;ng ty tặng hoa, cảm ơn B&aacute;o c&aacute;o vi&ecirc;n</em></p>
 <p align="right"><em><strong>Nguyễn Ho&agrave;nh T&ugrave;ng &ndash; P. TCCB-LĐ</strong></em></p>`,
-    titleEn: "ATTECH Youth Union Organizes Conference on Aviation Safety Culture and Safety Management System",
-    slugEn: "attech-youth-union-organizes-conference-on-aviation-safety-culture-and-safety-management-system",
-    descriptionEn: "On the morning of July 7, 2025, at ATTECH’s headquarters, the company’s Youth Union organized a conference to promote awareness of aviation safety culture and the safety management system.",
+    titleEn:
+      "ATTECH Youth Union Organizes Conference on Aviation Safety Culture and Safety Management System",
+    slugEn:
+      "attech-youth-union-organizes-conference-on-aviation-safety-culture-and-safety-management-system",
+    descriptionEn:
+      "On the morning of July 7, 2025, at ATTECH’s headquarters, the company’s Youth Union organized a conference to promote awareness of aviation safety culture and the safety management system.",
     contentEn: "",
-    timePosted: "2024-02-15T00:00:00Z",
+    timePosted: "2025-07-07T00:00:00Z",
     status: 1,
     postCategoryId: 11,
     postCategoryNameVi: "Đoàn thanh niên công ty",
     postCategoryNameEn: "Company Youth Union",
     postCategorySlugVi: "doan-thanh-nien-cong-ty",
     postCategorySlugEn: "company-youth-union",
-    image: "https://attech.com.vn/wp-content/uploads/2025/07/hn-tuyen-truyen-VHATHK-9-7-3.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/hn-tuyen-truyen-VHATHK-9-7-3.jpg",
   },
   {
-    id: 5,
+    id: 6,
     titleVi: "Hoàn thành sản xuất cột an toàn cho cho khách hàng",
     slugVi: "hoan-thanh-san-xuat-cot-an-toan-cho-khach-hang",
-    descriptionVi: "Xí nghiệp Chế tạo Thiết bị Hàng Không được Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) giao thực hiện sản xuất đơn hàng cột an toàn cho Công ty Cổ phần Thiết bị Khí tượng Thủy văn và Môi trường Việt Nam gồm: 10 cột an toàn cao 10m, 08 cột an toàn cao 3m, 16 cụm cột dễ gãy và 18 bộ gá kim thu sét để cung cấp cho các Cảng Hàng không, sân bay tại Việt Nam.",
+    descriptionVi:
+      "Xí nghiệp Chế tạo Thiết bị Hàng Không được Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) giao thực hiện sản xuất đơn hàng cột an toàn cho Công ty Cổ phần Thiết bị Khí tượng Thủy văn và Môi trường Việt Nam gồm: 10 cột an toàn cao 10m, 08 cột an toàn cao 3m, 16 cụm cột dễ gãy và 18 bộ gá kim thu sét để cung cấp cho các Cảng Hàng không, sân bay tại Việt Nam.",
     contentVi: `<p>Cột an to&agrave;n l&agrave; loại cột chuy&ecirc;n d&ugrave;ng để lắp đặt c&aacute;c thiết bị trong khu bay &ndash; Cảng H&agrave;ng kh&ocirc;ng, s&acirc;n bay nhằm đảm bảo an to&agrave;n cho cho t&agrave;u bay v&agrave; c&aacute;c phương tiện hoạt động trong khu bay khi xảy ra sự cố ngo&agrave;i &yacute; muốn.&nbsp;Sản phẩm&nbsp;do X&iacute; nghiệp Chế tạo Thiết bị H&agrave;ng Kh&ocirc;ng thiết kế, sản xuất theo ti&ecirc;u chuẩn ICAO đ&atilde; được Cục H&agrave;ng kh&ocirc;ng Việt nam cấp giấy chứng nhận đủ điều kiện kỹ thuật đưa v&agrave;o khai th&aacute;c H&agrave;ng kh&ocirc;ng d&acirc;n dụng năm 2020.</p>
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11788" src="https://attech.com.vn/wp-content/uploads/2025/07/cot-an-toan-9-7.jpg" alt="cot an toan 9-7" /></p>
 <p align="center"><em>Sản phẩm đ&atilde; được ATTECH nghiệm thu cấp chứng chỉ chất lượng</em></p>
@@ -139,22 +202,27 @@ export const mockNews = [
 <p style="text-align: right;">&nbsp;</p>`,
     titleEn: "Completion of Safety Pole Production for Clients",
     slugEn: "completion-of-safety-pole-production-for-clients",
-    descriptionEn: "The company's AI research group has announced new discoveries in AI applications...",
+    descriptionEn:
+      "The company's AI research group has announced new discoveries in AI applications...",
     contentEn: "",
-    timePosted: "2024-02-20T00:00:00Z",
+    timePosted: "2025-07-01T00:00:00Z",
     status: 1,
     postCategoryId: 15,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/07/cot-an-toan-9-7.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/cot-an-toan-9-7.jpg",
   },
   {
-    id: 6,
-    titleVi: "Hoàn thành dự án cabin robot bơm keo tự động cho nhà máy ô tô tại hải dương",
-    slugVi: "hoan-thanh-du-an-cabin-robot-bom-keo-tu-dong-cho-nha-may-o-to-tai-hai-duong",
-    descriptionVi: "Ngày 24 tháng 06 năm 2025, Xí nghiệp Chế tạo Thiết bị Hàng không phối hợp cùng Công ty TNHH Tân thế kỷ hoàn thành bàn giao dự án cung cấp 01 hệ thống Robot bơm keo tự động cho nhà máy sản xuất ô tô FOR – Hải Dương – Việt Nam. Robot bơm keo tự động là bộ phận quan trọng trong dây truyền sản xuất ô tô tại nhà máy ô tô FOR – Hải Dương để bơm keo nhằm liên kết các chi tiết của ô tô đảm bảo độ kín khít, chống nước, chống ồn và côn trùng vv…cho xe ô tô. Để thực hiện dự án, Công ty TNHH Tân thế kỷ là đơn vị cung cấp thiết bị Robot, Xí nghiệp Chế tạo Thiết bị Hàng không là đơn vị thiết kế, chế tạo và lắp đặt cabin cho hoạt động của Robot. Quá trình thiết kế, chế tạo và lắp đặt sản phẩm tại nhà máy, luôn có sự kiểm tra, giám sát chặt chẽ từ các chuyên gia kỹ thuật của hãng ô tô For.",
+    id: 7,
+    titleVi:
+      "Hoàn thành dự án cabin robot bơm keo tự động cho nhà máy ô tô tại hải dương",
+    slugVi:
+      "hoan-thanh-du-an-cabin-robot-bom-keo-tu-dong-cho-nha-may-o-to-tai-hai-duong",
+    descriptionVi:
+      "Ngày 24 tháng 06 năm 2025, Xí nghiệp Chế tạo Thiết bị Hàng không phối hợp cùng Công ty TNHH Tân thế kỷ hoàn thành bàn giao dự án cung cấp 01 hệ thống Robot bơm keo tự động cho nhà máy sản xuất ô tô FOR – Hải Dương – Việt Nam. Robot bơm keo tự động là bộ phận quan trọng trong dây truyền sản xuất ô tô tại nhà máy ô tô FOR – Hải Dương để bơm keo nhằm liên kết các chi tiết của ô tô đảm bảo độ kín khít, chống nước, chống ồn và côn trùng vv…cho xe ô tô. Để thực hiện dự án, Công ty TNHH Tân thế kỷ là đơn vị cung cấp thiết bị Robot, Xí nghiệp Chế tạo Thiết bị Hàng không là đơn vị thiết kế, chế tạo và lắp đặt cabin cho hoạt động của Robot. Quá trình thiết kế, chế tạo và lắp đặt sản phẩm tại nhà máy, luôn có sự kiểm tra, giám sát chặt chẽ từ các chuyên gia kỹ thuật của hãng ô tô For.",
     contentVi: `<p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11780" src="https://attech.com.vn/wp-content/uploads/2025/06/cabin-robot-30-6-1.jpg" alt="cabin robot 30-6 1" /></p>
 <p align="center"><em>C&aacute;c chuy&ecirc;n gia của For Việt Nam kiểm tra, chạy thử hệ thống Cabin Robot bơm keo</em></p>
 <p align="center"><em>tại X&iacute; nghiệp CTTBHK trước khi vận chuyển đi lắp đặt</em></p>
@@ -170,24 +238,31 @@ export const mockNews = [
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Dự &aacute;n ho&agrave;n th&agrave;nh đ&uacute;ng tiến độ l&agrave; một minh chứng r&otilde; n&eacute;t cho năng lực thiết kế, chế tạo, t&iacute;ch hợp hệ thống v&agrave; cam kết chất lượng của ch&uacute;ng t&ocirc;i trong lĩnh vực tự động h&oacute;a c&ocirc;ng nghiệp v&agrave; robot ứng dụng. Đồng thời đ&aacute;nh dấu một bước tiến nữa về sự hợp t&aacute;c hiệu quả giữa X&iacute; nghiệp Chế tạo Thiết bị H&agrave;ng kh&ocirc;ng v&agrave; C&ocirc;ng ty TNHH T&acirc;n thế kỷ trong lĩnh vực tự động h&oacute;a sản xuất c&ocirc;ng nghiệp tại Việt Nam.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Ch&uacute;ng t&ocirc;i xin gửi lời cảm ơn ch&acirc;n th&agrave;nh đến đối t&aacute;c C&ocirc;ng ty TNHH T&acirc;n Thế Kỷ v&agrave; Nh&agrave; m&aacute;y &ocirc; t&ocirc; For tại Hải Dương v&igrave; sự tin tưởng v&agrave; đồng h&agrave;nh trong suốt qu&aacute; tr&igrave;nh triển khai dự &aacute;n.</p>
 <p style="text-align: right;"><strong><em>Nguyễn Ho&agrave;ng &ndash; XNHK</em></strong></p>`,
-    titleEn: "Completion of Automated Glue-Dispensing Robot Cabin Project for Automobile Factory in Hai Duong",
-    slugEn: "completion-of-automated-glue-dispensing-robot-cabin-project-for-automobile-factory-in-hai-duong",
-    descriptionEn: "On June 24, 2025, the Aviation Equipment Manufacturing Factory, in collaboration with Tan The Ky Co., Ltd., completed the delivery of an automated glue-dispensing robot cabin system for the FOR automobile factory in Hai Duong, Vietnam.",
+    titleEn:
+      "Completion of Automated Glue-Dispensing Robot Cabin Project for Automobile Factory in Hai Duong",
+    slugEn:
+      "completion-of-automated-glue-dispensing-robot-cabin-project-for-automobile-factory-in-hai-duong",
+    descriptionEn:
+      "On June 24, 2025, the Aviation Equipment Manufacturing Factory, in collaboration with Tan The Ky Co., Ltd., completed the delivery of an automated glue-dispensing robot cabin system for the FOR automobile factory in Hai Duong, Vietnam.",
     contentEn: "",
-    timePosted: "2024-02-25T00:00:00Z",
+    timePosted: "2025-06-27T00:00:00Z",
     status: 1,
     postCategoryId: 15,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/cabin-robot-30-6-2.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/06/cabin-robot-30-6-2.jpg",
   },
   {
-    id: 7,
-    titleVi: "Hoàn thành sản xuất shelter composite không lõi thép – sản phẩm đề tài nghiên cứu khoa học công nghệ",
-    slugVi: "hoan-thanh-san-xuat-shelter-composite-khong-loi-thep-san-pham-de-tai-nghien-cuu-khoa-hoc-cong-nghe",
-    descriptionVi: "Ngày 26 tháng 06 năm 2025, Xí nghiệp Chế tạo Thiết bị Hàng không đã hoàn thành nghiên cứu, thiết kế và chế tạo 01 SHELTER COMPOSITE KHÔNG LÕI THÉP, một sản phẩm thuộc nhiệm vụ khoa học công nghệ do Xí nghiệp Chế tạo Thiết bị Hàng không làm đơn vị chủ trì.",
+    id: 8,
+    titleVi:
+      "Hoàn thành sản xuất shelter composite không lõi thép – sản phẩm đề tài nghiên cứu khoa học công nghệ",
+    slugVi:
+      "hoan-thanh-san-xuat-shelter-composite-khong-loi-thep-san-pham-de-tai-nghien-cuu-khoa-hoc-cong-nghe",
+    descriptionVi:
+      "Ngày 26 tháng 06 năm 2025, Xí nghiệp Chế tạo Thiết bị Hàng không đã hoàn thành nghiên cứu, thiết kế và chế tạo 01 SHELTER COMPOSITE KHÔNG LÕI THÉP, một sản phẩm thuộc nhiệm vụ khoa học công nghệ do Xí nghiệp Chế tạo Thiết bị Hàng không làm đơn vị chủ trì.",
     contentVi: `<p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11776" src="https://attech.com.vn/wp-content/uploads/2025/06/shelter-composite-30-6.jpg" alt="shelter composite 30-6" /></p>
 <p align="center"><em>Sản phẩm SHELTER Composite kh&ocirc;ng l&otilde;i th&eacute;p</em></p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Hiện nay, hầu hết c&aacute;c SHELTER đang sử dụng tại c&aacute;c Cảng h&agrave;ng kh&ocirc;ng, s&acirc;n bay tại Việt Nam v&agrave; c&aacute;c sản phẩm truyền thống của C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay l&agrave; Shelter th&eacute;p v&agrave; Shelter composit c&oacute; khung th&eacute;p với đặc điểm chắc chắn, kh&oacute; bị ph&aacute; hủy. Đứng trước y&ecirc;u cầu ng&agrave;y c&agrave;ng nghi&ecirc;m ngặt về an to&agrave;n H&agrave;ng kh&ocirc;ng, c&aacute;c thiết bị trong khu bay phải l&agrave; thiết bị dễ gẫy, dễ ph&aacute; hủy nhằm đảm bảo an to&agrave;n cho T&agrave;u bay v&agrave; c&aacute;c thiết bị khi xảy ra va chạm. Nắm bắt trước cơ hội kinh doanh, ban l&atilde;nh đạo C&ocirc;ng ty đ&atilde; giao cho X&iacute; nghiệp Chế tạo Thiết bị H&agrave;ng kh&ocirc;ng chủ tr&igrave; c&ocirc;ng t&aacute;c nghi&ecirc;n cứu, thiết kế, sản xuất thử nghiệm SHELTER kh&ocirc;ng l&otilde;i th&eacute;p nhằm đ&aacute;p ứng nhu cầu của thị trường.</p>
@@ -207,28 +282,38 @@ export const mockNews = [
 <p>C&oacute; khả năng chịu được m&ocirc;i trường khắc nhiệt v&agrave; ăn m&ograve;n cao, chịu được sức gi&oacute; 161km/h với điều kiện kh&ocirc;ng c&oacute; tuyết v&agrave; sức gi&oacute; 140 km/h với điều kiện băng tuyết phủ d&agrave;y 12,5 mm.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Sản phẩm ho&agrave;n th&agrave;nh đ&uacute;ng tiến độ, dự b&aacute;o sẽ c&oacute; một thị trường lớn tại c&aacute;c Cảng h&agrave;ng kh&ocirc;ng trong v&agrave; ngo&agrave;i nước, qua đ&oacute; tăng doanh thu, tạo c&ocirc;ng ăn việc l&agrave;m cho C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay n&oacute;i chung v&agrave; X&iacute; nghiệp chế tạo thiết bị h&agrave;ng kh&ocirc;ng n&oacute;i ri&ecirc;ng.</p>
 <p style="text-align: right;"><em><strong>Nguyễn Ho&agrave;ng</strong></em></p>`,
-    titleEn: "Completion of Non-Steel Core Composite Shelter Production – A Scientific and Technological Research Product",
-    slugEn: "completion-of-non-steel-core-composite-shelter-production-a-scientific-and-technological-research-product",
-    descriptionEn: "The company's new employee training program has been launched with many useful courses...",
+    titleEn:
+      "Completion of Non-Steel Core Composite Shelter Production – A Scientific and Technological Research Product",
+    slugEn:
+      "completion-of-non-steel-core-composite-shelter-production-a-scientific-and-technological-research-product",
+    descriptionEn:
+      "The company's new employee training program has been launched with many useful courses...",
     contentEn: "",
-    timePosted: "2024-03-01T00:00:00Z",
+    timePosted: "2025-06-26T00:00:00Z",
     status: 1,
     postCategoryId: 13,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/shelter-composite-30-6.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/06/shelter-composite-30-6.jpg",
   },
   {
-    id: 8,
-    titleVi: "Diễn tập phòng chống xâm nhập bất hợp pháp vào hoạt động hàng không: nâng cao khả năng ứng phó trong mọi tình huống",
-    slugVi: "dien-tap-phong-chong-xam-nhap-bat-hop-phap-vao-hoat-dong-hang-khong-nang-cao-kha-nang-ung-pho-trong-moi-tinh-huong",
-    descriptionVi: "Nhằm tăng cường công tác bảo đảm an ninh hàng không, nâng cao năng lực phối hợp xử lý tình huống giữa các lực lượng, ngày 24/06/2025 tại đài DVOR/DME/ADS-B Nội Bài, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức diễn tập phòng chống xâm nhập bất hợp pháp vào hoạt động hàng không dân dụng.",
+    id: 9,
+    titleVi:
+      "Diễn tập phòng chống xâm nhập bất hợp pháp vào hoạt động hàng không: nâng cao khả năng ứng phó trong mọi tình huống",
+    slugVi:
+      "dien-tap-phong-chong-xam-nhap-bat-hop-phap-vao-hoat-dong-hang-khong-nang-cao-kha-nang-ung-pho-trong-moi-tinh-huong",
+    descriptionVi:
+      "Nhằm tăng cường công tác bảo đảm an ninh hàng không, nâng cao năng lực phối hợp xử lý tình huống giữa các lực lượng, ngày 24/06/2025 tại đài DVOR/DME/ADS-B Nội Bài, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức diễn tập phòng chống xâm nhập bất hợp pháp vào hoạt động hàng không dân dụng.",
     contentVi: "Nội dung chi tiết bằng tiếng Việt...",
-    titleEn: "Drill on Preventing Illegal Intrusion into Aviation Activities: Enhancing Response Capabilities in All Situations",
-    slugEn: "drill-on-preventing-illegal-intrusion-into-aviation-activities-enhancing-response-capabilities-in-all-situations",
-    descriptionEn: "To strengthen aviation security and enhance coordinated response capabilities, on June 24, 2025, at the Nội Bài DVOR/DME/ADS-B station, ATTECH organized a drill to prevent illegal intrusion into civil aviation activities.",
+    titleEn:
+      "Drill on Preventing Illegal Intrusion into Aviation Activities: Enhancing Response Capabilities in All Situations",
+    slugEn:
+      "drill-on-preventing-illegal-intrusion-into-aviation-activities-enhancing-response-capabilities-in-all-situations",
+    descriptionEn:
+      "To strengthen aviation security and enhance coordinated response capabilities, on June 24, 2025, at the Nội Bài DVOR/DME/ADS-B station, ATTECH organized a drill to prevent illegal intrusion into civil aviation activities.",
     contentEn: `<p>Cuộc diễn tập c&oacute; sự tham gia của lực lượng bảo vệ của c&aacute;c đ&agrave;i trạm tr&ecirc;n to&agrave;n quốc v&agrave; c&ocirc;ng an x&atilde; Mai Đ&igrave;nh. Nội dung diễn tập m&ocirc; phỏng t&igrave;nh huống hai đối tượng lạ x&acirc;m nhập tr&aacute;i ph&eacute;p v&agrave;o khu vực đ&agrave;i với mục đ&iacute;ch trộm cắp t&agrave;i sản hoặc g&acirc;y rối hoạt động khai th&aacute;c.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chỉ đạo diễn tập c&oacute; đại diện Ban an ninh Tổng c&ocirc;ng ty QLBVN, l&atilde;nh đạo C&ocirc;ng ty, Văn ph&ograve;ng C&ocirc;ng ty, Trung t&acirc;m BĐKT v&agrave; C&ocirc;ng an x&atilde; Mai đ&igrave;nh. &Ocirc;ng Nguyễn Th&agrave;nh Hưng &ndash; Ph&oacute; trưởng Ban an ninh TCT QLBVN nhấn mạnh: &ldquo;Diễn tập kh&ocirc;ng chỉ l&agrave; h&igrave;nh thức kiểm tra khả năng ứng ph&oacute; với sự cố m&agrave; c&ograve;n l&agrave; cơ hội để c&aacute;c lực lượng r&egrave;n luyện kỹ năng thực tế, ph&aacute;t hiện v&agrave; khắc phục kịp thời những bất cập trong phương &aacute;n đảm bảo an ninh h&agrave;ng kh&ocirc;ng. Trong bối cảnh c&aacute;c mối đe dọa đối với hoạt động h&agrave;ng kh&ocirc;ng ng&agrave;y c&agrave;ng đa dạng v&agrave; phức tạp, việc tổ chức diễn tập thường xuy&ecirc;n l&agrave; y&ecirc;u cầu cấp thiết, nhằm giữ vững mục ti&ecirc;u An ninh h&agrave;ng kh&ocirc;ng l&agrave; ưu ti&ecirc;n h&agrave;ng đầu&rdquo;.</p>
 <p>Trong qu&aacute; tr&igrave;nh diễn tập, t&igrave;nh huống được x&acirc;y dựng s&aacute;t thực tế như:</p>
@@ -241,20 +326,24 @@ export const mockNews = [
 <p><strong>Một số h&igrave;nh ảnh:</strong></p>
 <p style="padding-left: 60px;"><a href="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-1.jpg"><img class="aligncenter size-full wp-image-11770" src="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-1.jpg" alt="dien tap pcxnbhp 30-6 1" /></a><a href="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-2.jpg"><img class="aligncenter size-full wp-image-11771" src="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-2.jpg" alt="dien tap pcxnbhp 30-6 2" /></a><a href="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-3.jpg"><img class="aligncenter size-full wp-image-11772" src="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-3.jpg" alt="dien tap pcxnbhp 30-6 3" /></a><a href="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-4.jpg"><img class="aligncenter size-full wp-image-11773" src="https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-4.jpg" alt="dien tap pcxnbhp 30-6 4" /></a></p>
 <p style="text-align: right;"><strong><em>Vũ Xu&acirc;n Thanh &ndash; Đ&agrave;i Nội B&agrave;i</em></strong></p>`,
-    timePosted: "2024-03-05T00:00:00Z",
+    timePosted: "2025-06-24T00:00:00Z",
     status: 1,
     postCategoryId: 17,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-3.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-3.jpg",
   },
   {
-    id: 9,
-    titleVi: "Hoàn thành công tác thay thế thiết bị đài DVOR/DME Buôn Ma Thuột và đài DVOR/DME Phú Bài",
-    slugVi: "hoan-thanh-cong-tac-thay-the-thiet-bi-dai-dvor-dme-buon-ma-thuot-va-dai-dvor-dme-phu-bai",
-    descriptionVi: "Thực hiện đúng phương án đã được phê duyệt kèm theo Quyết định số 239/QĐ-KTQLB ngày 17/04/2025, Trung tâm bảo đảm kỹ thuật – Công ty TNHH Kỹ thuật Quản lý bay đã hoàn thành thi công các phần việc thuộc gói thầu số 10 “Tháo dỡ hệ thống thiết bị DVOR/DME cũ; lắp đặt thiết bị DVOR/DME mới của hãng MOPIENS; bảo dưỡng shelter, thay thế tủ điện trong shelter, cải tạo nhà kho đài Buôn Ma Thuột; lắp đặt thiết bị đường truyền Radiolink và huấn luyện đào tạo” thuộc dự án “Thay thế thiết bị đài DVOR/DME Buôn Ma Thuột và đài DVOR/DME Phú Bài”.",
+    id: 10,
+    titleVi:
+      "Hoàn thành công tác thay thế thiết bị đài DVOR/DME Buôn Ma Thuột và đài DVOR/DME Phú Bài",
+    slugVi:
+      "hoan-thanh-cong-tac-thay-the-thiet-bi-dai-dvor-dme-buon-ma-thuot-va-dai-dvor-dme-phu-bai",
+    descriptionVi:
+      "Thực hiện đúng phương án đã được phê duyệt kèm theo Quyết định số 239/QĐ-KTQLB ngày 17/04/2025, Trung tâm bảo đảm kỹ thuật – Công ty TNHH Kỹ thuật Quản lý bay đã hoàn thành thi công các phần việc thuộc gói thầu số 10 “Tháo dỡ hệ thống thiết bị DVOR/DME cũ; lắp đặt thiết bị DVOR/DME mới của hãng MOPIENS; bảo dưỡng shelter, thay thế tủ điện trong shelter, cải tạo nhà kho đài Buôn Ma Thuột; lắp đặt thiết bị đường truyền Radiolink và huấn luyện đào tạo” thuộc dự án “Thay thế thiết bị đài DVOR/DME Buôn Ma Thuột và đài DVOR/DME Phú Bài”.",
     contentVi: `<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Để đ&aacute;p ứng y&ecirc;u cầu tiến độ được ph&ecirc; duyệt trong phương &aacute;n, Trung t&acirc;m bảo đảm kỹ thuật đ&atilde; lập phương &aacute;n triển khai từng bước v&agrave; sử dụng nguồn nh&acirc;n lực ph&ugrave; hợp. C&aacute;c nh&acirc;n vi&ecirc;n c&oacute; chuy&ecirc;n m&ocirc;n cao tại Đội Kỹ thuật CNS v&agrave; Đội Cơ điện đ&atilde; được huy động tập trung để thi c&ocirc;ng lắp đặt đảm bảo đ&uacute;ng tiến độ, chất lượng. C&aacute;c nh&acirc;n vi&ecirc;n kỹ thuật CNS tại c&aacute;c đ&agrave;i DVOR/DME Ph&uacute; B&agrave;i v&agrave; đ&agrave;i DVOR/DME Bu&ocirc;n Ma Thuột cũng đ&atilde; tham gia hỗ trợ c&ocirc;ng t&aacute;c lắp đặt cũng như c&ocirc;ng t&aacute;c hậu cần trong suốt thời gian thi c&ocirc;ng.</p>
 <p style="padding-left: 60px;"><a href="https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-1.jpg"><img class="aligncenter size-full wp-image-11747" src="https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-1.jpg" alt="PB BMT 26-6 1" /></a><img class="aligncenter size-full wp-image-11748" src="https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-2.jpg" alt="PB BMT 26-6 2" /></p>
 <p align="center"><em>Hệ thống thiết bị DVOR/DME MOPIENS mới tại đ&agrave;i Ph&uacute; B&agrave;i v&agrave; Bu&ocirc;n Ma Thuột</em></p>
@@ -269,24 +358,29 @@ export const mockNews = [
 <p align="center"><em>C&ocirc;ng t&aacute;c huấn luyện vận h&agrave;nh khai th&aacute;c thiết bị DVOR/DME MOPIENS tại đ&agrave;i Ph&uacute; B&agrave;i</em></p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Đ&acirc;y l&agrave; lần đầu ti&ecirc;n &nbsp;m&agrave; C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay thực hiện thi c&ocirc;ng lắp đặt hệ thống thiết bị DVOR/DME h&atilde;ng MOPIENS. Mặc d&ugrave; c&ocirc;ng việc c&oacute; t&iacute;nh mới, phức tạp, thi c&ocirc;ng trong điều kiện kh&oacute; khăn về cả thời tiết nắng n&oacute;ng nhưng bằng những nỗ lực kh&ocirc;ng ngừng nghỉ, đội thi c&ocirc;ng vẫn đảm bảo đ&uacute;ng phương &aacute;n kỹ thuật, g&oacute;p phần đảm bảo tiến độ chung thực hiện dự &aacute;n. Trong qu&aacute; tr&igrave;nh thi c&ocirc;ng, nh&acirc;n vi&ecirc;n kỹ thuật lu&ocirc;n tu&acirc;n thủ c&aacute;c y&ecirc;u cầu về an to&agrave;n lao động, đảm bảo vệ sinh m&ocirc;i trường cũng như lu&ocirc;n chấp h&agrave;nh nghi&ecirc;m c&aacute;c quy định.</p>
 <p style="padding-left: 30px;"><em><strong>Nguyễn Ho&agrave;i Nam &ndash; Đội RES</strong></em></p>`,
-    titleEn: "Completion of Equipment Replacement for Buôn Ma Thuột and Phú Bài DVOR/DME Stations",
-    slugEn: "completion-of-equipment-replacement-for-buon-ma-thuot-and-phu-bai-dvor-dme-stations",
-    descriptionEn: "Following the approved plan under Decision No. 239/QĐ-KTQLB dated April 17, 2025, ATTECH’s Technical Assurance Center completed the tasks of Package No. 10, including dismantling old DVOR/DME systems, installing new MOPIENS DVOR/DME equipment, maintaining shelters, replacing shelter electrical cabinets, renovating warehouses, installing radiolink transmission equipment, and conducting training at the Buon Ma Thuot and Phu Bai DVOR/DME stations.",
+    titleEn:
+      "Completion of Equipment Replacement for Buôn Ma Thuột and Phú Bài DVOR/DME Stations",
+    slugEn:
+      "completion-of-equipment-replacement-for-buon-ma-thuot-and-phu-bai-dvor-dme-stations",
+    descriptionEn:
+      "Following the approved plan under Decision No. 239/QĐ-KTQLB dated April 17, 2025, ATTECH’s Technical Assurance Center completed the tasks of Package No. 10, including dismantling old DVOR/DME systems, installing new MOPIENS DVOR/DME equipment, maintaining shelters, replacing shelter electrical cabinets, renovating warehouses, installing radiolink transmission equipment, and conducting training at the Buon Ma Thuot and Phu Bai DVOR/DME stations.",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-03-10T00:00:00Z",
+    timePosted: "2025-05-26T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-5.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-5.jpg",
   },
   {
-    id: 10,
+    id: 11,
     titleVi: `“Lần đầu tham gia công tác bay kiểm tra hiệu chuẩn hệ thống thiết bị ILS” – cảm nhận của một nhân viên mới`,
-    slugVi: "lan-dau-tham-gia-cong-tac-bay-kiem-tra-hieu-chuan-he-thong-thiet-bi-ils-cam-nhan-cua-mot-nhan-vien-moi",
-    descriptionVi: "Là một nhân viên mới trong lĩnh vực bay kiểm tra hiệu chuẩn, tôi đã có cơ hội tham gia lần đầu tiên vào công tác bay kiểm tra hiệu chuẩn cho các thiết bị ILS, đặc biệt là hệ thống đài Glide Path và Localizer. Đây là lần đầu tiên tôi thực hiện công việc này, và không chỉ là một nhiệm vụ quan trọng mà còn là cơ hội để tôi học hỏi và hiểu sâu hơn về các hệ thống thiết bị dẫn đường trong ngành hàng không. Trước khi tham gia, tôi đã được trang bị các kiến thức lý thuyết về thiết bị ILS trong các khóa đào tạo tại Công ty, tuy nhiên, công tác kiểm tra hiệu chuẩn thực tế đòi hỏi sự tiếp cận trực tiếp, sự nhanh nhạy để xử lý các quy trình, bài bay cần thiết.",
+    slugVi:
+      "lan-dau-tham-gia-cong-tac-bay-kiem-tra-hieu-chuan-he-thong-thiet-bi-ils-cam-nhan-cua-mot-nhan-vien-moi",
+    descriptionVi:
+      "Là một nhân viên mới trong lĩnh vực bay kiểm tra hiệu chuẩn, tôi đã có cơ hội tham gia lần đầu tiên vào công tác bay kiểm tra hiệu chuẩn cho các thiết bị ILS, đặc biệt là hệ thống đài Glide Path và Localizer. Đây là lần đầu tiên tôi thực hiện công việc này, và không chỉ là một nhiệm vụ quan trọng mà còn là cơ hội để tôi học hỏi và hiểu sâu hơn về các hệ thống thiết bị dẫn đường trong ngành hàng không. Trước khi tham gia, tôi đã được trang bị các kiến thức lý thuyết về thiết bị ILS trong các khóa đào tạo tại Công ty, tuy nhiên, công tác kiểm tra hiệu chuẩn thực tế đòi hỏi sự tiếp cận trực tiếp, sự nhanh nhạy để xử lý các quy trình, bài bay cần thiết.",
     contentVi: `<p>Chuyến bay kiểm tra hiệu chuẩn đầu ti&ecirc;n của t&ocirc;i diễn ra v&agrave;o ban đ&ecirc;m tại Cảng H&agrave;ng kh&ocirc;ng Quốc tế Nội B&agrave;i, từ khoảng 0h s&aacute;ng đến 7-8h s&aacute;ng. Đ&acirc;y l&agrave; một khoảng thời gian ph&ugrave; hợp cho c&ocirc;ng việc bay kiểm tra hiệu chuẩn thiết bị v&igrave; c&oacute; &iacute;t hoạt động của t&agrave;u bay thương mại, tạo ra một kh&ocirc;ng gian y&ecirc;n tĩnh v&agrave; mờ ảo, rất kh&aacute;c biệt so với những lần t&ocirc;i đi c&aacute;c chuyến bay thương mại trong c&aacute;c chuyến du lịch với gia đ&igrave;nh. D&ugrave; chưa c&oacute; kinh nghiệm thực tế, t&ocirc;i cảm thấy sự h&agrave;o hứng lẫn một ch&uacute;t lo lắng khi chuẩn bị cho chuyến bay đầu ti&ecirc;n n&agrave;y. Tr&ecirc;n chuyến bay, nhiệm vụ ch&iacute;nh của t&ocirc;i kh&ocirc;ng phải l&agrave; trực tiếp tham gia kiểm tra c&aacute;c thiết bị, m&agrave; l&agrave; theo d&otilde;i qu&aacute; tr&igrave;nh bay, học hỏi từ c&aacute;c anh đồng nghiệp v&agrave; hiểu r&otilde; hơn về c&aacute;c b&agrave;i bay để kiểm tra c&aacute;c th&ocirc;ng số của hệ thống ILS.</p>
 <p align="center"><img class="aligncenter size-full wp-image-11743" src="https://attech.com.vn/wp-content/uploads/2025/06/bhc-25-6-1.jpg" alt="bhc 25-6 1" /></p>
 <p align="center"><em>T&agrave;u bay hiệu chuẩn Beechcraft B300 của C&ocirc;ng ty ANS CR &ndash; S&eacute;c</em></p>
@@ -297,24 +391,30 @@ export const mockNews = [
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Trong suốt chuyến bay, t&ocirc;i kh&ocirc;ng chỉ theo d&otilde;i m&agrave; c&ograve;n học hỏi được nhiều điều về quy tr&igrave;nh bay kiểm tra, từ việc hiểu r&otilde; c&aacute;c b&agrave;i bay cần thiết cho việc kiểm tra c&aacute;c thiết bị, đến c&aacute;ch thức xử l&yacute; khi c&oacute; sự cố xảy ra trong qu&aacute; tr&igrave;nh kiểm tra. Những b&agrave;i học về sự ch&iacute;nh x&aacute;c v&agrave; cẩn thận trong c&ocirc;ng t&aacute;c bay kiểm tra thực sự gi&uacute;p t&ocirc;i ph&aacute;t triển kỹ năng chuy&ecirc;n m&ocirc;n v&agrave; l&agrave;m tăng sự tự tin khi đối diện với c&ocirc;ng việc thực tế sau n&agrave;y.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Kết th&uacute;c chuyến bay kiểm tra hiệu chuẩn tại Nội B&agrave;i, t&ocirc;i cảm thấy tự h&agrave;o về c&ocirc;ng việc m&igrave;nh đ&atilde; tham gia v&agrave; những điều học hỏi được từ chuyến bay n&agrave;y. Mặc d&ugrave; l&agrave; một nh&acirc;n vi&ecirc;n mới, t&ocirc;i đ&atilde; c&oacute; thể đ&oacute;ng g&oacute;p v&agrave;o một nhiệm vụ quan trọng, v&agrave; từ đ&oacute; c&oacute; th&ecirc;m c&aacute;i nh&igrave;n s&acirc;u sắc về c&ocirc;ng t&aacute;c kiểm tra hiệu chuẩn trong ng&agrave;nh h&agrave;ng kh&ocirc;ng. Chuyến bay đầu ti&ecirc;n kh&ocirc;ng chỉ gi&uacute;p t&ocirc;i củng cố th&ecirc;m kiến thức chuy&ecirc;n m&ocirc;n m&agrave; c&ograve;n r&egrave;n luyện kỹ năng l&agrave;m việc trong m&ocirc;i trường thực tế.</p>
 <p align="right"><strong><em>Trần Đinh Nhật Thăng- TTBKTHC</em></strong></p>`,
-    titleEn: "My First Experience Participating in an ILS Equipment Calibration Flight as a New Employee",
-    slugEn: "my-first-experience-participating-in-an-ils-equipment-calibration-flight-as-a-new-employee",
-    descriptionEn: "As a new employee in the field of flight inspection and calibration, I had the opportunity to participate for the first time in a calibration flight for ILS equipment, especially the Glide Path and Localizer systems. This was not only an important task but also a chance for me to learn and gain deeper insights into air navigation systems. Before participating, I had been provided with theoretical knowledge about ILS equipment during company training courses, but actual calibration work required direct involvement and quick adaptability to handle the necessary procedures and flight profiles.",
+    titleEn:
+      "My First Experience Participating in an ILS Equipment Calibration Flight as a New Employee",
+    slugEn:
+      "my-first-experience-participating-in-an-ils-equipment-calibration-flight-as-a-new-employee",
+    descriptionEn:
+      "As a new employee in the field of flight inspection and calibration, I had the opportunity to participate for the first time in a calibration flight for ILS equipment, especially the Glide Path and Localizer systems. This was not only an important task but also a chance for me to learn and gain deeper insights into air navigation systems. Before participating, I had been provided with theoretical knowledge about ILS equipment during company training courses, but actual calibration work required direct involvement and quick adaptability to handle the necessary procedures and flight profiles.",
     contentEn: "",
-    timePosted: "2024-03-15T00:00:00Z",
+    timePosted: "2025-06-21T00:00:00Z",
     status: 1,
     postCategoryId: 11,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/bhc-25-6-2.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2025/06/bhc-25-6-2.jpg",
   },
   {
-    id: 11,
-    titleVi: "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức các hoạt động hưởng ứng ngày Môi trường Thế giới 5/6 và Tháng hành động vì môi trường năm 2025",
-    slugVi: "cong-ty-tnhh-ky-thuat-quan-ly-bay-attech-to-chuc-cac-hoat-dong-huong-ung-ngay-moi-truong-the-gioi-5-6-va-thang-hanh-dong-vi-moi-truong-nam-2025",
-    descriptionVi: "Hưởng ứng Ngày Môi trường Thế giới (5/6) và Tháng hành động vì môi trường năm 2025, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức chuỗi hoạt động đồng bộ, thiết thực, lan tỏa rộng rãi thông điệp về bảo vệ môi trường, phát triển bền vững và nâng cao ý thức, trách nhiệm của cán bộ, nhân viên, đoàn viên toàn Công ty trong việc gìn giữ môi trường làm việc xanh – sạch – đẹp.hiều chuyên gia đầu ngành...",
+    id: 12,
+    titleVi:
+      "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức các hoạt động hưởng ứng ngày Môi trường Thế giới 5/6 và Tháng hành động vì môi trường năm 2025",
+    slugVi:
+      "cong-ty-tnhh-ky-thuat-quan-ly-bay-attech-to-chuc-cac-hoat-dong-huong-ung-ngay-moi-truong-the-gioi-5-6-va-thang-hanh-dong-vi-moi-truong-nam-2025",
+    descriptionVi:
+      "Hưởng ứng Ngày Môi trường Thế giới (5/6) và Tháng hành động vì môi trường năm 2025, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức chuỗi hoạt động đồng bộ, thiết thực, lan tỏa rộng rãi thông điệp về bảo vệ môi trường, phát triển bền vững và nâng cao ý thức, trách nhiệm của cán bộ, nhân viên, đoàn viên toàn Công ty trong việc gìn giữ môi trường làm việc xanh – sạch – đẹp.hiều chuyên gia đầu ngành...",
     contentVi: `<p><strong>Đẩy mạnh c&ocirc;ng t&aacute;c truyền th&ocirc;ng v&agrave; tuy&ecirc;n truyền nội bộ</strong></p>
 <p>Ngay từ đầu th&aacute;ng 6/2025, C&ocirc;ng ty đ&atilde; triển khai đồng bộ c&aacute;c hoạt động tuy&ecirc;n truyền, phổ biến &yacute; nghĩa, th&ocirc;ng điệp của Ng&agrave;y M&ocirc;i trường Thế giới v&agrave; Th&aacute;ng h&agrave;nh động v&igrave; m&ocirc;i trường tr&ecirc;n c&aacute;c phương tiện th&ocirc;ng tin nội bộ như bản tin C&ocirc;ng ty, m&agrave;n h&igrave;nh điện tử tại trụ sở, website ch&iacute;nh thức, mạng x&atilde; hội nội bộ, c&ugrave;ng hệ thống email đến từng c&aacute;n bộ, đo&agrave;n vi&ecirc;n, người lao động.</p>
 <p>C&aacute;c băng r&ocirc;n, khẩu hiệu, poster cổ động c&oacute; nội dung tuy&ecirc;n truyền như &ldquo;H&agrave;nh động xanh&ndash; Mỗi người lao động ATTECH l&agrave; một chiến binh bảo vệ m&ocirc;i trường&rdquo;, &ldquo;Hạn chế r&aacute;c thải nhựa &ndash; Bảo vệ h&agrave;nh tinh xanh&rdquo;&hellip; được treo v&agrave; trưng b&agrave;y tại c&aacute;c khu vực l&agrave;m việc, h&agrave;nh lang, sảnh trụ sở C&ocirc;ng ty, Cơ sở sản xuất v&agrave; cung ứng dịch vụ, Chi nh&aacute;nh tại TP. Hồ Ch&iacute; Minh v&agrave; c&aacute;c Đ&agrave;i/Trạm CNS của C&ocirc;ng ty tr&ecirc;n to&agrave;n quốc.</p>
@@ -346,24 +446,31 @@ export const mockNews = [
 <p>Với tinh thần chủ động, tr&aacute;ch nhiệm v&agrave; sự tham gia đồng l&ograve;ng của to&agrave;n thể c&aacute;n bộ, đo&agrave;n vi&ecirc;n, người lao động, chuỗi hoạt động hưởng ứng Ng&agrave;y M&ocirc;i trường Thế giới v&agrave; Th&aacute;ng h&agrave;nh động v&igrave; m&ocirc;i trường năm 2025 tại C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay đ&atilde; g&oacute;p phần lan tỏa mạnh mẽ th&ocirc;ng điệp sống xanh&ndash; l&agrave;m việc xanh, n&acirc;ng cao &yacute; thức giữ g&igrave;n m&ocirc;i trường l&agrave;m việc an to&agrave;n, sạch đẹp.</p>
 <p>Đ&acirc;y l&agrave; một trong nhiều hoạt động thường ni&ecirc;n nằm trong định hướng ph&aacute;t triển bền vững của C&ocirc;ng ty, đồng thời khẳng định cam kết của Ban L&atilde;nh đạo C&ocirc;ng ty trong việc bảo vệ m&ocirc;i trường, đảm bảo an to&agrave;n&ndash; vệ sinh lao động v&agrave; đ&oacute;ng g&oacute;p t&iacute;ch cực v&agrave;o sự ph&aacute;t triển xanh của ng&agrave;nh h&agrave;ng kh&ocirc;ng Việt Nam.</p>
 <p style="text-align: right;"><em><strong>Đ&agrave;o Thanh T&uacute;- P.TCKT</strong></em></p>`,
-    titleEn: "ATTECH Organizes Activities in Response to World Environment Day June 5 and Action Month for the Environment 2025",
-    slugEn: "attech-organizes-activities-in-response-to-world-environment-day-june-5-and-action-month-for-the-environment-2025",
-    descriptionEn: "In response to World Environment Day (June 5) and Action Month for the Environment 2025, ATTECH organized a series of synchronized and practical activities to spread the message of environmental protection, sustainable development, and raise awareness and responsibility among all staff and employees in maintaining a green – clean – beautiful workplace.",
+    titleEn:
+      "ATTECH Organizes Activities in Response to World Environment Day June 5 and Action Month for the Environment 2025",
+    slugEn:
+      "attech-organizes-activities-in-response-to-world-environment-day-june-5-and-action-month-for-the-environment-2025",
+    descriptionEn:
+      "In response to World Environment Day (June 5) and Action Month for the Environment 2025, ATTECH organized a series of synchronized and practical activities to spread the message of environmental protection, sustainable development, and raise awareness and responsibility among all staff and employees in maintaining a green – clean – beautiful workplace.",
     contentEn: "",
-    timePosted: "2024-03-20T00:00:00Z",
+    timePosted: "2025-06-20T00:00:00Z",
     status: 1,
     postCategoryId: 18,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/ngay-moi-truong-20-6-3.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/06/ngay-moi-truong-20-6-3.jpg",
   },
   {
-    id: 12,
-    titleVi: "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định Yêu cầu năng định nhân viên hàng không và chứng chỉ hành nghề/ chứng chỉ chuyên môn/ chứng nhận đối với các vị trí chức danh tại Công ty",
-    slugVi: "cong-ty-tnhh-ky-thuat-quan-ly-bay-tuyen-truyen-pho-bien-quy-dinh-yeu-cau-nang-dinh-nhan-vien-hang-khong-va-chung-chi-hanh-nghe-chung-chi-chuyen-mon-chung-nhan-doi-voi-cac-vi-tri-chuc-danh-tai-cong-ty",
-    descriptionVi: "Sáng ngày 12/6/2025, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị tuyên truyền, phổ biến Quy định Yêu cầu năng định nhân viên hàng không và chứng chỉ hành nghề/ chứng chỉ chuyên môn/ chứng nhận đối với các vị trí chức danh tại Công ty.. Hội nghị diễn ra tại trụ sở Công ty (Tòa B Tổng công ty Quản lý bay Việt Nam) và được kết nối trực tuyến tới các cơ sở đài/trạm của Công ty trên cả nước và Chi nhánh TP. Hồ Chí Minh. Tham dự Hội nghị có các đồng chí lãnh đạo các bộ phận/đơn vị, Tổ trưởng các Tổ Công đoàn và đại diện người lao động của các bộ phận/đơn vị.",
+    id: 13,
+    titleVi:
+      "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định Yêu cầu năng định nhân viên hàng không và chứng chỉ hành nghề/ chứng chỉ chuyên môn/ chứng nhận đối với các vị trí chức danh tại Công ty",
+    slugVi:
+      "cong-ty-tnhh-ky-thuat-quan-ly-bay-tuyen-truyen-pho-bien-quy-dinh-yeu-cau-nang-dinh-nhan-vien-hang-khong-va-chung-chi-hanh-nghe-chung-chi-chuyen-mon-chung-nhan-doi-voi-cac-vi-tri-chuc-danh-tai-cong-ty",
+    descriptionVi:
+      "Sáng ngày 12/6/2025, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị tuyên truyền, phổ biến Quy định Yêu cầu năng định nhân viên hàng không và chứng chỉ hành nghề/ chứng chỉ chuyên môn/ chứng nhận đối với các vị trí chức danh tại Công ty.. Hội nghị diễn ra tại trụ sở Công ty (Tòa B Tổng công ty Quản lý bay Việt Nam) và được kết nối trực tuyến tới các cơ sở đài/trạm của Công ty trên cả nước và Chi nhánh TP. Hồ Chí Minh. Tham dự Hội nghị có các đồng chí lãnh đạo các bộ phận/đơn vị, Tổ trưởng các Tổ Công đoàn và đại diện người lao động của các bộ phận/đơn vị.",
     contentVi: `<p>Quy định Y&ecirc;u cầu năng định nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng v&agrave; chứng chỉ h&agrave;nh nghề/ chứng chỉ chuy&ecirc;n m&ocirc;n/ chứng nhận đối với c&aacute;c vị tr&iacute; chức danh tại C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay được ban h&agrave;nh tại Quyết định số 383/QĐ-KTQLB ng&agrave;y 29/5/2025 của Gi&aacute;m đốc C&ocirc;ng ty. So với Quy định cũ, Quy định mới ban h&agrave;nh đ&atilde; được sửa đổi, bổ sung c&aacute;c nội dung cập nhật theo c&aacute;c quy định mới của ph&aacute;p luật v&agrave; c&aacute;c văn bản quản l&yacute; nội bộ kh&aacute;c của C&ocirc;ng ty, g&oacute;p phần ho&agrave;n thiện, đảm bảo thực hiện chặt chẽ v&agrave; hợp l&yacute; hơn về y&ecirc;u c&aacute;c loại chứng chỉ h&agrave;nh nghề, chứng chỉ chuy&ecirc;n m&ocirc;n, chứng nhận khi thực hiện nhiệm vụ tại vị tr&iacute; chức danh để đảm bảo tu&acirc;n thủ quy định của ph&aacute;p luật v&agrave; đ&aacute;p ứng y&ecirc;u cầu của c&ocirc;ng việc được C&ocirc;ng ty giao.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tại Hội nghị, b&agrave; Trần Thị Phương Loan- Trưởng ph&ograve;ng TCCB-LĐ đ&atilde; phổ biến với Hội nghị c&aacute;c nội dung cơ bản của Quy định, b&ecirc;n cạnh đ&oacute; nhấn mạnh v&agrave; l&agrave;m r&otilde; c&aacute;c điểm mới, đặc biệt l&agrave; c&aacute;c nội dung li&ecirc;n quan trực tiếp đến nghĩa vụ v&agrave; quyền lợi của người lao động.</p>
 <p align="center"><img class="aligncenter size-full wp-image-11729" src="https://attech.com.vn/wp-content/uploads/2025/06/HN-pho-bien-qd-yc-ND-13-6-1.jpg" alt="HN pho bien qd yc ND 13-6 1" /></p>
@@ -375,22 +482,27 @@ export const mockNews = [
 <p align="right"><strong><em>Nguyễn Ho&agrave;n T&ugrave;ng &ndash; P. TCCB-LĐ</em></strong></p>`,
     titleEn: "Technical Innovation Awards Ceremony",
     slugEn: "technical-innovation-awards-ceremony",
-    descriptionEn: "Awards ceremony for outstanding technical innovations in 2024...",
+    descriptionEn:
+      "Awards ceremony for outstanding technical innovations in 2024...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-03-25T00:00:00Z",
+    timePosted: "2025-06-12T00:00:00Z",
     status: 1,
     postCategoryId: 19,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/HN-pho-bien-qd-yc-ND-13-6-1.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/06/HN-pho-bien-qd-yc-ND-13-6-1.jpg",
   },
   {
-    id: 13,
-    titleVi: "Bình đẳng giới trong gia đình: Hành trình cùng nhau xây dựng một xã hội công bằng",
-    slugVi: "binh-dang-gioi-trong-gia-dinh-hanh-trinh-cung-nhau-xay-dung-mot-xa-hoi-cong-bang",
-    descriptionVi: "Bình đẳng giới là một khái niệm quan trọng, không chỉ nhằm nâng cao quyền lợi cho phụ nữ mà còn tạo ra một môi trường công bằng cho cả nam và nữ. Hành trình hướng tới bình đẳng giới không phải là cuộc chiến chống lại đàn ông hay giành quyền cho phụ nữ, mà là một sự hợp tác, nơi cả hai giới cùng nhau tháo gỡ những rào cản vô hình và phá bỏ những khuôn mẫu sai lệch.",
+    id: 14,
+    titleVi:
+      "Bình đẳng giới trong gia đình: Hành trình cùng nhau xây dựng một xã hội công bằng",
+    slugVi:
+      "binh-dang-gioi-trong-gia-dinh-hanh-trinh-cung-nhau-xay-dung-mot-xa-hoi-cong-bang",
+    descriptionVi:
+      "Bình đẳng giới là một khái niệm quan trọng, không chỉ nhằm nâng cao quyền lợi cho phụ nữ mà còn tạo ra một môi trường công bằng cho cả nam và nữ. Hành trình hướng tới bình đẳng giới không phải là cuộc chiến chống lại đàn ông hay giành quyền cho phụ nữ, mà là một sự hợp tác, nơi cả hai giới cùng nhau tháo gỡ những rào cản vô hình và phá bỏ những khuôn mẫu sai lệch.",
     contentVi: `<p><strong>Định kiến giới v&agrave; khu&ocirc;n mẫu x&atilde; hội</strong></p>
 <p>Định kiến giới đ&atilde; tồn tại từ l&acirc;u trong x&atilde; hội, h&igrave;nh th&agrave;nh n&ecirc;n những khu&ocirc;n mẫu m&agrave; cả nam v&agrave; nữ phải tu&acirc;n theo. Những khu&ocirc;n mẫu n&agrave;y kh&ocirc;ng chỉ định h&igrave;nh c&aacute;ch m&agrave; mỗi giới nh&igrave;n nhận bản th&acirc;n m&agrave; c&ograve;n ảnh hưởng s&acirc;u sắc đến c&aacute;ch họ tương t&aacute;c với nhau. Nam giới thường bị &aacute;p lực phải thể hiện sự mạnh mẽ, kh&ocirc;ng được ph&eacute;p yếu đuối, v&agrave; lu&ocirc;n phải g&aacute;nh v&aacute;c vai tr&ograve; trụ cột kinh tế trong gia đ&igrave;nh. Điều n&agrave;y kh&ocirc;ng chỉ b&oacute; hẹp vai tr&ograve; của nam giới m&agrave; c&ograve;n khiến họ phải chịu đựng những &aacute;p lực t&acirc;m l&yacute; nặng nề. Những quy chuẩn n&agrave;y đ&atilde; tạo ra một m&ocirc;i trường m&agrave; nam giới cảm thấy cần phải che giấu cảm x&uacute;c của m&igrave;nh, kh&ocirc;ng d&aacute;m thể hiện sự mềm mỏng hay nhạy cảm, v&igrave; sợ bị xem l&agrave; &ldquo;yếu đuối&rdquo; hoặc kh&ocirc;ng đủ khả năng. Hệ quả l&agrave; nhiều nam giới phải chịu đựng sự c&ocirc; lập trong ch&iacute;nh gia đ&igrave;nh của m&igrave;nh, kh&ocirc;ng d&aacute;m chia sẻ những kh&oacute; khăn hay lo lắng với người th&acirc;n.</p>
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11724" src="https://attech.com.vn/wp-content/uploads/2025/06/dl-13-6-1.jpg" alt="dl 13-6 1" /></p>
@@ -424,20 +536,23 @@ export const mockNews = [
     slugEn: "spring-charity-program",
     descriptionEn: "Spring charity program brings joy to the community...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-03-30T00:00:00Z",
+    timePosted: "2025-06-10T00:00:00Z",
     status: 1,
     postCategoryId: 20,
     postCategoryNameVi: "Tuyên truyền pháp luật",
     postCategoryNameEn: "Charity",
     postCategorySlugVi: "tuyen-truyen-phap-luat",
     postCategorySlugEn: "charity",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/dl-13-6-1.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2025/06/dl-13-6-1.jpg",
   },
   {
-    id: 14,
-    titleVi: "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức Ngày Quốc tế Thiếu nhi 1/6 cho con người quản lý, người lao động trong Công ty",
-    slugVi: "cong-ty-tnhh-ky-thuat-quan-ly-bay-attech-to-chuc-ngay-quoc-te-thieu-nhi-1-6-cho-con-nguoi-quan-ly-nguoi-lao-dong-trong-cong-ty",
-    descriptionVi: "Nhân dịp Quốc tế Thiếu nhi 1/6, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức chương trình vui chơi đầy ý nghĩa cho các em nhỏ là con người quản lý, người lao động của Công ty khu vực Hà Nội tại Công viên giáo-trí KidZania – Lotte Mall Tây Hồ.",
+    id: 15,
+    titleVi:
+      "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức Ngày Quốc tế Thiếu nhi 1/6 cho con người quản lý, người lao động trong Công ty",
+    slugVi:
+      "cong-ty-tnhh-ky-thuat-quan-ly-bay-attech-to-chuc-ngay-quoc-te-thieu-nhi-1-6-cho-con-nguoi-quan-ly-nguoi-lao-dong-trong-cong-ty",
+    descriptionVi:
+      "Nhân dịp Quốc tế Thiếu nhi 1/6, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức chương trình vui chơi đầy ý nghĩa cho các em nhỏ là con người quản lý, người lao động của Công ty khu vực Hà Nội tại Công viên giáo-trí KidZania – Lotte Mall Tây Hồ.",
     contentVi: `<p>Chương tr&igrave;nh l&agrave; m&oacute;n qu&agrave; tinh thần &yacute; nghĩa m&agrave; Ban L&atilde;nh đạo C&ocirc;ng ty c&ugrave;ng Đo&agrave;n Thanh ni&ecirc;n d&agrave;nh tặng cho c&aacute;c em thiếu nhi &ndash; thế hệ mầm non tương lai, đồng thời thể hiện sự quan t&acirc;m, chăm lo đời sống tinh thần cho người lao động.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tại KidZania &ndash; th&agrave;nh phố thu nhỏ d&agrave;nh ri&ecirc;ng cho trẻ em, c&aacute;c em nhỏ đ&atilde; được h&oacute;a th&acirc;n th&agrave;nh những &ldquo;c&ocirc;ng d&acirc;n nh&iacute;&rdquo; trong nhiều ng&agrave;nh nghề kh&aacute;c nhau như b&aacute;c sĩ, l&iacute;nh cứu hỏa, kỹ sư, phi c&ocirc;ng, đầu bếp&hellip; Qua đ&oacute;, c&aacute;c em kh&ocirc;ng chỉ được vui chơi m&agrave; c&ograve;n học hỏi, r&egrave;n luyện kỹ năng sống, l&agrave;m việc nh&oacute;m v&agrave; n&acirc;ng cao nhận thức về thế giới xung quanh.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chương tr&igrave;nh thu h&uacute;t sự tham gia của gần 200 em thiếu nhi c&ugrave;ng cha mẹ l&agrave; c&aacute;n bộ, nh&acirc;n vi&ecirc;n C&ocirc;ng ty. Kh&ocirc;ng kh&iacute; n&aacute;o nhiệt, vui tươi tr&agrave;n ngập trong suốt buổi hoạt động, mang đến những kỷ niệm đ&aacute;ng nhớ v&agrave; niềm vui trọn vẹn cho c&aacute;c em nhỏ.</p>
@@ -450,22 +565,24 @@ export const mockNews = [
 <p style="text-align: right;">&nbsp;</p>`,
     titleEn: "Q1 2024 Review Conference",
     slugEn: "q1-2024-review-conference",
-    descriptionEn: "Q1 2024 review conference with many outstanding achievements...",
+    descriptionEn:
+      "Q1 2024 review conference with many outstanding achievements...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-04-05T00:00:00Z",
+    timePosted: "2025-06-05T00:00:00Z",
     status: 1,
     postCategoryId: 21,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/qttn-4-6-2.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2025/06/qttn-4-6-2.jpg",
   },
   {
-    id: 15,
+    id: 16,
     titleVi: "Trao tặng mô hình Trung Tâm Kiểm soát không lưu Long Thành",
     slugVi: "trao-tang-mo-hinh-trung-tam-kiem-soat-khong-luu-long-thanh",
-    descriptionVi: "Cảng Hàng không Quốc tế Long Thành được xem là một trong những dự án trọng điểm quốc gia, là sân bay xây mới lớn nhất Việt Nam và là một trong những dự án hàng không quan trọng bậc nhất khu vực Châu Á – Thái Bình Dương, được kỳ vọng sẽ trở thành một trung tâm hàng không quốc tế lớn, cửa ngõ giao thương quan trọng của Việt Nam, thúc đẩy mạnh mẽ sự phát triển kinh tế – xã hội của khu vực phía Nam và cả nước.",
+    descriptionVi:
+      "Cảng Hàng không Quốc tế Long Thành được xem là một trong những dự án trọng điểm quốc gia, là sân bay xây mới lớn nhất Việt Nam và là một trong những dự án hàng không quan trọng bậc nhất khu vực Châu Á – Thái Bình Dương, được kỳ vọng sẽ trở thành một trung tâm hàng không quốc tế lớn, cửa ngõ giao thương quan trọng của Việt Nam, thúc đẩy mạnh mẽ sự phát triển kinh tế – xã hội của khu vực phía Nam và cả nước.",
     contentVi: `<p>Trong tổng thể dự &aacute;n đồ sộ n&agrave;y, Trung t&acirc;m Kiểm so&aacute;t Kh&ocirc;ng lưu (ATC) l&agrave; "bộ n&atilde;o" điều h&agrave;nh to&agrave;n bộ hoạt động bay của s&acirc;n bay, đ&oacute;ng vai tr&ograve; then chốt, đảm bảo an to&agrave;n, hiệu quả v&agrave; sự th&ocirc;ng suốt cho mọi chuyến bay cất hạ c&aacute;nh cũng như di chuyển trong kh&ocirc;ng phận v&ugrave;ng th&ocirc;ng b&aacute;o bay.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Ch&agrave;o mừng Đại hội Đại biểu Đảng bộ Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam (VATM) lần thứ IX, v&agrave;o ng&agrave;y 30/5/2025, C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay (ATTECH) đ&atilde; c&oacute; buổi lễ trang trọng trao tặng VATM m&ocirc; h&igrave;nh Trung t&acirc;m Kiểm so&aacute;t Kh&ocirc;ng lưu Long Th&agrave;nh với sự hiện diện của c&aacute;c l&atilde;nh đạo cấp cao của Tổng c&ocirc;ng ty.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; M&ocirc; h&igrave;nh ATC được chế t&aacute;c tinh xảo, m&ocirc; phỏng ch&acirc;n thực đ&agrave;i kiểm so&aacute;t kh&ocirc;ng lưu Long Th&agrave;nh v&agrave; c&aacute;c t&ograve;a nh&agrave; phụ trợ, thể hiện r&otilde; năng lực thiết kế, kỹ thuật v&agrave; sản xuất ch&iacute;nh x&aacute;c của ATTECH. M&oacute;n qu&agrave; kh&ocirc;ng chỉ mang &yacute; nghĩa biểu trưng, m&agrave; c&ograve;n l&agrave; lời khẳng định r&otilde; n&eacute;t về tr&igrave;nh độ kỹ thuật, khả năng sản xuất của ATTECH.</p>
@@ -481,20 +598,24 @@ export const mockNews = [
     slugEn: "summer-charity-program-2024",
     descriptionEn: "Summer charity program brings value to the community...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-04-10T00:00:00Z",
+    timePosted: "2025-06-03T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/attech-tang-mo-hinh-2-6-1.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/06/attech-tang-mo-hinh-2-6-1.jpg",
   },
   {
-    id: 16,
-    titleVi: "Đoàn Thanh Niên Chi nhánh tại TP.HCM tổ chức chương trình nhân ngày Quốc tế Thiếu nhi 1/6",
-    slugVi: "doan-thanh-nien-chi-nhanh-tai-tp-hcm-to-chuc-chuong-trinh-nhan-ngay-quoc-te-thieu-nhi-1-6",
-    descriptionVi: "Hội thao công ty diễn ra sôi nổi Hòa chung không khí rộn ràng chào mừng ngày Quốc tế Thiếu nhi 1/6, Đoàn Thanh niên Chi nhánh tại TP.HCM đã tổ chức một chương trình ý nghĩa dành cho các cháu thiếu nhi là con em của cán bộ, công nhân viên đang công tác tại Chi nhánh và đài VOR Tân Sơn Nhất. Đây là một hoạt động thường niên nhằm mang đến cho các em một ngày lễ trọn vẹn niềm vui, đồng thời thể hiện sự quan tâm của Công ty TNHH Kỹ thuật Quản lý bay đến đời sống tinh thần của CB-CNV và gia đình với nhiều hoạt động thể thao hấp dẫn...",
+    id: 17,
+    titleVi:
+      "Đoàn Thanh Niên Chi nhánh tại TP.HCM tổ chức chương trình nhân ngày Quốc tế Thiếu nhi 1/6",
+    slugVi:
+      "doan-thanh-nien-chi-nhanh-tai-tp-hcm-to-chuc-chuong-trinh-nhan-ngay-quoc-te-thieu-nhi-1-6",
+    descriptionVi:
+      "Hội thao công ty diễn ra sôi nổi Hòa chung không khí rộn ràng chào mừng ngày Quốc tế Thiếu nhi 1/6, Đoàn Thanh niên Chi nhánh tại TP.HCM đã tổ chức một chương trình ý nghĩa dành cho các cháu thiếu nhi là con em của cán bộ, công nhân viên đang công tác tại Chi nhánh và đài VOR Tân Sơn Nhất. Đây là một hoạt động thường niên nhằm mang đến cho các em một ngày lễ trọn vẹn niềm vui, đồng thời thể hiện sự quan tâm của Công ty TNHH Kỹ thuật Quản lý bay đến đời sống tinh thần của CB-CNV và gia đình với nhiều hoạt động thể thao hấp dẫn...",
     contentVi: `<p>Chương tr&igrave;nh diễn ra v&agrave;o chiều ng&agrave;y 31/5 tại rạp xiếc c&ocirc;ng vi&ecirc;n Gia Định, nơi c&aacute;c em được thưởng thức buổi biểu diễn xiếc đặc sắc mang t&ecirc;n &ldquo;V&ugrave;ng đất kỳ b&iacute;&rdquo;. Với những m&agrave;n tr&igrave;nh diễn hấp dẫn, &nbsp;đầy m&agrave;u sắc v&agrave; đậm chất nghệ thuật như tung hứng, nh&agrave;o lộn,&hellip; chương tr&igrave;nh đ&atilde; thu h&uacute;t sự ch&uacute; &yacute; v&agrave; mang lại tiếng cười sảng kho&aacute;i cho c&aacute;c kh&aacute;n giả nh&iacute;. Kh&ocirc;ng chỉ l&agrave; dịp để c&aacute;c em giải tr&iacute;, buổi xem xiếc c&ograve;n g&oacute;p phần nu&ocirc;i dưỡng tr&iacute; tưởng tượng, khơi gợi sự s&aacute;ng tạo v&agrave; niềm y&ecirc;u th&iacute;ch nghệ thuật trong c&aacute;c em nhỏ.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sau chương tr&igrave;nh xiếc, c&aacute;c em được Đo&agrave;n Thanh ni&ecirc;n đưa đến nh&agrave; h&agrave;ng Domino's Pizza để c&ugrave;ng nhau d&ugrave;ng bữa tối trong kh&ocirc;ng kh&iacute; ấm c&uacute;ng v&agrave; vui vẻ. Bữa ăn kh&ocirc;ng chỉ l&agrave; phần thưởng ngọt ng&agrave;o cho một buổi chiều đầy ắp trải nghiệm, m&agrave; c&ograve;n l&agrave; dịp để c&aacute;c b&eacute; giao lưu, kết bạn v&agrave; lưu giữ những kỷ niệm đẹp c&ugrave;ng nhau.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Th&ocirc;ng qua hoạt động n&agrave;y, Đo&agrave;n Thanh Ni&ecirc;n Chi nh&aacute;nh tại TP.HCM đ&atilde; g&oacute;p phần tạo ra một kh&ocirc;ng gian vui chơi, học hỏi v&agrave; ph&aacute;t triển to&agrave;n diện cho c&aacute;c em thiếu nhi. Đồng thời, đ&acirc;y cũng l&agrave; dịp để thể hiện t&igrave;nh cảm, tr&aacute;ch nhiệm của Chi nh&aacute;nh n&oacute;i ri&ecirc;ng v&agrave; C&ocirc;ng ty n&oacute;i chung đối với gia đ&igrave;nh CB-CNV, từ đ&oacute; thắt chặt th&ecirc;m tinh thần đo&agrave;n kết, gắn b&oacute; trong tập thể.</p>
@@ -508,20 +629,23 @@ export const mockNews = [
     slugEn: "company-sports-festival-2024",
     descriptionEn: "Exciting company sports festival with many activities...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-04-15T00:00:00Z",
+    timePosted: "2025-06-01T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/06/1.6-CN-2-6-1.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2025/06/1.6-CN-2-6-1.jpg",
   },
   {
-    id: 17,
-    titleVi: "Kiểm tra hệ thống, thiết bị của ATTECH trên đảo Trường Sa Lớn và Song Tử Tây trong năm 2025",
-    slugVi: "kiem-tra-he-thong-thiet-bi-cua-attech-tren-dao-truong-sa-lon-va-song-tu-tay-trong-nam-2025",
-    descriptionVi: "Kiểm tra hệ thống, thiết bị tại các đài/trạm CNS là hoạt động thường niên của ATTECH nhằm đánh giá hoạt động của đài/trạm, từ đó góp phần duy trì chất lượng cung cấp dịch vụ điều hành bay.",
+    id: 18,
+    titleVi:
+      "Kiểm tra hệ thống, thiết bị của ATTECH trên đảo Trường Sa Lớn và Song Tử Tây trong năm 2025",
+    slugVi:
+      "kiem-tra-he-thong-thiet-bi-cua-attech-tren-dao-truong-sa-lon-va-song-tu-tay-trong-nam-2025",
+    descriptionVi:
+      "Kiểm tra hệ thống, thiết bị tại các đài/trạm CNS là hoạt động thường niên của ATTECH nhằm đánh giá hoạt động của đài/trạm, từ đó góp phần duy trì chất lượng cung cấp dịch vụ điều hành bay.",
     contentVi: `<p>Trong số c&aacute;c đ&agrave;i/trạm CNS do ATTECH quản l&yacute; v&agrave; cung cấp dịch vụ điều h&agrave;nh bay, Trạm CNS Trường Sa bao gồm 02 cơ sở tại đảo Trường Sa Lớn v&agrave; Song Tử T&acirc;y đ&oacute;ng vai tr&ograve; đặc biệt quan trọng. Hai trạm được đầu tư từ năm 2013 sau khi đưa v&agrave;o khai th&aacute;c kh&ocirc;ng những đ&atilde; bổ sung tầm phủ c&ograve;n thiếu cho v&ugrave;ng th&ocirc;ng b&aacute;o bay FIR Hồ Ch&iacute; Minh m&agrave; c&ograve;n g&oacute;p phần khẳng định chủ quyền biển đảo thi&ecirc;ng li&ecirc;ng của quốc gia.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Do nằm tr&ecirc;n khu vực hải đảo, c&aacute;ch xa đất liền h&agrave;ng trăm hải l&yacute; việc di chuyển ra đảo gặp rất nhiều kh&oacute; khăn, tuy nhi&ecirc;n để đảm bảo việc cung cấp dịch vụ điều h&agrave;nh bay tại hai trạm được th&ocirc;ng suốt, trong th&aacute;ng 05/2025, C&ocirc;ng ty đ&atilde; th&agrave;nh lập đo&agrave;n kiểm tra bao gồm nh&acirc;n sự từ Ph&ograve;ng Kỹ thuật &ndash; An to&agrave;n &ndash; Chất lượng v&agrave; Trung t&acirc;m Bảo đảm kỹ thuật đến trực tiếp 02 trạm CNS Trường Sa Lớn v&agrave; Song Tử T&acirc;y để thực hiện c&ocirc;ng t&aacute;c kiểm tra.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Khởi h&agrave;nh bằng t&agrave;u thủy từ ng&agrave;y 09/5/2025, sau 04 ng&agrave;y l&ecirc;nh đ&ecirc;nh tr&ecirc;n biển, đo&agrave;n c&ocirc;ng t&aacute;c đ&atilde; l&ecirc;n tới đảo. Ngay khi đặt ch&acirc;n l&ecirc;n đảo, đo&agrave;n c&ocirc;ng t&aacute;c đ&atilde; ngay lập tức bắt tay v&agrave;o việc tập trung kiểm tra c&aacute;c hệ thống thiết bị trọng yếu của C&ocirc;ng ty như hệ thống ADS-B, hệ thống VHF, hệ thống VSAT v&agrave; hệ thống nguồn. Đ&acirc;y đều l&agrave; những th&agrave;nh phần cốt l&otilde;i, đảm bảo việc cung cấp dịch vụ điều h&agrave;nh bay của C&ocirc;ng ty.</p>
@@ -538,20 +662,24 @@ export const mockNews = [
     slugEn: "q2-labor-safety-training",
     descriptionEn: "Q2 labor safety training for all employees...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-04-20T00:00:00Z",
+    timePosted: "2025-05-21T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/05/kiem-tra-TS-STT-27-5-1.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/05/kiem-tra-TS-STT-27-5-1.jpg",
   },
   {
-    id: 18,
-    titleVi: "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức các hoạt động kỷ niệm 135 năm ngày sinh của Chủ tịch Hồ Chí Minh (19/05/1890-19/05/2025)",
-    slugVi: "doan-thanh-nien-cong-ty-tnhh-ky-thuat-quan-ly-bay-to-chuc-cac-hoat-dong-ky-niem-135-nam-ngay-sinh-cua-chu-tich-ho-chi-minh-19-05-1890-19-05-2025",
-    descriptionVi: "Chủ tịch Hồ Chí Minh là Lãnh tụ thiên tài của Đảng và nhân dân ta, người thầy vĩ đại của cách mạng Việt Nam, Anh hùng giải phóng dân tộc, Danh nhân văn hóa thế giới. Đã hơn 56 năm kể từ ngày Bác đi xa, nhưng sự nghiệp và tư tưởng, tấm gương đạo đức vĩ đại, sáng ngời của Bác vẫn sống mãi trong sự nghiệp cách mạng của dân tộc, trường tồn theo thời gian.",
+    id: 19,
+    titleVi:
+      "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức các hoạt động kỷ niệm 135 năm ngày sinh của Chủ tịch Hồ Chí Minh (19/05/1890-19/05/2025)",
+    slugVi:
+      "doan-thanh-nien-cong-ty-tnhh-ky-thuat-quan-ly-bay-to-chuc-cac-hoat-dong-ky-niem-135-nam-ngay-sinh-cua-chu-tich-ho-chi-minh-19-05-1890-19-05-2025",
+    descriptionVi:
+      "Chủ tịch Hồ Chí Minh là Lãnh tụ thiên tài của Đảng và nhân dân ta, người thầy vĩ đại của cách mạng Việt Nam, Anh hùng giải phóng dân tộc, Danh nhân văn hóa thế giới. Đã hơn 56 năm kể từ ngày Bác đi xa, nhưng sự nghiệp và tư tưởng, tấm gương đạo đức vĩ đại, sáng ngời của Bác vẫn sống mãi trong sự nghiệp cách mạng của dân tộc, trường tồn theo thời gian.",
     contentVi: `<p>Nh&acirc;n kỷ niệm 135 năm ng&agrave;y sinh của Chủ tịch Hồ Ch&iacute; Minh (19/05/1890-19/05/2025), s&aacute;ng 19/05/2025, Đo&agrave;n thanh ni&ecirc;n C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay đ&atilde; tổ chức hoạt động viếng Lăng Chủ tịch Hồ Ch&iacute; Minh v&agrave; tham quan triển l&atilde;m Quốc gia &ldquo;Chủ tịch Hồ Ch&iacute; Minh &ndash; Tinh hoa d&acirc;n tộc, tầm v&oacute;c thời đại&rdquo; cho đo&agrave;n vi&ecirc;n thanh ni&ecirc;n trong C&ocirc;ng ty. Đ&acirc;y l&agrave; hoạt động sinh hoạt ch&iacute;nh trị tư tưởng thường ni&ecirc;n của Đo&agrave;n thanh ni&ecirc;n C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay, được Đảng ủy &ndash; Ban l&atilde;nh đạo C&ocirc;ng ty ủng hộ v&agrave; c&oacute; sự tham gia nhiệt t&igrave;nh của c&aacute;c đo&agrave;n vi&ecirc;n thanh ni&ecirc;n. Hoạt động n&agrave;y nhằm thể hiện l&ograve;ng biết ơn s&acirc;u sắc đối với c&ocirc;ng lao to lớn của B&aacute;c Hồ k&iacute;nh y&ecirc;u, vị Cha gi&agrave; của d&acirc;n tộc &ndash; Người đ&atilde; d&agrave;nh cả cuộc đời cho sự nghiệp giải ph&oacute;ng d&acirc;n tộc, thống nhất đất nước v&agrave; x&acirc;y dựng qu&ecirc; hương, đồng thời cũng khơi dậy l&ograve;ng tự h&agrave;o d&acirc;n tộc, lan tỏa tinh thần học tập v&agrave; l&agrave;m theo tư tưởng, đạo đức, phong c&aacute;ch Hồ Ch&iacute; Minh trong đo&agrave;n vi&ecirc;n, thanh ni&ecirc;n C&ocirc;ng ty.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Buổi viếng Lăng B&aacute;c diễn ra trong kh&ocirc;ng kh&iacute; trang nghi&ecirc;m, x&uacute;c động. C&aacute;c đo&agrave;n vi&ecirc;n thanh ni&ecirc;n đ&atilde; được viếng lăng, b&agrave;y tỏ l&ograve;ng th&agrave;nh k&iacute;nh trước linh cữu B&aacute;c Hồ. Mỗi người đều bồi hồi nhớ về những năm th&aacute;ng gian khổ, hy sinh của B&aacute;c v&agrave; nh&acirc;n d&acirc;n ta trong cuộc đấu tranh gi&agrave;nh độc lập, tự do cho đất nước. H&igrave;nh ảnh B&aacute;c nằm y&ecirc;n b&igrave;nh giữa kh&ocirc;ng gian tĩnh lặng của Lăng đ&atilde; khiến cho mỗi đo&agrave;n vi&ecirc;n thanh ni&ecirc;n th&ecirc;m nghẹn ng&agrave;o, x&uacute;c động.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sau lễ viếng Lăng Chủ tịch Hồ Ch&iacute; Minh, c&aacute;c đo&agrave;n vi&ecirc;n thanh ni&ecirc;n đ&atilde; tham quan, học tập tại triển l&atilde;m Quốc gia &ldquo;Chủ tịch Hồ Ch&iacute; Minh &ndash; Tinh hoa d&acirc;n tộc, tầm v&oacute;c thời đại&rdquo;. Tại triển l&atilde;m, c&aacute;c đo&agrave;n vi&ecirc;n đ&atilde; được giới thiệu gần 300 h&igrave;nh ảnh, t&agrave;i liệu v&agrave; hiện vật qu&yacute; gi&aacute;, phản &aacute;nh sinh động cuộc đời, sự nghiệp c&aacute;ch mạng v&agrave; tư tưởng vĩ đại của B&aacute;c Hồ. Từ những năm th&aacute;ng b&ocirc;n ba t&igrave;m đường cứu nước, đến qu&aacute; tr&igrave;nh l&atilde;nh đạo c&aacute;ch mạng Việt Nam gi&agrave;nh độc lập, x&acirc;y dựng đất nước &ndash; mỗi c&acirc;u chuyện, mỗi hiện vật trưng b&agrave;y đều để lại nhiều cảm x&uacute;c s&acirc;u sắc trong l&ograve;ng mỗi người, từ đ&oacute; mỗi đo&agrave;n vi&ecirc;n th&ecirc;m hiểu, th&ecirc;m y&ecirc;u, th&ecirc;m tự h&agrave;o v&agrave; tr&aacute;ch nhiệm với qu&ecirc; hương, đất nước.</p>
@@ -568,22 +696,25 @@ export const mockNews = [
 <p style="text-align: right;">&nbsp;</p>`,
     titleEn: "Q2 Activity Review Conference",
     slugEn: "q2-activity-review-conference",
-    descriptionEn: "Q2 activity review conference with many outstanding achievements...",
+    descriptionEn:
+      "Q2 activity review conference with many outstanding achievements...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-04-25T00:00:00Z",
+    timePosted: "2025-05-19T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Đoàn thanh niên công ty",
     postCategoryNameEn: "Company Youth Union",
     postCategorySlugVi: "doan-thanh-nien-cong-ty",
     postCategorySlugEn: "company-youth-union",
-    image: "https://attech.com.vn/wp-content/uploads/2025/05/vieng-lang-bac-20-5-2.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/05/vieng-lang-bac-20-5-2.jpg",
   },
   {
-    id: 19,
+    id: 20,
     titleVi: "Lễ kết nạp Đảng viên mới tại chi bộ Ban Quản lý dự án",
     slugVi: "le-ket-nap-dang-vien-moi-tai-chi-bo-ban-quan-ly-du-an",
-    descriptionVi: "Căn cứ Quyết định Kết nạp đảng viên số 1217-QĐ/TVĐU ngày 24/4/2025 của Đảng ủy Tổng công ty Quản lý bay Việt Nam, ngày 9/5/2025, Chi bộ Ban Quản lý dự án đã tổ chức buổi Lễ kết nạp quần chúng ưu tú Phạm Thái Nghĩa- Nhân viên quản lý dự án Ban QLDA ĐT&XDCN vào Đảng cộng sản Việt Nam theo đúng trình tự và nghi thức của Đảng.",
+    descriptionVi:
+      "Căn cứ Quyết định Kết nạp đảng viên số 1217-QĐ/TVĐU ngày 24/4/2025 của Đảng ủy Tổng công ty Quản lý bay Việt Nam, ngày 9/5/2025, Chi bộ Ban Quản lý dự án đã tổ chức buổi Lễ kết nạp quần chúng ưu tú Phạm Thái Nghĩa- Nhân viên quản lý dự án Ban QLDA ĐT&XDCN vào Đảng cộng sản Việt Nam theo đúng trình tự và nghi thức của Đảng.",
     contentVi: `<p>Tham dự buổi lễ c&oacute; đồng ch&iacute; Phan Quốc Hưng-UVBTV Đảng ủy, PGĐ C&ocirc;ng ty TNHH Kỹ thuật QLB, đồng ch&iacute; B&iacute; thư chi bộ c&ugrave;ng to&agrave;n thể đảng vi&ecirc;n của Chi bộ Ban Quản l&yacute; dự &aacute;n. Tại buổi Lễ, đồng ch&iacute; L&ecirc; Hồng Quang- B&iacute; thư chi bộ đ&atilde; trao Quyết định Kết nạp đảng vi&ecirc;n của Ban thường vụ Đảng ủy Tổng C&ocirc;ng ty Quản l&yacute; bay Việt Nam cho đồng ch&iacute; Phạm Th&aacute;i Nghĩa.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Đứng trước Đảng kỳ, Quốc kỳ v&agrave; ch&acirc;n dung Chủ tịch Hồ Ch&iacute; Minh, đồng ch&iacute; Phạm Th&aacute;i Nghĩa đ&atilde; tuy&ecirc;n thệ nguyện trung th&agrave;nh với l&yacute; tưởng v&agrave; mục ti&ecirc;u c&aacute;ch mạng của Đảng, phấn đấu ho&agrave;n th&agrave;nh c&aacute;c nhiệm vụ được giao, xứng đ&aacute;ng l&agrave; đảng vi&ecirc;n của Đảng Cộng sản Việt Nam.</p>
 <p align="center"><a href="https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-1.jpg"><img class="aligncenter size-full wp-image-11660" src="https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-1.jpg" alt="BQLDA ket nam DV 12-5 1" /></a><a href="https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-2.jpg"><img class="aligncenter size-full wp-image-11661" src="https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-2.jpg" alt="BQLDA ket nam DV 12-5 2" /></a><a href="https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-3.jpg"><img class="aligncenter size-full wp-image-11662" src="https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-3.jpg" alt="BQLDA ket nam DV 12-5 3" /></a></p>
@@ -596,20 +727,24 @@ export const mockNews = [
     slugEn: "attech-family-day-2024",
     descriptionEn: "ATTECH Family Day with many meaningful activities...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-05-01T00:00:00Z",
+    timePosted: "2025-05-12T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Đảng bộ công ty",
     postCategoryNameEn: "Company Party",
     postCategorySlugVi: "dang-bo-cong-ty",
     postCategorySlugEn: "company-party",
-    image: "https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-2.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-2.jpg",
   },
   {
-    id: 20,
-    titleVi: "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hôi nghị quán triệt, phổ biến nội dung Thông tư 01/2025/TT-BXD",
-    slugVi: "cong-ty-tnhh-ky-thuat-quan-ly-bay-to-chuc-hoi-nghi-quan-triet-pho-bien-noi-dung-thong-tu-01-2025-tt-bxd",
-    descriptionVi: "Ngày 07/5/2024, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị quán triệt và phổ biến nội dung Thông tư số 01/2025/TT-BXD ngày 28/3/2025 của Bộ trưởng Bộ Xây dựng tới các đơn vị có liên quan, bao gồm: Trung tâm Huấn luyện CNS, Xưởng Dịch vụ kỹ thuật, Đội bay kiểm tra hiệu chuẩn và Phòng Kỹ thuật An toàn chất lượng.",
+    id: 21,
+    titleVi:
+      "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hôi nghị quán triệt, phổ biến nội dung Thông tư 01/2025/TT-BXD",
+    slugVi:
+      "cong-ty-tnhh-ky-thuat-quan-ly-bay-to-chuc-hoi-nghi-quan-triet-pho-bien-noi-dung-thong-tu-01-2025-tt-bxd",
+    descriptionVi:
+      "Ngày 07/5/2024, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị quán triệt và phổ biến nội dung Thông tư số 01/2025/TT-BXD ngày 28/3/2025 của Bộ trưởng Bộ Xây dựng tới các đơn vị có liên quan, bao gồm: Trung tâm Huấn luyện CNS, Xưởng Dịch vụ kỹ thuật, Đội bay kiểm tra hiệu chuẩn và Phòng Kỹ thuật An toàn chất lượng.",
     contentVi: `<p>Tại Hội nghị, b&agrave; Trần Thị Phương Loan &ndash; Trưởng ph&ograve;ng Tổ chức c&aacute;n bộ &ndash; Lao động đ&atilde; tr&igrave;nh b&agrave;y, phổ biến c&aacute;c nội dung trọng t&acirc;m của Th&ocirc;ng tư số 01/2025/TT-BXD, trong đ&oacute; sửa đổi, bổ sung một số điều v&agrave; phụ lục ban h&agrave;nh k&egrave;m theo Th&ocirc;ng tư số 10/2018/TT-BGTVT ng&agrave;y 14/3/2018 của Bộ trưởng Bộ Giao th&ocirc;ng vận tải về quy định đối với nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng; c&ocirc;ng t&aacute;c đ&agrave;o tạo, huấn luyện v&agrave; s&aacute;t hạch nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng.</p>
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11639" src="https://attech.com.vn/wp-content/uploads/2025/05/HN-quan-triet-7-5-1.jpg" alt="HN quan triet 7-5 1" /></p>
 <p align="center"><em>Bà Trần Thị Phương Loan &ndash; Trưởng ph&ograve;ng Tổ chức c&aacute;n bộ-Lao động</em></p>
@@ -625,20 +760,24 @@ export const mockNews = [
     slugEn: "blood-donation-program-2024",
     descriptionEn: "Blood donation program attracted many employees...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-05-05T00:00:00Z",
+    timePosted: "2025-05-07T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Hoạt động công ty",
     postCategoryNameEn: "Company Activities",
     postCategorySlugVi: "hoat-dong-cong-ty",
     postCategorySlugEn: "company-activities",
-    image: "https://attech.com.vn/wp-content/uploads/2025/05/HN-quan-triet-7-5-3.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/05/HN-quan-triet-7-5-3.jpg",
   },
   {
-    id: 21,
-    titleVi: "Hội nghị giới thiệu cho Đoàn thanh niên Công ty các văn bản quản lý nội bộ và các quy trình thuộc hệ thống QLCL liên quan đến hoạt động KH&CN",
-    slugVi: "hoi-nghi-gioi-thieu-cho-doan-thanh-nien-cong-ty-cac-van-ban-quan-ly-noi-bo-va-cac-quy-trinh-thuoc-he-thong-qlcl-lien-quan-den-hoat-dong-kh-cn",
-    descriptionVi: "Sáng 29/4/2025, Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị giới thiệu cho Đoàn thanh niên Công ty các văn bản quản lý nội bộ và các quy trình thuộc hệ thống QLCL liên quan đến hoạt động KH&CN.",
+    id: 22,
+    titleVi:
+      "Hội nghị giới thiệu cho Đoàn thanh niên Công ty các văn bản quản lý nội bộ và các quy trình thuộc hệ thống QLCL liên quan đến hoạt động KH&CN",
+    slugVi:
+      "hoi-nghi-gioi-thieu-cho-doan-thanh-nien-cong-ty-cac-van-ban-quan-ly-noi-bo-va-cac-quy-trinh-thuoc-he-thong-qlcl-lien-quan-den-hoat-dong-kh-cn",
+    descriptionVi:
+      "Sáng 29/4/2025, Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức Hội nghị giới thiệu cho Đoàn thanh niên Công ty các văn bản quản lý nội bộ và các quy trình thuộc hệ thống QLCL liên quan đến hoạt động KH&CN.",
     contentVi: `<p>Tham dự Hội nghị c&oacute; &ocirc;ng Nguyễn Minh Thắng &ndash; Trưởng Ph&ograve;ng KTATCL, Ph&oacute; Chủ tịch Hội đồng KHCN, b&agrave; U&ocirc;ng Thị Thu Huyền &ndash; Ph&oacute; trưởng Ph&ograve;ng TCKT, &ocirc;ng Đỗ H&ugrave;ng Vương &ndash; Xưởng ph&oacute; X.DVKT, B&iacute; thư Đo&agrave;n cơ sở C&ocirc;ng ty, c&ugrave;ng với c&aacute;c đồng ch&iacute; b&iacute; thư, ph&oacute; b&iacute; thư, UV BCH c&aacute;c Chi đo&agrave;n, đo&agrave;n vi&ecirc;n thanh ni&ecirc;n.</p>
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11630" src="https://attech.com.vn/wp-content/uploads/2025/04/hd-KHCN-30-4-1.jpg" alt="hd KHCN 30-4 1" /></p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Khoa học c&ocirc;ng nghệ&nbsp;l&agrave; động lực then chốt th&uacute;c đẩy sự ph&aacute;t triển v&agrave; duy tr&igrave; lợi thế cạnh tranh của doanh nghiệp trong thời đại số. N&oacute; kh&ocirc;ng chỉ tối ưu h&oacute;a quy tr&igrave;nh sản xuất, n&acirc;ng cao chất lượng&nbsp;<a title="sản phẩm" href="https://attech.com.vn/san-pham/">sản phẩm</a>&nbsp;m&agrave; c&ograve;n mở ra cơ hội đột ph&aacute; th&ocirc;ng qua ứng dụng tr&iacute; tuệ nh&acirc;n tạo, chuyển đổi số. Trong bối cảnh đ&oacute;,&nbsp;Đo&agrave;n Thanh ni&ecirc;n c&ocirc;ng ty&nbsp;đ&oacute;ng vai tr&ograve; như cầu nối giữa tư duy s&aacute;ng tạo của thế hệ trẻ với chiến lược ph&aacute;t triển khoa học c&ocirc;ng nghệ của C&ocirc;ng ty. Với tinh thần năng động, d&aacute;m nghĩ d&aacute;m l&agrave;m, Đo&agrave;n thanh ni&ecirc;n kh&ocirc;ng chỉ g&oacute;p phần x&acirc;y dựng nguồn nh&acirc;n lực chất lượng cao m&agrave; c&ograve;n th&uacute;c đẩy văn h&oacute;a đổi mới s&aacute;ng tạo, biến tầm nh&igrave;n c&ocirc;ng nghệ của c&ocirc;ng ty th&agrave;nh hiện thực. Sự kết hợp giữa sức trẻ v&agrave; khoa học c&ocirc;ng nghệ ch&iacute;nh l&agrave; ch&igrave;a kh&oacute;a gi&uacute;p doanh nghiệp th&iacute;ch ứng nhanh, bền vững trước những th&aacute;ch thức của c&aacute;ch mạng 4.0.</p>
@@ -651,20 +790,22 @@ export const mockNews = [
     slugEn: "attech-young-innovation-contest-2024",
     descriptionEn: "ATTECH Young Innovation Contest attracts many new ideas...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-05-10T00:00:00Z",
+    timePosted: "2025-04-29T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Đoàn thanh niên công ty",
     postCategoryNameEn: "Company Youth Union",
     postCategorySlugVi: "doan-thanh-nien-cong-ty",
     postCategorySlugEn: "company-youth-union",
-    image: "https://attech.com.vn/wp-content/uploads/2025/04/hd-KHCN-30-4-2.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/04/hd-KHCN-30-4-2.jpg",
   },
   {
-    id: 22,
+    id: 23,
     titleVi: "Nữ công ATTECH hưởng ứng chuỗi hoạt động chào mừng ngày 8/3",
     slugVi: "nu-cong-attech-huong-ung-chuoi-hoat-dong-chao-mung-ngay-8-3",
-    descriptionVi: "Chuỗi hoạt động chào mừng ngày Quốc tế phụ nữ 8/3 được BCH Công đoàn, Ban Nữ công Công ty triển khai gồm tham gia Chương trình “ Hội chợ ẩm thực năm 2025 do Công đoàn Tổng công ty Quản lý bay tổ chức và Chương trình tham quan giao lưu tại một số địa danh lịch sử của tỉnh Quảng Ninh các ngày 7-8/3/2025.",
+    descriptionVi:
+      "Chuỗi hoạt động chào mừng ngày Quốc tế phụ nữ 8/3 được BCH Công đoàn, Ban Nữ công Công ty triển khai gồm tham gia Chương trình “ Hội chợ ẩm thực năm 2025 do Công đoàn Tổng công ty Quản lý bay tổ chức và Chương trình tham quan giao lưu tại một số địa danh lịch sử của tỉnh Quảng Ninh các ngày 7-8/3/2025.",
     contentVi: `<p>Chương tr&igrave;nh Hội chợ ẩm thực 2025&nbsp; do C&ocirc;ng đo&agrave;n TCTQLB tổ chức l&agrave; dịp để c&aacute;c c&ocirc;ng đo&agrave;n vi&ecirc;n, đặc biệt l&agrave; c&aacute;c chị em trong to&agrave;n Tổng C&ocirc;ng ty thể hiện sự kh&eacute;o l&eacute;o của m&igrave;nh qua c&aacute;c m&oacute;n ăn truyền thống v&agrave; đặc sản v&ugrave;ng miền. Hội chợ ẩm thực kh&ocirc;ng chỉ l&agrave; nơi trưng b&agrave;y c&aacute;c m&oacute;n ăn ngon, giới thiệu h&igrave;nh ảnh gian h&agrave;ng mang đậm văn h&oacute;a doanh nghiệp của từng đơn vị m&agrave; c&ograve;n tạo cơ hội cho c&aacute;c CB-CNV được &nbsp;giao lưu, chia sẻ những c&ocirc;ng thức nấu ăn y&ecirc;u th&iacute;ch v&agrave; tạo th&ecirc;m sự gắn kết giữa c&aacute;c cơ quan đơn vị trong Tổng c&ocirc;ng ty. Tham gia Hội chợ, NLĐ trong to&agrave;n TCT đều được thưởng thức những m&oacute;n ăn hấp dẫn, từ c&aacute;c m&oacute;n ăn d&acirc;n d&atilde; đến những m&oacute;n ăn mang đậm bản sắc văn h&oacute;a ẩm thực Việt Nam đến từ 13 đơn vị trong v&agrave; ngo&agrave;i Tổng c&ocirc;ng ty. Đến với Hội chợ Ẩm thực 2025, gian h&agrave;ng của Ban Nữ c&ocirc;ng ATTECH với t&ecirc;n gọi &ldquo;<strong>&nbsp;Thanh xu&acirc;n qu&aacute;n&rdquo;&nbsp;</strong>đ&atilde; mang đến hội chợ những m&oacute;n ăn quen thuộc của H&agrave; Nội gắn liền với tuổi thanh xu&acirc;n tươi trẻ của hầu hết c&aacute;c c&ocirc;ng đo&agrave;n vi&ecirc;n, NLĐ khi c&ograve;n ngồi tr&ecirc;n ghế giảng đường đại học như b&aacute;nh gối, b&aacute;nh gi&ograve;, nộm thập cẩm hay caramen, những m&oacute;n ăn tuy nhỏ nhắn nhưng lại rất vừa vặn, tinh tế&nbsp; như gợi lại những kỷ niệm thời tuổi trẻ. Những m&oacute;n ăn rất th&acirc;n quen nhưng đ&atilde; l&agrave;m h&agrave;i l&ograve;ng c&aacute;c thực kh&aacute;ch đến với Hội chợ. &nbsp;Kết th&uacute;c Hội chợ, gian h&agrave;ng của ATTECH đ&atilde; đạt giải 3 &ndash; Giải thưởng trang tr&iacute; gian h&agrave;ng v&agrave; thuyết tr&igrave;nh m&oacute;n ăn. Đ&acirc;y l&agrave; th&agrave;nh quả thực sự &yacute; nghĩa đối với Ban nữ c&ocirc;ng v&agrave; Đo&agrave;n thanh ni&ecirc;n c&ocirc;ng ty nh&acirc;n kỷ niệm ng&agrave;y Quốc tế phụ nữ 8/3 v&agrave; th&aacute;ng Thanh ni&ecirc;n năm 2025. H&ograve;a chung kh&ocirc;ng kh&iacute; c&aacute;c hoạt động kỷ niệm ng&agrave;y 8/3 chị em Nữ c&ocirc;ng C&ocirc;ng ty cũng nhiệt t&igrave;nh hưởng ứng tuần lễ &aacute;o d&agrave;i do C&ocirc;ng đo&agrave;n TCTQLB ph&aacute;t động từ ng&agrave;y 1-8/3/2025, đ&acirc;y thực sự l&agrave; dịp để chị em được thể hiện những bộ &aacute;o d&agrave;i cổ điển hay hiện đại nhưng vẫn mang đậm bản sắc văn h&oacute;a&nbsp;Việt Nam, tượng trưng cho vẻ đẹp thanh lịch v&agrave; duy&ecirc;n d&aacute;ng của người phụ nữ Việt.</p>
 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; B&ecirc;n cạnh hoạt động hội chợ ẩm thực, Đảng ủy, Ban l&atilde;nh đạo v&agrave; Ban chấp h&agrave;nh C&ocirc;ng đo&agrave;n C&ocirc;ng ty cũng kh&ocirc;ng qu&ecirc;n gửi những lời ch&uacute;c mừng tốt đẹp , những lẵng hoa tươi thắm đến đại diện Ban Nữ c&ocirc;ng C&ocirc;ng ty như một sự tri &acirc;n đối với những đ&oacute;ng g&oacute;p kh&ocirc;ng mệt mỏi của lực lượng lao động nữ trong c&ocirc;ng việc v&agrave; cuộc sống. Được sự quan t&acirc;m tạo điều kiện của Ban l&atilde;nh đạo, BCH C&ocirc;ng đo&agrave;n C&ocirc;ng ty, Ban Nữ c&ocirc;ng đ&atilde; tổ chức một chương tr&igrave;nh tham quan giao lưu đầy &yacute; nghĩa tại một số di t&iacute;ch lịch sử của tỉnh Quảng Ninh v&agrave;o đ&uacute;ng ng&agrave;y Quốc tế phụ nữ 8/3. Chuyến đi kh&ocirc;ng chỉ mang đến cho c&aacute;c chị em những gi&acirc;y ph&uacute;t thư gi&atilde;n, vui vẻ m&agrave; c&ograve;n l&agrave; dịp để họ t&igrave;m hiểu, giao lưu tăng th&ecirc;m tinh thần đo&agrave;n kết &nbsp;v&agrave; chi&ecirc;m b&aacute;i c&aacute;c di t&iacute;ch lịch sử văn h&oacute;a nổi tiếng của đất nước. Những hoạt động &yacute; nghĩa n&agrave;y kh&ocirc;ng chỉ gi&uacute;p người lao động nữ cảm thấy được tr&acirc;n trọng, m&agrave; c&ograve;n khuyến kh&iacute;ch tinh thần đo&agrave;n kết, s&aacute;ng tạo v&agrave; ph&aacute;t triển to&agrave;n diện để đ&oacute;ng g&oacute;p v&agrave;o&nbsp; th&agrave;nh c&ocirc;ng chung của C&ocirc;ng ty.</p>
 <p>Một số h&igrave;nh ảnh trong chuỗi hoạt động kỷ niệm&nbsp; ng&agrave;y Quốc tế phụ nữ 8/3 của Ban Nữ c&ocirc;ng C&ocirc;ng ty.</p>
@@ -677,117 +818,141 @@ export const mockNews = [
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11483" src="https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-4.jpg" alt="ngay 8-3 4" /></p>
 <p align="center"><em>Hoạt động tham quan giao lưu tại Di t&iacute;ch lịch sử tỉnh Quảng Ninh</em></p>
 <p style="padding-left: 60px;"><img class="aligncenter size-full wp-image-11484" src="https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-5.jpg" alt="ngay 8-3 5" /></p>
-<p><em>Chị em trong C&ocirc;ng ty nhiệt t&igrave;nh hưởng ứng tuần lễ &aacute;o d&agrave;i&nbsp;</em></p>
+<p style="text-align: center;"><em>Chị em trong C&ocirc;ng ty nhiệt t&igrave;nh hưởng ứng tuần lễ &aacute;o d&agrave;i&nbsp;</em></p>
 <p>&nbsp;</p>
 <p style="text-align: right;"><strong><em>B&agrave;i: Tố Loan-TTHL</em></strong></p>
-<p style="text-align: right;"><strong><em>Ảnh: Trịnh Phương Thu</em></strong></p>
-<p style="text-align: right;">&nbsp;</p>`,
+<p style="text-align: right;"><strong><em>Ảnh: Trịnh Phương Thu</em></strong></p>`,
     titleEn: "Internal Digital Transformation Workshop",
     slugEn: "internal-digital-transformation-workshop",
-    descriptionEn: "Internal digital transformation workshop raises tech awareness...",
+    descriptionEn:
+      "Internal digital transformation workshop raises tech awareness...",
     contentEn: "Detailed content in English...",
-    timePosted: "2024-05-15T00:00:00Z",
+    timePosted: "2025-03-08T00:00:00Z",
     status: 1,
     postCategoryId: 10,
     postCategoryNameVi: "Công đoàn công ty",
     postCategoryNameEn: "Union",
     postCategorySlugVi: "cong-doan-cong-ty",
     postCategorySlugEn: "unions",
-    image: "https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-3.jpg"
-  },
-  {
-    id: 22,
-    titleVi: "Hãng hàng không mở thêm nhiều đường bay quốc tế",
-    slugVi: "hang-hang-khong-mo-them-nhieu-duong-bay-quoc-te",
-    descriptionVi: "Nhiều hãng hàng không Việt Nam mở rộng các đường bay quốc tế trong năm 2025.",
-    contentVi: "<p>Nhiều hãng hàng không Việt Nam đã công bố kế hoạch mở thêm các đường bay quốc tế nhằm đáp ứng nhu cầu đi lại tăng cao sau đại dịch.</p>",
-    titleEn: "Airlines open more international routes",
-    slugEn: "airlines-open-more-international-routes",
-    descriptionEn: "Vietnamese airlines expand international routes in 2025.",
-    contentEn: "<p>Vietnamese airlines have announced plans to open more international routes to meet the growing travel demand post-pandemic.</p>",
-    timePosted: "2025-03-26T00:00:00Z",
-    status: 1,
-    postCategoryId: 1,
-    postCategoryNameVi: "Tin ngành hàng không",
-    postCategoryNameEn: "Aviation",
-    postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
-    image: "https://i1-vnexpress.vnecdn.net/2025/03/26/dscf2195-jpeg-1742964488-9432-1742964646.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=rdW-ecy_PkZfo0BvWIhEYw"
-  },
-  {
-    id: 23,
-    titleVi: "Vietnam Airlines đặt mục tiêu thu hơn 3,7 tỷ USD",
-    slugVi: "vietnam-airlines-dat-muc-tieu-thu-hon-3-7-ty-usd",
-    descriptionVi: "Vietnam Airlines đặt mục tiêu doanh thu vượt 3,7 tỷ USD trong năm 2025.",
-    contentVi: "<p>Vietnam Airlines công bố kế hoạch tăng trưởng mạnh mẽ với mục tiêu doanh thu vượt 3,7 tỷ USD.</p>",
-    titleEn: "Vietnam Airlines targets over $3.7 billion revenue",
-    slugEn: "vietnam-airlines-targets-over-3-7-billion-revenue",
-    descriptionEn: "Vietnam Airlines sets a revenue target of over $3.7 billion for 2025.",
-    contentEn: "<p>Vietnam Airlines announces an ambitious growth plan with a revenue target exceeding $3.7 billion.</p>",
-    timePosted: "2025-03-29T00:00:00Z",
-    status: 1,
-    postCategoryId: 1,
-    postCategoryNameVi: "Tin ngành hàng không",
-    postCategoryNameEn: "Aviation",
-    postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
-    image: "https://i1-kinhdoanh.vnecdn.net/2025/02/24/vietnamairlinesxacdinhconnguoi-6915-5590-1740372946.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=zOeTryNAHMk0b1tAzVw-Zw"
+    image: "https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-3.jpg",
   },
   {
     id: 24,
-    titleVi: "Công ty Trung Quốc phát triển máy bay siêu thanh 5.000 km/h",
-    slugVi: "cong-ty-trung-quoc-phat-trien-may-bay-sieu-thanh-5000-km-h",
-    descriptionVi: "Một công ty Trung Quốc vừa phát triển thành công máy bay siêu thanh có tốc độ 5.000 km/h.",
-    contentVi: "<p>Công ty Trung Quốc công bố máy bay siêu thanh mới, có thể di chuyển với tốc độ lên tới 5.000 km/h.</p>",
-    titleEn: "Chinese company develops 5,000 km/h hypersonic plane",
-    slugEn: "chinese-company-develops-5000-kmh-hypersonic-plane",
-    descriptionEn: "A Chinese company has developed a hypersonic plane capable of 5,000 km/h.",
-    contentEn: "<p>A Chinese company unveils a new hypersonic plane capable of speeds up to 5,000 km/h.</p>",
-    timePosted: "2025-03-26T00:00:00Z",
-    status: 1,
-    postCategoryId: 2,
-    postCategoryNameVi: "Tin ngành hàng không",
-    postCategoryNameEn: "Aviation",
-    postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
-    image: "https://i1-vnexpress.vnecdn.net/2025/01/21/may-bay-sieu-thanh-moi-1737460-3193-1420-1737460593.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=iz_0y1tc-sAmjaNAOr5kzg"
-  },
-  {
-    id: 25,
-    titleVi: "7 máy bay thay đổi lịch sử hàng không",
-    slugVi: "7-may-bay-thay-doi-lich-su-hang-khong",
-    descriptionVi: "Bảy mẫu máy bay đã làm thay đổi lịch sử ngành hàng không thế giới.",
-    contentVi: "<p>Bảy mẫu máy bay nổi bật đã góp phần thay đổi ngành hàng không toàn cầu.</p>",
-    titleEn: "7 planes that changed aviation history",
-    slugEn: "7-planes-that-changed-aviation-history",
-    descriptionEn: "Seven aircraft models that changed the history of aviation.",
-    contentEn: "<p>Seven outstanding aircraft models have contributed to changing the global aviation industry.</p>",
-    timePosted: "2025-03-31T00:00:00Z",
-    status: 1,
-    postCategoryId: 2,
-    postCategoryNameVi: "Tin ngành hàng không",
-    postCategoryNameEn: "Aviation",
-    postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
-    image: "https://i1-vnexpress.vnecdn.net/2024/12/22/VNE-Plane-3-1734830968-9113-1734831213.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=WEE5lOSxNzRs8E9EH4O5fA"
-  },
-  {
-    id: 26,
-    titleVi: "Vietnam Airlines dứt mạch thua lỗ 4 năm liên tiếp",
-    slugVi: "vietnam-airlines-dut-mach-thua-lo-4-nam-lien-tiep",
-    descriptionVi: "Vietnam Airlines đã có lãi trở lại sau 4 năm liên tục thua lỗ.",
-    contentVi: "<p>Vietnam Airlines công bố kết quả kinh doanh khả quan, chấm dứt chuỗi thua lỗ kéo dài 4 năm.</p>",
-    titleEn: "Vietnam Airlines ends 4-year losing streak",
-    slugEn: "vietnam-airlines-ends-4-year-losing-streak",
-    descriptionEn: "Vietnam Airlines returns to profitability after 4 consecutive years of losses.",
-    contentEn: "<p>Vietnam Airlines reports positive business results, ending a 4-year losing streak.</p>",
-    timePosted: "2025-03-31T00:00:00Z",
+    titleVi: "Hãng hàng không mở thêm nhiều đường bay quốc tế",
+    slugVi: "hang-hang-khong-mo-them-nhieu-duong-bay-quoc-te",
+    descriptionVi:
+      "Nhiều hãng hàng không Việt Nam mở rộng các đường bay quốc tế trong năm 2025.",
+    contentVi:
+      "<p>Nhiều hãng hàng không Việt Nam đã công bố kế hoạch mở thêm các đường bay quốc tế nhằm đáp ứng nhu cầu đi lại tăng cao sau đại dịch.</p>",
+    titleEn: "Airlines open more international routes",
+    slugEn: "airlines-open-more-international-routes",
+    descriptionEn: "Vietnamese airlines expand international routes in 2025.",
+    contentEn:
+      "<p>Vietnamese airlines have announced plans to open more international routes to meet the growing travel demand post-pandemic.</p>",
+    timePosted: "2025-03-07T00:00:00Z",
     status: 1,
     postCategoryId: 1,
     postCategoryNameVi: "Tin ngành hàng không",
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
     postCategorySlugEn: "aviations",
-    image: "https://i1-kinhdoanh.vnecdn.net/2024/12/13/ic3a9923-1734103107-1770-1734103117.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=RMWTo32rrFuDezw_GCfI6g"
-  }
-]; 
+    image:
+      "https://i1-vnexpress.vnecdn.net/2025/03/26/dscf2195-jpeg-1742964488-9432-1742964646.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=rdW-ecy_PkZfo0BvWIhEYw",
+  },
+  {
+    id: 25,
+    titleVi: "Vietnam Airlines đặt mục tiêu thu hơn 3,7 tỷ USD",
+    slugVi: "vietnam-airlines-dat-muc-tieu-thu-hon-3-7-ty-usd",
+    descriptionVi:
+      "Vietnam Airlines đặt mục tiêu doanh thu vượt 3,7 tỷ USD trong năm 2025.",
+    contentVi:
+      "<p>Vietnam Airlines công bố kế hoạch tăng trưởng mạnh mẽ với mục tiêu doanh thu vượt 3,7 tỷ USD.</p>",
+    titleEn: "Vietnam Airlines targets over $3.7 billion revenue",
+    slugEn: "vietnam-airlines-targets-over-3-7-billion-revenue",
+    descriptionEn:
+      "Vietnam Airlines sets a revenue target of over $3.7 billion for 2025.",
+    contentEn:
+      "<p>Vietnam Airlines announces an ambitious growth plan with a revenue target exceeding $3.7 billion.</p>",
+    timePosted: "2025-03-06T00:00:00Z",
+    status: 1,
+    postCategoryId: 1,
+    postCategoryNameVi: "Tin ngành hàng không",
+    postCategoryNameEn: "Aviation",
+    postCategorySlugVi: "tin-nganh-hang-khong",
+    postCategorySlugEn: "aviations",
+    image:
+      "https://i1-kinhdoanh.vnecdn.net/2025/02/24/vietnamairlinesxacdinhconnguoi-6915-5590-1740372946.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=zOeTryNAHMk0b1tAzVw-Zw",
+  },
+  {
+    id: 26,
+    titleVi: "Công ty Trung Quốc phát triển máy bay siêu thanh 5.000 km/h",
+    slugVi: "cong-ty-trung-quoc-phat-trien-may-bay-sieu-thanh-5000-km-h",
+    descriptionVi:
+      "Một công ty Trung Quốc vừa phát triển thành công máy bay siêu thanh có tốc độ 5.000 km/h.",
+    contentVi:
+      "<p>Công ty Trung Quốc công bố máy bay siêu thanh mới, có thể di chuyển với tốc độ lên tới 5.000 km/h.</p>",
+    titleEn: "Chinese company develops 5,000 km/h hypersonic plane",
+    slugEn: "chinese-company-develops-5000-kmh-hypersonic-plane",
+    descriptionEn:
+      "A Chinese company has developed a hypersonic plane capable of 5,000 km/h.",
+    contentEn:
+      "<p>A Chinese company unveils a new hypersonic plane capable of speeds up to 5,000 km/h.</p>",
+    timePosted: "2025-02-26T00:00:00Z",
+    status: 1,
+    postCategoryId: 2,
+    postCategoryNameVi: "Tin ngành hàng không",
+    postCategoryNameEn: "Aviation",
+    postCategorySlugVi: "tin-nganh-hang-khong",
+    postCategorySlugEn: "aviations",
+    image:
+      "https://i1-vnexpress.vnecdn.net/2025/01/21/may-bay-sieu-thanh-moi-1737460-3193-1420-1737460593.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=iz_0y1tc-sAmjaNAOr5kzg",
+  },
+  {
+    id: 27,
+    titleVi: "7 máy bay thay đổi lịch sử hàng không",
+    slugVi: "7-may-bay-thay-doi-lich-su-hang-khong",
+    descriptionVi:
+      "Bảy mẫu máy bay đã làm thay đổi lịch sử ngành hàng không thế giới.",
+    contentVi:
+      "<p>Bảy mẫu máy bay nổi bật đã góp phần thay đổi ngành hàng không toàn cầu.</p>",
+    titleEn: "7 planes that changed aviation history",
+    slugEn: "7-planes-that-changed-aviation-history",
+    descriptionEn:
+      "Seven aircraft models that changed the history of aviation.",
+    contentEn:
+      "<p>Seven outstanding aircraft models have contributed to changing the global aviation industry.</p>",
+    timePosted: "2025-01-31T00:00:00Z",
+    status: 1,
+    postCategoryId: 2,
+    postCategoryNameVi: "Tin ngành hàng không",
+    postCategoryNameEn: "Aviation",
+    postCategorySlugVi: "tin-nganh-hang-khong",
+    postCategorySlugEn: "aviations",
+    image:
+      "https://i1-vnexpress.vnecdn.net/2024/12/22/VNE-Plane-3-1734830968-9113-1734831213.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=WEE5lOSxNzRs8E9EH4O5fA",
+  },
+  {
+    id: 28,
+    titleVi: "Vietnam Airlines dứt mạch thua lỗ 4 năm liên tiếp",
+    slugVi: "vietnam-airlines-dut-mach-thua-lo-4-nam-lien-tiep",
+    descriptionVi:
+      "Vietnam Airlines đã có lãi trở lại sau 4 năm liên tục thua lỗ.",
+    contentVi:
+      "<p>Vietnam Airlines công bố kết quả kinh doanh khả quan, chấm dứt chuỗi thua lỗ kéo dài 4 năm.</p>",
+    titleEn: "Vietnam Airlines ends 4-year losing streak",
+    slugEn: "vietnam-airlines-ends-4-year-losing-streak",
+    descriptionEn:
+      "Vietnam Airlines returns to profitability after 4 consecutive years of losses.",
+    contentEn:
+      "<p>Vietnam Airlines reports positive business results, ending a 4-year losing streak.</p>",
+    timePosted: "2025-01-21T00:00:00Z",
+    status: 1,
+    postCategoryId: 1,
+    postCategoryNameVi: "Tin ngành hàng không",
+    postCategoryNameEn: "Aviation",
+    postCategorySlugVi: "tin-nganh-hang-khong",
+    postCategorySlugEn: "aviations",
+    image:
+      "https://i1-kinhdoanh.vnecdn.net/2024/12/13/ic3a9923-1734103107-1770-1734103117.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=RMWTo32rrFuDezw_GCfI6g",
+  },
+];

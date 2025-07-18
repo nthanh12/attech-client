@@ -6,21 +6,24 @@ export const mockNotifications = [
     slugVi: "danh-sach-nhan-su-trung-tuyen-dot-3-nam-2024-bo-sung",
     titleEn: "IT Engineer Recruitment June 2024",
     slugEn: "it-engineer-recruitment-june-2024",
-    descriptionVi: "Danh sách nhân sự trúng tuyển đợt 3 năm 2024 vị trí Nhân viên Bay hiệu chuẩn của Công ty TNHH Kỹ thuật Quản lý bay.",
-    descriptionEn: "The company is recruiting IT engineers to work in Hanoi, interview in June 2024...",
+    descriptionVi:
+      "Danh sách nhân sự trúng tuyển đợt 3 năm 2024 vị trí Nhân viên Bay hiệu chuẩn của Công ty TNHH Kỹ thuật Quản lý bay.",
+    descriptionEn:
+      "The company is recruiting IT engineers to work in Hanoi, interview in June 2024...",
     contentVi: `<b>Tài liệu đính kèm:</b><br/>
     <a href="https://attech.com.vn/wp-content/uploads/2024/12/DS-NS-trung-tuyen-Dot-3-vi-tri-NV-BHC.pdf" target="_blank">
       DS NS trung tuyen Dot 3 vi tri NV BHC (20.61 KB)
     </a>`,
     contentEn: "",
-    timePosted: "2024-06-01T00:00:00Z",
+    timePosted: "2024-12-25T00:00:00Z",
     status: 1,
     notificationCategoryId: 1,
     notificationCategoryNameVi: "Tuyển dụng",
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
-    image: "https://ued.udn.vn/uploads/news/2021_06/mau-thong-bao_2204184241.png"
+    image:
+      "https://ued.udn.vn/uploads/news/2021_06/mau-thong-bao_2204184241.png",
   },
   {
     id: 2,
@@ -28,7 +31,8 @@ export const mockNotifications = [
     slugVi: "ban-lanh-dao-cong-ty-gap-mat-cac-nhan-vien-moi-nam-2024",
     titleEn: "Accountant Recruitment July 2024",
     slugEn: "accountant-recruitment-july-2024",
-    descriptionVi: "Năm 2024, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức 03 đợt tuyển dụng lao động từ tháng 7 đến tháng 12 cho các vị trí thuộc khối lao động gián tiếp (Nhân viên Hành chính, Nhân viên Quản trị cơ sở hạ tầng, Nhân viên Pháp lý,…) và khối bảo đảm kỹ thuật (Nhân viên kỹ thuật CNS, Nhân viên khai thác CNS các đài/trạm). Qua các vòng thi tuyển lý thuyết chuyên ngành, tiếng Anh và phỏng vấn, Công ty đã tuyển chọn được 29 ứng viên xuất sắc từ hàng trăm hồ sơ ứng tuyển.",
+    descriptionVi:
+      "Năm 2024, Công ty TNHH Kỹ thuật Quản lý bay đã tổ chức 03 đợt tuyển dụng lao động từ tháng 7 đến tháng 12 cho các vị trí thuộc khối lao động gián tiếp (Nhân viên Hành chính, Nhân viên Quản trị cơ sở hạ tầng, Nhân viên Pháp lý,…) và khối bảo đảm kỹ thuật (Nhân viên kỹ thuật CNS, Nhân viên khai thác CNS các đài/trạm). Qua các vòng thi tuyển lý thuyết chuyên ngành, tiếng Anh và phỏng vấn, Công ty đã tuyển chọn được 29 ứng viên xuất sắc từ hàng trăm hồ sơ ứng tuyển.",
     descriptionEn: "",
     contentVi: `<p>Chiều ng&agrave;y 18/12/2024 tại trụ sở ch&iacute;nh, C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay đ&atilde; tổ chức buổi gặp mặt giữa Ban L&atilde;nh Đạo v&agrave; c&aacute;c ứng vi&ecirc;n tr&uacute;ng tuyển năm 2024. Buổi gặp mặt c&ograve;n c&oacute; sự tham dự của đại diện c&aacute;c bộ phận, đơn vị trong C&ocirc;ng ty. Sự kiện đ&aacute;nh dấu một cột mốc quan trọng, ch&agrave;o đ&oacute;n những th&agrave;nh vi&ecirc;n mới gia nhập v&agrave;o đại gia đ&igrave;nh ATTECH, đồng thời thể hiện sự quan t&acirc;m s&acirc;u sắc của Ban L&atilde;nh đạo C&ocirc;ng ty đến nguồn nh&acirc;n lực trẻ, t&agrave;i năng.</p>
 <p style="padding-left: 90px;"><img class="aligncenter size-full wp-image-11185" src="https://attech.com.vn/wp-content/uploads/2024/12/g%E1%BA%B7p-m%E1%BA%B7t-nvm-20-12-1.jpg" alt="gặp mặt nvm 20-12 1" /></p>
@@ -45,14 +49,15 @@ export const mockNotifications = [
 <p align="center"><em>BLĐ C&ocirc;ng ty, đại diện l&atilde;nh đạo c&aacute;c bộ phận c&ugrave;ng c&aacute;c ứng vi&ecirc;n tr&uacute;ng tuyển</em></p>
 <p style="text-align: right;"><em><strong>B&agrave;i v&agrave; ảnh: Nguyễn L&ecirc; Thảo Linh &ndash; P.TCCB-LĐ</strong></em></p>`,
     contentEn: "",
-    timePosted: "2024-07-01T00:00:00Z",
+    timePosted: "2024-12-18T00:00:00Z",
     status: 1,
     notificationCategoryId: 1,
     notificationCategoryNameVi: "Tuyển dụng",
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
-    image: "https://attech.com.vn/wp-content/uploads/2024/12/g%E1%BA%B7p-m%E1%BA%B7t-nvm-20-12-4.png.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2024/12/g%E1%BA%B7p-m%E1%BA%B7t-nvm-20-12-4.png.jpg",
   },
   {
     id: 3,
@@ -60,21 +65,24 @@ export const mockNotifications = [
     slugVi: "danh-sach-nhan-su-trung-tuyen-dot-3-nam-2024",
     titleEn: "List of successful candidates for the third round of 2024",
     slugEn: "list-of-successful-candidates-for-the-third-round-of-2024",
-    descriptionVi: "Danh sách nhân sự trúng tuyển đợt 3 năm 2024 của Công ty TNHH Kỹ thuật Quản lý bay.",
-    descriptionEn: "The company is recruiting accountants, experienced candidates are preferred...",
+    descriptionVi:
+      "Danh sách nhân sự trúng tuyển đợt 3 năm 2024 của Công ty TNHH Kỹ thuật Quản lý bay.",
+    descriptionEn:
+      "The company is recruiting accountants, experienced candidates are preferred...",
     contentVi: `<h3>T&agrave;i liệu đ&iacute;nh k&egrave;m</h3>
 <ul class="post-attachments">
 <li class="post-attachment mime-applicationpdf"><a href="https://attech.com.vn/wp-content/uploads/2024/12/DS-NS-trung-tuyen-Dot-3-nam-2024.pdf">DS NS trung tuyen Dot 3 nam 2024</a>&nbsp;(27.4 KB)</li>
 </ul>`,
     contentEn: "",
-    timePosted: "2024-07-01T00:00:00Z",
+    timePosted: "2024-12-16T00:00:00Z",
     status: 1,
     notificationCategoryId: 1,
     notificationCategoryNameVi: "Tuyển dụng",
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
-    image: "https://ued.udn.vn/uploads/news/2021_06/mau-thong-bao_2204184241.png"
+    image:
+      "https://ued.udn.vn/uploads/news/2021_06/mau-thong-bao_2204184241.png",
   },
   {
     id: 4,
@@ -82,7 +90,8 @@ export const mockNotifications = [
     slugVi: "thong-tin-tuyen-dung-dot-3-nam-2024",
     titleEn: "Recruitment information for the third round of 2024",
     slugEn: "recruitment-information-for-the-third-round-of-2024",
-    descriptionVi: "Công ty TNHH Kỹ thuật Quản lý bay (tên gọi tắt là ATTECH) là một trong những đơn vị kỹ thuật hàng đầu của ngành hàng không Việt Nam với 3 lĩnh vực kinh doanh cốt lõi là cung cấp dịch vụ Thông tin – Dẫn đường – Giám sát hàng không, dịch vụ Bay kiểm tra hiệu chuẩn và Sản xuất công nghiệp hàng không.",
+    descriptionVi:
+      "Công ty TNHH Kỹ thuật Quản lý bay (tên gọi tắt là ATTECH) là một trong những đơn vị kỹ thuật hàng đầu của ngành hàng không Việt Nam với 3 lĩnh vực kinh doanh cốt lõi là cung cấp dịch vụ Thông tin – Dẫn đường – Giám sát hàng không, dịch vụ Bay kiểm tra hiệu chuẩn và Sản xuất công nghiệp hàng không.",
     descriptionEn: "",
     contentVi: `<p>Ch&uacute;ng t&ocirc;i cần đội ngũ nh&acirc;n vi&ecirc;n tinh th&ocirc;ng, chuy&ecirc;n nghiệp, tận t&acirc;m v&agrave; s&aacute;ng tạo để vận h&agrave;nh khai th&aacute;c c&aacute;c hệ thống thiết bị hiện đại tại c&aacute;c đ&agrave;i/trạm th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng cũng như tổ chức c&aacute;c hoạt động sản xuất kinh doanh đặc th&ugrave;. Đến với ch&uacute;ng t&ocirc;i, c&aacute;c bạn sẽ được l&agrave;m việc trong m&ocirc;i trường chuy&ecirc;n nghiệp, c&ocirc;ng bằng với mức thu nhập xứng đ&aacute;ng; được ghi nhận, tr&acirc;n trọng sự cống hiến; được tạo cơ hội thăng tiến nghề nghiệp.</p>
 <p>Sau khi tr&uacute;ng tuyển, c&aacute;c bạn sẽ được C&ocirc;ng ty k&yacute; Hợp đồng lao động x&aacute;c định thời hạn, thời gian thử việc tối đa 60 ng&agrave;y v&agrave; được hưởng chế độ đ&atilde;i ngộ tương ứng với năng lực của c&aacute; nh&acirc;n<em>.&nbsp;</em>Ri&ecirc;ng đối với nh&acirc;n vi&ecirc;n bảo đảm hoạt động bay&nbsp;<em>(nh&acirc;n vi&ecirc;n bay hiệu chuẩn, nh&acirc;n vi&ecirc;n kỹ thuật/khai th&aacute;c thiết bị th&ocirc;ng tin dẫn đường gi&aacute;m s&aacute;t)</em>, thời hạn hợp đồng kh&ocirc;ng qu&aacute; 12 th&aacute;ng v&agrave; sẽ được C&ocirc;ng ty đ&agrave;o tạo, huấn luyện kiến thức chuy&ecirc;n m&ocirc;n về th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng<em>.</em></p>
@@ -474,14 +483,15 @@ export const mockNotifications = [
 </ul>
 </div>`,
     contentEn: "",
-    timePosted: "2024-07-01T00:00:00Z",
+    timePosted: "2024-10-10T00:00:00Z",
     status: 1,
     notificationCategoryId: 1,
     notificationCategoryNameVi: "Tuyển dụng",
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
-    image: "https://t3.ftcdn.net/jpg/02/70/49/98/360_F_270499871_leocxSWTATdmEknQlHjUAggCM3vcHqft.jpg"
+    image:
+      "https://t3.ftcdn.net/jpg/02/70/49/98/360_F_270499871_leocxSWTATdmEknQlHjUAggCM3vcHqft.jpg",
   },
   // Mời nhà cung cấp
   {
@@ -490,18 +500,22 @@ export const mockNotifications = [
     slugVi: "moi-thau-cung-cap-thiet-bi-van-phong",
     titleEn: "Office Equipment Tender Invitation",
     slugEn: "office-equipment-tender-invitation",
-    descriptionVi: "Công ty mời các nhà cung cấp tham gia đấu thầu cung cấp thiết bị văn phòng...",
-    descriptionEn: "The company invites suppliers to bid for office equipment supply...",
-    contentVi: "Chi tiết hồ sơ mời thầu cung cấp thiết bị văn phòng, điều kiện và thời hạn...",
+    descriptionVi:
+      "Công ty mời các nhà cung cấp tham gia đấu thầu cung cấp thiết bị văn phòng...",
+    descriptionEn:
+      "The company invites suppliers to bid for office equipment supply...",
+    contentVi:
+      "Chi tiết hồ sơ mời thầu cung cấp thiết bị văn phòng, điều kiện và thời hạn...",
     contentEn: "Details of office equipment tender, conditions and deadline...",
-    timePosted: "2024-06-10T00:00:00Z",
+    timePosted: "2024-08-10T00:00:00Z",
     status: 1,
     notificationCategoryId: 2,
     notificationCategoryNameVi: "Thông báo mời nhà cung cấp",
     notificationCategoryNameEn: "Supplier Notice",
     notificationCategorySlugVi: "moi-nha-cung-cap",
     notificationCategorySlugEn: "supplier-notice",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4OT9TgLy4r-hMSwLkEq9JjmVlBYmoH8kTA&s"
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4OT9TgLy4r-hMSwLkEq9JjmVlBYmoH8kTA&s",
   },
   {
     id: 6,
@@ -509,18 +523,23 @@ export const mockNotifications = [
     slugVi: "moi-thau-dich-vu-bao-tri-he-thong-mang",
     titleEn: "Network Maintenance Service Tender",
     slugEn: "network-maintenance-service-tender",
-    descriptionVi: "Mời các đơn vị cung cấp dịch vụ bảo trì hệ thống mạng nội bộ công ty...",
-    descriptionEn: "Invitation to provide network maintenance services for the company's internal network...",
-    contentVi: "Chi tiết hồ sơ mời thầu dịch vụ bảo trì hệ thống mạng, yêu cầu kỹ thuật...",
-    contentEn: "Details of network maintenance service tender, technical requirements...",
-    timePosted: "2024-07-05T00:00:00Z",
+    descriptionVi:
+      "Mời các đơn vị cung cấp dịch vụ bảo trì hệ thống mạng nội bộ công ty...",
+    descriptionEn:
+      "Invitation to provide network maintenance services for the company's internal network...",
+    contentVi:
+      "Chi tiết hồ sơ mời thầu dịch vụ bảo trì hệ thống mạng, yêu cầu kỹ thuật...",
+    contentEn:
+      "Details of network maintenance service tender, technical requirements...",
+    timePosted: "2024-08-05T00:00:00Z",
     status: 1,
     notificationCategoryId: 2,
     notificationCategoryNameVi: "Thông báo mời nhà cung cấp",
     notificationCategoryNameEn: "Supplier Notice",
     notificationCategorySlugVi: "moi-nha-cung-cap",
     notificationCategorySlugEn: "supplier-notice",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4OT9TgLy4r-hMSwLkEq9JjmVlBYmoH8kTA&s"
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4OT9TgLy4r-hMSwLkEq9JjmVlBYmoH8kTA&s",
   },
   // Thông báo khác
   {
@@ -529,8 +548,10 @@ export const mockNotifications = [
     slugVi: "thong-bao-nghi-le-quoc-khanh-2-9",
     titleEn: "National Day Holiday Notice",
     slugEn: "national-day-holiday-notice",
-    descriptionVi: "Công ty thông báo lịch nghỉ lễ Quốc khánh 2/9 cho toàn thể nhân viên...",
-    descriptionEn: "The company announces National Day holiday schedule for all employees...",
+    descriptionVi:
+      "Công ty thông báo lịch nghỉ lễ Quốc khánh 2/9 cho toàn thể nhân viên...",
+    descriptionEn:
+      "The company announces National Day holiday schedule for all employees...",
     contentVi: "Chi tiết lịch nghỉ lễ Quốc khánh 2/9 và các lưu ý...",
     contentEn: "Details of National Day holiday schedule and notes...",
     timePosted: "2024-08-20T00:00:00Z",
@@ -540,7 +561,8 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Other Notices",
     notificationCategorySlugVi: "thong-bao-khac",
     notificationCategorySlugEn: "other-notices",
-    image: "https://vlute.edu.vn/cdn/files/THONG%20BAO/11_2021-12-09-042032.png"
+    image:
+      "https://vlute.edu.vn/cdn/files/THONG%20BAO/11_2021-12-09-042032.png",
   },
   {
     id: 8,
@@ -548,9 +570,12 @@ export const mockNotifications = [
     slugVi: "thong-bao-thay-doi-chinh-sach-lam-viec-tu-xa",
     titleEn: "Remote Work Policy Change Notice",
     slugEn: "remote-work-policy-change-notice",
-    descriptionVi: "Công ty cập nhật chính sách làm việc từ xa áp dụng từ tháng 9/2024...",
-    descriptionEn: "The company updates remote work policy effective from September 2024...",
-    contentVi: "Chi tiết chính sách làm việc từ xa mới và hướng dẫn thực hiện...",
+    descriptionVi:
+      "Công ty cập nhật chính sách làm việc từ xa áp dụng từ tháng 9/2024...",
+    descriptionEn:
+      "The company updates remote work policy effective from September 2024...",
+    contentVi:
+      "Chi tiết chính sách làm việc từ xa mới và hướng dẫn thực hiện...",
     contentEn: "Details of new remote work policy and implementation guide...",
     timePosted: "2024-09-01T00:00:00Z",
     status: 1,
@@ -559,6 +584,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Other Notices",
     notificationCategorySlugVi: "thong-bao-khac",
     notificationCategorySlugEn: "other-notices",
-    image: "https://vlute.edu.vn/cdn/files/THONG%20BAO/11_2021-12-09-042032.png"
-  }
-]; 
+    image:
+      "https://vlute.edu.vn/cdn/files/THONG%20BAO/11_2021-12-09-042032.png",
+  },
+];
