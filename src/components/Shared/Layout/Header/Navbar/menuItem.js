@@ -41,6 +41,13 @@ const menuItems = [
             pathVi: "/san-pham/cns-atm/he-thong-amss",
             pathEn: "/en/products/amss-system",
           },
+          {
+            key: "standard-gps-timepiece",
+            labelVi: "Đồng hồ thời gian chuẩn GPS",
+            labelEn: "Standard GPS Timepiece",
+            pathVi: "/san-pham/cns-atm/dong-ho-thoi-gian-chuan-gps",
+            pathEn: "/en/products/cns-atm/standard-gps-timepiece",
+          },
         ],
       },
       {
@@ -208,13 +215,6 @@ const menuItems = [
         pathVi: "/san-pham/thiet-bi-dan-dung",
         pathEn: "/en/products/others",
         submenu: [
-          {
-            key: "standard-gps-timepiece",
-            labelVi: "Đồng hồ thời gian chuẩn GPS",
-            labelEn: "Standard GPS Timepiece",
-            pathVi: "/san-pham/thiet-bi-dan-dung/dong-ho-thoi-gian-chuan-gps",
-            pathEn: "/en/products/others/standard-gps-timepiece",
-          },
           {
             key: "drill",
             labelVi: "Máy cắt vấu",

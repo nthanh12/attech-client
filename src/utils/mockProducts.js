@@ -612,7 +612,7 @@ export const mockProducts = [
   {
     id: 17,
     nameVi: "Thiết bị ghi thoại dữ liệu",
-    slugVi: "ghi-am-thoai-du-lieu",
+    slugVi: "ghi-thoai-du-lieu",
     nameEn: "Data voice recorder",
     slugEn: "data-voice-recorder",
     descriptionVi:
@@ -668,11 +668,11 @@ export const mockProducts = [
     contentEn: "",
     timePosted: "2024-04-15T00:00:00Z",
     status: 1,
-    productCategoryId: 7,
-    productCategoryNameVi: "Thiết bị dân dụng khác",
-    productCategoryNameEn: "Other Equipment",
-    productCategorySlugVi: "thiet-bi-dan-dung",
-    productCategorySlugEn: "other-equipment",
+    productCategoryId: 1,
+    productCategoryNameVi: "CNS/ATM",
+    productCategoryNameEn: "CNS/ATM",
+    productCategorySlugVi: "cns-atm",
+    productCategorySlugEn: "cns-atm",
     image:
       "https://attech.com.vn/wp-content/uploads/2016/08/dong-ho-master.jpg",
   },
@@ -682,11 +682,10 @@ export const mockProducts = [
     slugVi: "may-cat-vau",
     nameEn: "Lug Cutter",
     slugEn: "lug-cutter",
-    descriptionVi:
-      "Máy cắt Vấu do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
+    descriptionVi: "",
     descriptionEn:
       "Jaw cutting machine designed, manufactured and installed by Attech according to the order of Sakura company - Japan",
-    contentVi: ``,
+    contentVi: "Máy cắt Vấu do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
     timePosted: "2024-04-15T00:00:00Z",
     status: 1,
@@ -704,10 +703,9 @@ export const mockProducts = [
     slugVi: "may-la",
     nameEn: "Ironing machine",
     slugEn: "ironing-machine",
-    descriptionVi:
-      "Máy là do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
+    descriptionVi: "",
     descriptionEn: "",
-    contentVi: ``,
+    contentVi: "Máy là do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
     timePosted: "2024-04-15T00:00:00Z",
     status: 1,
@@ -724,11 +722,10 @@ export const mockProducts = [
     slugVi: "may-han-tig",
     nameEn: "TIG welding machine",
     slugEn: "tig-welding-machine",
-    descriptionVi:
-      "Máy hàn TIG do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
+    descriptionVi: "",
     descriptionEn:
       "Voice data recorder is one of the important devices used in the aviation industry to record image data and voice communication signals during information and flight control communication to ensure the safety of civil aviation operations as well as provide evidence for investigation when an incident occurs.",
-    contentVi: ``,
+    contentVi: "Máy hàn TIG do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
     timePosted: "2024-04-15T00:00:00Z",
     status: 1,
@@ -746,10 +743,9 @@ export const mockProducts = [
     slugVi: "may-loc",
     nameEn: "Rolling Machine",
     slugEn: "rolling-machine",
-    descriptionVi:
-      "Máy lốc do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura Nhật Bản",
+    descriptionVi: "",
     descriptionEn: "",
-    contentVi: ``,
+    contentVi: "Máy lốc do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura Nhật Bản",
     contentEn: "",
     timePosted: "2024-04-15T00:00:00Z",
     status: 1,
@@ -766,11 +762,10 @@ export const mockProducts = [
     slugVi: "may-han-quay",
     nameEn: "Rotary welding machine",
     slugEn: "rotary-welding-machine",
-    descriptionVi:
-      "Thiết bị ghi thoại dữ liệu là một trong những thiết bị quan trọng được sử dụng trong ngành hàng không để ghi lại dữ liệu hình ảnh và tín hiệu liên lạc thoại trong quá trình thông tin, liên lạc hiệp đồng điều hành bay nhằm mục đích đảm bảo an toàn hoạt động hàng không dân dụng cũng như cung cấp bằng chứng cho công tác điều tra khi có xảy ra sự cố.",
+    descriptionVi: "",
     descriptionEn:
       "Voice data recorder is one of the important devices used in the aviation industry to record image data and voice communication signals during information and flight control communication to ensure the safety of civil aviation operations as well as provide evidence for investigation when an incident occurs.",
-    contentVi: ``,
+    contentVi: "Máy hàn quay do Attech thiết kế chế tạo và lắp đặt theo đơn đặt hàng của công ty Sakura - Nhật Bản",
     contentEn: "",
     timePosted: "2024-04-15T00:00:00Z",
     status: 1,

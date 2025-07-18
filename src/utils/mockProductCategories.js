@@ -64,7 +64,7 @@ export const mockProductCategories = [
   {
     id: 7,
     nameVi: "Thiết bị dân dụng khác",
-    slugVi: "thiet-bi-dan-dung-khac",
+    slugVi: "thiet-bi-dan-dung",
     nameEn: "Other Equipment",
     slugEn: "other-equipment",
     descriptionVi: "",
