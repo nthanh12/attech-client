@@ -42,6 +42,13 @@ const CategoryNav = ({ categories, selectedCategory, onSelectCategory }) => {
           {cat.name}
         </button>
       ))}
+      {/* Nút Vẻ 360 giống các nút khác */}
+      <button
+        className="attech-category-btn"
+        onClick={() => window.open('https://attech.vr360.one/', '_blank')}
+      >
+        VR 360
+      </button>
     </div>
   );
 };

@@ -10,11 +10,9 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
   const toggleRef = useRef(null);
 
   const handleLinkClick = (e) => {
-    if (isMobile && hasChildren && !isOpen) {
-      e.preventDefault();
-      setIsOpen(true);
-    } else {
+    if (isMobile) {
       closeMobileMenu();
+      // Không chặn event, luôn redirect khi click Link trên mobile
     }
   };
 
@@ -32,16 +30,13 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
   };
 
   useEffect(() => {
-    const link = linkRef.current;
     const toggle = toggleRef.current;
 
     if (isMobile && hasChildren) {
-      link?.addEventListener("touchstart", handleLinkClick, { passive: false });
       toggle?.addEventListener("touchstart", handleToggleSubmenu, { passive: false });
     }
 
     return () => {
-      link?.removeEventListener("touchstart", handleLinkClick, { passive: false });
       toggle?.removeEventListener("touchstart", handleToggleSubmenu, { passive: false });
     };
   }, [isMobile, hasChildren]);
@@ -73,7 +68,7 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
           <Link
             to={path}
             className="nav-link"
-            onClick={isMobile ? handleLinkClick : undefined}
+            onClick={handleLinkClick}
             ref={linkRef}
             aria-haspopup={hasChildren ? "true" : "false"}
             aria-expanded={hasChildren ? isOpen : undefined}

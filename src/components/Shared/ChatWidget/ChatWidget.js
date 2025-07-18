@@ -147,17 +147,22 @@ const ChatWidget = () => {
               <div className="chat-widget-title-text">
                 <h3>{isLiveChat ? 'Bộ phận hỗ trợ ATTECH' : 'Trợ lý ảo ATTECH'}</h3>
                 <span>{isLiveChat ? 'Đang trực tuyến' : 'Thường trả lời trong vài phút'}</span>
+                {/* Nút chuyển trạng thái chat chuyển xuống dưới tiêu đề */}
+                <button 
+                  className={`chat-mode-switch ${isLiveChat ? 'live' : ''}`}
+                  onClick={toggleChatMode}
+                  title={isLiveChat ? 'Chuyển về trợ lý ảo' : 'Chuyển sang chat trực tiếp'}
+                >
+                  <i className={`fas ${isLiveChat ? 'fa-headset' : 'fa-robot'}`}></i>
+                  <span>
+                    {isLiveChat ? 'Trợ lý ảo' : 'Trực tiếp'}
+                  </span>
+                </button>
               </div>
             </div>
-            <button 
-              className={`chat-mode-switch ${isLiveChat ? 'live' : ''}`}
-              onClick={toggleChatMode}
-              title={isLiveChat ? 'Đang chat trực tiếp' : 'Chuyển sang chat trực tiếp'}
-            >
-              <i className={`fas ${isLiveChat ? 'fa-headset' : 'fa-robot'}`}></i>
-              <span>
-                {isLiveChat ? 'Đang chat trực tiếp' : 'Chuyển sang chat trực tiếp'}
-              </span>
+            {/* Nút đóng chat */}
+            <button className="chat-widget-close" onClick={toggleChat} title="Đóng chat">
+              <i className="fas fa-times"></i>
             </button>
           </div>
 

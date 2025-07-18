@@ -99,7 +99,7 @@ const NavbarTop = memo(
               <i className="hamburger-icon fas fa-bars" aria-hidden="true"></i>
             </button>
             <div className="desktop-controls">
-              <div className={`search-container${isSearchOpen ? " open" : ""}`}>
+              {/* <div className={`search-container${isSearchOpen ? " open" : ""}`}>
                 <button
                   className="search-button"
                   onClick={handleSearchClick}
@@ -120,7 +120,7 @@ const NavbarTop = memo(
                     autoFocus
                   />
                 )}
-              </div>
+              </div> */}
               <div className="language-switcher">
                 <button
                   className={`lang-btn ${language === "vi" ? "active" : ""}`}

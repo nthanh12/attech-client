@@ -36,7 +36,7 @@ const WhatsNews = () => {
         <div className="row">
           <div className="col-lg-12">
             <div className="row d-flex justify-content-between align-items-center">
-              <div className="col-lg-5 col-md-5">
+              <div className="col-lg-5 col-md-5 pd_0">
                 <div className="section-tittle mb-20">
                   <h3>Tin ngành hàng không</h3>
                 </div>
@@ -46,7 +46,7 @@ const WhatsNews = () => {
               </div>
             </div>
             <div className="row">
-              <div className="col-12">
+              <div className="col-12 pd_0">
                 <div className="whats-news-caption">
                   <div className="whats-news-grid">
                     {newsToShow.map((news, idx) => (

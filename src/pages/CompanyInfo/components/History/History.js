@@ -54,7 +54,7 @@ const History = () => {
     },
     headquarters: {
       address:
-        "Số 5/200 Đường Nguyễn Sơn, phường Bồ Đề, Quận Long Biên, Thành phố Hà Nội",
+        "Số 5/200 Đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội",
       phone: "024.38721514",
       fax: "024.38730398",
       email: "attech@attech.com.vn",

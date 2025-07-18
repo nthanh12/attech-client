@@ -29,10 +29,10 @@ const Business = () => {
       short: "ATTECH CO.,LTD",
     },
     address: {
-      full: "Số 5/200, đường Nguyễn Sơn, phường Bồ Đề, quận Long Biên, thành phố Hà Nội, Việt Nam",
+      full: "Số 5/200, đường Nguyễn Sơn, phường Bồ Đề, thành phố Hà Nội, Việt Nam",
       phone: "024.38271914",
       fax: "024.38720398",
-      email: "attech@hn.vnn.vn",
+      email: "attech@attech.com.vn",
       website: "attech.com.vn",
     },
   };
