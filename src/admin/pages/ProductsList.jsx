@@ -32,7 +32,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
-} from "../../api";
+} from "../../services/productService";
 import { mockProducts, mockProductCategories } from "../../utils/mockData.js";
 import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";

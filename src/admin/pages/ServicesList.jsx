@@ -26,12 +26,7 @@ import "tinymce/plugins/codesample";
 import "./ServicesList.css";
 import "../styles/adminTable.css";
 import "../styles/adminCommon.css";
-import {
-  getServices,
-  createService,
-  updateService,
-  deleteService,
-} from "../../api";
+import { getServices } from '../../services/serviceService';
 import { mockServices } from "../../utils/mockData.js";
 import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";

@@ -4,7 +4,7 @@ import FormModal from '../components/FormModal';
 import ToastMessage from '../components/ToastMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { mockMedia } from '../../utils/mockMedia.js';
-import { uploadImage } from '../../api';
+import { uploadImage } from '../../services/uploadService';
 import './MediaManagement.css';
 import ImageUpload from '../../components/UI/ImageUpload';
 
