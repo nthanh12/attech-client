@@ -538,3 +538,95 @@
   min-height: 100vh;
   }
 }
+/* CSS nhẹ nhàng cho mobile responsive - CHỈ fix những gì cần thiết */
+
+/* Chỉ áp dụng trên mobile và tablet */
+@media (max-width: 768px) {
+  /* Fix hình ảnh tràn màn hình */
+  .news-detail-page .article-content img {
+    max-width: 100% !important;
+    height: auto !important;
+    width: auto !important;
+  }
+
+  /* Fix table tràn màn hình - tự động wrap content */
+  .news-detail-page .article-content table {
+    width: 100% !important;
+    table-layout: auto !important;
+    word-wrap: break-word;
+  }
+
+  /* Cho phép table cell wrap content tự nhiên */
+  .news-detail-page .article-content table td,
+  .news-detail-page .article-content table th {
+    word-wrap: break-word !important;
+    word-break: break-word;
+    white-space: normal !important;
+    max-width: none !important;
+    width: auto !important;
+    padding: 0.75rem 0.5rem;
+  }
+
+  /* Fix div có width cố định */
+  .news-detail-page .article-content div[style*="width:"],
+  .news-detail-page .article-content div[style*="width "] {
+    max-width: 100% !important;
+    width: auto !important;
+  }
+
+  /* Fix figure tràn màn hình */
+  .news-detail-page .article-content figure {
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Giảm font-size cho mobile */
+  .news-detail-page .article-content {
+    font-size: 0.95rem;
+  }
+
+  .news-detail-page .article-content figcaption {
+    font-size: 0.85rem;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Điều chỉnh cho màn hình rất nhỏ */
+  .news-detail-page .article-content {
+    font-size: 0.9rem;
+  }
+
+  .news-detail-page .article-content table {
+    font-size: 0.8rem;
+  }
+
+  .news-detail-page .article-content table td,
+  .news-detail-page .article-content table th {
+    word-wrap: break-word !important;
+    word-break: break-word;
+    white-space: normal !important;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .news-detail-page .article-content figcaption {
+    font-size: 0.8rem;
+  }
+
+  /* Giảm margin cho các heading */
+  .news-detail-page .article-content h1,
+  .news-detail-page .article-content h2,
+  .news-detail-page .article-content h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .news-detail-page .article-content h2 {
+    font-size: 1.3rem;
+  }
+
+  .news-detail-page .article-content h3 {
+    font-size: 1.1rem;
+  }
+}

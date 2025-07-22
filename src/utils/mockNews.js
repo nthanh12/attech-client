@@ -25,7 +25,7 @@ export const mockNews = [
 </div>
 <p style="text-align: justify;">Kh&ocirc;ng ngừng đổi mới v&agrave; ki&ecirc;n định với mục ti&ecirc;u lớn, ATTECH đặt mục ti&ecirc;u trở th&agrave;nh tổ hợp doanh nghiệp c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng h&agrave;ng đầu Việt Nam, một thương hiệu mạnh trong khu vực. Những chủ trương ph&aacute;t triển bay kiểm tra hiệu chuẩn v&agrave; c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng, gắn với quy hoạch ph&aacute;t triển GTVT h&agrave;ng kh&ocirc;ng giai đoạn đến 2020, tầm nh&igrave;n 2030 đ&atilde; v&agrave; đang l&agrave; con đường ph&aacute;t triển bền vững m&agrave; ATTECH quyết t&acirc;m hiện thực h&oacute;a.</p>
 <div class="CmsPluginObject medium-insert-contentbox" style="text-align: justify;">
-<table style="height: 71px; background-color: #fffbf1; border-color: yellow;" width="765">
+<table style="height: 71px; background-color: #f2d994; border-color: yellow;" width="765">
 <tbody>
 <tr>
 <td style="width: 755.739px;">
