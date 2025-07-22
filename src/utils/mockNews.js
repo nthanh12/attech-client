@@ -1,6 +1,104 @@
 export const mockNews = [
   {
     id: 1,
+    titleVi: "15 năm ATTECH và hành trình làm chủ kỹ thuật hàng không",
+    slugVi: "15-nam-attech-va-hanh-trinh-lam-chu-ky-thuat-hang-khong",
+    descriptionVi:
+      "15 năm xây dựng và phát triển theo mô hình Công ty TNHH, Công ty Kỹ thuật Quản lý bay (ATTECH) từ một đơn vị dịch vụ kỹ thuật hàng không đã vươn mình trở thành thương hiệu khoa học công nghệ (KHCN) hàng đầu, đồng hành cùng ngành Quản lý bay Việt Nam giữ vững vùng trời Tổ quốc. Từ nền tảng văn hóa doanh nghiệp và khát vọng sáng tạo, ATTECH đang tiến những bước vững chắc trong hành trình chuyển đổi số, phát triển KHCN và dẫn đầu chiến lược làm chủ công nghệ bảo đảm hoạt động bay hiện đại.",
+    contentVi: `<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/c8eb9b2a2e6ca732fe7d_21072025172630_147.jpg" alt="" width="800" height="409" />
+<figcaption>ATTECH tham dự Hội nghị hiệp thương giữa Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam (VATM) v&agrave; Cơ quan quản l&yacute; bay L&agrave;o (LANS).</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;"><strong>Nền tảng l&agrave;m n&ecirc;n thương hiệu</strong></p>
+<p style="text-align: justify;">Ra đời từ nhu cầu thực tiễn của x&atilde; hội, C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay (ATTECH) - th&agrave;nh vi&ecirc;n của Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam mang trong m&igrave;nh sứ mệnh đặc biệt ngay từ thuở ban đầu. Từ c&aacute;i t&ecirc;n ban sơ l&agrave; X&iacute; nghiệp Điện tử h&agrave;ng kh&ocirc;ng (1986), ATTECH được h&igrave;nh th&agrave;nh với trọng tr&aacute;ch lớn lao: X&acirc;y dựng một đơn vị kỹ thuật điện tử chung phục vụ to&agrave;n ng&agrave;nh H&agrave;ng kh&ocirc;ng d&acirc;n dụng Việt Nam. Từ đ&oacute;, mỗi cột mốc ph&aacute;t triển của ng&agrave;nh Quản l&yacute; bay cũng gắn liền với qu&aacute; tr&igrave;nh đổi mới, ho&agrave;n thiện của ATTECH: Năm 1998, Trung t&acirc;m Dịch vụ kỹ thuật Quản l&yacute; bay ra đời; đến năm 2010 ch&iacute;nh thức chuyển đổi m&ocirc; h&igrave;nh hoạt động th&agrave;nh C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay - một doanh nghiệp đặc th&ugrave; tr&ecirc;n ba lĩnh vực c&ocirc;ng nghệ cao: Cung cấp dịch vụ CNS (th&ocirc;ng tin - dẫn đường - gi&aacute;m s&aacute;t), bay kiểm tra hiệu chuẩn v&agrave; sản xuất sản phẩm c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng.</p>
+<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/25bf3353cdf67ba822e7_21072025172830_147.jpg" alt="" width="800" height="502" />
+<figcaption>Lễ k&yacute; kết hợp đồng cung cấp dịch vụ ADS-B giai đoạn 2 giữa ATTECH v&agrave; CAAS.</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;">Thương hiệu ATTECH l&agrave; kết tinh của tri thức, kỷ luật, sự ch&iacute;nh x&aacute;c v&agrave; kh&aacute;t vọng đổi mới từ những con người l&agrave;m kỹ thuật trong một ng&agrave;nh nghề m&agrave; từng chi tiết đều li&ecirc;n quan đến sự an to&agrave;n tuyệt đối của h&agrave;ng triệu chuyến bay. Được x&acirc;y dựng tr&ecirc;n ba nền tảng cốt l&otilde;i: Hệ thống quản l&yacute; chất lượng đồng bộ, hiệu lực v&agrave; hiệu quả; sự s&aacute;ng tạo, khả năng th&iacute;ch nghi vượt trội v&agrave; tư duy văn h&oacute;a doanh nghiệp hiện đại, ATTECH khẳng định sự kh&aacute;c biệt bằng ch&iacute;nh cam kết về chất lượng, tiến độ v&agrave; gi&aacute; th&agrave;nh sản phẩm, dịch vụ đối với kh&aacute;ch h&agrave;ng.</p>
+<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/6b8380497eecc8b291fd_21072025173018_147.jpg" alt="" width="800" height="534" />
+<figcaption>Lễ k&yacute; kết hợp đồng giữa ATTECH v&agrave; C&ocirc;ng ty Mopiens INC.</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;">Kh&ocirc;ng ngừng đổi mới v&agrave; ki&ecirc;n định với mục ti&ecirc;u lớn, ATTECH đặt mục ti&ecirc;u trở th&agrave;nh tổ hợp doanh nghiệp c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng h&agrave;ng đầu Việt Nam, một thương hiệu mạnh trong khu vực. Những chủ trương ph&aacute;t triển bay kiểm tra hiệu chuẩn v&agrave; c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng, gắn với quy hoạch ph&aacute;t triển GTVT h&agrave;ng kh&ocirc;ng giai đoạn đến 2020, tầm nh&igrave;n 2030 đ&atilde; v&agrave; đang l&agrave; con đường ph&aacute;t triển bền vững m&agrave; ATTECH quyết t&acirc;m hiện thực h&oacute;a.</p>
+<div class="CmsPluginObject medium-insert-contentbox" style="text-align: justify;">
+<p><strong>Th&uacute;c đẩy, hiện đại h&oacute;a ng&agrave;nh Quản l&yacute; bay Việt Nam</strong></p>
+<p>C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay (ATTECH) l&agrave; c&ocirc;ng ty con hạch to&aacute;n độc lập trực thuộc Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam (VATM), c&oacute; chức năng cung cấp c&aacute;c dịch vụ kỹ thuật chuy&ecirc;n ng&agrave;nh quản l&yacute; bay, g&oacute;p phần đảm bảo hoạt động li&ecirc;n tục, an to&agrave;n v&agrave; hiệu quả c&ocirc;ng t&aacute;c điều h&agrave;nh bay. Trải qua gần 40 năm x&acirc;y dựng v&agrave; ph&aacute;t triển v&agrave; 15 năm thương hiệu ATTECH, C&ocirc;ng ty đ&atilde; trở th&agrave;nh một trong những doanh nghiệp kỹ thuật h&agrave;ng kh&ocirc;ng với phạm vi hoạt động phủ khắp cả nước v&agrave; từng bước vươn tầm hợp t&aacute;c quốc tế.</p>
+<p>Từ khi th&agrave;nh lập, ATTECH lu&ocirc;n l&agrave; đơn vị dẫn đầu tại Việt Nam với khả năng thực hiện hiệu chuẩn bay cho c&aacute;c thiết bị dẫn đường h&agrave;ng kh&ocirc;ng theo chuẩn ICAO. Ngo&agrave;i ra, C&ocirc;ng ty c&ograve;n sản xuất, t&iacute;ch hợp v&agrave; triển khai nhiều thiết bị kỹ thuật h&agrave;ng kh&ocirc;ng nội địa, từng bước giảm phụ thuộc v&agrave;o c&ocirc;ng nghệ nhập khẩu. Đội ngũ kỹ sư, chuy&ecirc;n gia tại ATTECH c&oacute; tr&igrave;nh độ cao, được đ&agrave;o tạo b&agrave;i bản trong v&agrave; ngo&agrave;i nước, c&oacute; khả năng tiếp cận, l&agrave;m chủ v&agrave; chuyển giao c&aacute;c c&ocirc;ng nghệ mới nhất trong ng&agrave;nh.</p>
+<p>Hiện nay, ATTECH đang t&iacute;ch cực tham gia c&aacute;c dự &aacute;n hợp t&aacute;c quốc tế về gi&aacute;m s&aacute;t kh&ocirc;ng lưu, chia sẻ dữ liệu. C&aacute;c dự &aacute;n phối hợp tham gia thử nghiệm c&ocirc;ng nghệ mới như ADS-B kh&ocirc;ng gian, SWIM... đ&atilde; cho thấy vị thế v&agrave; tiềm năng của ATTECH trong chiến lược hội nhập h&agrave;ng kh&ocirc;ng to&agrave;n cầu. Với sứ mệnh kỹ thuật vững chắc, ATTECH đang kh&ocirc;ng ngừng đổi mới, chuy&ecirc;n nghiệp h&oacute;a v&agrave; số h&oacute;a, g&oacute;p phần th&uacute;c đẩy việc hiện đại h&oacute;a ng&agrave;nh Quản l&yacute; bay Việt Nam trong thời kỳ chuyển đổi số v&agrave; ph&aacute;t triển bền vững.</p>
+<p><strong>Nguyễn C&ocirc;ng Long</strong><br /><em>Tổng Gi&aacute;m đốc Tổng c&ocirc;ng ty Quản l&yacute; bay Việt Nam</em></p>
+</div>
+<p style="text-align: justify;"><strong>Th&agrave;nh tựu KHCN: Bệ ph&oacute;ng đưa ATTECH vươn tầm</strong></p>
+<p style="text-align: justify;">L&agrave; doanh nghiệp KHCN hoạt động trong lĩnh vực đặc th&ugrave;, ATTECH lu&ocirc;n mang kh&aacute;t vọng tạo ra những &ldquo;sản phẩm nội - chất lượng ngoại&rdquo; phục vụ lĩnh vực quản l&yacute; bay v&agrave; xa hơn l&agrave; ng&agrave;nh c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng Việt Nam. Từ định hướng n&agrave;y, h&agrave;ng loạt sản phẩm KHCN mang dấu ấn ATTECH lần lượt ra đời, được Cục H&agrave;ng kh&ocirc;ng Việt Nam cấp giấy chứng nhận đủ điều kiện khai th&aacute;c trong ng&agrave;nh H&agrave;ng kh&ocirc;ng. Đ&acirc;y kh&ocirc;ng chỉ l&agrave; kết quả của tri thức v&agrave; s&aacute;ng tạo m&agrave; c&ograve;n l&agrave; sự khẳng định năng lực l&agrave;m chủ c&ocirc;ng nghệ cao v&agrave; tinh thần ti&ecirc;n phong hội nhập quốc tế. Mỗi năm, tr&ecirc;n 15 s&aacute;ng kiến của tập thể v&agrave; c&aacute; nh&acirc;n được c&ocirc;ng nhận v&agrave; ứng dụng thực tế, g&oacute;p phần n&acirc;ng cao hiệu quả sản xuất kinh doanh v&agrave; chất lượng dịch vụ.</p>
+<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/3_21072025173259_147.jpg" alt="" width="800" height="520" />
+<figcaption>Lễ gắn biển c&ocirc;ng tr&igrave;nh Ch&agrave;o mừng Đại hội XI C&ocirc;ng đo&agrave;n GTVT Việt Nam - c&ocirc;ng tr&igrave;nh &ldquo;Đ&agrave;i dẫn đường DVOR/DME Điện Bi&ecirc;n mới.</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;">Một trong những sản phẩm ti&ecirc;u biểu l&agrave; hệ thống đồng hồ thời gian chuẩn v&agrave; thiết bị ghi &acirc;m kỹ thuật số cho c&aacute;c đ&agrave;i kiểm so&aacute;t kh&ocirc;ng lưu được đưa ra thị trường từ năm 2011 v&agrave; đến nay vẫn kh&ocirc;ng ngừng được cải tiến, sử dụng rộng r&atilde;i trong to&agrave;n ng&agrave;nh. Đặc biệt, thiết bị ghi thoại v&agrave; dữ liệu - sản phẩm &ldquo;made by ATTECH&rdquo; đ&oacute;ng vai tr&ograve; quan trọng trong đảm bảo an to&agrave;n hoạt động h&agrave;ng kh&ocirc;ng d&acirc;n dụng, khi c&oacute; khả năng ghi lại đầy đủ, trung thực c&aacute;c luồng dữ liệu thoại v&agrave; h&igrave;nh ảnh li&ecirc;n quan đến điều h&agrave;nh bay.</p>
+<p style="text-align: justify;">Trong lĩnh vực phần mềm h&agrave;ng kh&ocirc;ng, ATTECH cũng ti&ecirc;n phong ph&aacute;t triển c&aacute;c hệ thống l&otilde;i, đ&ograve;i hỏi c&ocirc;ng nghệ cao v&agrave; chuẩn mực quốc tế. Dự &aacute;n ph&aacute;t triển phần mềm Hệ thống lu&acirc;n chuyển điện văn kh&ocirc;ng lưu (AMHS) giai đoạn 2013 - 2014 ch&iacute;nh l&agrave; bước ngoặt lớn. AMHS l&agrave; phần mềm c&ocirc;ng nghệ th&ocirc;ng tin xử l&yacute;, lưu trữ, lu&acirc;n chuyển điện văn kh&ocirc;ng lưu theo ti&ecirc;u chuẩn ITU v&agrave; ICAO, với năng lực vượt trội so với hệ thống AMSS cũ. Qu&aacute; tr&igrave;nh x&acirc;y dựng hệ thống AMHS cơ bản - sản phẩm chiến lược trong mạng viễn th&ocirc;ng h&agrave;ng kh&ocirc;ng ATN đ&atilde; gi&uacute;p Việt Nam tiến một bước d&agrave;i trong việc l&agrave;m chủ nền tảng truyền tin h&agrave;ng kh&ocirc;ng. Hệ thống AMHS tương th&iacute;ch với mạng ATN, hỗ trợ c&aacute;c loại địa chỉ AMHS theo ti&ecirc;u chuẩn ICAO, c&oacute; đầy đủ dịch vụ hiện đại v&agrave; khả năng bảo mật cao, minh chứng cho khả năng l&agrave;m chủ c&ocirc;ng nghệ l&otilde;i trong ng&agrave;nh. Năm 2024, sản phẩm hệ thống AMHS mở rộng theo cấu h&igrave;nh IX của ICAO tiếp tục được C&ocirc;ng ty ho&agrave;n th&agrave;nh giai đoạn nghi&ecirc;n cứu chế tạo, được C&ocirc;ng ty Galadrium (Anh quốc) thực hiện đ&aacute;nh gi&aacute; Comformance Test th&agrave;nh c&ocirc;ng.</p>
+<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/dc69db971a32ac6cf523_21072025173437_147.jpg" alt="" width="800" height="461" />
+<figcaption>ATTECH hợp t&aacute;c với C&ocirc;ng ty ANS CR (SEC) trong lĩnh vực bay hiệu chuẩn.</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;">Cũng trong lĩnh vực gi&aacute;m s&aacute;t kh&ocirc;ng lưu, ATTECH đ&atilde; ph&aacute;t triển phần mềm t&iacute;ch hợp v&agrave; xử l&yacute; dữ liệu ADS-B - một bước tiến đặc biệt trong việc điều h&agrave;nh bay tr&ecirc;n biển Đ&ocirc;ng. Ra đời năm 2013 khi hệ thống tự động quản l&yacute; kh&ocirc;ng lưu (ATM-HCM) chưa c&oacute; khả năng xử l&yacute; ADS-B, phần mềm của ATTECH đ&atilde; gi&uacute;p Việt Nam c&ocirc;ng bố quốc tế khả năng điều h&agrave;nh bay bằng gi&aacute;m s&aacute;t ADS-B tại c&aacute;c đường bay song song tr&ecirc;n biển Đ&ocirc;ng từ c&aacute;c trạm Trường Sa Lớn, C&ocirc;n Sơn, Song Tử T&acirc;y. Đến nay, hệ thống t&iacute;ch hợp v&agrave; xử l&yacute; dữ liệu ADS-B stand-alone vẫn vận h&agrave;nh hiệu quả, l&agrave; phương tiện gi&aacute;m s&aacute;t bổ sung tin cậy cho FIR Hồ Ch&iacute; Minh.</p>
+<p style="text-align: justify;">Một trong những th&agrave;nh tựu nổi bật gần đ&acirc;y l&agrave; hệ thống băng phi diễn điện tử (E-Strip) - sản phẩm &ldquo;made in ATTECH&rdquo; thay thế cho hệ thống băng phi diễn giấy truyền thống. Được cấp Giấy chứng nhận bởi Cục H&agrave;ng kh&ocirc;ng Việt Nam năm 2023, hệ thống n&agrave;y đ&atilde; được triển khai trải nghiệm thực tế tại Đ&agrave;i kiểm so&aacute;t Cần Thơ, gi&uacute;p giảm tải cho kiểm so&aacute;t vi&ecirc;n kh&ocirc;ng lưu v&agrave; n&acirc;ng cao t&iacute;nh tự động h&oacute;a trong điều h&agrave;nh bay.</p>
+<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/2184888e482bfe75a73a_21072025173608_147.jpg" alt="" width="800" height="450" />
+<figcaption>Đ&agrave;i DVOR/DME/ADS-B Đ&agrave; Nẵng do ATTECH quản l&yacute; v&agrave; khai th&aacute;c.</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;">Kh&ocirc;ng chỉ phục vụ trong nước, dịch vụ v&agrave; sản phẩm kỹ thuật h&agrave;ng kh&ocirc;ng của ATTECH đ&atilde; vươn xa tới nhiều nước như L&agrave;o, Campuchia, Indonesia, Myanmar, Bangladesh, Angola, Kenya, Ấn Độ, Nepal, Trung Quốc&hellip; v&agrave; cả những thị trường kh&oacute; t&iacute;nh như ch&acirc;u &Acirc;u. ATTECH hiện l&agrave; nh&agrave; cung cấp dịch vụ Th&ocirc;ng tin - Gi&aacute;m s&aacute;t cho Cục H&agrave;ng kh&ocirc;ng Singapore v&agrave; l&agrave; đối t&aacute;c trong chuỗi cung ứng của c&aacute;c nh&agrave; sản xuất thiết bị dẫn đường h&agrave;ng đầu thế giới, qua đ&oacute; đ&atilde; cung cấp sản phẩm v&agrave; dịch vụ với tổng gi&aacute; trị hơn 15 triệu USD.</p>
+<p style="text-align: justify;"><strong>Đổi mới s&aacute;ng tạo, ti&ecirc;n phong trong kỷ nguy&ecirc;n số</strong></p>
+<p style="text-align: justify;">Chia sẻ về qu&aacute; tr&igrave;nh ph&aacute;t triển từ năm 2010 đến nay, &ocirc;ng L&ecirc; Tiến Thịnh - Chủ tịch ATTECH cho biết C&ocirc;ng ty kh&ocirc;ng ngừng thay đổi để ph&ugrave; hợp với thực tiễn v&agrave; xu thế thời đại. Nếu như trước kia ATTECH hoạt động tr&ecirc;n ba lĩnh vực: Th&ocirc;ng tin - dẫn đường - gi&aacute;m s&aacute;t; bay kiểm tra hiệu chuẩn; sản xuất c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng th&igrave; nay chiến lược mới cần x&aacute;c định ph&aacute;t triển KHCN v&agrave; đổi mới s&aacute;ng tạo vừa l&agrave; lĩnh lực kinh doanh, vừa l&agrave; trụ cột trong ph&aacute;t triển doanh nghiệp bởi KHCN ch&iacute;nh l&agrave; nền tảng của sản xuất c&ocirc;ng nghiệp v&agrave; cung cấp dịch vụ bảo đảm hoạt động bay, đồng thời cũng l&agrave; động lực đổi mới bền vững.</p>
+<p style="text-align: justify;">C&aacute;c sản phẩm của ATTECH lu&ocirc;n đ&ograve;i hỏi t&iacute;nh ch&iacute;nh x&aacute;c, tr&aacute;ch nhiệm v&agrave; sự chỉnh chu tuyệt đối, đ&oacute; l&agrave; l&yacute; do C&ocirc;ng ty &aacute;p dụng quy tr&igrave;nh trải nghiệm - phản hồi chặt chẽ. Trước khi đưa sản phẩm v&agrave;o sử dụng ch&iacute;nh thức, kh&aacute;ch h&agrave;ng sẽ d&ugrave;ng thử, đ&aacute;nh gi&aacute;, phản hồi v&agrave; từ đ&oacute; đội ngũ kỹ sư của C&ocirc;ng ty tiếp tục ho&agrave;n thiện. Ch&iacute;nh quy tr&igrave;nh kh&eacute;p k&iacute;n n&agrave;y đảm bảo mọi sản phẩm của ATTECH đều đạt chuẩn cao nhất về an to&agrave;n, ổn định, tiết kiệm năng lượng v&agrave; hiệu quả chi ph&iacute;.</p>
+<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/2_21072025173740_147.jpg" alt="" width="800" height="600" />
+<figcaption>Sản ph&acirc;̉m Cabin Robot bơm keo tự đ&ocirc;̣ng do ATTECH thiết kế, ch&ecirc;́ tạo.</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;">Trước y&ecirc;u cầu bảo đảm an to&agrave;n ng&agrave;y c&agrave;ng cao v&agrave; mật độ bay ng&agrave;y c&agrave;ng tăng, ATTECH đang tập trung nghi&ecirc;n cứu d&ograve;ng sản phẩm c&oacute; kết cấu dễ g&atilde;y - dễ vỡ nhằm đảm bảo an to&agrave;n cho m&aacute;y bay v&agrave; h&agrave;nh kh&aacute;ch trong khu bay. Dự kiến trong năm 2025, sản phẩm ph&ograve;ng đặt thiết bị mới c&oacute; thiết kế kết cấu v&agrave; vật liệu dễ ph&aacute; hủy sẽ được đưa v&agrave;o sử dụng - một bước tiến kết hợp giữa kỹ thuật, c&ocirc;ng nghệ v&agrave; tinh thần tr&aacute;ch nhiệm với ng&agrave;nh.</p>
+<p style="text-align: justify;">Về tầm nh&igrave;n tương lai, &ocirc;ng Nguyễn Ho&agrave;ng Giang - Gi&aacute;m đốc ATTECH khẳng định: &ldquo;C&ocirc;ng ty tiếp tục lấy KHCN v&agrave; đổi mới s&aacute;ng tạo l&agrave;m trọng t&acirc;m ph&aacute;t triển. C&aacute;c kết quả nghi&ecirc;n cứu sẽ tập trung phục vụ lĩnh vực bảo đảm hoạt động bay - lĩnh vực trọng yếu của quản l&yacute; bay v&agrave; ng&agrave;nh H&agrave;ng kh&ocirc;ng. Đ&acirc;y l&agrave; bước đi chiến lược để ATTECH tiếp tục khẳng định vai tr&ograve; ti&ecirc;n phong v&agrave; bản sắc của một doanh nghiệp kỹ thuật h&agrave;ng kh&ocirc;ng h&agrave;ng đầu quốc gia&rdquo;.</p>
+<div style="text-align: justify;">
+<figure class="image"><img src="https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/4_21072025173905_147.jpg" alt="" width="800" height="450" />
+<figcaption>ATTECH thực hiện bay hi&ecirc;̣u chu&acirc;̉n hệ thống ILS/DME/PAP/ALS tại Cảng H&agrave;ng kh&ocirc;ng Quốc tế Đ&agrave; Nẵng.</figcaption>
+</figure>
+</div>
+<p style="text-align: justify;">Với những th&agrave;nh tựu nổi bật, ho&agrave;n th&agrave;nh xuất sắc c&aacute;c nhiệm vụ đặc biệt, g&oacute;p phần đảm bảo hoạt động bay, 15 năm qua, ATTECH đ&atilde; được được tặng thưởng, vinh danh với nhiều danh hiệu, h&igrave;nh thức khen thưởng cao qu&yacute;: Hu&acirc;n chương Lao động hạng Nhất (2015), Bằng khen của Thủ tướng Ch&iacute;nh phủ (2013), Cờ Thi đua của Ch&iacute;nh phủ (2021), Bằng khen của Bộ GTVT - nay l&agrave; Bộ X&acirc;y dựng (giai đoạn 2019 - 2020), Cờ thi đua của Bộ GTVT (2016, 2022), Cờ thi đua của Tổng Li&ecirc;n đo&agrave;n Lao động Việt Nam (2023), TOP 100 Danh hiệu nổi tiếng Việt Nam năm 2014, TOP 20 Nh&atilde;n hiệu nổi tiếng ASEAN 2015, Thương hiệu h&agrave;ng đầu năm 2016...</p>
+<p style="text-align: justify;">ATTECH h&ocirc;m nay l&agrave; biểu tượng cho tinh thần đổi mới, cho tr&iacute; tuệ kỹ thuật Việt Nam v&agrave;&nbsp;cho kh&aacute;t vọng vươn xa. 15 năm nh&igrave;n lại l&agrave; một h&agrave;nh tr&igrave;nh đầy nỗ lực, s&aacute;ng tạo v&agrave; ki&ecirc;n định, nhưng cũng l&agrave; điểm khởi đầu cho một chặng đường mới - nơi m&agrave; thương hiệu ATTECH tiếp tục &ldquo;dẫn lối&rdquo; bầu trời bằng năng lực của một thương hiệu kỹ thuật quản l&yacute; bay.</p>
+<div class="CmsPluginObject medium-insert-contentbox">
+<p style="text-align: justify;" align="center"><strong>H&atilde;y tin v&agrave; cho ATTECH những cơ hội được cống hiến</strong></p>
+<p style="text-align: justify;">Ng&agrave;y h&ocirc;m nay, nh&igrave;n lại Quyết định số 91/TCHK ng&agrave;y 28/02/1986 của Tổng cục trưởng Tổng cục H&agrave;ng kh&ocirc;ng d&acirc;n dụng Việt nam Trần Mạnh c&oacute; thể c&aacute;c bạn trẻ kh&ocirc;ng hiểu được tầm nh&igrave;n vượt thời gian của n&oacute;, nhưng ng&agrave;y đ&oacute; l&agrave; một &ldquo;chấn động&rdquo; m&agrave; cơn &ldquo;rung chấn&rdquo; của đ&oacute; ảnh hưởng đến nhiều con người v&agrave; cả một giai đoạn ph&aacute;t triển thăng trầm của hậu thế. Một điều may mắn l&agrave; tầm nh&igrave;n chiến lược đ&oacute; d&ugrave; trải qua nhiều qu&aacute; tr&igrave;nh nhưng n&oacute; vẫn lu&ocirc;n tồn tại, củng cố v&agrave; ph&aacute;t triển trong tư duy của c&aacute;c thế hệ l&atilde;nh đạo ng&agrave;nh H&agrave;ng kh&ocirc;ng n&oacute;i chung v&agrave; ng&agrave;nh Quản l&yacute; bay Việt Nam n&oacute;i ri&ecirc;ng.</p>
+<p style="text-align: justify;">Để c&oacute; được một quyết định chuyển đổi cơ chế hoạt động từ một đơn vị hạch to&aacute;n phụ thuộc sang doanh nghiệp hạch to&aacute;n kinh doanh độc lập, dưới sự l&atilde;nh đạo của HĐQT Tổng c&ocirc;ng ty Bảo đảm hoạt động bay Việt Nam, Trung t&acirc;m Dịch vụ kỹ thuật Quản l&yacute; bay đ&atilde; triển khai đồng bộ c&aacute;c giải ph&aacute;p từ đổi mới c&ocirc;ng t&aacute;c quản trị doanh nghiệp, đầu tư ph&aacute;t triển năng lực sản xuất kinh doanh tr&ecirc;n 3 lĩnh vực chủ đạo.</p>
+<p style="text-align: justify;">Trong tất cả sự chuẩn bị đ&oacute;, những c&ocirc;ng t&aacute;c c&oacute; t&iacute;nh quyết định được thực thi ho&agrave;n hảo l&agrave; x&acirc;y dựng trung t&acirc;m đảm bảo kỹ thuật DVOR/DME khu vực tr&ecirc;n cơ sở hợp t&aacute;c với C&ocirc;ng ty SELEX (Mỹ), chuyển giao to&agrave;n bộ hệ thống c&aacute;c đ&agrave;i VOR/DME, NDB từ c&aacute;c trung t&acirc;m quản l&yacute; bay khu vực về Trung t&acirc;m Dịch vụ kỹ thuật Quản l&yacute; bay; đầu tư ho&agrave;n thiện dịch vụ bay kiểm tra hiệu chuẩn; đầu tư x&acirc;y dựng cơ sở vật chất để ph&aacute;t triển c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng; &aacute;p dụng v&agrave; tin học h&oacute;a hệ thống quản l&yacute; chất lượng quốc tế ISO 9001&hellip;</p>
+<p style="text-align: justify;">X&aacute;c định r&otilde; tầm nh&igrave;n l&agrave; doanh nghiệp h&agrave;ng đầu kỹ thuật h&agrave;ng kh&ocirc;ng mặt đất với sứ mệnh đem lại lợi &iacute;ch h&agrave;i h&ograve;a cho chủ sở hữu, kh&aacute;ch h&agrave;ng v&agrave; người lao động, phương ch&acirc;m h&agrave;nh động l&agrave; "S&aacute;ng tạo v&agrave; Th&iacute;ch nghi", ph&aacute;t triển sản xuất kinh doanh tr&ecirc;n 3 lĩnh vực ch&iacute;nh, ATTECH đ&atilde; thực hiện cải c&aacute;ch khoa học, hiệu lực v&agrave; hiệu quả hệ thống quản trị doanh nghiệp, đầu tư ph&aacute;t triển cơ sở hạ tầng tr&ecirc;n c&aacute;c lĩnh vực kinh doanh, x&acirc;y dựng hệ sinh th&aacute;i nghi&ecirc;n cứu ph&aacute;t triển v&agrave; x&acirc;y dựng văn h&oacute;a doanh nghiệp. C&aacute;c trang thiết bị c&ocirc;ng nghiệp h&agrave;ng kh&ocirc;ng mặt đất do ATTECH sản xuất đ&atilde; c&oacute; mặt tr&ecirc;n phạm vi trong nước v&agrave; quốc tế, được kh&aacute;ch h&agrave;ng tin d&ugrave;ng v&agrave; hợp t&aacute;c. Văn h&oacute;a doanh nghiệp ATTECH được x&acirc;y dựng tr&ecirc;n sự t&ocirc;n vinh&nbsp;cống hiến v&agrave; đồng cảm sẻ chia, tạo n&ecirc;n một tinh thần đo&agrave;n kết, gắn b&oacute;, đồng l&ograve;ng v&igrave; doanh nghiệp.</p>
+<p style="text-align: justify;">Trải qua h&agrave;nh tr&igrave;nh 15 năm đổi mới v&agrave; ph&aacute;t triển, tư duy đột ph&aacute;, tinh thần d&aacute;m nghĩ d&aacute;m l&agrave;m vẫn lu&ocirc;n hiện hữu trong mỗi con người ATTECH c&aacute;c thế hệ kế tiếp. Phương ch&acirc;m "S&aacute;ng tạo v&agrave; Th&iacute;ch nghi" vẫn l&agrave; kim chỉ nam cho mọi suy nghĩ v&agrave; h&agrave;nh động. Những con người ATTECH mang trong m&igrave;nh &yacute; ch&iacute; vượt kh&oacute; đ&atilde; x&acirc;y dựng n&ecirc;n một hệ sinh th&aacute;i kinh doanh ho&agrave;n chỉnh với cơ sở hạ tầng hiện đại, hệ thống quản trị doanh nghiệp ti&ecirc;n tiến, thị trường ổn định v&agrave; lu&ocirc;n rộng mở. Thương hiệu ATTECH đang bay cao v&agrave; vươn xa, một văn h&oacute;a doanh nghiệp ATTECH nh&acirc;n văn sẽ c&ograve;n l&agrave;m n&ecirc;n nhiều điều kỳ diệu hơn nữa.&nbsp;</p>
+<p style="text-align: justify;"><strong>Trịnh Văn Hải</strong><br /><em>Nguy&ecirc;n Chủ tịch C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay (ATTECH)</em></p>
+<p style="text-align: right;"><strong><em>Tr&iacute;ch b&aacute;o Tạp ch&iacute; x&acirc;y dựng</em></strong></p>
+</div>`,
+    titleEn:
+      "15 years of ATTECH and the journey to master aviation engineering",
+    slugEn: "15-years-of-attech-and-the-journey-to-master-aviation-engineering",
+    descriptionEn:
+      "After 15 years of establishment and development under the LLC model, Air Traffic Management Engineering Company (ATTECH) has grown from an aviation technical service unit to become a leading science and technology (S&T) brand, accompanying the Vietnam Air Traffic Management industry to maintain the country's airspace. Based on the foundation of corporate culture and creative aspirations, ATTECH is taking steady steps in the journey of digital transformation, developing S&T and leading the strategy of mastering technology to ensure modern flight operations.",
+    contentEn: "",
+    timePosted: "2025-07-22T00:00:00Z",
+    status: 1,
+    postCategoryId: 1,
+    postCategoryNameVi: "Hoạt động công ty",
+    postCategoryNameEn: "Company Activities",
+    postCategorySlugVi: "hoat-dong-cong-ty",
+    postCategorySlugEn: "company-activities",
+    isOutstanding: true,
+    image:
+      "https://media.tapchixaydung.vn/mediav2/upload/userfiles2021/images/hoangvietcuong/2184888e482bfe75a73a_21072025173608_147.jpg",
+  },
+  {
+    id: 2,
     titleVi:
       "Hoàn thành sản xuất 02 cột gió có tính năng dễ gãy cho cảng hàng không Côn Đảo",
     slugVi:
@@ -39,7 +137,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/sx-cot-gio-18-7-1.jpg",
   },
   {
-    id: 2,
+    id: 3,
     titleVi:
       "Kiểm tra công tác phòng, chống tham nhũng, lãng phí, tiêu cực tại Phòng Tổ chức cán bộ – Lao động",
     slugVi:
@@ -78,7 +176,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/phong-chong-tham-nhung-16-7-1.jpg",
   },
   {
-    id: 3,
+    id: 4,
     titleVi: "Ngày hội Gia đình 2025 khu vực phía Nam",
     slugVi: "ngay-hoi-gia-dinh-2025-khu-vuc-phia-nam",
     descriptionVi:
@@ -117,7 +215,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/nhgd-2025-phia-nam-14-7-1.jpg",
   },
   {
-    id: 4,
+    id: 5,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định mua sắm, cấp phát và sử dụng đồng phục tại Công ty",
     slugVi:
@@ -153,7 +251,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/tuyen-truyen-pho-bien-QD-dong-phuc-9-7-2.jpg",
   },
   {
-    id: 5,
+    id: 6,
     titleVi:
       "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức “Hội nghị tuyên truyền, nâng cao nhận thức về văn hóa an toàn hàng không và hệ thống quản lý án toàn tại Công ty”",
     slugVi:
@@ -194,7 +292,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/hn-tuyen-truyen-VHATHK-9-7-3.jpg",
   },
   {
-    id: 6,
+    id: 7,
     titleVi: "Hoàn thành sản xuất cột an toàn cho cho khách hàng",
     slugVi: "hoan-thanh-san-xuat-cot-an-toan-cho-khach-hang",
     descriptionVi:
@@ -222,7 +320,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/cot-an-toan-9-7.jpg",
   },
   {
-    id: 7,
+    id: 8,
     titleVi:
       "Hoàn thành dự án cabin robot bơm keo tự động cho nhà máy ô tô tại hải dương",
     slugVi:
@@ -263,7 +361,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/cabin-robot-30-6-2.jpg",
   },
   {
-    id: 8,
+    id: 9,
     titleVi:
       "Hoàn thành sản xuất shelter composite không lõi thép – sản phẩm đề tài nghiên cứu khoa học công nghệ",
     slugVi:
@@ -308,7 +406,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/shelter-composite-30-6.jpg",
   },
   {
-    id: 9,
+    id: 10,
     titleVi:
       "Diễn tập phòng chống xâm nhập bất hợp pháp vào hoạt động hàng không: nâng cao khả năng ứng phó trong mọi tình huống",
     slugVi:
@@ -346,7 +444,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-3.jpg",
   },
   {
-    id: 10,
+    id: 11,
     titleVi:
       "Hoàn thành công tác thay thế thiết bị đài DVOR/DME Buôn Ma Thuột và đài DVOR/DME Phú Bài",
     slugVi:
@@ -385,7 +483,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-5.jpg",
   },
   {
-    id: 11,
+    id: 12,
     titleVi: `“Lần đầu tham gia công tác bay kiểm tra hiệu chuẩn hệ thống thiết bị ILS” – cảm nhận của một nhân viên mới`,
     slugVi:
       "lan-dau-tham-gia-cong-tac-bay-kiem-tra-hieu-chuan-he-thong-thiet-bi-ils-cam-nhan-cua-mot-nhan-vien-moi",
@@ -419,7 +517,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/bhc-25-6-2.jpg",
   },
   {
-    id: 12,
+    id: 13,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức các hoạt động hưởng ứng ngày Môi trường Thế giới 5/6 và Tháng hành động vì môi trường năm 2025",
     slugVi:
@@ -476,7 +574,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/ngay-moi-truong-20-6-3.jpg",
   },
   {
-    id: 13,
+    id: 14,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định Yêu cầu năng định nhân viên hàng không và chứng chỉ hành nghề/ chứng chỉ chuyên môn/ chứng nhận đối với các vị trí chức danh tại Công ty",
     slugVi:
@@ -509,7 +607,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/HN-pho-bien-qd-yc-ND-13-6-1.jpg",
   },
   {
-    id: 14,
+    id: 15,
     titleVi:
       "Bình đẳng giới trong gia đình: Hành trình cùng nhau xây dựng một xã hội công bằng",
     slugVi:
@@ -560,7 +658,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/dl-13-6-1.jpg",
   },
   {
-    id: 15,
+    id: 16,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức Ngày Quốc tế Thiếu nhi 1/6 cho con người quản lý, người lao động trong Công ty",
     slugVi:
@@ -593,7 +691,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/qttn-4-6-2.jpg",
   },
   {
-    id: 16,
+    id: 17,
     titleVi: "Trao tặng mô hình Trung Tâm Kiểm soát không lưu Long Thành",
     slugVi: "trao-tang-mo-hinh-trung-tam-kiem-soat-khong-luu-long-thanh",
     descriptionVi:
@@ -625,7 +723,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/attech-tang-mo-hinh-2-6-1.jpg",
   },
   {
-    id: 17,
+    id: 18,
     titleVi:
       "Đoàn Thanh Niên Chi nhánh tại TP.HCM tổ chức chương trình nhân ngày Quốc tế Thiếu nhi 1/6",
     slugVi:
@@ -656,7 +754,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/1.6-CN-2-6-1.jpg",
   },
   {
-    id: 18,
+    id: 19,
     titleVi:
       "Kiểm tra hệ thống, thiết bị của ATTECH trên đảo Trường Sa Lớn và Song Tử Tây trong năm 2025",
     slugVi:
@@ -691,7 +789,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/kiem-tra-TS-STT-27-5-1.jpg",
   },
   {
-    id: 19,
+    id: 20,
     titleVi:
       "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức các hoạt động kỷ niệm 135 năm ngày sinh của Chủ tịch Hồ Chí Minh (19/05/1890-19/05/2025)",
     slugVi:
@@ -729,7 +827,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/vieng-lang-bac-20-5-2.jpg",
   },
   {
-    id: 20,
+    id: 21,
     titleVi: "Lễ kết nạp Đảng viên mới tại chi bộ Ban Quản lý dự án",
     slugVi: "le-ket-nap-dang-vien-moi-tai-chi-bo-ban-quan-ly-du-an",
     descriptionVi:
@@ -758,7 +856,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-2.jpg",
   },
   {
-    id: 21,
+    id: 22,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hôi nghị quán triệt, phổ biến nội dung Thông tư 01/2025/TT-BXD",
     slugVi:
@@ -792,7 +890,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/HN-quan-triet-7-5-3.jpg",
   },
   {
-    id: 22,
+    id: 23,
     titleVi:
       "Hội nghị giới thiệu cho Đoàn thanh niên Công ty các văn bản quản lý nội bộ và các quy trình thuộc hệ thống QLCL liên quan đến hoạt động KH&CN",
     slugVi:
@@ -823,7 +921,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/04/hd-KHCN-30-4-2.jpg",
   },
   {
-    id: 23,
+    id: 24,
     titleVi: "Nữ công ATTECH hưởng ứng chuỗi hoạt động chào mừng ngày 8/3",
     slugVi: "nu-cong-attech-huong-ung-chuoi-hoat-dong-chao-mung-ngay-8-3",
     descriptionVi:
@@ -860,7 +958,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-3.jpg",
   },
   {
-    id: 24,
+    id: 25,
     titleVi: "Hãng hàng không mở thêm nhiều đường bay quốc tế",
     slugVi: "hang-hang-khong-mo-them-nhieu-duong-bay-quoc-te",
     descriptionVi:
@@ -884,7 +982,7 @@ export const mockNews = [
       "https://i1-vnexpress.vnecdn.net/2025/03/26/dscf2195-jpeg-1742964488-9432-1742964646.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=rdW-ecy_PkZfo0BvWIhEYw",
   },
   {
-    id: 25,
+    id: 26,
     titleVi: "Vietnam Airlines đặt mục tiêu thu hơn 3,7 tỷ USD",
     slugVi: "vietnam-airlines-dat-muc-tieu-thu-hon-3-7-ty-usd",
     descriptionVi:
@@ -908,7 +1006,7 @@ export const mockNews = [
       "https://i1-kinhdoanh.vnecdn.net/2025/02/24/vietnamairlinesxacdinhconnguoi-6915-5590-1740372946.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=zOeTryNAHMk0b1tAzVw-Zw",
   },
   {
-    id: 26,
+    id: 27,
     titleVi: "Công ty Trung Quốc phát triển máy bay siêu thanh 5.000 km/h",
     slugVi: "cong-ty-trung-quoc-phat-trien-may-bay-sieu-thanh-5000-km-h",
     descriptionVi:
@@ -933,7 +1031,7 @@ export const mockNews = [
       "https://i1-vnexpress.vnecdn.net/2025/01/21/may-bay-sieu-thanh-moi-1737460-3193-1420-1737460593.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=iz_0y1tc-sAmjaNAOr5kzg",
   },
   {
-    id: 27,
+    id: 28,
     titleVi: "7 máy bay thay đổi lịch sử hàng không",
     slugVi: "7-may-bay-thay-doi-lich-su-hang-khong",
     descriptionVi:
@@ -958,7 +1056,7 @@ export const mockNews = [
       "https://i1-vnexpress.vnecdn.net/2024/12/22/VNE-Plane-3-1734830968-9113-1734831213.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=WEE5lOSxNzRs8E9EH4O5fA",
   },
   {
-    id: 28,
+    id: 29,
     titleVi: "Vietnam Airlines dứt mạch thua lỗ 4 năm liên tiếp",
     slugVi: "vietnam-airlines-dut-mach-thua-lo-4-nam-lien-tiep",
     descriptionVi:

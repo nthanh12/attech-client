@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, XIcon } from "lucide-react";
 import { mockNews } from "../../../../utils/mockNews";
 import { useLanguage } from '../../../../contexts/LanguageContext';
 import "./GalleryDetail.css";
@@ -248,7 +248,7 @@ const GalleryDetail = () => {
             onClick={handleCloseFullscreen}
             aria-label="Đóng"
           >
-            <X size={24} />
+            <XIcon size={24} />
           </button>
           <button
             className="nav-btn prev"

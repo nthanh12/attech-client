@@ -22,6 +22,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
+    isOutstanding: false,
     image:
       "https://ued.udn.vn/uploads/news/2021_06/mau-thong-bao_2204184241.png",
   },
@@ -56,6 +57,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
+    isOutstanding: false,
     image:
       "https://attech.com.vn/wp-content/uploads/2024/12/g%E1%BA%B7p-m%E1%BA%B7t-nvm-20-12-4.png.jpg",
   },
@@ -81,6 +83,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
+    isOutstanding: false,
     image:
       "https://ued.udn.vn/uploads/news/2021_06/mau-thong-bao_2204184241.png",
   },
@@ -490,6 +493,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Recruitment",
     notificationCategorySlugVi: "tuyen-dung",
     notificationCategorySlugEn: "recruitment",
+    isOutstanding: false,
     image:
       "https://t3.ftcdn.net/jpg/02/70/49/98/360_F_270499871_leocxSWTATdmEknQlHjUAggCM3vcHqft.jpg",
   },
@@ -514,6 +518,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Supplier Notice",
     notificationCategorySlugVi: "moi-nha-cung-cap",
     notificationCategorySlugEn: "supplier-notice",
+    isOutstanding: false,
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4OT9TgLy4r-hMSwLkEq9JjmVlBYmoH8kTA&s",
   },
@@ -538,6 +543,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Supplier Notice",
     notificationCategorySlugVi: "moi-nha-cung-cap",
     notificationCategorySlugEn: "supplier-notice",
+    isOutstanding: false,
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq4OT9TgLy4r-hMSwLkEq9JjmVlBYmoH8kTA&s",
   },
@@ -561,6 +567,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Other Notices",
     notificationCategorySlugVi: "thong-bao-khac",
     notificationCategorySlugEn: "other-notices",
+    isOutstanding: false,
     image:
       "https://vlute.edu.vn/cdn/files/THONG%20BAO/11_2021-12-09-042032.png",
   },
@@ -584,6 +591,7 @@ export const mockNotifications = [
     notificationCategoryNameEn: "Other Notices",
     notificationCategorySlugVi: "thong-bao-khac",
     notificationCategorySlugEn: "other-notices",
+    isOutstanding: false,
     image:
       "https://vlute.edu.vn/cdn/files/THONG%20BAO/11_2021-12-09-042032.png",
   },

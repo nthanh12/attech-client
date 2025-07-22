@@ -42,6 +42,7 @@ import { Link } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import ReactModal from "react-modal";
 import ImageUpload from "../../components/UI/ImageUpload";
+import { fetchNewsWithFallback, fetchNewsCategoriesWithFallback } from "../../services/newsService";
 
 const NewsList = () => {
   const [news, setNews] = useState([]);
@@ -111,9 +112,8 @@ const NewsList = () => {
   };
 
   useEffect(() => {
-    setNews(mockNews);
-    // Sử dụng mock categories thay vì API call
-    setCategories(mockNewsCategories);
+    fetchNewsWithFallback().then(setNews);
+    fetchNewsCategoriesWithFallback().then(setCategories);
   }, []);
 
   const handleCloseModal = useCallback(() => {
