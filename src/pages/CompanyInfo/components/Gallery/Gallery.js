@@ -1,23 +1,27 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet";
+import { useTranslation } from 'react-i18next';
 import { mockNews } from "../../../../utils/mockNews";
 import "./Gallery.css";
-import { useLanguage } from '../../../../contexts/LanguageContext';
+import { useI18n } from '../../../../hooks/useI18n';
+import SEO from "../../../../components/SEO/SEO";
 
-const albums = mockNews.filter(n => n.status === 1).map(news => ({
+// Move this inside component to access currentLanguage
+const getAlbums = (currentLanguage) => mockNews.filter(n => n.status === 1).map(news => ({
   id: news.id,
-  title: news.titleVi,
-  description: news.descriptionVi,
+  title: currentLanguage === 'vi' ? news.titleVi : news.titleEn,
+  description: currentLanguage === 'vi' ? news.descriptionVi : news.descriptionEn,
   date: news.timePosted,
   coverImage: news.image,
 }));
 
 const Gallery = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { state } = location;
-  const { lang } = useLanguage();
+  const { currentLanguage } = useI18n();
+  const albums = getAlbums(currentLanguage);
 
   useEffect(() => {
     if (state?.fromGalleryDetail || state?.fromError) {
@@ -27,7 +31,7 @@ const Gallery = () => {
 
   const handleAlbumClick = (e, albumId) => {
     e.preventDefault();
-    const prefix = lang === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/company/gallery';
+    const prefix = currentLanguage === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/en/company/gallery';
     navigate(`${prefix}/${albumId}`, {
       state: { fromGalleryList: true }
     });
@@ -37,8 +41,8 @@ const Gallery = () => {
     const collectionPage = {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      "name": "Thư viện hình ảnh ATTECH",
-      "description": "Bộ sưu tập hình ảnh từ các bài viết của Công ty TNHH Kỹ thuật Quản lý bay (ATTECH)",
+      "name": t('frontend.companyInfo.gallery.seoTitle'),
+      "description": t('frontend.companyInfo.gallery.seoDescription'),
       "hasPart": albums.map(album => ({
         "@type": "ImageGallery",
         "name": album.title,
@@ -52,16 +56,16 @@ const Gallery = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Thư Viện Ảnh - ATTECH</title>
-        <meta name="description" content="Thư viện ảnh từ các bài viết của công ty ATTECH" />
-        <script type="application/ld+json">{generateStructuredData()}</script>
-      </Helmet>
+      <SEO 
+        title={t('frontend.companyInfo.gallery.pageTitle')}
+        description={t('frontend.companyInfo.gallery.pageDescription')}
+        url="/thong-tin-cong-ty/thu-vien-cong-ty"
+      />
 
       <main className="gallery-container">
         <section className="gallery-header">
           <div className="section-title" data-aos="fade-up">
-            <h1>Thư Viện Công Ty</h1>
+            <h1>{t('frontend.companyInfo.gallery.title')}</h1>
           </div>
         </section>
 

@@ -12,7 +12,7 @@ const NewsPage = () => {
 
   return (
     <div className="news-page">
-      <div className="container">
+      <div className="news-container">
         <NewsSection />
         <TrendingArea category="activities" />
         <WeeklyNews />

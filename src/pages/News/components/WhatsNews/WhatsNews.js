@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { mockNews } from "../../../../utils/mockNews";
+import { mockNewsCategories } from "../../../../utils/mockNewsCategories";
 import { Link } from "react-router-dom";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
+import { useI18n } from "../../../../hooks/useI18n";
 import "./WhatsNews.css";
 
 const WhatsNews = () => {
+  const { currentLanguage, t } = useI18n();
+  // Lấy category ngành hàng không từ mockNewsCategories
+  const aviationCategory = mockNewsCategories.find(cat =>
+    currentLanguage === "vi"
+      ? cat.slugVi === "tin-nganh-hang-khong"
+      : cat.slugEn === "aviation-news"
+  );
+  const aviationSlug = currentLanguage === "vi" ? aviationCategory?.slugVi : aviationCategory?.slugEn;
   const aviationNews = mockNews
     .filter(
-      (n) => n.status === 1 && n.postCategorySlugVi === "tin-nganh-hang-khong"
+      (n) =>
+        n.status === 1 &&
+        (currentLanguage === "vi"
+          ? n.postCategorySlugVi === aviationSlug
+          : n.postCategorySlugEn === aviationSlug)
     )
     .sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted));
 
@@ -24,11 +38,20 @@ const WhatsNews = () => {
 
   const newsToShow = aviationNews.slice(0, newsCount);
 
-  // Hàm format ngày dd/mm/yyyy
-  const formatDate = (isoDate) => {
-    const d = new Date(isoDate);
-    return d.toLocaleDateString("vi-VN");
-  };
+  const getTitle = (news) => currentLanguage === "vi" ? news.titleVi : news.titleEn;
+  const getSlug = (news) => currentLanguage === "vi" ? news.slugVi : news.slugEn;
+  const getCategorySlug = (news) => currentLanguage === "vi" ? news.postCategorySlugVi : news.postCategorySlugEn;
+  const getDateLocale = () => currentLanguage === "vi" ? "vi-VN" : "en-US";
+  const getNewsLink = (news) =>
+    currentLanguage === "vi"
+      ? `/tin-tuc/${getCategorySlug(news)}/${getSlug(news)}`
+      : `/en/news/${getCategorySlug(news)}/${getSlug(news)}`;
+
+  // Lấy tên category ngành hàng không (ưu tiên i18n, fallback sang nameVi/nameEn nếu chưa có key i18n)
+  const aviationCategoryName =
+    t("frontend.home.newsCategories.aviationNews") ||
+    (currentLanguage === "vi" ? aviationCategory?.nameVi : aviationCategory?.nameEn) ||
+    "Tin ngành hàng không";
 
   return (
     <section className="whats-news-area pt-50 pb-20">
@@ -38,11 +61,11 @@ const WhatsNews = () => {
             <div className="row d-flex justify-content-between align-items-center">
               <div className="col-lg-5 col-md-5 pd_0">
                 <div className="section-tittle mb-20">
-                  <h3>Tin ngành hàng không</h3>
+                  <h3>{aviationCategoryName}</h3>
                 </div>
               </div>
               <div className="col-lg-2 col-md-2 text-end d-none d-md-block">
-                <ViewAllButton to="/tin-tuc/tin-nganh-hang-khong" />
+                <ViewAllButton to={currentLanguage === "vi" ? `/tin-tuc/${aviationSlug}` : `/en/news/${aviationSlug}`} />
               </div>
             </div>
             <div className="row">
@@ -52,17 +75,17 @@ const WhatsNews = () => {
                     {newsToShow.map((news, idx) => (
                       <div className="whats-news-card" key={news.id}>
                         <div className="what-img">
-                          <img src={news.image} alt={news.titleVi} />
+                          <img src={news.image} alt={getTitle(news)} />
                         </div>
                         <div className="what-cap">
                           <span className="title-news">
-                            {formatDate(news.timePosted)}
+                            {new Date(news.timePosted).toLocaleDateString(getDateLocale())}
                           </span>
                           <h4>
                             <Link
-                              to={`/tin-tuc/${news.postCategorySlugVi}/${news.slugVi}`}
+                              to={getNewsLink(news)}
                             >
-                              {news.titleVi}
+                              {getTitle(news)}
                             </Link>
                           </h4>
                         </div>
@@ -71,7 +94,7 @@ const WhatsNews = () => {
                   </div>
                   {/* Nút xem tất cả cho mobile */}
                   <div className="d-block d-md-none mt-3 text-center">
-                    <ViewAllButton to="/tin-tuc/tin-nganh-hang-khong" />
+                    <ViewAllButton to={currentLanguage === "vi" ? `/tin-tuc/${aviationSlug}` : `/en/news/${aviationSlug}`} />
                   </div>
                 </div>
               </div>

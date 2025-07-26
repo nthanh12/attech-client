@@ -1,55 +1,64 @@
 import React, { useState } from "react";
 import NotificationSection from "../components/NotificationSection/NotificationSection";
+import { useTranslation } from "react-i18next";
+import { useI18n } from "../../../hooks/useI18n";
 import "./NotificationPage.css";
 import { mockNotifications } from "../../../utils/mockNotifications";
 
 const CATEGORIES = [
   {
-    slug: "tuyen-dung",
-    title: "Tin tuyển dụng"
+    slugVi: "tuyen-dung",
+    slugEn: "recruitment",
+    titleVi: "Tin tuyển dụng",
+    titleEn: "Recruitment News"
   },
   {
-    slug: "moi-nha-cung-cap",
-    title: "Mời nhà cung cấp"
+    slugVi: "moi-nha-cung-cap",
+    slugEn: "supplier-invitation",
+    titleVi: "Mời nhà cung cấp",
+    titleEn: "Supplier Invitation"
   },
   {
-    slug: "thong-bao-khac",
-    title: "Thông báo khác"
+    slugVi: "thong-bao-khac",
+    slugEn: "other-notifications",
+    titleVi: "Thông báo khác",
+    titleEn: "Other Notifications"
   }
 ];
 
 const Notification = () => {
+  const { t } = useTranslation();
+  const { currentLanguage } = useI18n();
   const [searchTerm, setSearchTerm] = useState("");
 
   // Lấy ra các category thực sự có trong mockNotifications
   const categoriesInData = CATEGORIES.filter(cat =>
-    mockNotifications.some(n => n.notificationCategorySlugVi === cat.slug)
+    mockNotifications.some(n => n.notificationCategorySlugVi === cat.slugVi)
   );
 
   return (
     <div className="notification">
       {categoriesInData.map(cat => {
         const filtered = mockNotifications.filter(
-          n => n.notificationCategorySlugVi === cat.slug &&
+          n => n.notificationCategorySlugVi === cat.slugVi &&
             n.titleVi.toLowerCase().includes(searchTerm.toLowerCase())
         );
         // Sắp xếp giảm dần theo timePosted (mới nhất lên đầu)
         const sorted = filtered.slice().sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted));
+        
+        console.log('Category Debug:', {
+          category: cat,
+          filteredCount: filtered.length,
+          sortedCount: sorted.length,
+          currentLanguage
+        });
+        
         return (
           <NotificationSection
-            key={cat.slug}
-            title={cat.title}
-            notifications={sorted.map(item => ({
-              id: item.id,
-              slug: item.slugVi,
-              title: item.titleVi,
-              image: item.image,
-              date: item.timePosted ? new Date(item.timePosted).toLocaleDateString('vi-VN') : '',
-              category: item.notificationCategoryNameVi,
-              readTime: undefined,
-              notificationCategorySlugVi: item.notificationCategorySlugVi
-            }))}
-            type={cat.slug}
+            key={currentLanguage === 'vi' ? cat.slugVi : cat.slugEn}
+            title={currentLanguage === 'vi' ? cat.titleVi : cat.titleEn}
+            notifications={sorted}
+            type={currentLanguage === 'vi' ? cat.slugVi : cat.slugEn}
           />
         );
       })}

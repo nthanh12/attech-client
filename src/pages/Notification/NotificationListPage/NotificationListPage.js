@@ -1,28 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "./NotificationListPage.css";
 import { mockNotifications } from "../../../utils/mockNotifications";
-
-const itemsPerPage = 8;
+import { useI18n } from "../../../hooks/useI18n";
 
 const NotificationListPage = () => {
   const { category } = useParams();
+  const { t } = useTranslation();
+  const { currentLanguage } = useI18n();
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const itemsPerPage = 9;
 
-  // Lọc dữ liệu theo category param (so sánh với notificationCategorySlugVi)
+  // Lọc dữ liệu theo category param
   let filteredItems = !category || category === "all-act"
     ? mockNotifications
-    : mockNotifications.filter(item => item.notificationCategorySlugVi === category);
+    : mockNotifications.filter(item => {
+        const categorySlug = currentLanguage === 'vi' 
+          ? item.notificationCategorySlugVi 
+          : item.notificationCategorySlugEn;
+        return categorySlug === category;
+      });
 
   // Lọc theo searchTerm
   if (searchTerm.trim() !== "") {
     const lower = searchTerm.toLowerCase();
     filteredItems = filteredItems.filter(item => {
+      const title = currentLanguage === 'vi' ? item.titleVi : item.titleEn;
+      const description = currentLanguage === 'vi' ? item.descriptionVi : item.descriptionEn;
       return (
-        item.titleVi.toLowerCase().includes(lower) ||
-        item.descriptionVi?.toLowerCase().includes(lower)
+        title.toLowerCase().includes(lower) ||
+        description?.toLowerCase().includes(lower)
       );
     });
   }
@@ -38,17 +48,28 @@ const NotificationListPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    setCurrentPage(1); // Reset về trang 1 khi đổi category
+    setCurrentPage(1); // Reset về trang 1 khi đổi category hoặc ngôn ngữ
     const timer = setTimeout(() => {
       setLoading(false);
     }, 400);
     return () => clearTimeout(timer);
-  }, [category]);
+  }, [category, currentLanguage]);
 
   const getCategoryTitle = () => {
-    if (!category || category === "all-act") return "Danh sách tất cả thông báo";
-    const found = mockNotifications.find(item => item.notificationCategorySlugVi === category);
-    return found ? `${found.notificationCategoryNameVi}` : "Danh sách thông báo";
+    if (!category || category === "all-act") return t('frontend.notifications.allNotifications');
+    const found = mockNotifications.find(item => {
+      const categorySlug = currentLanguage === 'vi' 
+        ? item.notificationCategorySlugVi 
+        : item.notificationCategorySlugEn;
+      return categorySlug === category;
+    });
+    if (found) {
+      const categoryName = currentLanguage === 'vi' 
+        ? found.notificationCategoryNameVi 
+        : found.notificationCategoryNameEn;
+      return categoryName;
+    }
+    return t('frontend.notifications.title');
   };
 
   const handlePageChange = (pageNumber) => {
@@ -63,11 +84,11 @@ const NotificationListPage = () => {
 
   if (loading) {
     return (
-      <div className="newslist-minimal">
+      <div className="notification-list-root notification-list-page notificationlist-minimal">
         <div className="container">
-          <div className="loading newslist-loading">
+          <div className="loading notificationlist-loading">
             <div className="loading-spinner" />
-            <p>Đang tải thông báo...</p>
+            <p>{t('frontend.notifications.loading')}</p>
           </div>
         </div>
       </div>
@@ -75,13 +96,13 @@ const NotificationListPage = () => {
   }
 
   return (
-    <div className="newslist-minimal">
+    <div className="notification-list-root notification-list-page notificationlist-minimal">
       <div className="container">
         <h1 className="page-title-minimal">{getCategoryTitle()}</h1>
         <div style={{display:'flex',justifyContent:'flex-end',marginBottom:18}}>
           <input
             type="text"
-            placeholder="Tìm kiếm thông báo..."
+            placeholder={t('frontend.notifications.searchPlaceholder')}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             style={{
@@ -97,33 +118,39 @@ const NotificationListPage = () => {
             }}
           />
         </div>
-        <div className="newslist-grid-minimal">
+        <div className="notificationlist-grid-minimal">
           {currentItems.length > 0 ? (
             currentItems.map((item) => (
-              <div className="newslist-card-minimal" key={item.id}>
-                <Link to={`/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`} className="newslist-img-link-minimal">
-                  <img src={item.image} alt={item.titleVi} className="newslist-img-minimal" title={item.titleVi}/>
+              <div className="notificationlist-card-minimal" key={item.id}>
+                <Link to={currentLanguage === 'vi' 
+                  ? `/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`
+                  : `/en/notifications/${item.notificationCategorySlugEn}/${item.slugEn}`
+                } className="notificationlist-img-link-minimal">
+                  <img src={item.image} alt={currentLanguage === 'vi' ? item.titleVi : item.titleEn} className="notificationlist-img-minimal" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}/>
                 </Link>
-                <div className="newslist-content-minimal">
-                  <span className="newslist-date-minimal">{formatDate(item.timePosted)}</span>
-                  <Link to={`/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`} className="newslist-title-minimal clamp-2-lines" title={item.titleVi}>
-                    {item.titleVi}
+                <div className="notificationlist-content-minimal">
+                  <span className="notificationlist-date-minimal">{formatDate(item.timePosted)}</span>
+                  <Link to={currentLanguage === 'vi' 
+                    ? `/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`
+                    : `/en/notifications/${item.notificationCategorySlugEn}/${item.slugEn}`
+                  } className="notificationlist-title-minimal clamp-2-lines" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}>
+                    {currentLanguage === 'vi' ? item.titleVi : item.titleEn}
                   </Link>
                 </div>
               </div>
             ))
           ) : (
-            <div className="newslist-empty">
-              <p>Chưa có thông báo nào trong danh mục này.</p>
+            <div className="notificationlist-empty">
+              <p>{t('frontend.notifications.noNotificationsInCategory')}</p>
             </div>
           )}
         </div>
         {totalPages > 1 && (
-          <div className="pagination-newslist-minimal">
+          <div className="pagination-notificationlist-minimal">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="pagination-btn-minimal"
+              className="pagination-btn-notificationlist-minimal"
             >
               ←
             </button>
@@ -131,7 +158,7 @@ const NotificationListPage = () => {
               <button
                 key={page + 1}
                 onClick={() => handlePageChange(page + 1)}
-                className={`pagination-btn-minimal${currentPage === page + 1 ? " active" : ""}`}
+                className={`pagination-btn-notificationlist-minimal${currentPage === page + 1 ? " active" : ""}`}
               >
                 {page + 1}
               </button>
@@ -139,7 +166,7 @@ const NotificationListPage = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="pagination-btn-minimal"
+              className="pagination-btn-notificationlist-minimal"
             >
               →
             </button>

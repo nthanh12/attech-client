@@ -1,0 +1,145 @@
+.loading-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.3), rgba(80, 200, 120, 0.3)) !important;
+  backdrop-filter: blur(15px) saturate(180%) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  z-index: 99999 !important;
+}
+
+.loading-overlay .modern-spinner {
+  position: relative !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Spinner ring with gradient */
+.loading-overlay .spinner-ring {
+  width: 80px !important;
+  height: 80px !important;
+  border: 3px solid transparent !important;
+  border-top: 3px solid #4A90E2 !important;
+  border-right: 3px solid #50C878 !important;
+  border-radius: 50% !important;
+  animation: modern-spin 1.2s linear infinite !important;
+  position: relative !important;
+}
+
+.loading-overlay .spinner-ring::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -3px !important;
+  left: -3px !important;
+  right: -3px !important;
+  bottom: -3px !important;
+  border: 3px solid transparent !important;
+  border-bottom: 3px solid #FF6B6B !important;
+  border-left: 3px solid #FFD93D !important;
+  border-radius: 50% !important;
+  animation: modern-spin-reverse 1.8s linear infinite !important;
+}
+
+/* Animated dots in center */
+.loading-overlay .spinner-dots {
+  position: absolute !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.loading-overlay .dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  animation: dot-pulse 1.4s infinite ease-in-out !important;
+}
+
+.loading-overlay .dot-1 {
+  background: linear-gradient(45deg, #4A90E2, #50C878) !important;
+  animation-delay: -0.32s !important;
+}
+
+.loading-overlay .dot-2 {
+  background: linear-gradient(45deg, #50C878, #FFD93D) !important;
+  animation-delay: -0.16s !important;
+}
+
+.loading-overlay .dot-3 {
+  background: linear-gradient(45deg, #FFD93D, #FF6B6B) !important;
+  animation-delay: 0s !important;
+}
+
+@keyframes modern-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes modern-spin-reverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes dot-pulse {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.3;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Show only LoadingOverlay elements */
+.loading-overlay {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.loading-overlay .modern-spinner {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.loading-overlay .spinner-ring {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.loading-overlay .spinner-dots {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.loading-overlay .dot {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Hide all other spinners */
+body .spinner:not(.loading-overlay .spinner),
+body .loading-spinner:not(.loading-overlay .loading-spinner), 
+body .spinner-border,
+body .admin-loading-spinner,
+body #spinner {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .loading-overlay {
+  background: linear-gradient(135deg, rgba(33, 37, 41, 0.4), rgba(52, 58, 64, 0.4)) !important;
+}

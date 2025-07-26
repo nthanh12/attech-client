@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useCallback, memo, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./Navbar.css";
 import "./Navbar.mobile.css";
 import MenuItems from "./menuItemsComponent";
 import useIsMobile from "./useIsMobile";
-import { useLanguage } from "../../../../../contexts/LanguageContext";
+import { useI18n } from "../../../../../hooks/useI18n";
 import { useTheme } from "../../../../../contexts/ThemeContext";
 import { useClickOutside } from "../../../../../hooks/useClickOutside";
+import LocalizedLink from "../../../LocalizedLink/LocalizedLink";
 import debounce from "lodash/debounce";
 import menuItems from "./menuItem";
 
@@ -30,8 +31,7 @@ const useSearch = () => {
   return { isSearchOpen, handleSearchClick, handleSearchBlur };
 };
 
-const NavbarTop = memo(
-  ({
+const NavbarTop = ({
     closeMobileMenu,
     isSearchOpen,
     handleSearchClick,
@@ -75,8 +75,8 @@ const NavbarTop = memo(
       <div className="navbar-top">
         <div className="navbar-container">
           <div className="navbar-left">
-            <Link
-              to="/"
+            <LocalizedLink
+              routeKey="HOME"
               className="logo"
               onClick={closeMobileMenu}
               aria-label="Trang chủ"
@@ -86,7 +86,7 @@ const NavbarTop = memo(
                 alt="ATTECH Logo"
                 loading="eager"
               />
-            </Link>
+            </LocalizedLink>
           </div>
           <div className="navbar-right">
             <button
@@ -145,14 +145,14 @@ const NavbarTop = memo(
                   />
                 </button>
               </div>
-              <Link
-                to="/login"
+              <LocalizedLink
+                routeKey="LOGIN"
                 className="login-btn"
                 title={language === "vi" ? "Đăng nhập" : "Login"}
                 aria-label={language === "vi" ? "Đăng nhập" : "Login"}
               >
                 <i className="fa fa-solid fa-user"></i>
-              </Link>
+              </LocalizedLink>
             </div>
             <div
               className={`mobile-menu${mobileOpen ? " open" : ""}`}
@@ -163,8 +163,8 @@ const NavbarTop = memo(
               aria-label={language === "vi" ? "Menu di động" : "Mobile menu"}
             >
               <div className="mobile-menu-header">
-                <Link
-                  to="/"
+                <LocalizedLink
+                  routeKey="HOME"
                   className="logo"
                   onClick={closeMobileMenu}
                   aria-label="Trang chủ"
@@ -173,7 +173,7 @@ const NavbarTop = memo(
                     src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
                     alt="ATTECH Logo"
                   />
-                </Link>
+                </LocalizedLink>
                 <button
                   className="close-menu"
                   onClick={closeMobileMenu}
@@ -222,19 +222,19 @@ const NavbarTop = memo(
                         />
                       </button>
                     </div>
-                    <Link
-                      to="/login"
+                    <LocalizedLink
+                      routeKey="LOGIN"
                       className="login-btn"
                       title={language === "vi" ? "Đăng nhập" : "Login"}
                       aria-label={language === "vi" ? "Đăng nhập" : "Login"}
                       onClick={closeMobileMenu}
                     >
                       <i className="fa fa-solid fa-user login-user"></i>
-                    </Link>
+                    </LocalizedLink>
                   </div>
                 </div>
                 <nav>
-                  <ul className="mobile-nav-items" role="menu">
+                  <ul className="mobile-nav-items" role="menu" key={`mobile-menu-${language}`}>
                     <MenuItems
                       menuItems={menuItems}
                       isMobile={true}
@@ -253,11 +253,9 @@ const NavbarTop = memo(
         </div>
       </div>
     );
-  }
-);
+  };
 
-const NavbarBottom = memo(
-  ({ mobileOpen, toggleMobileMenu, isMobile, closeMobileMenu, language }) => (
+const NavbarBottom = ({ mobileOpen, toggleMobileMenu, isMobile, closeMobileMenu, language }) => (
     <div className="navbar-menu-wrapper">
       <div className="navbar-container">
         <button
@@ -273,6 +271,7 @@ const NavbarBottom = memo(
           className={`nav-menu${mobileOpen ? " open" : ""}`}
           id="main-menu"
           role="menubar"
+          key={`navbar-menu-${language}`} // Force re-render with language
         >
           <MenuItems
             menuItems={menuItems}
@@ -282,8 +281,7 @@ const NavbarBottom = memo(
         </ul>
       </div>
     </div>
-  )
-);
+  );
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -294,7 +292,7 @@ const Navbar = () => {
     location.pathname === "/" ||
     location.pathname === "/en" ||
     location.pathname === "/en/";
-  const { lang, setLang } = useLanguage();
+  const { currentLanguage, changeLanguage } = useI18n();
   const { isDarkMode, toggleDarkMode } = useTheme();
   const { isSearchOpen, handleSearchClick, handleSearchBlur } = useSearch();
 
@@ -331,24 +329,10 @@ const Navbar = () => {
   }, []);
 
   const handleLanguageSwitch = useCallback(
-    (lang) => () => {
-      let newPath = window.location.pathname;
-      if (lang === "en") {
-        if (!newPath.startsWith("/en")) {
-          newPath = "/en" + (newPath === "/" ? "" : newPath);
-        }
-      } else {
-        if (newPath.startsWith("/en/")) {
-          newPath = newPath.replace(/^\/en/, "");
-          if (newPath === "") newPath = "/";
-        } else if (newPath === "/en") {
-          newPath = "/";
-        }
-      }
-      setLang(lang);
-      window.location.pathname = newPath;
+    (targetLang) => () => {
+      changeLanguage(targetLang);
     },
-    [setLang]
+    [changeLanguage]
   );
 
   return (
@@ -364,7 +348,7 @@ const Navbar = () => {
         handleSearchBlur={handleSearchBlur}
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
-        language={lang}
+        language={currentLanguage}
         handleLanguageSwitch={handleLanguageSwitch}
         isMobile={isMobile}
         mobileOpen={mobileOpen}
@@ -376,11 +360,12 @@ const Navbar = () => {
           toggleMobileMenu={toggleMobileMenu}
           isMobile={isMobile}
           closeMobileMenu={closeMobileMenu}
-          language={lang}
+          language={currentLanguage}
         />
       )}
     </nav>
   );
 };
 
-export default memo(Navbar);
+// Remove memo to ensure Navbar updates immediately on language change
+export default Navbar;

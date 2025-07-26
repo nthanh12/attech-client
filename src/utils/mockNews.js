@@ -117,6 +117,89 @@ export const mockNews = [
   },
   {
     id: 2,
+    titleVi: "Thông điện hiệu chỉnh, nghiệm thu chạy thử và hỗ trợ mặt đất bay kiểm tra hiệu chuẩn 01 hệ thống ILS/DME tại sân bay Mactan, Cebu, Philippine",
+    slugVi: "thong-dien-hieu-chinh-nghiem-thu-chay-thu-va-ho-tro-mat-dat-bay-kiem-tra-hieu-chuan-01-he-thong-ils-dme-tai-san-bay-mactan-cebu-philippine",
+    descriptionVi:
+      "Trung tuần tháng 7 năm 2025, Công ty TNHH Kỹ thuật Quản lý bay đã hoàn thành cung cấp dịch vụ thông điện hiệu chỉnh, nghiệm thu chạy thử, hỗ trợ mặt đất bay kiểm tra hiệu chuẩn 01 hệ thống ILS/DME tại sân bay Mactan – Cebu, Philippine. Để triển khai dự án này, Công ty đã cử 02 chuyên gia kỹ thuật gồm ông Đỗ Hùng Vương – Phó trưởng Trung tâm Bảo đảm kỹ thuật và ông Nguyễn Thanh Thủy – Đội trưởng Đội Giám sát và hỗ trợ kỹ thuật CNS đến sân bay Mactan – Cebu, Philippine thực hiện kiểm tra, thông điện hiệu chỉnh 01 hệ thống thiết bị ILS/DME phục vụ hạ cánh tiếp cận đầu đường CHC 22.",
+    contentVi: `<p align="center"><img class="aligncenter size-full wp-image-11841" src="https://attech.com.vn/wp-content/uploads/2025/07/thong-dien-hieu-chinh-ILS-DME-22-7-1.jpg" alt="thong dien hieu chinh ILS DME 22-7 1" /></p>
+<p align="center"><em>Hệ thống gi&agrave;n anten Localizer đầu 22</em></p>
+<p style="text-align: justify;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Hệ thống thiết bị ILS/DME đầu 22 của h&atilde;ng Selex &ndash; Hoa Kỳ đ&atilde; được lắp đặt năm 2010 v&agrave; từ đ&oacute; đến nay chưa đưa v&agrave;o sử dụng. Cục H&agrave;ng kh&ocirc;ng Philippine muốn đưa hệ thống ILS/DME đầu 22 n&agrave;y trở lại hoạt động để phục vụ hạ c&aacute;nh tiếp cận đầu 22 của đường CHC 04-22 tại s&acirc;n bay Mactan &ndash; Cebu, Philippine sau nhiều năm kh&ocirc;ng hoạt động. Sau khi th&ocirc;ng nguồn điện cho hệ thống thiết bị ILS/DME đầu 22 x&aacute;c định được c&aacute;c khối card hỏng cụ thể như sau:</p>
+<ul>
+<li style="text-align: justify;">Thiết bị Localizer: 01 khối CSB AMP của m&aacute;y ph&aacute;t COURSE, 01 RF Distributions v&agrave; 04 ắc quy;</li>
+<li style="text-align: justify;">Thiết bị GP: 01 khối CSB AMP của m&aacute;y ph&aacute;t COURSE, 02 khối nguồn +24Vdc, 01 Monitor Combiner Unit v&agrave; 04 ắc quy;</li>
+<li style="text-align: justify;">Thiết bị DME1118A: 02 khối BCPS, 01 khối AC Monitor.</li>
+</ul>
+<p align="center"><img class="aligncenter size-full wp-image-11842" src="https://attech.com.vn/wp-content/uploads/2025/07/thong-dien-hieu-chinh-ILS-DME-22-7-2.jpg" alt="thong dien hieu chinh ILS DME 22-7 2" /></p>
+<p align="center"><em>&Ocirc;ng Nguyễn Thanh Thủy h&agrave;n v&agrave; kh&ograve; nhiệt tất cả c&aacute;c đầu connector tại tủ Distribution Unit</em></p>
+<p style="text-align: justify;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sau khi thay thế c&aacute;c khối card hỏng v&agrave; thực hiện kiểm tra, th&ocirc;ng điện hiệu chỉnh cho 01 hệ thống ILS/DME đầu 22, thiết bị ILS/DME đầu 22 n&agrave;y hoạt động b&igrave;nh thường, c&aacute;c th&ocirc;ng số kỹ thuật nằm trong dải ngưỡng cho ph&eacute;p. &Ocirc;ng Vương v&agrave; &ocirc;ng Thủy tiếp tục theo d&otilde;i hệ thống thiết bị ILS/DME n&agrave;y hoạt động ổn định trong 02 ng&agrave;y li&ecirc;n tục.</p>
+<p align="center"><img class="aligncenter size-full wp-image-11843" src="https://attech.com.vn/wp-content/uploads/2025/07/thong-dien-hieu-chinh-ILS-DME-22-7-3.jpg" alt="thong dien hieu chinh ILS DME 22-7 3" /></p>
+<p align="center"><em>&Ocirc;ng Nguyễn Thanh Thủy thực hiện kiểm tra, hiệu chỉnh th&ocirc;ng số kỹ thuật thiết bị GP</em></p>
+<p style="text-align: justify;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; C&aacute;c chuy&ecirc;n gia kỹ thuật CNS của ATTECH tiếp tục tham gia thực hiện hỗ trợ mặt đất bay kiểm tra hiệu chuẩn trong 03 ng&agrave;y tiếp theo. Kết th&uacute;c bay hiệu chuẩn hệ thống thiết bị ILS/DME đầu đường CHC 22 đạt kết quả tốt, c&aacute;c th&ocirc;ng số kỹ thuật nằm trong dải cho ph&eacute;p v&agrave; đ&aacute;p ứng theo ti&ecirc;u chuẩn ICAO. C&ocirc;ng ty EVERCON &ndash; nh&agrave; thầu ch&iacute;nh đ&aacute;nh gi&aacute; cao đội ngũ kỹ thuật, t&iacute;nh chguy&ecirc;n nghiệp v&agrave; sự nhiệt t&igrave;nh trong c&ocirc;ng việc của ATTECH đ&atilde; đảm bảo cho 01 hệ thống ILS/DME đầu 22 đủ điều kiện đưa v&agrave;o khai th&aacute;c vận h&agrave;nh.</p>
+<p style="text-align: right;"><strong><em>B&agrave;i: Nguyễn Thanh Thủy &ndash; Đội trưởng Đội TSS &ndash; Trung t&acirc;m BĐKT</em></strong></p>
+<p style="text-align: right;"><strong><em>Ảnh: Đỗ H&ugrave;ng Vương &ndash; Ph&oacute; Trưởng Trung t&acirc;m BĐKT</em></strong></p>`,
+    titleEn:
+      "Power calibration, acceptance testing, trial operation, and ground support for flight inspection and calibration of one ILS/DME system at Mactan-Cebu Airport, Philippines",
+    slugEn: "power-calibration-acceptance-testing-trial-operation-and-ground-support-for-flight-inspection-and-calibration-of-one-ils-dme-system-at-mactan-cebu-airport-philippines",
+    descriptionEn:
+      "In mid-July 2025, the Flight Management Engineering Company Limited successfully completed the provision of power calibration, acceptance testing, trial operation, and ground support for flight inspection and calibration of one ILS/DME system at Mactan–Cebu Airport, Philippines. To implement this project, the Company dispatched two technical experts: Mr. Đỗ Hùng Vương – Deputy Director of the Technical Assurance Center, and Mr. Nguyễn Thanh Thủy – Team Leader of the CNS Supervision and Technical Support Team, to Mactan–Cebu Airport, Philippines. They conducted inspection and power calibration of one ILS/DME equipment system supporting approach and landing at Runway CHC 22.",
+    contentEn: "",
+    timePosted: "2025-07-22T00:00:00Z",
+    status: 1,
+    postCategoryId: 1,
+    postCategoryNameVi: "Hoạt động công ty",
+    postCategoryNameEn: "Company Activities",
+    postCategorySlugVi: "hoat-dong-cong-ty",
+    postCategorySlugEn: "company-activities",
+    isOutstanding: false,
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/thong-dien-hieu-chinh-ILS-DME-22-7-2.jpg",
+  },
+  {
+    id: 3,
+    titleVi: "Ngày hội gia đình ATTECH năm 2025",
+    slugVi: "ngay-hoi-gia-dinh-attech-nam-2025",
+    descriptionVi:
+      "Ngày hội gia đình ATTECH phía Bắc năm 2025 đã được Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức vào ngày 19/7/2025. Sự kiện cả nhà kết nối vạn niềm vui- sân chơi gắn kết dành cho các thành viên gia đình ATTECH, đồng thời đánh dấu kỷ niệm cột mốc 15 năm ngày thành lập Công ty TNHH Kỹ thuật Quản lý bay.",
+    contentVi: `<p style="text-align: justify;">Sự kiện Ngày h&ocirc;̣i gia đình ATTECH năm 2025 với sự tham gia của c&aacute;c th&agrave;nh vi&ecirc;n, bao gồm gia đ&igrave;nh Ban l&atilde;nh đạo C&ocirc;ng ty, Kiểm so&aacute;t vi&ecirc;n v&agrave; người lao động l&agrave;m việc tại khu vực ph&iacute;a Bắc, đại diện Chi nh&aacute;nh tại TP. Hồ Ch&iacute; Minh, đại diện Người lao động của c&aacute;c Đ&agrave;i/ trạm CNS đ&atilde; tạo n&ecirc;n kh&ocirc;ng kh&iacute; h&acirc;n hoan, ấm &aacute;p của một đại gia đ&igrave;nh, một tập thể đo&agrave;n kết, gắn b&oacute;, ph&aacute;t triển.</p>
+<p style="text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sự kiện năm nay được tổ chức tại Vinwonders Wave Park (C&ocirc;ng vi&ecirc;n Bi&ecirc;̉n nh&acirc;n tạo Vinhomes Ocean Park 2), Nghĩa Trụ, Hưng Y&ecirc;n. Thời ti&ecirc;́t nắng hè và kh&ocirc;ng gian bi&ecirc;̉n xinh đẹp như càng làm th&ocirc;̉i bùng l&ecirc;n tinh th&acirc;̀n cháy h&ecirc;́t mình của các thành vi&ecirc;n gia đình ATTECH trong các chu&ocirc;̃i trò chơi teambuilding và các hoạt đ&ocirc;̣ng t&acirc;̣p th&ecirc;̉ khác.</p>
+<p><img class="aligncenter size-full wp-image-11830" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2025/07/NHGD-2025-21-7-1.jpg" alt="NHGD 2025 21-7 1" /></p>
+<p style="text-align: center;"><em>Tập thể người lao động ATTECH tham dự Ng&agrave;y hội gia đ&igrave;nh ph&iacute;a Bắc năm 2025</em></p>
+<p style="text-align: justify;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ngày h&ocirc;̣i gia đình ATTECH năm&nbsp; 2025 l&agrave; dịp để mỗi th&agrave;nh vi&ecirc;n c&ugrave;ng chơi &ndash; c&ugrave;ng cười &ndash; c&ugrave;ng trải nghiệm những điều mới mẻ, thấu hiểu nhau hơn qua từng hoạt động. Mở đầu sự ki&ecirc;̣n l&agrave; hoạt động xếp chữ thương hiệu ATTECH. C&aacute;c th&agrave;nh vi&ecirc;n tham dự c&ugrave;ng nhau xếp h&agrave;ng chữ t&ecirc;n C&ocirc;ng ty để lưu giữ khoảnh khắc thật đặc biệt. Tiếp đ&oacute;, người tham dự được chia th&agrave;nh 3 đội chơi tham gia teambuilding ch&iacute;nh thức. C&aacute;c đội chơi lần lượt trải qua c&aacute;c thử th&aacute;ch đầu gay cấn, cam go v&agrave; đầy th&uacute; vị của c&aacute;c mini game: &ldquo;Đoàn k&ecirc;́t ti&ecirc;́n l&ecirc;n&rdquo;, &ldquo;Thi&ecirc;̣n xạ th&acirc;̀n t&ocirc;́c&rdquo;, &ldquo;Đ&ocirc;̀ng lòng ti&ecirc;́n bước&rdquo;. Để vượt qua những thử th&aacute;ch th&uacute; vị của chương tr&igrave;nh c&aacute;c đội kh&ocirc;ng chỉ cần thể lực m&agrave; cần cả tr&iacute; tuệ v&agrave; hơn hết l&agrave; tinh thần &ldquo;m&aacute;u lửa&rdquo; quyết t&acirc;m đồng l&ograve;ng của cả đội. Th&ocirc;ng qua hoạt động teambuilding, người lao động c&oacute; cơ hội gặp gỡ, giao lưu với c&aacute;c th&agrave;nh vi&ecirc;n kh&aacute;c nhau của đại gia đ&igrave;nh ATTECH, đồng thời g&oacute;p phần n&acirc;ng cao khả năng tư duy, s&aacute;ng tạo, trải nghiệm th&aacute;ch thức, xử l&yacute; t&igrave;nh huống bất ngờ&hellip;</p>
+<p><img class="aligncenter size-full wp-image-11831" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2025/07/NHGD-2025-21-7-2.jpg" alt="NHGD 2025 21-7 2" /></p>
+<p style="text-align: center;"><em>Thương hiệu ATTECH được gắn kết tạo n&ecirc;n bởi những th&agrave;nh vi&ecirc;n đại gia đ&igrave;nh ATTECH</em></p>
+<p><img class="aligncenter size-full wp-image-11832" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2025/07/NHGD-2025-21-7-3.jpg" alt="NHGD 2025 21-7 3" /></p>
+<p style="text-align: center;"><em>Người lao đ&ocirc;̣ng ATTECH thực hi&ecirc;̣n các thử thách của trò chơi đ&ocirc;̀ng đ&ocirc;̣i</em></p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sau khoảng thời gian tham gia các trò chơi, người tham dự Ng&agrave;y hội gia đ&igrave;nh ATTECH được h&ograve;a m&igrave;nh v&agrave;o bữa tiệc Gala Lunch thật &yacute; nghĩa. Mở đầu chương tr&igrave;nh l&agrave; lời ph&aacute;t biểu, chia sẻ đầy x&uacute;c động từ Chủ tịch C&ocirc;ng ty L&ecirc; Tiến Thịnh. &Ocirc;ng Thịnh chia sẻ sự kiện thường ni&ecirc;n Ng&agrave;y hội gia đ&igrave;nh l&agrave; dịp để mỗi th&agrave;nh vi&ecirc;n ATTECH g&igrave;n giữ cũng như lan tỏa những gi&aacute; trị tốt đẹp của C&ocirc;ng ty, l&agrave; chất keo li&ecirc;n kết giữa người lao động với BLĐ C&ocirc;ng ty, giữa c&aacute;c th&agrave;nh vi&ecirc;n c&aacute;c bộ phận/ đơn vị với nhau. Đặc biệt hơn nữa, Ng&agrave;y hội gia đ&igrave;nh năm nay đ&aacute;nh dấu kỷ niệm 15 năm C&ocirc;ng ty TNHH Kỹ thu&acirc;̣t Quản lý bay. &Ocirc;ng Thịnh đ&atilde; gửi lời cảm ơn s&acirc;u sắc đến to&agrave;n thể người lao động C&ocirc;ng ty v&agrave; b&agrave;y tỏ sự tri &acirc;n đến gia đ&igrave;nh c&aacute;c c&aacute;n bộ, nh&acirc;n vi&ecirc;n &ndash; nguồn động lực to lớn gi&uacute;p c&aacute;c th&agrave;nh vi&ecirc;n ATTECH y&ecirc;n t&acirc;m c&ocirc;ng t&aacute;c, cống hiến v&igrave; sự ph&aacute;t triển của C&ocirc;ng ty, đ&ocirc;̀ng thời &ocirc;ng cũng bày tỏ ni&ecirc;̀m tin tưởng và th&ecirc;́ h&ecirc;̣ tương lai, các m&acirc;̀m non ATTECH.</p>
+<p><img class="aligncenter size-full wp-image-11833" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2025/07/NHGD-2025-21-7-4.jpg" alt="NHGD 2025 21-7 4" /></p>
+<p style="text-align: center;" align="center"><em>Ban l&atilde;nh đạo C&ocirc;ng ty ch&uacute;c mừng sinh nhật ATTECH</em></p>
+<p style="text-align: justify;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Trong kh&ocirc;ng kh&iacute; ấm c&uacute;ng của bữa tiệc sinh nhật, Ban l&atilde;nh đạo C&ocirc;ng ty c&ugrave;ng l&ecirc;n s&acirc;n khấu bật nắp champagne ch&uacute;c mừng sinh nhật ATTECH. Trong tr&agrave;ng ph&aacute;o tay k&eacute;o d&agrave;i kh&ocirc;ng ngớt vang vọng khắp kh&aacute;n ph&ograve;ng, ph&aacute;o hoa được thắp sáng, kh&ocirc;ng gian bừng sang ch&agrave;o đ&oacute;n tuổi mới đầy rực rỡ của C&ocirc;ng ty.</p>
+<p style="text-align: justify;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Với mong muốn kh&ocirc;ng chỉ đồng h&agrave;nh trong c&ocirc;ng việc m&agrave; c&ograve;n chăm lo s&acirc;u sắc đến đời sống tinh thần v&agrave; gia đ&igrave;nh của to&agrave;n thể c&aacute;n bộ nh&acirc;n vi&ecirc;n, Ban l&atilde;nh đạo C&ocirc;ng ty ATTECH lu&ocirc;n d&agrave;nh sự quan t&acirc;m đặc biệt đến thế hệ tương lai &ndash; những mầm non tr&iacute; tuệ, ch&iacute;nh l&agrave; c&aacute;c ch&aacute;u l&agrave; con em của c&aacute;n bộ c&ocirc;ng nh&acirc;n vi&ecirc;n trong c&ocirc;ng ty. Trong năm vừa qua, ATTECH tự h&agrave;o khi biết rằng đ&atilde; c&oacute; rất nhiều ch&aacute;u đạt th&agrave;nh t&iacute;ch học tập xuất sắc, l&agrave; niềm tự h&agrave;o kh&ocirc;ng chỉ của gia đ&igrave;nh m&agrave; c&ograve;n l&agrave; niềm vui chung của đại gia đ&igrave;nh ATTECH. V&agrave; để ghi nhận, kh&iacute;ch lệ tinh thần học tập, Ban l&atilde;nh đạo c&ocirc;ng ty đ&atilde; dành tặng những phần qu&agrave; &yacute; nghĩa, như một lời động vi&ecirc;n ch&acirc;n th&agrave;nh gửi tới c&aacute;c m&acirc;̀m non ATTECH. Đ&acirc;y sẽ l&agrave; nguồn cảm hứng v&agrave; động lực lớn để c&aacute;c ch&aacute;u tiếp tục phấn đấu, học giỏi &ndash; r&egrave;n ngoan hơn nữa trong những năm học sắp tới. Tiếp theo đ&oacute;, Ban l&atilde;nh đạo cũng trao thưởng cho c&aacute;c đội tham dự teambuilding ở phần đầu chương tr&igrave;nh và cuộc thi điền kinh &ldquo;ATTECH RACE&rdquo;.</p>
+<p><img class="aligncenter size-full wp-image-11834" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2025/07/NHGD-2025-21-7-5.jpg" alt="NHGD 2025 21-7 5" /></p>
+<p style="text-align: center;"><em>L&atilde;nh đạo C&ocirc;ng ty trao thưởng cho học sinh l&agrave; con người lao động ATTECH</em></p>
+<p><img class="aligncenter size-full wp-image-11835" style="display: block; margin-left: auto; margin-right: auto;" src="https://attech.com.vn/wp-content/uploads/2025/07/NHGD-2025-21-7-6.jpg" alt="NHGD 2025 21-7 6" /></p>
+<p style="text-align: center;" align="center"><em>L&atilde;nh đạo C&ocirc;ng ty trao thưởng cho các cá nh&acirc;n xu&acirc;́t sắc tại cuộc thi điền kinh &ldquo;ATTECH RACE&rdquo;</em></p>
+<p style="text-align: justify;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Tại bữa tiệc, người lao động cũng được thưởng thức nhiều chương tr&igrave;nh văn nghệ đặc sắc v&agrave; ấn tượng. Những lời ca, tiếng h&aacute;t của các thành vi&ecirc;n ATTECH đ&atilde; được cất l&ecirc;n v&agrave; h&ograve;a v&agrave;o nhau tạo n&ecirc;n một khung cảnh rất g&acirc;̀n gũi, kh&oacute; qu&ecirc;n đối với bất cứ ai c&oacute; mặt.</p>
+<p style="text-align: justify;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Một ng&agrave;y tr&ocirc;i qua thật nhanh, nhưng niềm vui th&igrave; vẫn c&ograve;n đọng lại trong mỗi th&agrave;nh vi&ecirc;n tham gia. Ng&agrave;y hội gia đ&igrave;nh ATTECH khu vực ph&iacute;a Bắc năm 2025 đ&atilde; th&agrave;nh c&ocirc;ng tốt đẹp, một chặng đường mới lại đang chờ đ&oacute;n người ATTECH c&ugrave;ng chung sức để chinh phục những đỉnh cao mới, mỗi th&agrave;nh vi&ecirc;n ATTECH l&agrave; một mảnh gh&eacute;p mang gi&aacute; trị của ri&ecirc;ng m&igrave;nh, g&oacute;p phần kiến tạo gi&aacute; trị tương lai cho C&ocirc;ng ty, cho đất nước v&agrave; cộng đồng.</p>
+<p style="text-align: right;"><strong><em>Nguy&ecirc;̃n Thị Thái Hà-VPCT</em></strong></p>`,
+    titleEn:
+      "ATTECH Family Day 2025",
+    slugEn: "attech-family-day-2025",
+    descriptionEn:
+      "The 2025 ATTECH Northern Family Day was organized by Flight Management Engineering Company Limited (ATTECH) on July 19, 2025. The event—“A Family United in Endless Joy”—served as a bonding playground for ATTECH family members, while also marking the 15th anniversary milestone of the company’s founding.",
+    contentEn: "",
+    timePosted: "2025-07-22T00:00:00Z",
+    status: 1,
+    postCategoryId: 1,
+    postCategoryNameVi: "Hoạt động công ty",
+    postCategoryNameEn: "Company Activities",
+    postCategorySlugVi: "hoat-dong-cong-ty",
+    postCategorySlugEn: "company-activities",
+    isOutstanding: true,
+    image:
+      "https://attech.com.vn/wp-content/uploads/2025/07/NHGD-2025-21-7-1.jpg",
+  },
+  {
+    id: 4,
     titleVi:
       "Hoàn thành sản xuất 02 cột gió có tính năng dễ gãy cho cảng hàng không Côn Đảo",
     slugVi:
@@ -155,7 +238,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/sx-cot-gio-18-7-1.jpg",
   },
   {
-    id: 3,
+    id: 5,
     titleVi:
       "Kiểm tra công tác phòng, chống tham nhũng, lãng phí, tiêu cực tại Phòng Tổ chức cán bộ – Lao động",
     slugVi:
@@ -194,7 +277,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/phong-chong-tham-nhung-16-7-1.jpg",
   },
   {
-    id: 4,
+    id: 6,
     titleVi: "Ngày hội Gia đình 2025 khu vực phía Nam",
     slugVi: "ngay-hoi-gia-dinh-2025-khu-vuc-phia-nam",
     descriptionVi:
@@ -233,7 +316,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/nhgd-2025-phia-nam-14-7-1.jpg",
   },
   {
-    id: 5,
+    id: 7,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định mua sắm, cấp phát và sử dụng đồng phục tại Công ty",
     slugVi:
@@ -269,7 +352,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/tuyen-truyen-pho-bien-QD-dong-phuc-9-7-2.jpg",
   },
   {
-    id: 6,
+    id: 8,
     titleVi:
       "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức “Hội nghị tuyên truyền, nâng cao nhận thức về văn hóa an toàn hàng không và hệ thống quản lý án toàn tại Công ty”",
     slugVi:
@@ -310,7 +393,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/hn-tuyen-truyen-VHATHK-9-7-3.jpg",
   },
   {
-    id: 7,
+    id: 9,
     titleVi: "Hoàn thành sản xuất cột an toàn cho cho khách hàng",
     slugVi: "hoan-thanh-san-xuat-cot-an-toan-cho-khach-hang",
     descriptionVi:
@@ -338,7 +421,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/07/cot-an-toan-9-7.jpg",
   },
   {
-    id: 8,
+    id: 10,
     titleVi:
       "Hoàn thành dự án cabin robot bơm keo tự động cho nhà máy ô tô tại hải dương",
     slugVi:
@@ -379,7 +462,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/cabin-robot-30-6-2.jpg",
   },
   {
-    id: 9,
+    id: 11,
     titleVi:
       "Hoàn thành sản xuất shelter composite không lõi thép – sản phẩm đề tài nghiên cứu khoa học công nghệ",
     slugVi:
@@ -424,7 +507,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/shelter-composite-30-6.jpg",
   },
   {
-    id: 10,
+    id: 12,
     titleVi:
       "Diễn tập phòng chống xâm nhập bất hợp pháp vào hoạt động hàng không: nâng cao khả năng ứng phó trong mọi tình huống",
     slugVi:
@@ -462,7 +545,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/dien-tap-pcxnbhp-30-6-3.jpg",
   },
   {
-    id: 11,
+    id: 13,
     titleVi:
       "Hoàn thành công tác thay thế thiết bị đài DVOR/DME Buôn Ma Thuột và đài DVOR/DME Phú Bài",
     slugVi:
@@ -501,7 +584,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/PB-BMT-26-6-5.jpg",
   },
   {
-    id: 12,
+    id: 14,
     titleVi: `“Lần đầu tham gia công tác bay kiểm tra hiệu chuẩn hệ thống thiết bị ILS” – cảm nhận của một nhân viên mới`,
     slugVi:
       "lan-dau-tham-gia-cong-tac-bay-kiem-tra-hieu-chuan-he-thong-thiet-bi-ils-cam-nhan-cua-mot-nhan-vien-moi",
@@ -535,7 +618,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/bhc-25-6-2.jpg",
   },
   {
-    id: 13,
+    id: 15,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức các hoạt động hưởng ứng ngày Môi trường Thế giới 5/6 và Tháng hành động vì môi trường năm 2025",
     slugVi:
@@ -592,7 +675,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/ngay-moi-truong-20-6-3.jpg",
   },
   {
-    id: 14,
+    id: 16,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay tuyên truyền, phổ biến Quy định Yêu cầu năng định nhân viên hàng không và chứng chỉ hành nghề/ chứng chỉ chuyên môn/ chứng nhận đối với các vị trí chức danh tại Công ty",
     slugVi:
@@ -625,7 +708,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/HN-pho-bien-qd-yc-ND-13-6-1.jpg",
   },
   {
-    id: 15,
+    id: 17,
     titleVi:
       "Bình đẳng giới trong gia đình: Hành trình cùng nhau xây dựng một xã hội công bằng",
     slugVi:
@@ -676,7 +759,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/dl-13-6-1.jpg",
   },
   {
-    id: 16,
+    id: 18,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay (ATTECH) tổ chức Ngày Quốc tế Thiếu nhi 1/6 cho con người quản lý, người lao động trong Công ty",
     slugVi:
@@ -709,7 +792,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/qttn-4-6-2.jpg",
   },
   {
-    id: 17,
+    id: 19,
     titleVi: "Trao tặng mô hình Trung Tâm Kiểm soát không lưu Long Thành",
     slugVi: "trao-tang-mo-hinh-trung-tam-kiem-soat-khong-luu-long-thanh",
     descriptionVi:
@@ -741,7 +824,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/06/attech-tang-mo-hinh-2-6-1.jpg",
   },
   {
-    id: 18,
+    id: 20,
     titleVi:
       "Đoàn Thanh Niên Chi nhánh tại TP.HCM tổ chức chương trình nhân ngày Quốc tế Thiếu nhi 1/6",
     slugVi:
@@ -772,7 +855,7 @@ export const mockNews = [
     image: "https://attech.com.vn/wp-content/uploads/2025/06/1.6-CN-2-6-1.jpg",
   },
   {
-    id: 19,
+    id: 21,
     titleVi:
       "Kiểm tra hệ thống, thiết bị của ATTECH trên đảo Trường Sa Lớn và Song Tử Tây trong năm 2025",
     slugVi:
@@ -807,7 +890,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/kiem-tra-TS-STT-27-5-1.jpg",
   },
   {
-    id: 20,
+    id: 22,
     titleVi:
       "Đoàn Thanh niên Công ty TNHH Kỹ thuật Quản lý bay tổ chức các hoạt động kỷ niệm 135 năm ngày sinh của Chủ tịch Hồ Chí Minh (19/05/1890-19/05/2025)",
     slugVi:
@@ -845,7 +928,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/vieng-lang-bac-20-5-2.jpg",
   },
   {
-    id: 21,
+    id: 23,
     titleVi: "Lễ kết nạp Đảng viên mới tại chi bộ Ban Quản lý dự án",
     slugVi: "le-ket-nap-dang-vien-moi-tai-chi-bo-ban-quan-ly-du-an",
     descriptionVi:
@@ -874,7 +957,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/BQLDA-ket-nam-DV-12-5-2.jpg",
   },
   {
-    id: 22,
+    id: 24,
     titleVi:
       "Công ty TNHH Kỹ thuật Quản lý bay tổ chức Hôi nghị quán triệt, phổ biến nội dung Thông tư 01/2025/TT-BXD",
     slugVi:
@@ -908,7 +991,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/05/HN-quan-triet-7-5-3.jpg",
   },
   {
-    id: 23,
+    id: 25,
     titleVi:
       "Hội nghị giới thiệu cho Đoàn thanh niên Công ty các văn bản quản lý nội bộ và các quy trình thuộc hệ thống QLCL liên quan đến hoạt động KH&CN",
     slugVi:
@@ -939,7 +1022,7 @@ export const mockNews = [
       "https://attech.com.vn/wp-content/uploads/2025/04/hd-KHCN-30-4-2.jpg",
   },
   {
-    id: 24,
+    id: 26,
     titleVi: "Nữ công ATTECH hưởng ứng chuỗi hoạt động chào mừng ngày 8/3",
     slugVi: "nu-cong-attech-huong-ung-chuoi-hoat-dong-chao-mung-ngay-8-3",
     descriptionVi:
@@ -971,12 +1054,12 @@ export const mockNews = [
     postCategoryNameVi: "Công đoàn công ty",
     postCategoryNameEn: "Union",
     postCategorySlugVi: "cong-doan-cong-ty",
-    postCategorySlugEn: "unions",
+    postCategorySlugEn: "company-union",
     isOutstanding: false,
     image: "https://attech.com.vn/wp-content/uploads/2025/03/ngay-8-3-3.jpg",
   },
   {
-    id: 25,
+    id: 27,
     titleVi: "Hãng hàng không mở thêm nhiều đường bay quốc tế",
     slugVi: "hang-hang-khong-mo-them-nhieu-duong-bay-quoc-te",
     descriptionVi:
@@ -994,13 +1077,13 @@ export const mockNews = [
     postCategoryNameVi: "Tin ngành hàng không",
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
+    postCategorySlugEn: "aviation-news",
     isOutstanding: false,
     image:
       "https://i1-vnexpress.vnecdn.net/2025/03/26/dscf2195-jpeg-1742964488-9432-1742964646.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=rdW-ecy_PkZfo0BvWIhEYw",
   },
   {
-    id: 26,
+    id: 28,
     titleVi: "Vietnam Airlines đặt mục tiêu thu hơn 3,7 tỷ USD",
     slugVi: "vietnam-airlines-dat-muc-tieu-thu-hon-3-7-ty-usd",
     descriptionVi:
@@ -1019,12 +1102,12 @@ export const mockNews = [
     postCategoryNameVi: "Tin ngành hàng không",
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
+    postCategorySlugEn: "aviation-news",
     image:
       "https://i1-kinhdoanh.vnecdn.net/2025/02/24/vietnamairlinesxacdinhconnguoi-6915-5590-1740372946.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=zOeTryNAHMk0b1tAzVw-Zw",
   },
   {
-    id: 27,
+    id: 29,
     titleVi: "Công ty Trung Quốc phát triển máy bay siêu thanh 5.000 km/h",
     slugVi: "cong-ty-trung-quoc-phat-trien-may-bay-sieu-thanh-5000-km-h",
     descriptionVi:
@@ -1043,13 +1126,13 @@ export const mockNews = [
     postCategoryNameVi: "Tin ngành hàng không",
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
+    postCategorySlugEn: "aviation-news",
     isOutstanding: false,
     image:
       "https://i1-vnexpress.vnecdn.net/2025/01/21/may-bay-sieu-thanh-moi-1737460-3193-1420-1737460593.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=iz_0y1tc-sAmjaNAOr5kzg",
   },
   {
-    id: 28,
+    id: 30,
     titleVi: "7 máy bay thay đổi lịch sử hàng không",
     slugVi: "7-may-bay-thay-doi-lich-su-hang-khong",
     descriptionVi:
@@ -1068,13 +1151,13 @@ export const mockNews = [
     postCategoryNameVi: "Tin ngành hàng không",
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
+    postCategorySlugEn: "aviation-news",
     isOutstanding: false,
     image:
       "https://i1-vnexpress.vnecdn.net/2024/12/22/VNE-Plane-3-1734830968-9113-1734831213.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=WEE5lOSxNzRs8E9EH4O5fA",
   },
   {
-    id: 29,
+    id: 31,
     titleVi: "Vietnam Airlines dứt mạch thua lỗ 4 năm liên tiếp",
     slugVi: "vietnam-airlines-dut-mach-thua-lo-4-nam-lien-tiep",
     descriptionVi:
@@ -1093,7 +1176,7 @@ export const mockNews = [
     postCategoryNameVi: "Tin ngành hàng không",
     postCategoryNameEn: "Aviation",
     postCategorySlugVi: "tin-nganh-hang-khong",
-    postCategorySlugEn: "aviations",
+    postCategorySlugEn: "aviation-news",
     isOutstanding: false,
     image:
       "https://i1-kinhdoanh.vnecdn.net/2024/12/13/ic3a9923-1734103107-1770-1734103117.jpg?w=500&h=300&q=100&dpr=1&fit=crop&s=RMWTo32rrFuDezw_GCfI6g",

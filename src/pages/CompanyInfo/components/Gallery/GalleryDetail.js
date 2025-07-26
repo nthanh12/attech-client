@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, XIcon } from "lucide-react";
 import { mockNews } from "../../../../utils/mockNews";
-import { useLanguage } from '../../../../contexts/LanguageContext';
+import { useI18n } from '../../../../hooks/useI18n';
+import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import "./GalleryDetail.css";
 
 function extractImagesFromContent(content) {
@@ -31,7 +32,7 @@ const GallerySpinner = () => (
 const GalleryDetail = () => {
   const { albumId } = useParams();
   const navigate = useNavigate();
-  const { lang } = useLanguage();
+  const { currentLanguage } = useI18n();
   const [selectedImage, setSelectedImage] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -117,11 +118,11 @@ const GalleryDetail = () => {
       e.preventDefault();
       e.stopPropagation();
     }
-    const prefix = lang === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/company/gallery';
+    const prefix = currentLanguage === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/en/company/gallery';
     navigate(prefix, {
       state: { fromGalleryDetail: true }
     });
-  }, [navigate, lang]);
+  }, [navigate, currentLanguage]);
 
   const handleFullscreenClick = useCallback((e) => {
     if (e) {
@@ -146,13 +147,13 @@ const GalleryDetail = () => {
       <div className="gallery-detail">
         <div className="error-message">
           <h2>Album không tồn tại</h2>
-          <Link
-            to={lang === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/company/gallery'}
+          <LocalizedLink
+            to={currentLanguage === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/en/company/gallery'}
             className="back-link"
             state={{ fromError: true }}
           >
             Quay lại thư viện
-          </Link>
+          </LocalizedLink>
         </div>
       </div>
     );
@@ -161,8 +162,8 @@ const GalleryDetail = () => {
   return (
     <div className="gallery-detail">
       <div className="album-header">
-        <Link
-          to={lang === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/company/gallery'}
+        <LocalizedLink
+          to={currentLanguage === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/en/company/gallery'}
           className="back-button"
           aria-label="Quay lại thư viện"
           state={{ fromGalleryDetail: true }}
@@ -173,7 +174,7 @@ const GalleryDetail = () => {
         >
           <ChevronLeft size={24} />
           <span>Quay lại thư viện</span>
-        </Link>
+        </LocalizedLink>
         <p className="album-description">{news.titleVi}</p>
         <div className="album-metadata">
           <time dateTime={news.timePosted}>

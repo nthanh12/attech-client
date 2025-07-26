@@ -1,12 +1,11 @@
 .notification-list-page {
-  max-width: 1200px;
-  margin: 90px auto;
+  margin: 0 auto;
   padding: 20px;
 }
 
 
 .notification-list-page .container {
-  max-width: 1200px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 15px;
 }
@@ -66,8 +65,8 @@
   color: #007bff;
 }
 
-/* ===== Thêm các class từ NewsListPage cho đồng bộ giao diện ===== */
-.newslist-minimal {
+/* ===== Đổi các class từ NewsListPage cho notificationlist ===== */
+.notificationlist-minimal {
   background: #f8f9fa;
   padding: 32px 0 0 0;
 }
@@ -78,13 +77,13 @@
   margin-bottom: 18px;
   text-align: left;
 }
-.newslist-grid-minimal {
+.notificationlist-grid-minimal {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   margin-bottom: 32px;
 }
-.newslist-card-minimal {
+.notificationlist-card-minimal {
   background: #fff;
   border-radius: 10px;
   border: 1px solid #e5e7eb;
@@ -96,39 +95,39 @@
   position: relative;
   overflow: hidden;
 }
-.newslist-card-minimal:hover {
+.notificationlist-card-minimal:hover {
   border: 1.5px solid #2563eb;
   box-shadow: 0 4px 16px rgba(37,99,235,0.08);
   transform: translateY(-2px) scale(1.01);
 }
-.newslist-img-link-minimal {
+.notificationlist-img-link-minimal {
   display: block;
   width: 100%;
   height: 260px;
   overflow: hidden;
   border-radius: 10px 10px 0 0;
 }
-.newslist-img-minimal {
+.notificationlist-img-minimal {
   width: 100%;
   height: 100%;
   object-fit: cover;
   aspect-ratio: 16/9;
   display: block;
 }
-.newslist-content-minimal {
+.notificationlist-content-minimal {
   padding: 12px 14px 10px 14px;
   display: flex;
   flex-direction: column;
   flex: 1;
   position: relative;
 }
-.newslist-date-minimal {
+.notificationlist-date-minimal {
   color: #888;
   font-size: 12px;
   margin-bottom: 4px;
   display: block;
 }
-.newslist-title-minimal {
+.notificationlist-title-minimal {
   color: #000000;
   font-size: 1.08rem;
   font-weight: 600;
@@ -143,10 +142,10 @@
   min-height: 3.1em;
   transition: color 0.18s;
 }
-.newslist-title-minimal:hover {
+.notificationlist-title-minimal:hover {
   color: #2563eb;
 }
-.newslist-empty {
+.notificationlist-empty {
   text-align: center;
   padding: 40px 0 60px 0;
   color: #666;
@@ -155,18 +154,18 @@
   align-items: center;
   justify-content: center;
 }
-.newslist-loading {
+.notificationlist-loading {
   text-align: center;
   padding: 40px 0;
 }
-.pagination-newslist-minimal {
+.pagination-notificationlist-minimal {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 8px;
   padding: 2rem;
 }
-.pagination-btn-minimal {
+.pagination-btn-notificationlist-minimal {
   padding: 6px 16px;
   border: 1.5px solid #e0e7ef;
   background: #fff;
@@ -180,13 +179,13 @@
   outline: none;
   box-shadow: 0 1px 4px rgba(37,99,235,0.04);
 }
-.pagination-btn-minimal.active,
-.pagination-btn-minimal:hover:not(:disabled) {
+.pagination-btn-notificationlist-minimal.active,
+.pagination-btn-notificationlist-minimal:hover:not(:disabled) {
   background: #2563eb;
   color: #fff;
   border-color: #2563eb;
 }
-.pagination-btn-minimal:disabled {
+.pagination-btn-notificationlist-minimal:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   background: #f3f4f6;
@@ -194,44 +193,44 @@
   border-color: #e0e7ef;
 }
 @media (max-width: 1024px) {
-  .newslist-grid-minimal {
+  .notificationlist-grid-minimal {
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
   }
-  .newslist-card-minimal {
+  .notificationlist-card-minimal {
     height: 290px;
   }
-  .newslist-img-link-minimal {
+  .notificationlist-img-link-minimal {
     height: 190px;
   }
 }
 @media (max-width: 768px) {
-  .newslist-minimal {
+  .notificationlist-minimal {
     padding: 16px 0 0 0;
   }
-  .newslist-grid-minimal {
+  .notificationlist-grid-minimal {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  .newslist-card-minimal {
+  .notificationlist-card-minimal {
     height: 290px;
   }
-  .newslist-img-link-minimal {
+  .notificationlist-img-link-minimal {
     height: 130px;
   }
-  .newslist-content-minimal {
+  .notificationlist-content-minimal {
     padding: 10px 8px 8px 8px;
   }
   .page-title-minimal {
     font-size: 1.1rem;
     margin-bottom: 10px;
   }
-  .pagination-btn-minimal {
+  .pagination-btn-notificationlist-minimal {
     padding: 5px 10px;
     font-size: 13px;
     min-width: 28px;
   }
-  .pagination-newslist-minimal {
+  .pagination-notificationlist-minimal {
     gap: 4px;
     margin-top: 14px;
   }

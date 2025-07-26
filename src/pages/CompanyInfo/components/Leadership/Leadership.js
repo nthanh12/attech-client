@@ -1,45 +1,49 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import "../Leadership/Leadership.css";
 
-const leadershipData = {
+const getLeadershipData = (t) => ({
   chairman: [
     {
       name: "Lê Tiến Thịnh",
-      position: "Chủ tịch công ty",
+      position: t('frontend.companyInfo.leadership.positions.chairman'),
       image: "/assets/images/leadership/thinhlt.webp",
     },
   ],
   director: [
     {
       name: "Nguyễn Hoàng Giang",
-      position: "Giám đốc công ty",
+      position: t('frontend.companyInfo.leadership.positions.director'),
       image: "/assets/images/leadership/giangnh.webp",
     },
   ],
   viceDirectors: [
     {
       name: "Đinh Nhật Minh",
-      position: "Phó giám đốc công ty",
+      position: t('frontend.companyInfo.leadership.positions.viceDirector'),
       image: "/assets/images/leadership/minhdn.webp",
     },
     {
       name: "Nguyễn Như Thành",
-      position: "Phó giám đốc công ty",
+      position: t('frontend.companyInfo.leadership.positions.viceDirector'),
       image: "/assets/images/leadership/thanhnn.webp",
     },
     {
       name: "Phan Quốc Hưng",
-      position: "Phó giám đốc công ty",
+      position: t('frontend.companyInfo.leadership.positions.viceDirector'),
       image: "/assets/images/leadership/hungpq.webp",
     },
   ],
-};
+});
 
 export default function Leadership() {
+  const { t } = useTranslation();
+  const leadershipData = getLeadershipData(t);
+  
   return (
     <div className="leadership-background">
       <h2 className="leadership-title">
-        Ban lãnh đạo của Công ty TNHH Kỹ thuật Quản lý bay
+        {t('frontend.companyInfo.leadership.title')}
       </h2>
       <div className="leader-container">
         <div className="leader-section">

@@ -396,20 +396,18 @@
   gap: 20px !important;
 }
 
-/* CKEditor Styles */
-.ck-editor__editable {
-  min-height: 200px !important;
+/* TinyMCE Styles */
+.tox .tox-editor-container {
   border: 1px solid #d1d5db !important;
   border-radius: 8px !important;
-  padding: 12px !important;
-  font-size: 14px !important;
-  line-height: 1.6 !important;
 }
 
-.ck-editor__editable:focus {
-  outline: none !important;
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+.tox .tox-edit-area {
+  border: none !important;
+}
+
+.tox .tox-edit-area__iframe {
+  min-height: 200px !important;
 }
 
 /* Animation */

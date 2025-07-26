@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import "./History.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const History = () => {
+  const { t } = useTranslation();
+  
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -15,34 +18,28 @@ const History = () => {
   const timelineData = [
     {
       year: "1986",
-      title: "Thành lập Xí nghiệp Điện tử Hàng không",
-      description:
-        "Xí nghiệp Điện tử Hàng không ra đời với mục tiêu xây dựng một đơn vị làm kỹ thuật điện tử chung cho toàn ngành Hàng không dân dụng Việt Nam.",
+      title: t('frontend.companyInfo.history.timeline.1986.title'),
+      description: t('frontend.companyInfo.history.timeline.1986.description'),
     },
     {
       year: "1989",
-      title: "Thành lập Trung tâm Thông tin Hàng không",
-      description:
-        "Ngày 29/01/1989, Trung tâm Thông tin Hàng không được thành lập trên cơ sở sát nhập Xí nghiệp Điện tử Hàng không và Đội khai thác thông tin C29, trực thuộc Công ty Quản lý bay.",
+      title: t('frontend.companyInfo.history.timeline.1989.title'),
+      description: t('frontend.companyInfo.history.timeline.1989.description'),
     },
     {
       year: "1998",
-      title: "Đổi tên thành Trung tâm Dịch vụ Kỹ thuật Quản lý bay",
-      description:
-        "Ngày 05/6/1998, Trung tâm Thông tin Hàng không đổi tên thành Trung tâm Dịch vụ Kỹ thuật Quản lý bay, hạch toán phụ thuộc vào Trung tâm Quản lý bay dân dụng Việt Nam.",
+      title: t('frontend.companyInfo.history.timeline.1998.title'),
+      description: t('frontend.companyInfo.history.timeline.1998.description'),
     },
     {
       year: "2008-2009",
-      title:
-        "Chuyển đổi và thành lập Trung tâm Dịch vụ Kỹ thuật Bảo đảm hoạt động bay",
-      description:
-        "Năm 2008, Trung tâm Quản lý bay dân dụng VN chuyển thành Tổng công ty Bảo đảm hoạt động bay. Ngày 23/3/2009, Trung tâm Dịch vụ Kỹ thuật Bảo đảm hoạt động bay được thành lập trên cơ sở tổ chức lại Trung tâm Dịch vụ Kỹ thuật Quản lý bay.",
+      title: t('frontend.companyInfo.history.timeline.2008.title'),
+      description: t('frontend.companyInfo.history.timeline.2008.description'),
     },
     {
       year: "2010",
-      title: "Thành lập Công ty TNHH Kỹ thuật Quản lý bay",
-      description:
-        "Ngày 22/7/2010, Công ty TNHH Kỹ thuật Quản lý bay được thành lập trên cơ sở tổ chức lại Trung tâm Dịch vụ Kỹ thuật Bảo đảm hoạt động bay, do Tổng công ty Quản lý bay Việt Nam sở hữu 100% vốn điều lệ.",
+      title: t('frontend.companyInfo.history.timeline.2010.title'),
+      description: t('frontend.companyInfo.history.timeline.2010.description'),
     },
   ];
 
@@ -89,7 +86,7 @@ const History = () => {
     <div className="history-timeline">
       <section className="timeline-section">
         <div className="section-title" data-aos="fade-up">
-          <h2>Lịch sử ra đời & Quá trình phát triển</h2>
+          <h2>{t('frontend.companyInfo.history.title')}</h2>
         </div>
         <div className="timeline">
           {timelineData.map((event, index) => (
@@ -111,37 +108,37 @@ const History = () => {
 
       <section className="company-info-section">
         <div className="section-title" data-aos="fade-up">
-          <h2>Thông Tin Công Ty</h2>
+          <h2>{t('frontend.companyInfo.history.companyInfoTitle')}</h2>
         </div>
         <div className="company-info-grid">
           <div className="info-card" data-aos="fade-up">
-            <h3>Tên Doanh Nghiệp</h3>
+            <h3>{t('frontend.companyInfo.history.companyName')}</h3>
             <p>
-              <strong>Tiếng Việt:</strong> {companyInfo.name.vietnamese}
+              <strong>{t('frontend.companyInfo.history.vietnamese')}:</strong> {companyInfo.name.vietnamese}
             </p>
             <p>
-              <strong>Quốc tế:</strong> {companyInfo.name.international}
+              <strong>{t('frontend.companyInfo.history.international')}:</strong> {companyInfo.name.international}
             </p>
             <p>
-              <strong>Viết tắt:</strong> {companyInfo.name.short}
+              <strong>{t('frontend.companyInfo.history.abbreviation')}:</strong> {companyInfo.name.short}
             </p>
           </div>
           <div className="info-card" data-aos="fade-up" data-aos-delay="100">
-            <h3>Trụ Sở Chính</h3>
+            <h3>{t('frontend.companyInfo.history.headquarters')}</h3>
             <p>
-              <strong>Địa chỉ:</strong> {companyInfo.headquarters.address}
+              <strong>{t('frontend.companyInfo.history.address')}:</strong> {companyInfo.headquarters.address}
             </p>
             <p>
-              <strong>Điện thoại:</strong> {companyInfo.headquarters.phone}
+              <strong>{t('frontend.companyInfo.history.phone')}:</strong> {companyInfo.headquarters.phone}
             </p>
             <p>
-              <strong>Fax:</strong> {companyInfo.headquarters.fax}
+              <strong>{t('frontend.companyInfo.history.fax')}:</strong> {companyInfo.headquarters.fax}
             </p>
             <p>
-              <strong>Email:</strong> {companyInfo.headquarters.email}
+              <strong>{t('frontend.companyInfo.history.email')}:</strong> {companyInfo.headquarters.email}
             </p>
             <p>
-              <strong>Website:</strong>{" "}
+              <strong>{t('frontend.companyInfo.history.website')}:</strong>{" "}
               <a
                 href={`https://${companyInfo.headquarters.website}`}
                 target="_blank"
@@ -152,28 +149,28 @@ const History = () => {
             </p>
           </div>
           <div className="info-card" data-aos="fade-up" data-aos-delay="200">
-            <h3>Vốn Điều Lệ</h3>
+            <h3>{t('frontend.companyInfo.history.capital')}</h3>
             <p>{companyInfo.capital}</p>
           </div>
         </div>
         <div className="branches-section" data-aos="fade-up">
-          <h3>Các Cơ Sở Khác</h3>
+          <h3>{t('frontend.companyInfo.history.otherFacilities')}</h3>
           <div className="branches-grid">
             {companyInfo.branches.map((branch, index) => (
               <div key={index} className="branch-card">
                 <h4>{branch.name}</h4>
                 <p>
-                  <strong>Địa chỉ:</strong> {branch.address}
+                  <strong>{t('frontend.companyInfo.history.address')}:</strong> {branch.address}
                 </p>
                 <p>
-                  <strong>Điện thoại:</strong> {branch.phone}
+                  <strong>{t('frontend.companyInfo.history.phone')}:</strong> {branch.phone}
                 </p>
                 <p>
-                  <strong>Fax:</strong> {branch.fax}
+                  <strong>{t('frontend.companyInfo.history.fax')}:</strong> {branch.fax}
                 </p>
                 {branch.email && (
                   <p>
-                    <strong>Email:</strong> {branch.email}
+                    <strong>{t('frontend.companyInfo.history.email')}:</strong> {branch.email}
                   </p>
                 )}
               </div>

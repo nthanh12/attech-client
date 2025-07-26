@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ChatWidget.css';
+import { aiEngine } from './aiEngine';
 
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
   const [isLiveChat, setIsLiveChat] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [conversationInsights, setConversationInsights] = useState(null);
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([
     {
       id: 1,
       type: 'received',
-      text: 'Xin chào! Mình là Attech Assitant, mình có thể giúp gì cho bạn?',
+      text: '👋 Xin chào! Tôi là trợ lý ảo của ATTECH. Tôi có thể giúp bạn tìm hiểu về dịch vụ và sản phẩm của chúng tôi.',
       timestamp: new Date(),
       status: 'sent'
     }
@@ -29,14 +32,21 @@ const ChatWidget = () => {
   };
 
   const toggleChatMode = () => {
-    setIsLiveChat(!isLiveChat);
-    // Thêm tin nhắn thông báo chuyển chế độ
+    const newMode = !isLiveChat;
+    setIsLiveChat(newMode);
+    
+    // Reset AI context when switching to live chat
+    if (newMode) {
+      aiEngine.resetContext();
+    }
+    
+    // Thêm tin nhắn thông báo chuyển chế độ với AI response
     const switchMessage = {
       id: messages.length + 1,
       type: 'received',
-      text: !isLiveChat 
-        ? 'Bạn đã chuyển sang chế độ chat với bộ phận hỗ trợ. Vui lòng đợi trong giây lát...'
-        : 'Bạn đã chuyển về chế độ chat với trợ lý ảo.',
+      text: newMode 
+        ? '👨‍💼 Bạn đã chuyển sang chế độ chat với bộ phận hỗ trợ ATTECH. Nhân viên tư vấn sẽ phản hồi trong vài phút...\n\n💡 Để được hỗ trợ nhanh nhất, vui lòng mô tả cụ thể nhu cầu của bạn.'
+        : '🤖 Bạn đã chuyển về chế độ AI Assistant. Tôi có thể trả lời ngay các câu hỏi về dịch vụ, sản phẩm và thông tin công ty ATTECH!',
       timestamp: new Date(),
       status: 'sent'
     };
@@ -75,15 +85,25 @@ const ChatWidget = () => {
         ));
 
         if (!isLiveChat) {
-          // Bot response
-          const botMessage = {
-            id: messages.length + 2,
-            type: 'received',
-            text: 'Cảm ơn bạn đã liên hệ. Chúng tôi sẽ phản hồi sớm nhất có thể!',
-            timestamp: new Date(),
-            status: 'sent'
-          };
-          setMessages(prev => [...prev, botMessage]);
+          // Show typing indicator
+          setIsTyping(true);
+          
+          setTimeout(() => {
+            setIsTyping(false);
+            // Advanced AI response with context understanding
+            const aiResponse = aiEngine.generateResponse(userMessage.text);
+            const botMessage = {
+              id: messages.length + 2,
+              type: 'received',
+              text: aiResponse,
+              timestamp: new Date(),
+              status: 'sent'
+            };
+            setMessages(prev => [...prev, botMessage]);
+            
+            // Update conversation insights
+            setConversationInsights(aiEngine.getConversationInsights());
+          }, Math.random() * 800 + 1000); // Variable realistic typing delay
         }
       }, 500);
     }
@@ -115,14 +135,22 @@ const ChatWidget = () => {
       ));
 
       if (!isLiveChat) {
-        const botResponse = {
-          id: messages.length + 2,
-          type: 'received',
-          text: `Cảm ơn bạn đã quan tâm về "${text}". Chúng tôi sẽ phản hồi ngay!`,
-          timestamp: new Date(),
-          status: 'sent'
-        };
-        setMessages(prev => [...prev, botResponse]);
+        // Show typing indicator for quick replies
+        setIsTyping(true);
+        
+        setTimeout(() => {
+          setIsTyping(false);
+          // AI response for quick reply with context
+          const aiResponse = aiEngine.generateResponse(text);
+          const botResponse = {
+            id: messages.length + 2,
+            type: 'received',
+            text: aiResponse,
+            timestamp: new Date(),
+            status: 'sent'
+          };
+          setMessages(prev => [...prev, botResponse]);
+        }, Math.random() * 400 + 600);
       }
     }, 500);
   };
@@ -172,7 +200,7 @@ const ChatWidget = () => {
             {messages.map((message) => (
               <div key={message.id} className={`chat-message ${message.type}`}>
                 <div className="message-content">
-                  <p>{message.text}</p>
+                  <p dangerouslySetInnerHTML={{ __html: message.text.replace(/\n/g, '<br>') }}></p>
                 </div>
                 <div className={`message-timestamp ${message.status}`}>
                   {message.status === 'sending' ? (
@@ -186,26 +214,51 @@ const ChatWidget = () => {
                 </div>
               </div>
             ))}
+            
+            {/* Typing indicator */}
+            {isTyping && (
+              <div className="chat-message received">
+                <div className="message-content typing-indicator">
+                  <div className="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
 
-            {/* Quick Replies - chỉ hiển thị khi chưa có tin nhắn từ người dùng và đang ở chế độ chatbot */}
+            {/* Smart Quick Replies - thông minh và context-aware */}
             {!hasUserMessages && !isLiveChat && (
               <div className="quick-replies">
-                <button className="quick-reply-btn" onClick={() => handleQuickReply('Dịch vụ của ATTECH')}>
-                  Dịch vụ của ATTECH
+                <button className="quick-reply-btn" onClick={() => handleQuickReply('Dịch vụ CNS/ATM của ATTECH như thế nào?')}>
+                  🛩️ Dịch vụ CNS/ATM
                 </button>
-                <button className="quick-reply-btn" onClick={() => handleQuickReply('Tư vấn kỹ thuật')}>
-                  Tư vấn kỹ thuật
+                <button className="quick-reply-btn" onClick={() => handleQuickReply('Sản phẩm thiết bị hàng không có gì?')}>
+                  📡 Sản phẩm & Thiết bị
                 </button>
-                <button className="quick-reply-btn" onClick={() => handleQuickReply('Báo giá dịch vụ')}>
-                  Báo giá dịch vụ
+                <button className="quick-reply-btn" onClick={() => handleQuickReply('Báo giá dịch vụ bay kiểm tra')}>
+                  💰 Báo giá dịch vụ
                 </button>
-                <button className="quick-reply-btn" onClick={() => handleQuickReply('Liên hệ')}>
-                  Liên hệ
+                <button className="quick-reply-btn" onClick={() => handleQuickReply('Thông tin liên hệ ATTECH')}>
+                  📞 Liên hệ
+                </button>
+                <button className="quick-reply-btn" onClick={() => handleQuickReply('Giới thiệu về công ty ATTECH')}>
+                  🏢 Về ATTECH
                 </button>
               </div>
             )}
           </div>
+
+          {/* AI Insights (Development Mode - hiển thị khi có insights) */}
+          {conversationInsights && conversationInsights.totalMessages > 1 && process.env.NODE_ENV === 'development' && (
+            <div className="ai-insights">
+              <small>
+                🧠 AI: {conversationInsights.currentIntent} | Topics: {conversationInsights.topInterests.join(', ') || 'none'}
+              </small>
+            </div>
+          )}
 
           {/* Input Area */}
           <div className="chat-widget-input">

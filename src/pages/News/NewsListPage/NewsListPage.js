@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { mockNewsCategories } from "../../../utils/mockNewsCategories";
 import { mockNews } from "../../../utils/mockNews";
-import { useLanguage } from "../../../contexts/LanguageContext";
+import { useI18n } from "../../../hooks/useI18n";
+import LocalizedLink from "../../../components/Shared/LocalizedLink";
 import "./NewsListPage.css";
 
 const NewsListPage = () => {
-  const { lang } = useLanguage();
+  const { currentLanguage } = useI18n();
+  const { t } = useTranslation();
   const { category } = useParams();
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,7 +17,7 @@ const NewsListPage = () => {
   const itemsPerPage = 9;
 
   // Tìm category hiện tại
-  const currentCategory = mockNewsCategories.find(cat => (lang === "vi" ? cat.slugVi : cat.slugEn) === category);
+  const currentCategory = mockNewsCategories.find(cat => (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category);
 
   // Lọc tin tức theo category
   const childSlugs = [
@@ -26,15 +29,15 @@ const NewsListPage = () => {
   let filteredItems = category 
     ? (category === "tin-hoat-dong"
         ? mockNews.filter(news => childSlugs.includes(news.postCategorySlugVi))
-        : mockNews.filter(news => (lang === "vi" ? news.postCategorySlugVi : news.postCategorySlugEn) === category)
+        : mockNews.filter(news => (currentLanguage === "vi" ? news.postCategorySlugVi : news.postCategorySlugEn) === category)
       )
     : mockNews;
   // Lọc theo searchTerm
   if (searchTerm.trim() !== "") {
     const lower = searchTerm.toLowerCase();
     filteredItems = filteredItems.filter(item => {
-      const title = lang === "vi" ? item.titleVi : item.titleEn;
-      const desc = lang === "vi" ? item.descriptionVi : item.descriptionEn;
+      const title = currentLanguage === "vi" ? item.titleVi : item.titleEn;
+      const desc = currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn;
       return title.toLowerCase().includes(lower) || desc.toLowerCase().includes(lower);
     });
   }
@@ -47,23 +50,23 @@ const NewsListPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    setCurrentPage(1); // Reset về trang 1 khi đổi category hoặc lang
+    setCurrentPage(1); // Reset về trang 1 khi đổi category hoặc currentLanguage
     const timer = setTimeout(() => {
       setLoading(false);
     }, 400);
     return () => clearTimeout(timer);
-  }, [category, lang]);
+  }, [category, currentLanguage]);
 
   if (category && !currentCategory) {
     return (
       <div className="news-list-page newslist-minimal">
         <div className="container">
           <div className="not-found newslist-empty">
-            <h2>{lang === "vi" ? "Không tìm thấy danh mục này!" : "Category not found!"}</h2>
-            <p>{lang === "vi" ? `Danh mục "${category}" không tồn tại hoặc đã bị xóa.` : `Category "${category}" does not exist or has been deleted.`}</p>
-            <Link to={lang === "vi" ? "/tin-tuc" : "/en/news"} className="back-to-news">
-              {lang === "vi" ? "Quay lại trang tin tức" : "Back to news"}
-            </Link>
+            <h2>{t('frontend.news.categoryNotFound')}</h2>
+            <p>{t('frontend.news.categoryNotExist', {category})}</p>
+            <LocalizedLink routeKey="NEWS" className="back-to-news">
+              {t('frontend.news.backToNews')}
+            </LocalizedLink>
           </div>
         </div>
       </div>
@@ -71,8 +74,8 @@ const NewsListPage = () => {
   }
 
   const getCategoryTitle = () => {
-    if (!category) return lang === "vi" ? "Tất cả tin tức" : "All News";
-    return currentCategory ? (lang === "vi" ? currentCategory.nameVi : currentCategory.nameEn) : (lang === "vi" ? "Tin tức" : "News");
+    if (!category) return t('frontend.news.allNews');
+    return currentCategory ? (currentLanguage === "vi" ? currentCategory.nameVi : currentCategory.nameEn) : t('frontend.news.title');
   };
 
   const handlePageChange = (pageNumber) => {
@@ -91,7 +94,7 @@ const NewsListPage = () => {
         <div className="container">
           <div className="loading newslist-loading">
             <div className="loading-spinner" />
-            <p>{lang === "vi" ? "Đang tải tin tức..." : "Loading news..."}</p>
+            <p>{t('frontend.news.loading')}</p>
           </div>
         </div>
       </div>
@@ -105,7 +108,7 @@ const NewsListPage = () => {
         <div style={{display:'flex',justifyContent:'flex-end',marginBottom:18}}>
           <input
             type="text"
-            placeholder={lang === "vi" ? "Tìm kiếm tin tức..." : "Search news..."}
+            placeholder={t('frontend.news.searchPlaceholder')}
             value={searchTerm}
             onChange={e => setSearchTerm(e.target.value)}
             style={{
@@ -125,20 +128,27 @@ const NewsListPage = () => {
           {currentItems.length > 0 ? (
             currentItems.map((item) => (
               <div className="newslist-card-minimal" key={item.id}>
-                <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} className="newslist-img-link-minimal">
-                  <img src={item.image} alt={lang === "vi" ? item.titleVi : item.titleEn} className="newslist-img-minimal" title={lang === "vi" ? item.titleVi : item.titleEn}/>
-                </Link>
+                <LocalizedLink 
+                  to={currentLanguage === 'vi' ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}` : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`} 
+                  className="newslist-img-link-minimal"
+                >
+                  <img src={item.image} alt={currentLanguage === "vi" ? item.titleVi : item.titleEn} className="newslist-img-minimal" title={currentLanguage === "vi" ? item.titleVi : item.titleEn}/>
+                </LocalizedLink>
                 <div className="newslist-content-minimal">
                   <span className="newslist-date-minimal">{formatDate(item.timePosted)}</span>
-                  <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} className="newslist-title-minimal clamp-2-lines" title={lang === "vi" ? item.titleVi : item.titleEn}>
-                    {lang === "vi" ? item.titleVi : item.titleEn}
-                  </Link>
+                  <LocalizedLink 
+                    to={currentLanguage === 'vi' ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}` : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`} 
+                    className="newslist-title-minimal clamp-2-lines" 
+                    title={currentLanguage === "vi" ? item.titleVi : item.titleEn}
+                  >
+                    {currentLanguage === "vi" ? item.titleVi : item.titleEn}
+                  </LocalizedLink>
                 </div>
               </div>
             ))
           ) : (
             <div className="newslist-empty">
-              <p>{lang === "vi" ? "Chưa có tin tức nào trong danh mục này." : "No news in this category yet."}</p>
+              <p>{t('frontend.news.noNewsInCategory')}</p>
             </div>
           )}
         </div>

@@ -6,20 +6,33 @@ import "swiper/css/autoplay";
 import "swiper/css/navigation";
 import "../../../../styles/swiper-custom.css";
 import { Autoplay, Navigation } from "swiper/modules";
-import { Link } from "react-router-dom";
+import { useI18n } from "../../../../hooks/useI18n";
+import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 import { mockNews } from "../../../../utils/mockNews";
 
-const CATEGORY_SLUG = "hoat-dong-cong-ty";
-const filteredNews = mockNews.filter(
-  (item) => item.postCategorySlugVi === CATEGORY_SLUG
-);
-
-const trendingTop = filteredNews.slice(0, 3);
-const trendingBottom = filteredNews.slice(3, 6);
-const trendingRight = filteredNews.slice(6);
-
 const TrendingArea = () => {
+  const { t, currentLanguage } = useI18n();
+  
+  const categorySlug = currentLanguage === 'vi' ? 'hoat-dong-cong-ty' : 'company-activities';
+  const filteredNews = mockNews.filter(
+    (item) => currentLanguage === 'vi' 
+      ? item.postCategorySlugVi === categorySlug
+      : item.postCategorySlugEn === categorySlug
+  );
+
+  // Helper lấy trường theo ngôn ngữ
+  const getTitle = (item) => currentLanguage === 'vi' ? item.titleVi : item.titleEn;
+  const getCategorySlug = (item) => currentLanguage === 'vi' ? item.postCategorySlugVi : item.postCategorySlugEn;
+  const getSlug = (item) => currentLanguage === 'vi' ? item.slugVi : item.slugEn;
+  const getDateLocale = () => currentLanguage === 'vi' ? 'vi-VN' : 'en-US';
+  const getNewsLink = (item) => currentLanguage === 'vi'
+    ? `/tin-tuc/${getCategorySlug(item)}/${getSlug(item)}`
+    : `/en/news/${getCategorySlug(item)}/${getSlug(item)}`;
+
+  const trendingTop = filteredNews.slice(0, 3);
+  const trendingBottom = filteredNews.slice(3, 6);
+  const trendingRight = filteredNews.slice(6);
   return (
     <div className="trending-area">
       <div className="container">
@@ -27,8 +40,8 @@ const TrendingArea = () => {
           <div className="row">
             <div className="col-12 pd_0">
               <div className="section-tittle">
-                <h3>Tin hoạt động công ty</h3>
-                <ViewAllButton to="/tin-tuc/hoat-dong-cong-ty" />
+                <h3>{t('frontend.home.newsCategories.companyActivities')}</h3>
+                <ViewAllButton to={currentLanguage === 'vi' ? '/tin-tuc/hoat-dong-cong-ty' : '/en/news/company-activities'} />
               </div>
             </div>
           </div>
@@ -49,11 +62,11 @@ const TrendingArea = () => {
                       <div className="trend-top-img">
                         <img
                           src={item.image}
-                          alt={item.titleVi}
-                          title={item.titleVi}
+                          alt={getTitle(item)}
+                          title={getTitle(item)}
                         />
                         <div className="trend-top-cap">
-                          <h2>{item.titleVi}</h2>
+                          <h2>{getTitle(item)}</h2>
                         </div>
                       </div>
                     </SwiperSlide>
@@ -78,23 +91,21 @@ const TrendingArea = () => {
                         <div className="trend-bottom-img">
                           <img
                             src={item.image}
-                            alt={item.titleVi}
-                            title={item.titleVi}
+                            alt={getTitle(item)}
+                            title={getTitle(item)}
                           />
                         </div>
                         <div className="trend-bottom-cap">
                           <span className="color1">
-                            {new Date(item.timePosted).toLocaleDateString(
-                              "vi-VN"
-                            )}
+                            {new Date(item.timePosted).toLocaleDateString(getDateLocale())}
                           </span>
                           <h4>
-                            <Link
-                              to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}
-                              title={item.titleVi}
+                            <LocalizedLink
+                              to={getNewsLink(item)}
+                              title={getTitle(item)}
                             >
-                              {item.titleVi}
-                            </Link>
+                              {getTitle(item)}
+                            </LocalizedLink>
                           </h4>
                         </div>
                       </div>
@@ -136,23 +147,21 @@ const TrendingArea = () => {
                       <div className="trand-right-img">
                         <img
                           src={item.image}
-                          alt={item.titleVi}
-                          title={item.titleVi}
+                          alt={getTitle(item)}
+                          title={getTitle(item)}
                         />
                       </div>
                       <div className="trand-right-cap">
                         <span className="color3">
-                          {new Date(item.timePosted).toLocaleDateString(
-                            "vi-VN"
-                          )}
+                          {new Date(item.timePosted).toLocaleDateString(getDateLocale())}
                         </span>
                         <h4>
-                          <Link
-                            to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`}
-                            title={item.titleVi}
+                          <LocalizedLink
+                            to={getNewsLink(item)}
+                            title={getTitle(item)}
                           >
-                            {item.titleVi}
-                          </Link>
+                            {getTitle(item)}
+                          </LocalizedLink>
                         </h4>
                       </div>
                     </div>

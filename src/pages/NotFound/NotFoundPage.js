@@ -1,17 +1,22 @@
-import { Link } from "react-router-dom";
 import "./NotFoundPage.css";
+import { useI18n } from "../../hooks/useI18n";
+import LocalizedLink from "../../components/Shared/LocalizedLink";
 
 const NotFoundPage = () => {
+  const { t } = useI18n();
+  
   return (
     <div className="not-found-container d-flex flex-column justify-content-center align-items-center min-vh-100 text-center">
       <h1 className="display-1 fw-bold text-primary">404</h1>
-      <h2 className="mb-4">Oops! Không tìm thấy trang</h2>
+      <h2 className="mb-4">
+        {t('errors.pageNotFound')}
+      </h2>
       <p className="mb-4 text-muted">
-        Trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
+        {t('errors.pageNotFoundDescription')}
       </p>
-      <Link to="/" className="btn btn-primary btn-lg btn-back-home">
-        Trở lại Trang chủ
-      </Link>
+      <LocalizedLink routeKey="HOME" className="btn btn-primary btn-lg btn-back-home">
+        {t('navigation.backToHome')}
+      </LocalizedLink>
     </div>
   );
 };

@@ -1,32 +1,42 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
-import { useLanguage } from "../../../contexts/LanguageContext";
+import { useParams } from "react-router-dom";
+import { useI18n } from "../../../hooks/useI18n";
 import { mockServices } from "../../../utils/mockServices";
+import LocalizedLink from "../../../components/Shared/LocalizedLink";
 import "./ServiceDetail.css";
 
 const ServiceDetail = () => {
-  const { serviceSlug } = useParams();
-  const { lang } = useLanguage();
+  const { slug: serviceSlug } = useParams();
+  const { t, currentLanguage } = useI18n();
 
   const service = mockServices.find((s) =>
-    lang === "vi" ? s.slugVi === serviceSlug : s.slugEn === serviceSlug
+    currentLanguage === "vi" ? s.slugVi === serviceSlug : s.slugEn === serviceSlug
   );
 
-  if (!service) return <div>Không tìm thấy dịch vụ</div>;
+  if (!service) {
+    return (
+      <div className="service-not-found">
+        <h2>{t('frontend.services.noServices')}</h2>
+        <LocalizedLink routeKey="SERVICES" className="back-link">
+          {t('common.back')}
+        </LocalizedLink>
+      </div>
+    );
+  }
 
   // Lấy thông tin hiển thị
-  const title = lang === "vi" ? service.nameVi : service.nameEn;
-  const description = lang === "vi" ? service.descriptionVi : service.descriptionEn;
-  const content = lang === "vi" ? service.contentVi : service.contentEn;
-  const category = lang === "vi" ? service.serviceCategoryNameVi : service.serviceCategoryNameEn;
-  const categorySlug = lang === "vi" ? service.serviceCategorySlugVi : service.serviceCategorySlugEn;
-  const postedDate = new Date(service.timePosted).toLocaleDateString(lang === "vi" ? "vi-VN" : "en-US");
+  const title = currentLanguage === "vi" ? service.nameVi : service.nameEn;
+  const description = currentLanguage === "vi" ? service.descriptionVi : service.descriptionEn;
+  const content = currentLanguage === "vi" ? service.contentVi : service.contentEn;
+  const category = currentLanguage === "vi" ? service.serviceCategoryNameVi : service.serviceCategoryNameEn;
+  const categorySlug = currentLanguage === "vi" ? service.serviceCategorySlugVi : service.serviceCategorySlugEn;
+  const postedDate = new Date(service.timePosted).toLocaleDateString(currentLanguage === "vi" ? "vi-VN" : "en-US");
 
   return (
     <div className="service-content-wrap">
       {/* Breadcrumb */}
       <nav className="service-breadcrumb">
-        <Link to="/dich-vu">{lang === "vi" ? "Dịch vụ" : "Services"}</Link>
+        <LocalizedLink routeKey="SERVICES">{t('navigation.services')}</LocalizedLink>
         <span className="breadcrumb-sep">/</span>
         <span>{title}</span>
       </nav>
@@ -53,9 +63,9 @@ const ServiceDetail = () => {
         <div className="service-detail-content cns-container" dangerouslySetInnerHTML={{ __html: content }} />
         {/* Nút quay lại */}
         <div className="service-detail-backwrap">
-          <Link to="/dich-vu" className="service-detail-backbtn">
-            <i className="fas fa-arrow-left"></i> {lang === "vi" ? "Quay lại danh sách dịch vụ" : "Back to services"}
-          </Link>
+          <LocalizedLink routeKey="SERVICES" className="service-detail-backbtn">
+            <i className="fas fa-arrow-left"></i> {currentLanguage === "vi" ? "Quay lại danh sách dịch vụ" : "Back to services"}
+          </LocalizedLink>
         </div>
       </div>
     </div>

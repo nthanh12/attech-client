@@ -26,13 +26,7 @@ import 'tinymce/plugins/codesample';
 import "./ProductsList.css";
 import "../styles/adminTable.css";
 import "../styles/adminCommon.css";
-import {
-  getProducts,
-  getProductCategories,
-  createProduct,
-  updateProduct,
-  deleteProduct,
-} from "../../services/productService";
+import { fetchProducts, fetchProductCategories } from '../../services/productService';
 import { mockProducts, mockProductCategories } from "../../utils/mockData.js";
 import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
@@ -42,6 +36,7 @@ import { Link } from "react-router-dom";
 import { Editor } from '@tinymce/tinymce-react';
 import ReactModal from 'react-modal';
 import ImageUpload from "../../components/UI/ImageUpload";
+import { productEditorConfig } from "../../config/tinymceConfig";
 
 // Hàm dịch gọi backend proxy
 async function translateProxy(text) {
@@ -104,8 +99,8 @@ const ProductsList = () => {
       setIsLoading(true);
       try {
         const [productRes, categoryRes] = await Promise.all([
-          getProducts(),
-          getProductCategories()
+          fetchProducts(),
+          fetchProductCategories()
         ]);
         if (productRes && productRes.success) {
           setProduct(productRes.data);

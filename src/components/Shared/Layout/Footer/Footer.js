@@ -1,51 +1,47 @@
+import { useTranslation } from 'react-i18next';
 import "../Footer/Footer.css";
-import { useLanguage } from "../../../../contexts/LanguageContext";
+import { useI18n } from "../../../../hooks/useI18n";
+import LocalizedLink from "../../LocalizedLink/LocalizedLink";
 
 const Footer = () => {
-  const { lang } = useLanguage();
+  const { t: useTranslationT } = useTranslation();
+  const { t, currentLanguage } = useI18n();
+  
   return (
     <div className="footer wow fadeIn" data-wow-delay="0.3s">
       <div className="container">
         <div className="company-footer text-center mb-4">
           <h2 className="company-name">
-            {lang === "vi"
-              ? "CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY"
-              : "AIR TRAFFIC TECHNICAL COMPANY LIMITED"}
+            {useTranslationT('frontend.company.name')}
           </h2>
           <h3 className="company-name-en">
-            {lang === "vi"
-              ? "AIR TRAFFIC TECHNICAL COMPANY LIMITED"
-              : "CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY"}
+            {useTranslationT('frontend.company.nameSecondary')}
           </h3>
         </div>
         <div className="row g-4 justify-content-center">
           <div className="col-md-6 col-lg-4">
             <div className="footer-contact">
               <p className="footer-title">
-                {lang === "vi" ? "Thông tin liên hệ" : "Contact Information"}
+                {useTranslationT('footer.contactTitle')}
               </p>
               <div className="contact-info">
                 <p>
                   <i className="fa fa-map-marker-alt"></i>
-                  <span>
-                    {lang === "vi"
-                      ? "Số 5/200 đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội"
-                      : "5/200 Nguyen Son Street, Bo De Ward, Hanoi City"}
-                  </span>
+                  <span>{useTranslationT('footer.address')}</span>
                 </p>
                 <p>
                   <i className="fa fa-phone-alt"></i>
                   <span>
-                    {lang === "vi" ? "Điện thoại: (84.24) 38271914" : "Phone: (84.24) 38271914"}
+                    {useTranslationT('footer.phoneLabel')}: {useTranslationT('footer.phone')}
                   </span>
                 </p>
                 <p>
                   <i className="fa fa-fax"></i>
-                  <span>Fax: (84.24) 38730398</span>
+                  <span>{useTranslationT('footer.faxLabel')}: {useTranslationT('footer.fax')}</span>
                 </p>
                 <p>
                   <i className="fa fa-envelope"></i>
-                  <span>attech@attech.com.vn</span>
+                  <span>{useTranslationT('footer.email')}</span>
                 </p>
               </div>
             </div>
@@ -53,7 +49,7 @@ const Footer = () => {
           <div className="col-md-6 col-lg-4">
             <div className="footer-links">
               <p className="footer-title">
-                {lang === "vi" ? "Liên kết nhanh" : "Quick Links"}
+                {useTranslationT('footer.quickLinks')}
               </p>
               <div className="links-list">
                 <p>
@@ -98,9 +94,7 @@ const Footer = () => {
           <div className="col-md-12 col-lg-4">
             <div className="newsletter">
               <p className="footer-title">
-                {lang === "vi"
-                  ? "Bản đồ chỉ dẫn công ty TNHH Kỹ thuật Quản lý bay"
-                  : "ATTECH Company Location Map"}
+                {useTranslationT('footer.mapTitle')}
               </p>
               <div className="map-wrapper">
                 <iframe
@@ -117,26 +111,30 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-social mt-4">
-          <a href="#" title="Facebook" className="social-icon">
-            <i className="fab fa-facebook-f"></i>
+          <a href="https://www.facebook.com/attech.vn" title="Facebook" className="social-icon" target="_blank" rel="noopener noreferrer">
+            <i className="fab fa-facebook-f" aria-hidden="true"></i>
+            <span className="sr-only">Facebook</span>
           </a>
-          <a href="#" title="Twitter" className="social-icon">
-            <i className="fab fa-twitter"></i>
+          <a href="https://twitter.com/attech_vn" title="Twitter" className="social-icon" target="_blank" rel="noopener noreferrer">
+            <i className="fab fa-twitter" aria-hidden="true"></i>
+            <span className="sr-only">Twitter</span>
           </a>
-          <a href="#" title="LinkedIn" className="social-icon">
-            <i className="fab fa-linkedin-in"></i>
+          <a href="https://www.linkedin.com/company/attech-vietnam" title="LinkedIn" className="social-icon" target="_blank" rel="noopener noreferrer">
+            <i className="fab fa-linkedin-in" aria-hidden="true"></i>
+            <span className="sr-only">LinkedIn</span>
           </a>
-          <a href="#" title="YouTube" className="social-icon">
-            <i className="fab fa-youtube"></i>
+          <a href="https://www.youtube.com/channel/attech-vn" title="YouTube" className="social-icon" target="_blank" rel="noopener noreferrer">
+            <i className="fab fa-youtube" aria-hidden="true"></i>
+            <span className="sr-only">YouTube</span>
           </a>
         </div>
         <div className="copyright mt-4">
           <div className="copyright-text">
-            © <a href="#">2025. {lang === "vi" ? "Bản quyền thuộc sở hữu của ATTECH." : "Copyright owned by ATTECH."}</a>
+            © <a href="#">2025. {useTranslationT('footer.copyright')}</a>
             <span className="mx-2">|</span>
-            <a href={lang === "vi" ? "/" : "/en/"}>{lang === "vi" ? "Trang chủ" : "Home"}</a>
+            <LocalizedLink routeKey="HOME">{useTranslationT('navigation.home')}</LocalizedLink>
             <span className="mx-2">|</span>
-            <a href={lang === "vi" ? "/lien-he" : "/en/contact"}>{lang === "vi" ? "Liên hệ" : "Contact"}</a>
+            <LocalizedLink routeKey="CONTACT">{useTranslationT('navigation.contact')}</LocalizedLink>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import "./Financial.css";
 
 const financialReports = [
@@ -64,7 +65,7 @@ const financialReports = [
   }
 ];
 
-const FinancialReportRow = ({ item }) => (
+const FinancialReportRow = ({ item, t }) => (
   <tr>
     <td>
       <div className="report-title">{item.title}</div>
@@ -79,23 +80,26 @@ const FinancialReportRow = ({ item }) => (
           <i className="fa fa-file-pdf-o" style={{color: "#d32f2f", marginRight: 8, fontSize: 20}}></i>
           <span>{item.file.name}</span>
           <span className="file-size">({item.file.size})</span>
-          <button style={{marginLeft: 10, padding: '2px 10px', border: 'none', background: '#1976d2', color: '#fff', borderRadius: 4, cursor: 'pointer', fontSize: 13}}>Tải về</button>
+          <button style={{marginLeft: 10, padding: '2px 10px', border: 'none', background: '#1976d2', color: '#fff', borderRadius: 4, cursor: 'pointer', fontSize: 13}}>{t('frontend.companyInfo.financial.download')}</button>
         </a>
       ) : (
-        <span style={{color: '#888'}}>Chưa có file</span>
+        <span style={{color: '#888'}}>{t('frontend.companyInfo.financial.noFile')}</span>
       )}
     </td>
   </tr>
 );
 
-const Financial = () => (
+const Financial = () => {
+  const { t } = useTranslation();
+  
+  return (
   <div className="financial-page">
     <div className="financial-header">
       <i className="fa fa-bar-chart" style={{fontSize: 32, color: '#1976d2', marginRight: 18}} />
       <div>
-        <h1>Báo cáo tài chính</h1>
+        <h1>{t('frontend.companyInfo.financial.title')}</h1>
         <p className="financial-desc">
-          Trang thông tin tổng hợp các báo cáo tài chính của Công ty TNHH Kỹ thuật Quản lý bay.
+          {t('frontend.companyInfo.financial.description')}
         </p>
       </div>
     </div>
@@ -103,27 +107,28 @@ const Financial = () => (
       <table className="financial-table">
         <thead>
           <tr>
-            <th>Tiêu đề</th>
-            <th>Ngày đăng</th>
-            <th>Tài Liệu</th>
+            <th>{t('frontend.companyInfo.financial.tableHeaders.title')}</th>
+            <th>{t('frontend.companyInfo.financial.tableHeaders.date')}</th>
+            <th>{t('frontend.companyInfo.financial.tableHeaders.document')}</th>
           </tr>
         </thead>
         <tbody>
           {financialReports.length === 0 ? (
             <tr>
               <td colSpan={3} style={{textAlign: 'center', color: '#888', padding: 32}}>
-                Chưa có báo cáo tài chính nào.
+                {t('frontend.companyInfo.financial.noReports')}
               </td>
             </tr>
           ) : (
             financialReports.map((item, idx) => (
-              <FinancialReportRow item={item} key={idx} />
+              <FinancialReportRow item={item} key={idx} t={t} />
             ))
           )}
         </tbody>
       </table>
     </div>
   </div>
-);
+  );
+};
 
 export default Financial;

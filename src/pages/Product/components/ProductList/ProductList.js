@@ -1,37 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useI18n } from "../../../../hooks/useI18n";
+import { useLocalizedRouting } from "../../../../hooks/useLocalizedRouting";
 import ProductItem from "../ProductItem/ProductItem";
 import Sidebar from "../Sidebar/Sidebar";
 import "../ProductList/ProductList.css";
 import { mockProducts, mockProductCategories } from '../../../../utils/mockData';
 
-// Map mockProducts sang format cũ cho ProductItem
-const products = mockProducts.map(item => ({
+// Map mockProducts sang format cho ProductItem với i18n
+const getProducts = (currentLanguage) => mockProducts.map(item => ({
   id: item.id,
-  slug: item.slugVi,
-  title: item.nameVi,
-  fullTitle: item.nameVi,
-  category: item.productCategoryNameVi,
-  description: item.descriptionVi,
+  slug: currentLanguage === 'vi' ? item.slugVi : item.slugEn,
+  title: currentLanguage === 'vi' ? item.nameVi : item.nameEn,
+  fullTitle: currentLanguage === 'vi' ? item.nameVi : item.nameEn,
+  category: currentLanguage === 'vi' ? item.productCategoryNameVi : item.productCategoryNameEn,
+  description: currentLanguage === 'vi' ? item.descriptionVi : item.descriptionEn,
   image: item.image,
-  categorySlug: item.productCategorySlugVi
+  categorySlug: currentLanguage === 'vi' ? item.productCategorySlugVi : item.productCategorySlugEn,
+  originalItem: item // Keep original for reference
 }));
 
-// Tạo mảng categories từ mockProductCategories
-const categories = mockProductCategories.map(cat => ({
-  name: cat.nameVi,
-  slug: cat.slugVi
+// Tạo mảng categories từ mockProductCategories với i18n
+const getCategories = (currentLanguage) => mockProductCategories.map(cat => ({
+  name: currentLanguage === 'vi' ? cat.nameVi : cat.nameEn,
+  slug: currentLanguage === 'vi' ? cat.slugVi : cat.slugEn
 }));
 
-// CategoryNav component
-const CategoryNav = ({ categories, selectedCategory, onSelectCategory }) => {
+// CategoryNav component with i18n
+const CategoryNav = ({ categories, selectedCategory, onSelectCategory, t }) => {
   return (
     <div className="attech-category-nav">
       <button
         className={`attech-category-btn ${!selectedCategory ? 'active' : ''}`}
         onClick={() => onSelectCategory('')}
       >
-        Tất cả sản phẩm
+        {t('frontend.products.allProducts')}
       </button>
       {categories.map(cat => (
         <button
@@ -42,7 +45,6 @@ const CategoryNav = ({ categories, selectedCategory, onSelectCategory }) => {
           {cat.name}
         </button>
       ))}
-      {/* Nút Vẻ 360 giống các nút khác */}
       <button
         className="attech-category-btn"
         onClick={() => window.open('https://attech.vr360.one/', '_blank')}
@@ -55,6 +57,12 @@ const CategoryNav = ({ categories, selectedCategory, onSelectCategory }) => {
 
 const ProductList = () => {
   const { category } = useParams();
+  const { t, currentLanguage } = useI18n();
+  const { navigateToRoute } = useLocalizedRouting();
+  
+  const products = getProducts(currentLanguage);
+  const categories = getCategories(currentLanguage);
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [viewMode, setViewMode] = useState("grid");
@@ -102,9 +110,6 @@ const ProductList = () => {
           return 0;
       }
     });
-    // Log kiểm tra thứ tự sản phẩm sau khi sort
-    console.log('Sorted products:', result.map(p => ({ title: p.title, category: p.category })));
-
     setFilteredProducts(result);
     setCurrentPage(1);
   }, [selectedCategory, searchTerm, sortBy]);
@@ -115,17 +120,14 @@ const ProductList = () => {
   const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  // Log khi render danh sách sản phẩm
-  console.log('Render products:', currentProducts.map(p => p.title));
-
   const navigate = useNavigate();
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
     setIsSidebarOpen(false);
     if (category) {
-      navigate(`/san-pham/${category}`);
+      navigateToRoute('PRODUCT_CATEGORY', { category });
     } else {
-      navigate('/san-pham');
+      navigateToRoute('PRODUCTS');
     }
   };
 
@@ -244,7 +246,7 @@ const ProductList = () => {
               <input
                 type="text"
                 className="attech-search-input"
-                placeholder="Tìm kiếm sản phẩm..."
+                placeholder={t('frontend.products.searchPlaceholder')}
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -256,8 +258,8 @@ const ProductList = () => {
                 value={sortBy}
                 onChange={handleSort}
               >
-                <option value="name">Sắp xếp theo tên</option>
-                <option value="category">Sắp xếp theo danh mục</option>
+                <option value="name">{t('frontend.products.sortByName')}</option>
+                <option value="category">{t('frontend.products.sortByCategory')}</option>
               </select>
 
               <div className="attech-view-mode">
@@ -282,6 +284,7 @@ const ProductList = () => {
               categories={categories}
               selectedCategory={selectedCategory}
               onSelectCategory={handleCategoryChange}
+              t={t}
             />
           </div>
         </div>
@@ -308,7 +311,7 @@ const ProductList = () => {
         ) : (
           <div className="attech-no-products">
             <i className="fas fa-box-open"></i>
-            <p>Không tìm thấy sản phẩm phù hợp</p>
+            <p>{t('frontend.products.noProductsFound')}</p>
           </div>
         )}
       </div>

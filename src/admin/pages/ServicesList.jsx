@@ -26,7 +26,7 @@ import "tinymce/plugins/codesample";
 import "./ServicesList.css";
 import "../styles/adminTable.css";
 import "../styles/adminCommon.css";
-import { getServices } from '../../services/serviceService';
+import { fetchServices } from '../../services/serviceService';
 import { mockServices } from "../../utils/mockData.js";
 import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
@@ -36,6 +36,7 @@ import { Link } from "react-router-dom";
 import { Editor } from "@tinymce/tinymce-react";
 import ReactModal from "react-modal";
 import ImageUpload from "../../components/UI/ImageUpload";
+import { serviceEditorConfig } from "../../config/tinymceConfig";
 
 // Hàm dịch gọi backend proxy
 async function translateProxy(text) {
@@ -92,7 +93,7 @@ const ServicesList = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const serviceRes = await getServices();
+        const serviceRes = await fetchServices();
         if (serviceRes && serviceRes.success) {
           setService(serviceRes.data);
         } else {
@@ -329,23 +330,11 @@ const ServicesList = () => {
           <div className="form-row">
             <div className="form-group">
               <label>Nội dung (VI) *</label>
-              <Editor value={currentService.contentVi} onEditorChange={c => handleInputChange('contentVi', c)} init={{
-                menubar: true,
-                plugins: [
-                  'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                  'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                  'insertdatetime', 'media', 'table', 'help', 'wordcount',
-                  'emoticons', 'codesample'
-                ],
-                toolbar:
-                  'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
-                  'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-                  'link image media table codesample charmap emoticons | removeformat | help',
-                height: 300,
-                branding: false,
-                promotion: false,
-                appendTo: document.body
-              }} />
+              <Editor 
+                value={currentService.contentVi} 
+                onEditorChange={c => handleInputChange('contentVi', c)} 
+                init={serviceEditorConfig}
+              />
               {errors.contentVi && <div className="invalid-feedback">{errors.contentVi}</div>}
             </div>
           </div>
@@ -410,23 +399,11 @@ const ServicesList = () => {
               <label>Content (EN) *</label>
               <div style={{ display: 'flex', gap: 8 }}>
                 <div style={{ flex: 1 }}>
-                  <Editor value={currentService.contentEn} onEditorChange={c => handleInputChange('contentEn', c)} init={{
-                    menubar: true,
-                    plugins: [
-                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                      'insertdatetime', 'media', 'table', 'help', 'wordcount',
-                      'emoticons', 'codesample'
-                    ],
-                    toolbar:
-                      'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
-                      'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-                      'link image media table codesample charmap emoticons | removeformat | help',
-                    height: 300,
-                    branding: false,
-                    promotion: false,
-                    appendTo: document.body
-                  }} />
+                  <Editor 
+                    value={currentService.contentEn} 
+                    onEditorChange={c => handleInputChange('contentEn', c)} 
+                    init={{...serviceEditorConfig, language: 'en'}}
+                  />
                 </div>
                 <button type="button" className="btn btn-sm btn-secondary" style={{ height: 40, alignSelf: 'flex-start', marginTop: 4 }} onClick={() => handleTranslate('contentVi', 'contentEn')} title="Dịch từ tiếng Việt" disabled={!!translating.contentEn}>{translating.contentEn ? 'Đang dịch...' : 'Dịch'}</button>
               </div>

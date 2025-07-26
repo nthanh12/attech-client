@@ -1,17 +1,24 @@
-import { useLanguage } from "../contexts/LanguageContext";
+import { useI18n } from "../hooks/useI18n";
 
 const LanguageSwitcher = () => {
-  const { lang, setLang } = useLanguage();
+  const { currentLanguage, changeLanguage } = useI18n();
+  
   return (
     <div style={{ display: 'inline-flex', gap: 8 }}>
-      <button onClick={() => setLang("vi")}
-        disabled={lang === "vi"}
-        style={{ fontWeight: lang === "vi" ? 'bold' : 'normal' }}
-      >VI</button>
-      <button onClick={() => setLang("en")}
-        disabled={lang === "en"}
-        style={{ fontWeight: lang === "en" ? 'bold' : 'normal' }}
-      >EN</button>
+      <button 
+        onClick={() => changeLanguage("vi")}
+        disabled={currentLanguage === "vi"}
+        style={{ fontWeight: currentLanguage === "vi" ? 'bold' : 'normal' }}
+      >
+        VI
+      </button>
+      <button 
+        onClick={() => changeLanguage("en")}
+        disabled={currentLanguage === "en"}
+        style={{ fontWeight: currentLanguage === "en" ? 'bold' : 'normal' }}
+      >
+        EN
+      </button>
     </div>
   );
 };

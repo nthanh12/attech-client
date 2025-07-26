@@ -1,13 +1,16 @@
+import { useTranslation } from 'react-i18next';
 import "../Structure/Structure.css";
 
 export default function Structure() {
+  const { t } = useTranslation();
+  
   return (
     <div className="structure-background">
       <div className="structure">
-        <h2>Cơ cấu tổ chức của Công ty TNHH Kỹ thuật Quản lý bay</h2>
+        <h2>{t('frontend.companyInfo.structure.title')}</h2>
         <img
           src="/assets/images/structure/attech-structure.svg"
-          alt="Cơ cấu tổ chức"
+          alt={t('frontend.companyInfo.structure.altText')}
         />
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useTranslation } from 'react-i18next';
 import "tinymce/tinymce";
 import "tinymce/icons/default";
 import "tinymce/themes/silver";
@@ -43,8 +44,15 @@ import { Editor } from "@tinymce/tinymce-react";
 import ReactModal from "react-modal";
 import ImageUpload from "../../components/UI/ImageUpload";
 import { fetchNewsWithFallback, fetchNewsCategoriesWithFallback } from "../../services/newsService";
+import { simpleTinymceConfig } from "../../config/simpleTinymceConfig";
+import BackendStatusPanel from "../../components/Debug/BackendStatusPanel";
+import AuthStatus from "../../components/Auth/AuthStatus";
+import "../../utils/testBackendConnection"; // Auto-test backend connection
+import "../../utils/backendEndpointTest"; // Auto-discover backend endpoints
+import "../../utils/backendApiDiscovery"; // Auto-discover API structure
 
 const NewsList = () => {
+  const { t } = useTranslation();
   const [news, setNews] = useState([]);
   const [categories, setCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -57,7 +65,8 @@ const NewsList = () => {
     titleVi: "",
     titleEn: "",
     category: "",
-    content: "",
+    contentVi: "",
+    contentEn: "",
     summaryVi: "",
     summaryEn: "",
     imageUrl: "",
@@ -80,32 +89,18 @@ const NewsList = () => {
   const [translating, setTranslating] = useState({});
   const [activeTab, setActiveTab] = useState("vi");
 
-  // Hàm dịch sử dụng backend proxy, fallback copy text
-  const translateProxy = async (text) => {
-    if (!text) return "";
-    const res = await fetch("/api/translate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text,
-        source: "vi",
-        target: "en",
-      }),
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return data.translatedText;
-  };
-
-  const handleTranslate = async (fromField, toField) => {
+  // Hàm copy text thay vì dịch (vì backend chưa có API translate)
+  const handleCopyText = async (fromField, toField) => {
     const text = currentNews[fromField] || "";
     if (!text) return;
     setTranslating((prev) => ({ ...prev, [toField]: true }));
     try {
-      const translated = await translateProxy(text);
-      setCurrentNews((prev) => ({ ...prev, [toField]: translated }));
-    } catch (err) {
+      // Simulate brief delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
       setCurrentNews((prev) => ({ ...prev, [toField]: text }));
+      setToast({ show: true, message: 'Đã copy nội dung!', type: 'success' });
+    } catch (err) {
+      setToast({ show: true, message: 'Lỗi khi copy nội dung!', type: 'error' });
     } finally {
       setTranslating((prev) => ({ ...prev, [toField]: false }));
     }
@@ -156,10 +151,13 @@ const NewsList = () => {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!currentNews.titleVi.trim()) {
+    // Safe trim function để tránh lỗi undefined/null
+    const safeTrim = (value) => (value || '').toString().trim();
+
+    if (!safeTrim(currentNews.titleVi)) {
       newErrors.titleVi = "Tiêu đề tiếng Việt là bắt buộc";
     }
-    if (!currentNews.titleEn.trim()) {
+    if (!safeTrim(currentNews.titleEn)) {
       newErrors.titleEn = "Title tiếng Anh là bắt buộc";
     }
 
@@ -167,16 +165,16 @@ const NewsList = () => {
       newErrors.category = "Danh mục là bắt buộc";
     }
 
-    if (!currentNews.contentVi.trim()) {
+    if (!safeTrim(currentNews.contentVi)) {
       newErrors.contentVi = "Nội dung tiếng Việt là bắt buộc";
     }
-    if (!currentNews.contentEn.trim()) {
+    if (!safeTrim(currentNews.contentEn)) {
       newErrors.contentEn = "Nội dung tiếng Anh là bắt buộc";
     }
-    if (!currentNews.summaryVi.trim()) {
+    if (!safeTrim(currentNews.summaryVi)) {
       newErrors.summaryVi = "Tóm tắt tiếng Việt là bắt buộc";
     }
-    if (!currentNews.summaryEn.trim()) {
+    if (!safeTrim(currentNews.summaryEn)) {
       newErrors.summaryEn = "Summary tiếng Anh là bắt buộc";
     }
 
@@ -269,11 +267,14 @@ const NewsList = () => {
   };
 
   const filteredNews = news.filter((item) => {
+    // Safe access function để tránh lỗi undefined
+    const safeString = (value) => (value || '').toString().toLowerCase();
+    
     const matchesSearch =
-      item.titleVi.toLowerCase().includes(filters.search.toLowerCase()) ||
-      item.titleEn.toLowerCase().includes(filters.search.toLowerCase()) ||
-      item.descriptionVi.toLowerCase().includes(filters.search.toLowerCase()) ||
-      item.descriptionEn.toLowerCase().includes(filters.search.toLowerCase());
+      safeString(item.titleVi).includes(filters.search.toLowerCase()) ||
+      safeString(item.titleEn).includes(filters.search.toLowerCase()) ||
+      safeString(item.descriptionVi).includes(filters.search.toLowerCase()) ||
+      safeString(item.descriptionEn).includes(filters.search.toLowerCase());
     const matchesCategory =
       !filters.category || item.postCategoryId === parseInt(filters.category);
     const matchesStatus =
@@ -442,6 +443,24 @@ const NewsList = () => {
           </div>
           <div className="form-row">
             <div className="form-group">
+              <label>Danh mục *</label>
+              <select
+                value={currentNews.category || ""}
+                onChange={(e) => handleInputChange("category", e.target.value)}
+                className={`form-control ${errors.category ? "is-invalid" : ""}`}
+              >
+                <option value="">Chọn danh mục</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.nameVi || category.name || 'Danh mục không tên'}
+                  </option>
+                ))}
+              </select>
+              {errors.category && (
+                <div className="invalid-feedback">{errors.category}</div>
+              )}
+            </div>
+            <div className="form-group">
               <label>Slug</label>
               <input
                 type="text"
@@ -451,6 +470,8 @@ const NewsList = () => {
                 placeholder="Nhập slug (tự động tạo nếu để trống)"
               />
             </div>
+          </div>
+          <div className="form-row">
             <div className="form-group">
               <ImageUpload
                 value={currentNews.imageUrl}
@@ -482,36 +503,32 @@ const NewsList = () => {
               value={currentNews.contentVi}
               onEditorChange={(c) => handleInputChange("contentVi", c)}
               init={{
-                menubar: true,
-                plugins: [
-                  "advlist",
-                  "autolink",
-                  "lists",
-                  "link",
-                  "image",
-                  "charmap",
-                  "preview",
-                  "anchor",
-                  "searchreplace",
-                  "visualblocks",
-                  "code",
-                  "fullscreen",
-                  "insertdatetime",
-                  "media",
-                  "table",
-                  "help",
-                  "wordcount",
-                  "emoticons",
-                  "codesample",
-                ],
-                toolbar:
-                  "undo redo | blocks | bold italic underline strikethrough forecolor backcolor | " +
-                  "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | " +
-                  "link image media table codesample charmap emoticons | removeformat | help",
-                height: 300,
-                branding: false,
-                promotion: false,
-                appendTo: document.body,
+                ...simpleTinymceConfig,
+                setup: (editor) => {
+                  editor.on('init', () => {
+                    console.log('🎉 Vietnamese content editor initialized');
+                  });
+                  
+                  editor.on('paste', (e) => {
+                    console.log('📋 Paste event in Vietnamese editor');
+                  });
+                  
+                  // Handle image upload events  
+                  editor.on('ImageUploadStart', () => {
+                    console.log('🔄 Image upload started in Vietnamese editor');
+                    setToast({ show: true, message: 'Đang upload ảnh...', type: 'info' });
+                  });
+                  
+                  editor.on('ImageUploadSuccess', (e) => {
+                    console.log('✅ Image upload success in Vietnamese editor:', e);
+                    setToast({ show: true, message: 'Upload ảnh thành công!', type: 'success' });
+                  });
+                  
+                  editor.on('ImageUploadFailure', (e) => {
+                    console.log('❌ Image upload failed in Vietnamese editor:', e);
+                    setToast({ show: true, message: 'Upload ảnh thất bại: ' + e.message, type: 'error' });
+                  });
+                }
               }}
             />
             {errors.contentVi && (
@@ -564,11 +581,11 @@ const NewsList = () => {
                 <button
                   type="button"
                   className="btn btn-sm btn-secondary"
-                  onClick={() => handleTranslate("titleVi", "titleEn")}
-                  title="Dịch từ tiếng Việt"
+                  onClick={() => handleCopyText("titleVi", "titleEn")}
+                  title="Copy từ tiếng Việt"
                   disabled={!!translating.titleEn}
                 >
-                  {translating.titleEn ? "Đang dịch..." : "Dịch"}
+                  {translating.titleEn ? "Đang copy..." : "Copy"}
                 </button>
               </div>
               {errors.titleEn && (
@@ -594,11 +611,11 @@ const NewsList = () => {
                 <button
                   type="button"
                   className="btn btn-sm btn-secondary"
-                  onClick={() => handleTranslate("summaryVi", "summaryEn")}
-                  title="Dịch từ tiếng Việt"
+                  onClick={() => handleCopyText("summaryVi", "summaryEn")}
+                  title="Copy từ tiếng Việt"
                   disabled={!!translating.summaryEn}
                 >
-                  {translating.summaryEn ? "Đang dịch..." : "Dịch"}
+                  {translating.summaryEn ? "Đang copy..." : "Copy"}
                 </button>
               </div>
               {errors.summaryEn && (
@@ -614,36 +631,32 @@ const NewsList = () => {
                   value={currentNews.contentEn}
                   onEditorChange={(c) => handleInputChange("contentEn", c)}
                   init={{
-                    menubar: true,
-                    plugins: [
-                      "advlist",
-                      "autolink",
-                      "lists",
-                      "link",
-                      "image",
-                      "charmap",
-                      "preview",
-                      "anchor",
-                      "searchreplace",
-                      "visualblocks",
-                      "code",
-                      "fullscreen",
-                      "insertdatetime",
-                      "media",
-                      "table",
-                      "help",
-                      "wordcount",
-                      "emoticons",
-                      "codesample",
-                    ],
-                    toolbar:
-                      "undo redo | blocks | bold italic underline strikethrough forecolor backcolor | " +
-                      "alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | " +
-                      "link image media table codesample charmap emoticons | removeformat | help",
-                    height: 300,
-                    branding: false,
-                    promotion: false,
-                    appendTo: document.body,
+                    ...simpleTinymceConfig,
+                    setup: (editor) => {
+                      editor.on('init', () => {
+                        console.log('🎉 English content editor initialized');
+                      });
+                      
+                      editor.on('paste', (e) => {
+                        console.log('📋 Paste event in English editor');
+                      });
+                      
+                      // Handle image upload events  
+                      editor.on('ImageUploadStart', () => {
+                        console.log('🔄 Image upload started in English editor');
+                        setToast({ show: true, message: 'Uploading image...', type: 'info' });
+                      });
+                      
+                      editor.on('ImageUploadSuccess', (e) => {
+                        console.log('✅ Image upload success in English editor:', e);
+                        setToast({ show: true, message: 'Image uploaded successfully!', type: 'success' });
+                      });
+                      
+                      editor.on('ImageUploadFailure', (e) => {
+                        console.log('❌ Image upload failed in English editor:', e);
+                        setToast({ show: true, message: 'Image upload failed: ' + e.message, type: 'error' });
+                      });
+                    }
                   }}
                 />
               </div>
@@ -651,11 +664,11 @@ const NewsList = () => {
                 type="button"
                 className="btn btn-sm btn-secondary"
                 style={{ height: 36, marginTop: 4 }}
-                onClick={() => handleTranslate("contentVi", "contentEn")}
-                title="Dịch từ tiếng Việt"
+                onClick={() => handleCopyText("contentVi", "contentEn")}
+                title="Copy từ tiếng Việt"
                 disabled={!!translating.contentEn || !currentNews.contentVi}
               >
-                {translating.contentEn ? "Đang dịch..." : "Dịch"}
+                {translating.contentEn ? "Đang copy..." : "Copy"}
               </button>
             </div>
             {errors.contentEn && (
@@ -676,11 +689,16 @@ const NewsList = () => {
       {/* Nơi TinyMCE sẽ render toolbar ra ngoài modal */}
       <div id="tiny-toolbar-container" />
       <div className="page-header">
-        <h1>Quản lý tin tức</h1>
-        <button className="btn btn-primary" onClick={handleAddNew}>
-          <i className="bi bi-plus"></i>
-          Thêm tin tức
-        </button>
+        <div className="page-header-left">
+          <h1>Quản lý tin tức</h1>
+        </div>
+        <div className="page-header-right">
+          <AuthStatus />
+          <button className="btn btn-primary" onClick={handleAddNew}>
+            <i className="bi bi-plus"></i>
+            Thêm tin tức
+          </button>
+        </div>
       </div>
 
       {renderFilters()}
@@ -780,6 +798,9 @@ const NewsList = () => {
         type={toast.type}
         onClose={() => setToast({ ...toast, show: false })}
       />
+      
+      {/* Debug panel for backend testing */}
+      <BackendStatusPanel />
     </div>
   );
 };

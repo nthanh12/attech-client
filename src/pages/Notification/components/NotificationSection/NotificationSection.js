@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
+import { useI18n } from "../../../../hooks/useI18n";
 import "./NotificationSection.css";
 
 const NotificationSection = ({ title, notifications, type }) => {
+  const { currentLanguage } = useI18n();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
   const totalPages = Math.ceil(notifications.length / itemsPerPage);
@@ -16,40 +18,77 @@ const NotificationSection = ({ title, notifications, type }) => {
     setCurrentPage(page);
   };
 
+  // Helper functions for multilingual support
+  const getTitle = (notification) => currentLanguage === 'vi' ? notification.titleVi : notification.titleEn;
+  const getCategorySlug = (notification) => currentLanguage === 'vi' ? notification.notificationCategorySlugVi : notification.notificationCategorySlugEn;
+  const getSlug = (notification) => currentLanguage === 'vi' ? notification.slugVi : notification.slugEn;
+  
   // Lấy slug category từ notification đầu tiên (nếu có)
-  const categorySlug = currentNotifications[0]?.notificationCategorySlugVi || type;
+  const categorySlug = currentNotifications[0] ? getCategorySlug(currentNotifications[0]) : type;
+  
+  // Debug logging
+  console.log('NotificationSection Debug:', {
+    title,
+    notificationsCount: notifications.length,
+    currentNotificationsCount: currentNotifications.length,
+    firstNotification: currentNotifications[0],
+    categorySlug,
+    currentLanguage
+  });
+
+  // Early return if no notifications
+  if (!notifications || notifications.length === 0) {
+    return (
+      <div className="notification-section">
+        <div className="section-tittle-flex">
+          <h3>{title}</h3>
+        </div>
+        <div className="no-notifications">
+          <p>Không có thông báo nào trong danh mục này.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="notification-section">
       <div className="section-tittle-flex">
         <h3>{title}</h3>
-        {/* Sửa đường dẫn sang /thong-bao/[categorySlug] */}
-        <ViewAllButton to={`/thong-bao/${categorySlug}`} />
+        <ViewAllButton to={currentLanguage === 'vi' ? `/thong-bao/${categorySlug}` : `/en/notifications/${categorySlug}`} />
       </div>
 
       <div className="notification-grid">
-        {currentNotifications.map((notification) => (
+        {currentNotifications.length > 0 ? currentNotifications.map((notification) => (
           <article key={notification.id}>
             <div className="image-wrapper">
-              <img src={notification.image} alt={notification.title} />
-              {notification.isNew && <span className="badge-new">New</span>}
+              <img src={notification.image} alt={getTitle(notification)} />
+              {notification.isOutstanding && <span className="badge-new">New</span>}
             </div>
             <div className="content-wrapper">
               <h2>
-                {/* Sửa đường dẫn sang /thong-bao/[categorySlug]/[slug] */}
-                <Link className="notification_title" to={`/thong-bao/${notification.notificationCategorySlugVi}/${notification.slug}`}>
-                  {notification.title}
+                <Link 
+                  className="notification_title" 
+                  to={currentLanguage === 'vi' 
+                    ? `/thong-bao/${getCategorySlug(notification)}/${getSlug(notification)}`
+                    : `/en/notifications/${getCategorySlug(notification)}/${getSlug(notification)}`
+                  }
+                >
+                  {getTitle(notification)}
                 </Link>
               </h2>
               <div className="notification-meta">
                 <span>
                   <i className="far fa-calendar"></i>
-                  {new Date(notification.date).toLocaleDateString()}
+                  {new Date(notification.timePosted).toLocaleDateString(currentLanguage === 'vi' ? 'vi-VN' : 'en-GB')}
                 </span>
               </div>
             </div>
           </article>
-        ))}
+        )) : (
+          <div className="no-notifications">
+            <p>Không có thông báo nào trong danh mục này.</p>
+          </div>
+        )}
       </div>
 
       {totalPages > 1 && (

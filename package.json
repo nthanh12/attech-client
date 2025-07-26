@@ -3,23 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@ckeditor/ckeditor5-alignment": "^45.1.0",
-    "@ckeditor/ckeditor5-build-classic": "^41.4.2",
     "@tinymce/tinymce-react": "^6.2.1",
     "@types/three": "^0.176.0",
     "aos": "^2.3.4",
     "axios": "^1.9.0",
     "bootstrap": "^5.3.3",
     "google-translate-api-browser": "^5.0.0",
+    "i18next": "^25.3.2",
+    "i18next-browser-languagedetector": "^8.2.0",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.525.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-helmet": "^6.1.0",
+    "react-i18next": "^15.6.1",
     "react-icons": "^5.5.0",
     "react-intersection-observer": "^9.16.0",
     "react-modal": "^3.16.3",
-    "react-router-dom": "^7.2.0",
+    "react-router-dom": "^6.8.0",
     "react-scripts": "5.0.1",
     "sanitize-html": "^2.17.0",
     "swiper": "^11.2.5",
@@ -28,9 +28,15 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
+    "build:analyze": "npm run build && npx source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --ext .js,.jsx",
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "clean:unused": "npx unimported",
+    "optimize": "npm run lint:fix && npm run build",
+    "deploy": "npm run optimize && npm run build:analyze"
   },
   "eslintConfig": {
     "extends": [
@@ -51,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0"
+    "@craco/craco": "^7.1.0",
+    "http-proxy-middleware": "^3.0.5"
   }
 }

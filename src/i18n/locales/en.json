@@ -1,0 +1,508 @@
+{
+  "common": {
+    "language": "Language",
+    "vietnamese": "Tiếng Việt",
+    "english": "English",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Information",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "search": "Search",
+    "view": "View",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "submit": "Submit",
+    "reset": "Reset",
+    "select": "Select",
+    "all": "All",
+    "none": "None",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "viewMore": "View More",
+    "readMore": "Read More",
+    "viewAll": "View All"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "products": "Products",
+    "news": "News",
+    "contact": "Contact",
+    "login": "Login",
+    "logout": "Logout",
+    "admin": "Admin",
+    "backToHome": "Back to Home"
+  },
+  "errors": {
+    "pageNotFound": "Oops! Page not found",
+    "pageNotFoundDescription": "The page you are looking for does not exist or has been moved.",
+    "serverError": "Server Error",
+    "networkError": "Network Error",
+    "unknownError": "Unknown Error",
+    "loginFailed": "Login failed",
+    "serverConnectionError": "Server connection error"
+  },
+  "auth": {
+    "userLogin": "User Login",
+    "username": "Username",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "noAccount": "Don't have an account?",
+    "register": "Register"
+  },
+  "frontend": {
+    "home": {
+      "featuredServices": "Featured Services",
+      "featuredNews": "Featured News",
+      "services": {
+        "cns": {
+          "title": "CNS/ATM",
+          "description": "Communication, Navigation & Surveillance"
+        },
+        "flight": {
+          "title": "Flight Inspection",
+          "description": "Calibration Services"
+        },
+        "industry": {
+          "title": "Aviation Industry",
+          "description": "Aviation Technology"
+        }
+      },
+      "newsCategories": {
+        "companyActivities": "Company Activities",
+        "partyCommittee": "Party Committee",
+        "youthUnion": "Youth Union",
+        "tradeUnion": "Company Union",
+        "aviationNews": "Aviation News"
+      }
+    },
+    "products": {
+      "allProducts": "All Products",
+      "searchPlaceholder": "Search products...",
+      "sortByName": "Sort by Name",
+      "sortByCategory": "Sort by Category",
+      "noProductsFound": "No products found",
+      "viewDetails": "View Details"
+    },
+    "news": {
+      "trending": "Trending News",
+      "readMore": "Read More",
+      "viewAll": "View All",
+      "latest": "Latest News",
+      "popular": "Popular News"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "remember": "Remember me",
+      "forgot": "Forgot password?",
+      "submit": "Login",
+      "success": "Login successful!",
+      "error": "Login failed",
+      "invalid": "Invalid username or password"
+    },
+    "register": {
+      "title": "Register",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Register",
+      "success": "Registration successful!",
+      "error": "Registration failed"
+    }
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "management": "Management",
+    "news": {
+      "title": "News Management",
+      "list": "News List",
+      "add": "Add News",
+      "edit": "Edit News",
+      "delete": "Delete News",
+      "categories": "News Categories",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "fields": {
+        "title": "Title",
+        "titleVi": "Title (VI)",
+        "titleEn": "Title (EN)",
+        "content": "Content",
+        "contentVi": "Content (VI)",
+        "contentEn": "Content (EN)",
+        "summary": "Summary",
+        "summaryVi": "Summary (VI)",
+        "summaryEn": "Summary (EN)",
+        "category": "Category",
+        "image": "Image",
+        "slug": "Slug",
+        "featured": "Featured",
+        "publishDate": "Publish Date",
+        "status": "Status",
+        "author": "Author"
+      },
+      "actions": {
+        "create": "Create News",
+        "update": "Update News",
+        "delete": "Delete News",
+        "publish": "Publish",
+        "unpublish": "Unpublish"
+      },
+      "messages": {
+        "createSuccess": "News created successfully!",
+        "updateSuccess": "News updated successfully!",
+        "deleteSuccess": "News deleted successfully!",
+        "deleteConfirm": "Are you sure you want to delete this news?"
+      }
+    },
+    "products": {
+      "title": "Product Management",
+      "list": "Product List",
+      "add": "Add Product",
+      "edit": "Edit Product",
+      "categories": "Product Categories",
+      "fields": {
+        "name": "Product Name",
+        "nameVi": "Name (VI)",
+        "nameEn": "Name (EN)",
+        "description": "Description",
+        "descriptionVi": "Description (VI)",
+        "descriptionEn": "Description (EN)",
+        "price": "Price",
+        "category": "Category",
+        "image": "Image",
+        "status": "Status"
+      }
+    },
+    "services": {
+      "title": "Service Management",
+      "list": "Service List",
+      "add": "Add Service",
+      "edit": "Edit Service",
+      "fields": {
+        "name": "Service Name",
+        "nameVi": "Name (VI)",
+        "nameEn": "Name (EN)",
+        "description": "Description",
+        "descriptionVi": "Description (VI)",
+        "descriptionEn": "Description (EN)"
+      }
+    },
+    "notifications": {
+      "title": "Notification Management",
+      "list": "Notification List",
+      "add": "Add Notification",
+      "edit": "Edit Notification"
+    }
+  },
+  "frontend": {
+    "home": {
+      "welcome": "Welcome to ATTECH",
+      "subtitle": "Leading Technology Solutions",
+      "description": "We provide advanced technology solutions to help your business grow.",
+      "featuredServices": "Featured Services",
+      "featuredNews": "Featured News",
+      "services": {
+        "cns": {
+          "title": "CNS/ATM",
+          "description": "Communication, Navigation & Surveillance"
+        },
+        "flight": {
+          "title": "Flight Inspection",
+          "description": "Calibration Services"
+        },
+        "industry": {
+          "title": "Aviation Industry",
+          "description": "Aviation Technology"
+        }
+      },
+      "newsCategories": {
+        "companyActivities": "Company Activities",
+        "partyCommittee": "Party Committee",
+        "youthUnion": "Youth Union",
+        "tradeUnion": "Trade Union"
+      }
+    },
+    "news": {
+      "title": "News",
+      "latest": "Latest News",
+      "readMore": "Read More",
+      "category": "Category",
+      "publishedOn": "Published on",
+      "author": "Author",
+      "noNews": "No news available.",
+      "trending": "Trending News",
+      "viewAll": "View All",
+      "popular": "Popular News",
+      "articleNotFound": "Article not found",
+      "loadError": "Error loading article",
+      "articleNotExist": "Article does not exist or has been deleted",
+      "backToNews": "Back to news",
+      "relatedNews": "Related News",
+      "searchPlaceholder": "Search news...",
+      "searchNews": "Search news",
+      "noNewsFound": "No news found",
+      "clearSearch": "Clear search",
+      "backToNewsList": "Back to news list",
+      "allNews": "All News",
+      "loading": "Loading news...",
+      "categoryNotFound": "Category not found!",
+      "categoryNotExist": "Category \"{{category}}\" does not exist or has been deleted.",
+      "noNewsInCategory": "No news in this category yet."
+    },
+    "products": {
+      "title": "Products",
+      "latest": "Latest Products",
+      "viewDetails": "View Details",
+      "category": "Category",
+      "price": "Price",
+      "noProducts": "No products available.",
+      "allProducts": "All Products",
+      "searchPlaceholder": "Search products...",
+      "sortByName": "Sort by Name",
+      "sortByCategory": "Sort by Category",
+      "noProductsFound": "No products found"
+    },
+    "services": {
+      "title": "Services",
+      "our": "Our Services",
+      "viewDetails": "View Details",
+      "noServices": "No services available."
+    },
+    "contact": {
+      "title": "Contact Information Page",
+      "description": "Don't hesitate to ask questions or share your thoughts! Every contribution from you helps ATTECH grow continuously!",
+      "details": {
+        "title": "Contact Details",
+        "phone": "Phone",
+        "fax": "Fax",
+        "email": "Email",
+        "address": "Address"
+      },
+      "form": {
+        "namePlaceholder": "Full Name",
+        "emailPlaceholder": "Email",
+        "subjectPlaceholder": "Subject",
+        "messagePlaceholder": "Message Content",
+        "submitButton": "Send Now!",
+        "nameRequired": "Please enter your name",
+        "emailRequired": "Please enter email",
+        "emailInvalid": "Invalid email",
+        "subjectRequired": "Please enter subject",
+        "messageRequired": "Please enter message",
+        "successMessage": "Contact sent successfully! Thank you for contacting ATTECH."
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "latest": "Latest Notifications",
+      "category": "Category",
+      "publishedOn": "Published on",
+      "loading": "Loading notifications...",
+      "notificationNotFound": "Notification not found!",
+      "notificationNotExist": "The notification you are looking for does not exist or has been deleted.",
+      "backToNotifications": "Back to notifications",
+      "sameCategory": "Notifications in same category",
+      "searchPlaceholder": "Search notifications...",
+      "searchNotifications": "Search notifications",
+      "noNotificationsFound": "No suitable notifications found.",
+      "clearSearch": "Clear search",
+      "backToNotificationsList": "Back to notifications list",
+      "relatedNotifications": "Related Notifications",
+      "allNotifications": "All Notifications",
+      "noNotificationsInCategory": "No notifications in this category yet."
+    },
+    "company": {
+      "name": "AIR TRAFFIC TECHNICAL COMPANY LIMITED",
+      "nameSecondary": "CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY",
+      "shortName": "ATTECH"
+    },
+    "companyInfo": {
+      "history": {
+        "title": "History & Development Process",
+        "companyInfoTitle": "Company Information",
+        "companyName": "Enterprise Name",
+        "vietnamese": "Vietnamese",
+        "international": "International",
+        "abbreviation": "Abbreviation",
+        "headquarters": "Headquarters",
+        "address": "Address",
+        "phone": "Phone",
+        "fax": "Fax",
+        "email": "Email",
+        "website": "Website",
+        "capital": "Charter Capital",
+        "otherFacilities": "Other Facilities",
+        "timeline": {
+          "1986": {
+            "title": "Establishment of Aviation Electronics Enterprise",
+            "description": "Aviation Electronics Enterprise was established with the goal of building a unit to provide general electronic technical services for the entire Vietnam civil aviation industry."
+          },
+          "1989": {
+            "title": "Establishment of Aviation Information Center",
+            "description": "On January 29, 1989, the Aviation Information Center was established based on the merger of Aviation Electronics Enterprise and C29 Information Exploitation Team, under the Air Traffic Management Company."
+          },
+          "1998": {
+            "title": "Renamed to Air Traffic Management Technical Service Center",
+            "description": "On June 5, 1998, Aviation Information Center was renamed to Air Traffic Management Technical Service Center, operating under the Vietnam Civil Aviation Management Center."
+          },
+          "2008": {
+            "title": "Transformation and establishment of Flight Operation Support Technical Service Center",
+            "description": "In 2008, Vietnam Civil Aviation Management Center became Flight Operation Support Corporation. On March 23, 2009, Flight Operation Support Technical Service Center was established based on reorganizing the Air Traffic Management Technical Service Center."
+          },
+          "2010": {
+            "title": "Establishment of Air Traffic Technical Company Limited",
+            "description": "On July 22, 2010, Air Traffic Technical Company Limited was established based on reorganizing the Flight Operation Support Technical Service Center, with Vietnam Air Traffic Management Corporation owning 100% of charter capital."
+          }
+        }
+      },
+      "financial": {
+        "title": "Financial Reports",
+        "description": "Comprehensive financial reports information page of Air Traffic Technical Company Limited.",
+        "tableHeaders": {
+          "title": "Title",
+          "date": "Date Posted",
+          "document": "Document"
+        },
+        "download": "Download",
+        "noFile": "No file available",
+        "noReports": "No financial reports available."
+      },
+      "structure": {
+        "title": "Organizational Structure of Air Traffic Technical Company Limited",
+        "altText": "Organizational Structure"
+      },
+      "leadership": {
+        "title": "Leadership Team of Air Traffic Technical Company Limited",
+        "positions": {
+          "chairman": "Chairman",
+          "director": "Director",
+          "viceDirector": "Vice Director"
+        }
+      },
+      "business": {
+        "authority": "HANOI DEPARTMENT OF PLANNING AND INVESTMENT - BUSINESS REGISTRATION OFFICE",
+        "motto": "SOCIALIST REPUBLIC OF VIETNAM\nIndependence – Freedom – Happiness",
+        "certificate": {
+          "title": "BUSINESS REGISTRATION CERTIFICATE\nLIMITED LIABILITY COMPANY WITH ONE MEMBER",
+          "enterpriseCode": "Enterprise code",
+          "firstRegistration": "First registration",
+          "lastChange": "Change registration 9th time: December 28, 2021"
+        },
+        "companyName": "1. Company Name",
+        "vietnamese": "Vietnamese",
+        "international": "International",
+        "abbreviation": "Abbreviation",
+        "headquarters": "2. Headquarters Address",
+        "phone": "Phone",
+        "fax": "Fax",
+        "email": "Email",
+        "website": "Website",
+        "businessFields": "3. Business Fields",
+        "details": "Details",
+        "note": "(For conditional business sectors, enterprises only operate when meeting the conditions prescribed by law)",
+        "businessFieldsNote": "Note: Business field names are kept in Vietnamese as per official business license"
+      },
+      "iso": {
+        "introTitle": "Introduction to ISO 9001:2015 Quality Management System",
+        "introDescription": "Air Traffic Technical Company Limited establishes and implements a quality management system to affirm its ability to consistently provide products that meet customer requirements and applicable legal requirements. The company continuously satisfies customers through effective application of the quality management system, prevention of nonconformity and continuous improvement.",
+        "historyTitle": "Certification History",
+        "commitmentTitle": "Commitment to Quality Management System",
+        "commitmentParagraph1": "Air Traffic Technical Company Limited is committed to establishing, documenting, implementing and maintaining the quality management system while continuously improving the effectiveness and efficiency of the system according to the requirements of ISO 9001:2015 standard.",
+        "commitmentParagraph2": "The quality policy was announced by Company Management on January 1, 2018.",
+        "commitmentParagraph3": "Modern, quality, safety, convenience and efficiency as attributes of aviation products and services. Our vision is to become a multi-owned corporation operating in the fields of: Providing aviation information, navigation and surveillance services; Providing flight inspection and calibration services; Aviation industrial manufacturing.",
+        "commitmentParagraph4": "To ensure that 'Our products and services are safe, quality and convenient according to aviation standards'.",
+        "documentsTitle": "Attached Documents",
+        "timeline": {
+          "2005": "The company was evaluated by BVQI of the UK and issued a certificate meeting the international standard ISO 9001:2000.",
+          "2008": "On January 29, 2008, the company's quality management system was evaluated by TUV NORD of Germany for re-certification and issued the second ISO 9001:2000 Quality Management System Certificate.",
+          "2011": "On January 15, 2011, the company completed the transition from TCVN ISO 9001:2000 to TCVN ISO 9001:2008 standard and was issued ISO 9001:2008 certificate by BSi of the United Kingdom.",
+          "2017": "The company's quality management system is maintained, periodically monitored once a year and re-certified every 3 years. Latest certificate issuance: January 15, 2017.",
+          "2018": "The company transitioned from ISO 9001:2008 to ISO 9001:2015, effective from January 1, 2018."
+        }
+      },
+      "gallery": {
+        "title": "Company Gallery",
+        "pageTitle": "Photo Gallery - ATTECH",
+        "pageDescription": "Photo gallery from ATTECH company articles",
+        "seoTitle": "ATTECH Image Gallery",
+        "seoDescription": "Collection of images from articles by Air Traffic Technical Company Limited (ATTECH)"
+      }
+    }
+  },
+  "debug": {
+    "title": "Backend Debug Panel",
+    "backendUrl": "Backend URL",
+    "proxy": "Proxy",
+    "note": "Only /api/* requests are proxied to backend",
+    "testEndpoints": "Test Endpoints",
+    "testAuth": "Test Auth",
+    "testUpload": "Test Upload",
+    "status": "Backend Status",
+    "working": "working",
+    "notWorking": "not working",
+    "proxyStatus": "Proxy Status",
+    "noEndpointsResponding": "No endpoints responding",
+    "noTestsRun": "No tests run yet...",
+    "loginSuccessful": "Login successful - token received",
+    "responseOkNoToken": "Response OK but no token",
+    "loginFailed": "Login failed",
+    "responseData": "Response Data",
+    "errorDetails": "Error Details"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Invalid email format",
+    "minLength": "Minimum {{count}} characters",
+    "maxLength": "Maximum {{count}} characters",
+    "passwordMismatch": "Password confirmation does not match"
+  },
+  "status": {
+    "online": "Online",
+    "offline": "Offline",
+    "connecting": "Connecting",
+    "connected": "Connected",
+    "disconnected": "Disconnected"
+  },
+  "upload": {
+    "selectFile": "Select File",
+    "dragDrop": "Drag and drop files here",
+    "uploading": "Uploading...",
+    "uploadSuccess": "Upload successful!",
+    "uploadFailed": "Upload failed",
+    "maxFileSize": "Maximum file size: {{size}}",
+    "allowedFormats": "Allowed formats: {{formats}}"
+  },
+  "footer": {
+    "contactTitle": "Contact Information",
+    "address": "No. 5/200, Nguyen Son Street, Bo De Ward, Hanoi City, Vietnam",
+    "phoneLabel": "Phone",
+    "phone": "024.38271914",
+    "faxLabel": "Fax",
+    "fax": "024.38720398",
+    "email": "attech@attech.com.vn",
+    "quickLinks": "Quick Links",
+    "mapTitle": "ATTECH Company Location Map",
+    "copyright": "Copyright owned by ATTECH."
+  }
+}

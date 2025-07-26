@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import { useI18n } from '../../hooks/useI18n';
+import { useLocalizedRouting } from '../../hooks/useLocalizedRouting';
 
 export default function UserLogin() {
+  const { t, currentLanguage } = useI18n();
+  const { goHome } = useLocalizedRouting();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,12 +27,12 @@ export default function UserLogin() {
       const data = await res.json();
       if (res.ok && data.accessToken) {
         localStorage.setItem('user_token', data.accessToken);
-        navigate('/');
+        goHome();
       } else {
-        setError(data.message || 'Đăng nhập thất bại');
+        setError(data.message || t('errors.loginFailed'));
       }
     } catch (err) {
-      setError('Lỗi kết nối máy chủ');
+      setError(t('errors.serverConnectionError'));
     }
     setLoading(false);
   };
@@ -36,12 +40,12 @@ export default function UserLogin() {
   return (
     <div className="form-area-login">
       <div className="wrapper">
-        <h2>Đăng nhập người dùng</h2>
+        <h2>{t('auth.userLogin')}</h2>
         <form onSubmit={handleSubmit} autoComplete="on">
           <div className="box">
             <input
               type="text"
-              placeholder="Tài khoản"
+              placeholder={t('auth.username')}
               value={username}
               onChange={e => setUsername(e.target.value)}
               required
@@ -54,7 +58,7 @@ export default function UserLogin() {
           <div className="box">
             <input
               type="password"
-              placeholder="Mật khẩu"
+              placeholder={t('auth.password')}
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
@@ -69,18 +73,18 @@ export default function UserLogin() {
                 type="checkbox"
                 checked={remember}
                 onChange={e => setRemember(e.target.checked)}
-              /> Lưu mật khẩu
+              /> {t('auth.rememberMe')}
             </label>
-            <a className="forgot-pass" href="#">Quên mật khẩu?</a>
+            <a className="forgot-pass" href="#">{t('auth.forgotPassword')}</a>
           </div>
           <button type="submit" disabled={loading}>
-            {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+            {loading ? t('auth.loggingIn') : t('auth.login')}
           </button>
         </form>
         <p className={`error${error ? ' show' : ''}`}>{error || '\u00A0'}</p>
         <p>
-          Chưa có tài khoản?{' '}
-          <a className="register-btn" href="#">Đăng ký</a>
+          {t('auth.noAccount')}{' '}
+          <a className="register-btn" href="#">{t('auth.register')}</a>
         </p>
       </div>
     </div>

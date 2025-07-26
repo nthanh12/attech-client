@@ -1,11 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useI18n } from "../../../../hooks/useI18n";
+import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import "./ProductItem.css";
 
 const ProductItem = ({ 
   product, 
   viewMode 
 }) => {
+  const { t, currentLanguage } = useI18n();
   return (
     <article className={`attech-product-item ${viewMode}`}>
       <div className="attech-product-image-wrapper">
@@ -19,13 +21,14 @@ const ProductItem = ({
       <div className="attech-product-content">
         <div className="attech-product-category">{product.category}</div>
         <h3 className="attech-product-title">{product.fullTitle || product.title}</h3>
-        <Link 
-          to={`/san-pham/${product.categorySlug}/${product.slug}`} 
+        <LocalizedLink 
+          routeKey="PRODUCT_DETAIL"
+          params={{ category: product.categorySlug, slug: product.slug }}
           className="attech-product-link"
         >
-          Xem chi tiết
+          {t('frontend.products.viewDetails')}
           <i className="fas fa-arrow-right"></i>
-        </Link>
+        </LocalizedLink>
       </div>
     </article>
   );

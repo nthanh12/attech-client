@@ -1,0 +1,509 @@
+{
+  "common": {
+    "language": "Ngôn ngữ",
+    "vietnamese": "Tiếng Việt",
+    "english": "English",
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "success": "Thành công",
+    "warning": "Cảnh báo",
+    "info": "Thông tin",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "edit": "Sửa",
+    "delete": "Xóa",
+    "add": "Thêm",
+    "search": "Tìm kiếm",
+    "view": "Xem",
+    "back": "Quay lại",
+    "next": "Tiếp theo",
+    "previous": "Trước đó",
+    "close": "Đóng",
+    "submit": "Gửi",
+    "reset": "Đặt lại",
+    "select": "Chọn",
+    "all": "Tất cả",
+    "none": "Không có",
+    "yes": "Có",
+    "no": "Không",
+    "ok": "OK",
+    "viewMore": "Xem thêm",
+    "readMore": "Đọc thêm",
+    "viewAll": "Xem tất cả"
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "services": "Dịch vụ",
+    "products": "Sản phẩm",
+    "news": "Tin tức",
+    "contact": "Liên hệ",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "admin": "Quản trị",
+    "backToHome": "Trở lại Trang chủ"
+  },
+  "errors": {
+    "pageNotFound": "Oops! Không tìm thấy trang",
+    "pageNotFoundDescription": "Trang bạn đang tìm kiếm không tồn tài hoặc đã được di chuyển.",
+    "serverError": "Lỗi server",
+    "networkError": "Lỗi kết nối mạng",
+    "unknownError": "Lỗi không xác định",
+    "loginFailed": "Đăng nhập thất bại",
+    "serverConnectionError": "Lỗi kết nối máy chủ"
+  },
+  "auth": {
+    "userLogin": "Đăng nhập người dùng",
+    "username": "Tài khoản",
+    "password": "Mật khẩu",
+    "rememberMe": "Lưu mật khẩu",
+    "forgotPassword": "Quên mật khẩu?",
+    "login": "Đăng nhập",
+    "loggingIn": "Đang đăng nhập...",
+    "noAccount": "Chưa có tài khoản?",
+    "register": "Đăng ký"
+  },
+  "frontend": {
+    "home": {
+      "featuredServices": "Dịch vụ nổi bật",
+      "featuredNews": "Tin nổi bật",
+      "services": {
+        "cns": {
+          "title": "CNS/ATM",
+          "description": "CNS Service"
+        },
+        "flight": {
+          "title": "Bay hiệu chuẩn",
+          "description": "Flight Inspection"
+        },
+        "industry": {
+          "title": "Công nghiệp hàng không",
+          "description": "Aviation Industry"
+        }
+      },
+      "newsCategories": {
+        "companyActivities": "Hoạt động công ty",
+        "partyCommittee": "Đảng bộ công ty",
+        "youthUnion": "Đoàn thanh niên công ty",
+        "tradeUnion": "Công đoàn công ty",
+        "aviationNews": "Tin ngành hàng không"
+      }
+    },
+    "products": {
+      "allProducts": "Tất cả sản phẩm",
+      "searchPlaceholder": "Tìm kiếm sản phẩm...",
+      "sortByName": "Sắp xếp theo tên",
+      "sortByCategory": "Sắp xếp theo danh mục",
+      "noProductsFound": "Không tìm thấy sản phẩm phù hợp",
+      "viewDetails": "Xem chi tiết"
+    },
+    "news": {
+      "trending": "Tin nổi bật",
+      "readMore": "Đọc thêm",
+      "viewAll": "Xem tất cả",
+      "latest": "Tin mới nhất",
+      "popular": "Tin phổ biến"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "remember": "Ghi nhớ đăng nhập",
+      "forgot": "Quên mật khẩu?",
+      "submit": "Đăng nhập",
+      "success": "Đăng nhập thành công!",
+      "error": "Đăng nhập thất bại",
+      "invalid": "Tên đăng nhập hoặc mật khẩu không đúng"
+    },
+    "register": {
+      "title": "Đăng ký",
+      "username": "Tên đăng nhập",
+      "email": "Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "submit": "Đăng ký",
+      "success": "Đăng ký thành công!",
+      "error": "Đăng ký thất bại"
+    }
+  },
+  "admin": {
+    "dashboard": "Bảng điều khiển",
+    "management": "Quản lý",
+    "news": {
+      "title": "Quản lý tin tức",
+      "list": "Danh sách tin tức",
+      "add": "Thêm tin tức",
+      "edit": "Chỉnh sửa tin tức",
+      "delete": "Xóa tin tức",
+      "categories": "Danh mục tin tức",
+      "status": {
+        "active": "Hoạt động",
+        "inactive": "Không hoạt động"
+      },
+      "fields": {
+        "title": "Tiêu đề",
+        "titleVi": "Tiêu đề (VI)",
+        "titleEn": "Tiêu đề (EN)",
+        "content": "Nội dung",
+        "contentVi": "Nội dung (VI)",
+        "contentEn": "Nội dung (EN)",
+        "summary": "Tóm tắt",
+        "summaryVi": "Tóm tắt (VI)",
+        "summaryEn": "Tóm tắt (EN)",
+        "category": "Danh mục",
+        "image": "Hình ảnh",
+        "slug": "Slug",
+        "featured": "Nổi bật",
+        "publishDate": "Ngày đăng",
+        "status": "Trạng thái",
+        "author": "Tác giả"
+      },
+      "actions": {
+        "create": "Tạo tin tức",
+        "update": "Cập nhật tin tức",
+        "delete": "Xóa tin tức",
+        "publish": "Xuất bản",
+        "unpublish": "Hủy xuất bản"
+      },
+      "messages": {
+        "createSuccess": "Thêm tin tức thành công!",
+        "updateSuccess": "Cập nhật tin tức thành công!",
+        "deleteSuccess": "Xóa tin tức thành công!",
+        "deleteConfirm": "Bạn có chắc chắn muốn xóa tin tức này?"
+      }
+    },
+    "products": {
+      "title": "Quản lý sản phẩm",
+      "list": "Danh sách sản phẩm",
+      "add": "Thêm sản phẩm",
+      "edit": "Chỉnh sửa sản phẩm",
+      "categories": "Danh mục sản phẩm",
+      "fields": {
+        "name": "Tên sản phẩm",
+        "nameVi": "Tên (VI)",
+        "nameEn": "Tên (EN)",
+        "description": "Mô tả",
+        "descriptionVi": "Mô tả (VI)",
+        "descriptionEn": "Mô tả (EN)",
+        "price": "Giá",
+        "category": "Danh mục",
+        "image": "Hình ảnh",
+        "status": "Trạng thái"
+      }
+    },
+    "services": {
+      "title": "Quản lý dịch vụ",
+      "list": "Danh sách dịch vụ",
+      "add": "Thêm dịch vụ",
+      "edit": "Chỉnh sửa dịch vụ",
+      "fields": {
+        "name": "Tên dịch vụ",
+        "nameVi": "Tên (VI)",
+        "nameEn": "Tên (EN)",
+        "description": "Mô tả",
+        "descriptionVi": "Mô tả (VI)",
+        "descriptionEn": "Mô tả (EN)"
+      }
+    },
+    "notifications": {
+      "title": "Quản lý thông báo",
+      "list": "Danh sách thông báo",
+      "add": "Thêm thông báo",
+      "edit": "Chỉnh sửa thông báo"
+    }
+  },
+  "frontend": {
+    "home": {
+      "welcome": "Chào mừng đến với ATTECH",
+      "subtitle": "Giải pháp công nghệ hàng đầu",
+      "description": "Chúng tôi cung cấp các giải pháp công nghệ tiên tiến để giúp doanh nghiệp của bạn phát triển.",
+      "featuredServices": "Dịch vụ nổi bật",
+      "featuredNews": "Tin nổi bật",
+      "services": {
+        "cns": {
+          "title": "CNS/ATM",
+          "description": "CNS Service"
+        },
+        "flight": {
+          "title": "Bay hiệu chuẩn",
+          "description": "Flight Inspection"
+        },
+        "industry": {
+          "title": "Công nghiệp hàng không",
+          "description": "Aviation Industry"
+        }
+      },
+      "newsCategories": {
+        "companyActivities": "Hoạt động công ty",
+        "partyCommittee": "Đảng bộ công ty",
+        "youthUnion": "Đoàn thanh niên công ty",
+        "tradeUnion": "Công đoàn công ty",
+        "aviationNews": "Tin ngành hàng không"
+      }
+    },
+    "news": {
+      "title": "Tin tức",
+      "latest": "Tin tức mới nhất",
+      "readMore": "Đọc thêm",
+      "category": "Danh mục",
+      "publishedOn": "Xuất bản ngày",
+      "author": "Tác giả",
+      "noNews": "Không có tin tức nào.",
+      "trending": "Tin nổi bật",
+      "viewAll": "Xem tất cả",
+      "popular": "Tin phổ biến",
+      "articleNotFound": "Không tìm thấy bài viết",
+      "loadError": "Có lỗi xảy ra khi tải bài viết",
+      "articleNotExist": "Bài viết không tồn tại hoặc đã bị xóa",
+      "backToNews": "Quay lại trang tin tức",
+      "relatedNews": "Tin cùng chuyên mục",
+      "searchPlaceholder": "Tìm kiếm tin...",
+      "searchNews": "Tìm kiếm tin",
+      "noNewsFound": "Không tìm thấy tin phù hợp",
+      "clearSearch": "Xóa tìm kiếm",
+      "backToNewsList": "Quay lại danh sách tin tức",
+      "allNews": "Tất cả tin tức",
+      "loading": "Đang tải tin tức...",
+      "categoryNotFound": "Không tìm thấy danh mục này!",
+      "categoryNotExist": "Danh mục \"{{category}}\" không tồn tại hoặc đã bị xóa.",
+      "noNewsInCategory": "Chưa có tin tức nào trong danh mục này."
+    },
+    "notifications": {
+      "title": "Thông báo",
+      "latest": "Thông báo mới nhất",
+      "category": "Danh mục",
+      "publishedOn": "Xuất bản ngày",
+      "loading": "Đang tải thông báo...",
+      "notificationNotFound": "Không tìm thấy thông báo!",
+      "notificationNotExist": "Thông báo bạn đang tìm kiếm không tồn tại hoặc đã bị xóa.",
+      "backToNotifications": "Quay lại trang thông báo",
+      "sameCategory": "Thông báo cùng chuyên mục",
+      "searchPlaceholder": "Tìm kiếm thông báo...",
+      "searchNotifications": "Tìm kiếm thông báo",
+      "noNotificationsFound": "Không tìm thấy thông báo phù hợp.",
+      "clearSearch": "Xóa tìm kiếm",
+      "backToNotificationsList": "Quay lại danh sách thông báo",
+      "relatedNotifications": "Thông báo liên quan",
+      "allNotifications": "Tất cả thông báo",
+      "noNotificationsInCategory": "Chưa có thông báo nào trong danh mục này."
+    },
+    "products": {
+      "title": "Sản phẩm",
+      "latest": "Sản phẩm mới nhất",
+      "viewDetails": "Xem chi tiết",
+      "category": "Danh mục",
+      "price": "Giá",
+      "noProducts": "Không có sản phẩm nào.",
+      "allProducts": "Tất cả sản phẩm",
+      "searchPlaceholder": "Tìm kiếm sản phẩm...",
+      "sortByName": "Sắp xếp theo tên",
+      "sortByCategory": "Sắp xếp theo danh mục",
+      "noProductsFound": "Không tìm thấy sản phẩm phù hợp"
+    },
+    "services": {
+      "title": "Dịch vụ",
+      "our": "Dịch vụ của chúng tôi",
+      "viewDetails": "Xem chi tiết",
+      "noServices": "Không có dịch vụ nào."
+    },
+    "contact": {
+      "title": "Trang thông tin liên hệ",
+      "description": "Đừng ngại đặt câu hỏi hay chia sẻ ý kiến thắc mắc! Mỗi sự đóng góp của bạn đều góp phần vào sự phát triển không ngừng của ATTECH!",
+      "details": {
+        "title": "Chi tiết liên hệ",
+        "phone": "Điện thoại",
+        "fax": "Fax",
+        "email": "Hòm thư điện tử",
+        "address": "Địa chỉ"
+      },
+      "form": {
+        "namePlaceholder": "Họ và tên",
+        "emailPlaceholder": "Email",
+        "subjectPlaceholder": "Tiêu đề",
+        "messagePlaceholder": "Nội dung tin nhắn",
+        "submitButton": "Gửi ngay!",
+        "nameRequired": "Vui lòng nhập họ và tên",
+        "emailRequired": "Vui lòng nhập email",
+        "emailInvalid": "Email không hợp lệ",
+        "subjectRequired": "Vui lòng nhập tiêu đề",
+        "messageRequired": "Vui lòng nhập nội dung",
+        "successMessage": "Gửi liên hệ thành công! Cảm ơn bạn đã liên hệ với ATTECH."
+      }
+    },
+    "company": {
+      "name": "CÔNG TY TNHH KỸ THUẬT QUẢN LÝ BAY",
+      "nameSecondary": "AIR TRAFFIC TECHNICAL COMPANY LIMITED",
+      "shortName": "ATTECH"
+    },
+    "companyInfo": {
+      "history": {
+        "title": "Lịch sử ra đời & Quá trình phát triển",
+        "companyInfoTitle": "Thông Tin Công Ty",
+        "companyName": "Tên Doanh Nghiệp",
+        "vietnamese": "Tiếng Việt",
+        "international": "Quốc tế",
+        "abbreviation": "Viết tắt",
+        "headquarters": "Trụ Sở Chính",
+        "address": "Địa chỉ",
+        "phone": "Điện thoại",
+        "fax": "Fax",
+        "email": "Email",
+        "website": "Website",
+        "capital": "Vốn Điều Lệ",
+        "otherFacilities": "Các Cơ Sở Khác",
+        "timeline": {
+          "1986": {
+            "title": "Thành lập Xí nghiệp Điện tử Hàng không",
+            "description": "Xí nghiệp Điện tử Hàng không ra đời với mục tiêu xây dựng một đơn vị làm kỹ thuật điện tử chung cho toàn ngành Hàng không dân dụng Việt Nam."
+          },
+          "1989": {
+            "title": "Thành lập Trung tâm Thông tin Hàng không",
+            "description": "Ngày 29/01/1989, Trung tâm Thông tin Hàng không được thành lập trên cơ sở sát nhập Xí nghiệp Điện tử Hàng không và Đội khai thác thông tin C29, trực thuộc Công ty Quản lý bay."
+          },
+          "1998": {
+            "title": "Đổi tên thành Trung tâm Dịch vụ Kỹ thuật Quản lý bay",
+            "description": "Ngày 05/6/1998, Trung tâm Thông tin Hàng không đổi tên thành Trung tâm Dịch vụ Kỹ thuật Quản lý bay, hạch toán phụ thuộc vào Trung tâm Quản lý bay dân dụng Việt Nam."
+          },
+          "2008": {
+            "title": "Chuyển đổi và thành lập Trung tâm Dịch vụ Kỹ thuật Bảo đảm hoạt động bay",
+            "description": "Năm 2008, Trung tâm Quản lý bay dân dụng VN chuyển thành Tổng công ty Bảo đảm hoạt động bay. Ngày 23/3/2009, Trung tâm Dịch vụ Kỹ thuật Bảo đảm hoạt động bay được thành lập trên cơ sở tổ chức lại Trung tâm Dịch vụ Kỹ thuật Quản lý bay."
+          },
+          "2010": {
+            "title": "Thành lập Công ty TNHH Kỹ thuật Quản lý bay",
+            "description": "Ngày 22/7/2010, Công ty TNHH Kỹ thuật Quản lý bay được thành lập trên cơ sở tổ chức lại Trung tâm Dịch vụ Kỹ thuật Bảo đảm hoạt động bay, do Tổng công ty Quản lý bay Việt Nam sở hữu 100% vốn điều lệ."
+          }
+        }
+      },
+      "financial": {
+        "title": "Báo cáo tài chính",
+        "description": "Trang thông tin tổng hợp các báo cáo tài chính của Công ty TNHH Kỹ thuật Quản lý bay.",
+        "tableHeaders": {
+          "title": "Tiêu đề",
+          "date": "Ngày đăng",
+          "document": "Tài liệu"
+        },
+        "download": "Tải về",
+        "noFile": "Chưa có file",
+        "noReports": "Chưa có báo cáo tài chính nào."
+      },
+      "structure": {
+        "title": "Cơ cấu tổ chức của Công ty TNHH Kỹ thuật Quản lý bay",
+        "altText": "Cơ cấu tổ chức"
+      },
+      "leadership": {
+        "title": "Ban lãnh đạo của Công ty TNHH Kỹ thuật Quản lý bay",
+        "positions": {
+          "chairman": "Chủ tịch công ty",
+          "director": "Giám đốc công ty",
+          "viceDirector": "Phó giám đốc công ty"
+        }
+      },
+      "business": {
+        "authority": "SỞ KẾ HOẠCH VÀ ĐẦU TƯ THÀNH PHỐ HÀ NỘI - PHÒNG ĐĂNG KÝ KINH DOANH",
+        "motto": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập – Tự do – Hạnh phúc",
+        "certificate": {
+          "title": "GIẤY CHỨNG NHẬN ĐĂNG KÝ DOANH NGHIỆP\nCÔNG TY TRÁCH NHIỆM HỮU HẠN MỘT THÀNH VIÊN",
+          "enterpriseCode": "Mã số doanh nghiệp",
+          "firstRegistration": "Đăng ký lần đầu",
+          "lastChange": "Đăng ký thay đổi lần thứ 9: ngày 28 tháng 12 năm 2021"
+        },
+        "companyName": "1. Tên Công Ty",
+        "vietnamese": "Tiếng Việt",
+        "international": "Quốc tế",
+        "abbreviation": "Viết tắt",
+        "headquarters": "2. Địa Chỉ Trụ Sở Chính",
+        "phone": "Điện thoại",
+        "fax": "Fax",
+        "email": "Email",
+        "website": "Website",
+        "businessFields": "3. Ngành, Nghề Kinh Doanh",
+        "details": "Chi tiết",
+        "note": "(Đối với các ngành nghề kinh doanh có điều kiện, Doanh nghiệp chỉ kinh doanh khi có đủ điều kiện theo quy định của pháp luật)",
+        "businessFieldsNote": ""
+      },
+      "iso": {
+        "introTitle": "Giới Thiệu Hệ Thống Quản Lý Chất Lượng ISO 9001:2015",
+        "introDescription": "Công ty TNHH Kỹ thuật Quản lý bay (Air Traffic Technical Company Limited) xây dựng và thực hiện hệ thống quản lý chất lượng để khẳng định khả năng luôn cung cấp các sản phẩm đáp ứng yêu cầu của khách hàng và các yêu cầu pháp luật có liên quan. Công ty không ngừng thoả mãn khách hàng thông qua việc áp dụng hiệu quả hệ thống quản lý chất lượng, ngăn ngừa sự không phù hợp và không ngừng cải tiến.",
+        "historyTitle": "Lịch Sử Chứng Nhận",
+        "commitmentTitle": "Cam Kết Về Hệ Thống Quản Lý Chất Lượng",
+        "commitmentParagraph1": "Công ty TNHH Kỹ thuật Quản lý bay cam kết xây dựng, lập thành văn bản, áp dụng và duy trì hệ thống quản lý chất lượng đồng thời thường xuyên nâng cao hiệu lực và hiệu quả của hệ thống theo các yêu cầu của tiêu chuẩn ISO 9001:2015.",
+        "commitmentParagraph2": "Chính sách chất lượng được Lãnh đạo Công ty tuyên bố ngày 01/01/2018.",
+        "commitmentParagraph3": "Hiện đại, chất lượng, an toàn, tiện dụng và hiệu quả như là một thuộc tính của sản phẩm và dịch vụ hàng không. Tầm nhìn của chúng tôi là trở thành tổ hợp công ty đa sở hữu hoạt động kinh doanh trên các lĩnh vực: Cung cấp dịch vụ thông tin, dẫn đường, giám sát hàng không; Cung cấp dịch vụ bay kiểm tra hiệu chuẩn hàng không; Sản xuất công nghiệp hàng không.",
+        "commitmentParagraph4": "Để đảm bảo rằng 'Sản phẩm và dịch vụ của chúng tôi an toàn, chất lượng và tiện dụng theo tiêu chuẩn hàng không'.",
+        "documentsTitle": "Tài Liệu Đính Kèm",
+        "timeline": {
+          "2005": "Công ty được tổ chức đánh giá BVQI của Anh cấp giấy chứng nhận đạt tiêu chuẩn Quốc tế ISO 9001:2000.",
+          "2008": "Ngày 29/01/2008, Hệ thống quản lý chất lượng của Công ty được tổ chức Quốc tế TUV NORD của CHLB Đức đánh giá tái chứng nhận và cấp Chứng chỉ Hệ thống quản lý chất lượng ISO 9001:2000 lần 2.",
+          "2011": "Ngày 15/01/2011, Công ty hoàn thành chuyển đổi từ tiêu chuẩn TCVN ISO 9001:2000 sang TCVN ISO 9001:2008 và được tổ chức Quốc tế BSi của Vương quốc Anh cấp chứng chỉ ISO 9001:2008.",
+          "2017": "Hệ thống quản lý chất lượng của Công ty được duy trì, định kỳ đánh giá giám sát 1 lần/năm và đánh giá tái chứng nhận 3 năm/lần. Lần cấp giấy chứng nhận gần nhất: ngày 15/01/2017.",
+          "2018": "Công ty chuyển đổi hệ thống từ ISO 9001:2008 sang ISO 9001:2015, áp dụng có hiệu lực từ ngày 01/01/2018."
+        }
+      },
+      "gallery": {
+        "title": "Thư Viện Công Ty",
+        "pageTitle": "Thư Viện Ảnh - ATTECH",
+        "pageDescription": "Thư viện ảnh từ các bài viết của công ty ATTECH",
+        "seoTitle": "Thư viện hình ảnh ATTECH",
+        "seoDescription": "Bộ sưu tập hình ảnh từ các bài viết của Công ty TNHH Kỹ thuật Quản lý bay (ATTECH)"
+      }
+    }
+  },
+  "debug": {
+    "title": "Debug Panel Backend",
+    "backendUrl": "Backend URL",
+    "proxy": "Proxy",
+    "note": "Chỉ các request /api/* được proxy tới backend",
+    "testEndpoints": "Test Endpoints",
+    "testAuth": "Test Auth",
+    "testUpload": "Test Upload",
+    "status": "Trạng thái Backend",
+    "working": "hoạt động",
+    "notWorking": "không hoạt động",
+    "proxyStatus": "Trạng thái Proxy",
+    "noEndpointsResponding": "Không có endpoint nào phản hồi",
+    "noTestsRun": "Chưa chạy test nào...",
+    "loginSuccessful": "Đăng nhập thành công - đã nhận token",
+    "responseOkNoToken": "Response OK nhưng không có token",
+    "loginFailed": "Đăng nhập thất bại",
+    "responseData": "Dữ liệu Response",
+    "errorDetails": "Chi tiết lỗi"
+  },
+  "validation": {
+    "required": "Trường này là bắt buộc",
+    "email": "Email không hợp lệ",
+    "minLength": "Tối thiểu {{count}} ký tự",
+    "maxLength": "Tối đa {{count}} ký tự",
+    "passwordMismatch": "Mật khẩu xác nhận không khớp"
+  },
+  "status": {
+    "online": "Trực tuyến",
+    "offline": "Ngoại tuyến",
+    "connecting": "Đang kết nối",
+    "connected": "Đã kết nối",
+    "disconnected": "Đã ngắt kết nối"
+  },
+  "upload": {
+    "selectFile": "Chọn file",
+    "dragDrop": "Kéo thả file vào đây",
+    "uploading": "Đang upload...",
+    "uploadSuccess": "Upload thành công!",
+    "uploadFailed": "Upload thất bại",
+    "maxFileSize": "Kích thước file tối đa: {{size}}",
+    "allowedFormats": "Định dạng cho phép: {{formats}}"
+  },
+  "footer": {
+    "contactTitle": "Thông tin liên hệ",
+    "address": "Số 5/200, đường Nguyễn Sơn, phường Bồ Đề, thành phố Hà Nội, Việt Nam",
+    "phoneLabel": "Điện thoại",
+    "phone": "024.38271914",
+    "faxLabel": "Fax",
+    "fax": "024.38720398",
+    "email": "attech@attech.com.vn",
+    "quickLinks": "Liên kết nhanh",
+    "mapTitle": "Bản đồ chỉ dẫn công ty TNHH Kỹ thuật Quản lý bay",
+    "copyright": "Bản quyền thuộc sở hữu của ATTECH."
+  }
+}

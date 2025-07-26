@@ -1,35 +1,57 @@
 import React, { useEffect } from "react";
 import "./PartNews.css";
-import { Link } from "react-router-dom";
+import { useI18n } from "../../../../hooks/useI18n";
+import LocalizedLink from "../../../../components/Shared/LocalizedLink";
+import { LocalizedTitle, LocalizedDescription } from "../../../../components/Shared/LocalizedContent";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { mockNews } from "../../../../utils/mockNews";
 
-const groups = [
-  { slug: "hoat-dong-cong-ty", title: "Hoạt động công ty" },
-  { slug: "dang-bo-cong-ty", title: "Đảng bộ công ty" },
-  { slug: "doan-thanh-nien-cong-ty", title: "Đoàn thanh niên công ty" },
-  { slug: "cong-doan-cong-ty", title: "Công đoàn công ty" },
+const getGroups = (t, currentLanguage) => [
+  { 
+    slugVi: "hoat-dong-cong-ty", 
+    slugEn: "company-activities",
+    titleKey: "frontend.home.newsCategories.companyActivities" 
+  },
+  { 
+    slugVi: "dang-bo-cong-ty", 
+    slugEn: "party-committee",
+    titleKey: "frontend.home.newsCategories.partyCommittee" 
+  },
+  { 
+    slugVi: "doan-thanh-nien-cong-ty", 
+    slugEn: "youth-union",
+    titleKey: "frontend.home.newsCategories.youthUnion" 
+  },
+  { 
+    slugVi: "cong-doan-cong-ty", 
+    slugEn: "trade-union",
+    titleKey: "frontend.home.newsCategories.tradeUnion" 
+  },
 ];
 
-const getLatestBySlug = (slug) =>
+const getLatestBySlug = (slugVi) =>
   mockNews
-    .filter(item => item.postCategorySlugVi === slug)
+    .filter(item => item.postCategorySlugVi === slugVi)
     .sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted))[0];
 
-const orderedNewsGroups = groups
+const getOrderedNewsGroups = (groups) => groups
   .map(group => {
-    const featuredNews = getLatestBySlug(group.slug);
+    const featuredNews = getLatestBySlug(group.slugVi);
     return featuredNews ? { ...group, featuredNews } : null;
   })
   .filter(Boolean);
 
-function formatDate(isoString) {
+function formatDate(isoString, locale) {
   const d = new Date(isoString);
-  return d.toLocaleDateString('vi-VN');
+  return d.toLocaleDateString(locale === 'vi' ? 'vi-VN' : 'en-US');
 }
 
 const PartNews = () => {
+  const { t, currentLanguage } = useI18n();
+  const groups = getGroups(t, currentLanguage);
+  const orderedNewsGroups = getOrderedNewsGroups(groups);
+  
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -50,35 +72,35 @@ const PartNews = () => {
               data-aos-delay={index * 100}
             >
               <div className="news__card-header">
-                <Link to={`/tin-tuc/${group.slug}`} className="news__card-title">
-                  <span>{group.title}</span>
-                </Link>
+                <LocalizedLink to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${currentLanguage === 'vi' ? group.slugVi : group.slugEn}`} className="news__card-title">
+                  <span>{t(group.titleKey)}</span>
+                </LocalizedLink>
               </div>
 
               <div className="news__image-container">
-                <Link to={`/tin-tuc/${group.featuredNews.postCategorySlugVi}/${group.featuredNews.slugVi}`}>
+                <LocalizedLink to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${currentLanguage === 'vi' ? group.featuredNews.postCategorySlugVi : group.featuredNews.postCategorySlugEn}/${currentLanguage === 'vi' ? group.featuredNews.slugVi : group.featuredNews.slugEn}`}>
                   <img
                     src={group.featuredNews.image}
-                    alt={group.featuredNews.titleVi}
+                    alt={currentLanguage === 'vi' ? group.featuredNews.titleVi : group.featuredNews.titleEn}
                     className="news__image"
                     loading="lazy"
                   />
-                </Link>
+                </LocalizedLink>
                 <div className="news__date-badge">
                   <i className="far fa-clock"></i>
-                  <span>{formatDate(group.featuredNews.timePosted)}</span>
+                  <span>{formatDate(group.featuredNews.timePosted, currentLanguage)}</span>
                 </div>
               </div>
 
               <div className="news__content">
-                <Link to={`/tin-tuc/${group.featuredNews.postCategorySlugVi}/${group.featuredNews.slugVi}`} className="news__article-title">
-                  <span>{group.featuredNews.titleVi}</span>
-                </Link>
-                <p className="news__excerpt">{group.featuredNews.descriptionVi}</p>
-                <Link to={`/tin-tuc/${group.slug}`} className="news__read-more">
-                  Đọc thêm
+                <LocalizedLink to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${currentLanguage === 'vi' ? group.featuredNews.postCategorySlugVi : group.featuredNews.postCategorySlugEn}/${currentLanguage === 'vi' ? group.featuredNews.slugVi : group.featuredNews.slugEn}`} className="news__article-title">
+                  <span>{currentLanguage === 'vi' ? group.featuredNews.titleVi : group.featuredNews.titleEn}</span>
+                </LocalizedLink>
+                <p className="news__excerpt">{currentLanguage === 'vi' ? group.featuredNews.descriptionVi : group.featuredNews.descriptionEn}</p>
+                <LocalizedLink to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${currentLanguage === 'vi' ? group.slugVi : group.slugEn}`} className="news__read-more">
+                  {t('common.readMore')}
                   <i className="fas fa-arrow-right"></i>
-                </Link>
+                </LocalizedLink>
               </div>
             </article>
           ))}

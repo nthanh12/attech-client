@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./About.css";
-import { Link } from "react-router-dom";
+import { useI18n } from "../../../../hooks/useI18n";
+import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -24,9 +25,9 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const products = [
+const getProducts = (t, currentLanguage) => [
   {
-    title: "CNS / ATM",
+    titleKey: "frontend.home.services.cns.title",
     images: [
       "/assets/images/cns_atm/cns_atm_1.webp",
       "/assets/images/cns_atm/cns_atm_2.webp",
@@ -35,10 +36,11 @@ const products = [
       "/assets/images/cns_atm/dvor_dme_dien_bien.webp",
       "/assets/images/cns_atm/dvor_dme_van_don.webp",
     ],
-    link: "/dich-vu/thong-tin-dan-duong-giam-sat",
+    routeKey: "SERVICE_DETAIL",
+    slug: currentLanguage === 'vi' ? 'thong-tin-dan-duong-giam-sat' : 'cns-service'
   },
   {
-    title: "BAY KIỂM TRA HIỆU CHUẨN",
+    titleKey: "frontend.home.services.flight.title",
     images: [
       "/assets/images/bhc/bhc_1.webp",
       "/assets/images/bhc/bhc_2.webp",
@@ -46,12 +48,12 @@ const products = [
       "/assets/images/bhc/bhc_4.webp",
       "/assets/images/bhc/bhc_5.webp",
       "/assets/images/bhc/bhc_6.webp",
-      
     ],
-    link: "/dich-vu/bay-kiem-tra-hieu-chuan",
+    routeKey: "SERVICE_DETAIL",
+    slug: currentLanguage === 'vi' ? 'bay-kiem-tra-hieu-chuan' : 'calibration-service'
   },
   {
-    title: "CÔNG NGHIỆP HÀNG KHÔNG",
+    titleKey: "frontend.home.services.industry.title",
     images: [
       "/assets/images/cnhk/cnhk_1.webp",
       "/assets/images/cnhk/cnhk_2.webp",
@@ -62,11 +64,14 @@ const products = [
       "/assets/images/cnhk/cnhk_7.webp",
       "/assets/images/cnhk/cnhk_8.webp",
     ],
-    link: "/dich-vu/ky-thuat-hang-khong",
+    routeKey: "SERVICE_DETAIL",
+    slug: currentLanguage === 'vi' ? 'thu-nghiem-hieu-chuan' : 'testing-calibration-service'
   },
 ];
 
 export default function About() {
+  const { t, currentLanguage } = useI18n();
+  const products = getProducts(t, currentLanguage);
   const [currentIndices, setCurrentIndices] = useState(products.map(() => 0));
 
   useEffect(() => {
@@ -97,7 +102,7 @@ export default function About() {
   return (
     <section className="about-hero">
       <div className="about-hero-content">
-        <h1 className="about-main-title">Dịch vụ nổi bật</h1>
+        <h1 className="about-main-title">{t('frontend.home.featuredServices')}</h1>
       </div>
       <Swiper
         modules={[Navigation, Pagination, A11y]}
@@ -133,12 +138,12 @@ export default function About() {
               </div>
               <div className="about-hero-overlay">
                 <div className="about-hero-content">
-                  <h2 className="about-content-title">{product.title}</h2>
+                  <h2 className="about-content-title">{t(product.titleKey)}</h2>
                   <div className="custom-btn-group">
-                    <Link to={product.link} className="custom-btn-more">
-                      Xem thêm
+                    <LocalizedLink routeKey={product.routeKey} params={{ slug: product.slug }} className="custom-btn-more">
+                      {t('common.viewMore')}
                       <ArrowIcon />
-                    </Link>
+                    </LocalizedLink>
                   </div>
                 </div>
               </div>

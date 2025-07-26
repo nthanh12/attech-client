@@ -4,16 +4,21 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "./Feature.css";
-import { Link } from "react-router-dom";
+import { useI18n } from "../../../../hooks/useI18n";
+import LocalizedLink from "../../../../components/Shared/LocalizedLink";
+import { LocalizedTitle } from "../../../../components/Shared/LocalizedContent";
 import { mockNews } from "../../../../utils/mockNews";
 
 const Feature = () => {
+  const { t, currentLanguage } = useI18n();
+  
   return (
     <section className="feature-section">
       <div className="feature-container">
         {/* 3 dịch vụ chính */}
-        <Link
-          to="/dich-vu/thong-tin-dan-duong-giam-sat"
+        <LocalizedLink
+          routeKey="SERVICE_DETAIL"
+          params={{ slug: currentLanguage === 'vi' ? 'thong-tin-dan-duong-giam-sat' : 'cns-service' }}
           className="feature-link"
         >
           <div
@@ -28,12 +33,12 @@ const Feature = () => {
               <i className="fas fa-satellite"></i>
             </div>
             <div className="feature-text">
-              <h3>CNS/ATM</h3>
-              <p className="feature-desc">CNS Service</p>
+              <h3>{t('frontend.home.services.cns.title')}</h3>
+              <p className="feature-desc">{t('frontend.home.services.cns.description')}</p>
             </div>
           </div>
-        </Link>
-        <Link to="/dich-vu/bay-kiem-tra-hieu-chuan" className="feature-link">
+        </LocalizedLink>
+        <LocalizedLink routeKey="SERVICE_DETAIL" params={{ slug: currentLanguage === 'vi' ? 'bay-kiem-tra-hieu-chuan' : 'calibration-service' }} className="feature-link">
           <div
             className="feature-item"
             style={{ backgroundImage: "url(/assets/images/bhc/bhc_1.webp)" }}
@@ -43,12 +48,12 @@ const Feature = () => {
               <i className="fas fa-plane"></i>
             </div>
             <div className="feature-text">
-              <h3>Bay hiệu chuẩn</h3>
-              <p className="feature-desc">Flight Inspection</p>
+              <h3>{t('frontend.home.services.flight.title')}</h3>
+              <p className="feature-desc">{t('frontend.home.services.flight.description')}</p>
             </div>
           </div>
-        </Link>
-        <Link to="/san-pham" className="feature-link">
+        </LocalizedLink>
+        <LocalizedLink routeKey="PRODUCTS" className="feature-link">
           <div
             className="feature-item"
             style={{ backgroundImage: "url(/assets/images/cnhk/cnhk_6.webp)" }}
@@ -58,11 +63,11 @@ const Feature = () => {
               <i className="fas fa-globe"></i>
             </div>
             <div className="feature-text">
-              <h3>Công nghiệp hàng không</h3>
-              <p className="feature-desc">Aviation Industry</p>
+              <h3>{t('frontend.home.services.industry.title')}</h3>
+              <p className="feature-desc">{t('frontend.home.services.industry.description')}</p>
             </div>
           </div>
-        </Link>
+        </LocalizedLink>
 
         {/* Tin tức nổi bật */}
         <div className="notify-wrapper">
@@ -86,17 +91,20 @@ const Feature = () => {
           >
             {mockNews.filter(item => item.isOutstanding).map((item, index) => (
               <SwiperSlide key={index}>
-                <Link to={`/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  <div className="notify-item" title={item.titleVi}>
+                <LocalizedLink 
+                  to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${currentLanguage === 'vi' ? item.postCategorySlugVi : item.postCategorySlugEn}/${currentLanguage === 'vi' ? item.slugVi : item.slugEn}`}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  <div className="notify-item" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}>
                     <div className="notify-img">
                       <img src={item.image} alt={item.alt} loading="lazy" />
-                      <span className="news-badge">Tin nổi bật</span>
+                      <span className="news-badge">{t('frontend.home.featuredNews')}</span>
                     </div>
-                    <p className="notify-title" title={item.titleVi}>
-                      {item.titleVi}
+                    <p className="notify-title" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}>
+                      {currentLanguage === 'vi' ? item.titleVi : item.titleEn}
                     </p>
                   </div>
-                </Link>
+                </LocalizedLink>
               </SwiperSlide>
             ))}
           </Swiper>

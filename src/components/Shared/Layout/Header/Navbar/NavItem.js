@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef, memo } from "react";
 import { Link } from "react-router-dom";
-import { useLanguage } from "../../../../../contexts/LanguageContext";
+import { useI18n } from "../../../../../hooks/useI18n";
 
 const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
-  const { lang } = useLanguage();
+  const { currentLanguage, i18n } = useI18n();
   const hasChildren = item.submenu && item.submenu.length > 0;
   const [isOpen, setIsOpen] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(0);
   const linkRef = useRef(null);
   const toggleRef = useRef(null);
+  
+  // Force re-render when language changes
+  useEffect(() => {
+    setForceUpdate(prev => prev + 1);
+  }, [currentLanguage, i18n.language]);
 
   const handleLinkClick = (e) => {
     if (isMobile) {
@@ -53,8 +59,13 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
     }
   };
 
-  const label = lang === "vi" ? item.labelVi : item.labelEn;
-  const path = lang === "vi" ? item.pathVi : item.pathEn;
+  // Force re-render on language change by using i18n.language directly
+  const currentLang = i18n.language || currentLanguage || 'vi';
+  const label = currentLang === "vi" ? item.labelVi : item.labelEn;
+  const path = currentLang === "vi" ? item.pathVi : item.pathEn;
+  
+  // Debug: Log khi component render
+  console.log(`NavItem [${item.key}]: currentLang=${currentLang}, label=${label}`);
 
   return (
     <li
@@ -82,7 +93,7 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
             onClick={handleToggleSubmenu}
             ref={toggleRef}
             aria-expanded={isOpen}
-            aria-label={isOpen ? "Đóng menu con" : "Mở menu con"}
+            aria-label={isOpen ? (currentLang === 'vi' ? "Đóng menu con" : "Close submenu") : (currentLang === 'vi' ? "Mở menu con" : "Open submenu")}
           >
             <span className="dropdown-icon"></span>
           </button>
@@ -105,4 +116,5 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
   );
 };
 
-export default memo(NavItem);
+// Remove memo to ensure component re-renders on language change
+export default NavItem;
