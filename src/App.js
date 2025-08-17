@@ -9,6 +9,7 @@ import ChatWidget from "./components/Shared/ChatWidget/ChatWidget";
 import BackToTopButton from "./components/Shared/Navigation/BackToTopButton/BackToTopButton";
 import LoadingOverlay from "./components/Shared/LoadingOverlay/LoadingOverlay";
 import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider } from './contexts/AuthContext';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 
@@ -44,68 +45,72 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Aggressive cleanup function
+    // Nhanh chóng ẩn loading cho trang public
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500); // Chỉ loading 500ms
+
+    // Safe cleanup function
     const cleanupLoadingElements = () => {
-      // Remove by ID
-      const elementsById = ['spinner'];
-      elementsById.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.remove();
-      });
-
-      // Remove by class selectors - more aggressive
-      const selectors = [
-        '.spinner',
-        '.loading-spinner', 
-        '.spinner-border',
-        '.admin-loading-spinner',
-        '[class*="spinner"]',
-        '[class*="loading"]',
-        '[id*="spinner"]',
-        '[id*="loading"]'
-      ];
-
-      selectors.forEach(selector => {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-          // Don't remove our LoadingOverlay
-          if (!el.closest('.loading-overlay')) {
-            el.remove();
+      try {
+        // Remove by ID safely
+        const elementsById = ['spinner'];
+        elementsById.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.parentNode) {
+            el.parentNode.removeChild(el);
           }
         });
-      });
+
+        // Remove by class selectors - safer approach
+        const selectors = [
+          '.spinner',
+          '.loading-spinner', 
+          '.spinner-border',
+          '.admin-loading-spinner'
+        ];
+
+        selectors.forEach(selector => {
+          const elements = document.querySelectorAll(selector);
+          elements.forEach(el => {
+            try {
+              // Don't remove React-managed components or LoadingOverlay
+              if (!el.closest('.loading-overlay') && 
+                  !el.closest('[data-reactroot]') && 
+                  !el.closest('#root') &&
+                  el.parentNode) {
+                el.parentNode.removeChild(el);
+              }
+            } catch (err) {
+              // Silently handle removal errors
+              console.debug('Element removal error:', err);
+            }
+          });
+        });
+      } catch (err) {
+        console.debug('Cleanup error:', err);
+      }
     };
 
-    // Multiple cleanup attempts
-    cleanupLoadingElements();
-    setTimeout(cleanupLoadingElements, 50);
-    setTimeout(cleanupLoadingElements, 100);
-    setTimeout(cleanupLoadingElements, 200);
-
-    const handleLoad = () => {
-      setIsLoading(false);
-    };
-
-    if (document.readyState === 'complete') {
-      setIsLoading(false);
-    } else {
-      window.addEventListener('load', handleLoad);
-    }
+    // Disabled cleanup to avoid interfering with React components
+    // setTimeout(cleanupLoadingElements, 100);
 
     return () => {
-      window.removeEventListener('load', handleLoad);
+      clearTimeout(timer);
     };
   }, []);
 
   return (
     <I18nextProvider i18n={i18n}>
       <Router>
-        <ThemeProvider>
-          <LoadingOverlay isLoading={isLoading} />
-          <ScrollToTop>
-            <AppContent />
-          </ScrollToTop>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <LoadingOverlay isLoading={isLoading} />
+            <ScrollToTop>
+              <AppContent />
+            </ScrollToTop>
+          </ThemeProvider>
+        </AuthProvider>
       </Router>
     </I18nextProvider>
   );

@@ -1,0 +1,470 @@
+.service-creation-form {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.phase-header {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.phase-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.phase-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e9ecef;
+  color: #6c757d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.phase-step.active .step-number {
+  background: #007bff;
+  color: white;
+}
+
+.phase-step.completed .step-number {
+  background: #28a745;
+  color: white;
+}
+
+.step-label {
+  font-size: 14px;
+  color: #6c757d;
+  text-align: center;
+  font-weight: 500;
+}
+
+.phase-step.active .step-label {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.phase-step.completed .step-label {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.phase-arrow {
+  font-size: 18px;
+  color: #dee2e6;
+  margin: 0 8px;
+}
+
+.phase-description {
+  text-align: center;
+  font-style: italic;
+  color: #6c757d;
+  margin-top: 8px;
+}
+
+.form-content {
+  background: white;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+/* Form Tabs */
+.form-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #f1f3f4;
+}
+
+.tab-button {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  color: #6c757d;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-button:hover {
+  background: #f8f9fa;
+  color: #495057;
+}
+
+.tab-button.active {
+  background: #007bff;
+  color: white;
+  border-bottom: 2px solid #007bff;
+}
+
+.tab-content {
+  padding-top: 20px;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 32px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.form-section h4 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #007bff;
+}
+
+/* Form Elements */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-row.full-width {
+  grid-template-columns: 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.form-control, input, select, textarea {
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-control:focus, input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Input with Button (for translate buttons) */
+.input-with-translate {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.input-with-translate .form-control,
+.input-with-translate input,
+.input-with-translate textarea {
+  flex: 1;
+  min-width: 0; /* Allow shrinking */
+}
+
+.input-with-translate textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.input-with-translate .translate-btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 8px 12px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  height: fit-content;
+  margin-top: 2px; /* Align with input top */
+}
+
+.input-with-translate .translate-btn:hover:not(:disabled) {
+  background: #218838;
+}
+
+.input-with-translate .translate-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #6c757d;
+}
+
+/* Input with Button */
+.input-with-button {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.input-with-button .form-control {
+  flex: 1;
+}
+
+.input-with-button .btn {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Summary Section */
+.summary-section {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.summary-section h4 {
+  margin: 0 0 12px 0;
+  color: #495057;
+  font-size: 16px;
+}
+
+.summary-content p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.summary-content ul {
+  margin: 8px 0;
+  padding-left: 20px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  border-radius: 0 0 8px 8px;
+  margin-top: -1px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #545b62;
+}
+
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: #1e7e34;
+}
+
+/* Upload sections */
+.featured-upload,
+.album-upload,
+.documents-upload {
+  padding: 20px 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .service-creation-form {
+    padding: 16px;
+  }
+  
+  .phase-steps {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .phase-arrow {
+    transform: rotate(90deg);
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .form-tabs {
+    overflow-x: auto;
+  }
+  
+  .input-with-button {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+/* TinyMCE adjustments */
+.tox-tinymce {
+  border-radius: 6px !important;
+}
+
+.tox .tox-toolbar {
+  border-radius: 6px 6px 0 0 !important;
+}
+
+/* Fix TinyMCE fullscreen trong modal */
+.tox-fullscreen {
+  z-index: 10000 !important;
+}
+
+.tox.tox-tinymce.tox-fullscreen {
+  z-index: 10000 !important;
+}
+
+.tox.tox-tinymce.tox-fullscreen .tox-editor-container {
+  z-index: 10000 !important;
+}
+
+/* Ensure modal doesn't interfere with fullscreen */
+.modal.show {
+  z-index: 1050;
+}
+
+.modal.show .modal-content {
+  z-index: 1055;
+}
+
+/* Ensure fullscreen editor takes full viewport - được handle bởi TinyMCE */
+.tox-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+}
+
+/* Hide other elements when editor is in fullscreen - được handle bởi JavaScript */
+
+/* File upload styling */
+.file-upload-area {
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.file-upload-area:hover {
+  border-color: #007bff;
+  background: #f1f8ff;
+}
+
+.file-upload-area.drag-over {
+  border-color: #007bff;
+  background: #e7f3ff;
+}
+
+.file-upload-area input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background: white;
+}
+
+/* Error styling */
+.error {
+  border-color: #dc3545 !important;
+}
+
+.error-text {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}

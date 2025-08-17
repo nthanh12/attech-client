@@ -1,23 +1,286 @@
 // AdminLayout.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate, useLocation, Outlet } from "react-router-dom";
-import { usePermissions } from "../hooks/usePermissions";
+import { useAuth } from "../../contexts/AuthContext";
+import { PermissionProvider } from "../hooks/usePermissions";
 import "./AdminLayout.css";
 import "../admin-common.css";
 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { canAccess } = usePermissions();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const {
+    user,
+    logout,
+    hasPermission,
+    getUserPermissions,
+    PERMISSIONS,
+    loading,
+    isAuthenticated,
+  } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Always starts closed for overlay mode
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [openSubMenus, setOpenSubMenus] = useState({});
-  const [now, setNow] = useState(new Date());
+  // Removed now state - không cần clock
+
+  // Watch for user state changes
+  useEffect(() => {}, [user]);
+
+  // Memoize navItems để tránh infinite loop
+  const navItems = useMemo(() => {
+    const items = getNavItemsByPermissions();
+    return items;
+  }, [user?.permissions]); // Chỉ re-calculate khi permissions thay đổi
+
+  useEffect(() => {
+    const activeParent = navItems.find(
+      (item) =>
+        item.subItems &&
+        item.subItems.some((subItem) =>
+          location.pathname.startsWith(subItem.path)
+        )
+    );
+
+    if (activeParent) {
+      setOpenSubMenus((prev) => ({ ...prev, [activeParent.path]: true }));
+    }
+  }, [location.pathname, navItems]);
+
+  // Không cần timer cho clock nữa - đã remove
+
+  // Handle authentication state
+  useEffect(() => {
+    const authStatus = isAuthenticated();
+
+    if (!loading && !authStatus) {
+      navigate("/dang-nhap", { replace: true });
+    }
+  }, [loading, isAuthenticated, navigate, location.pathname, user]);
+
+  // Now handle early returns after all hooks
+  if (loading) {
+    return (
+      <div
+        className="attech-admin-loading-container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "#f8f9fa",
+        }}
+      >
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Đang tải...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if not authenticated
+  if (!isAuthenticated()) {
+    return null;
+  }
+
+  function getNavItemsByPermissions() {
+    const userPermissions = getUserPermissions();
+
+    // Define all possible navigation items with their required permissions
+    const allNavItems = [
+      {
+        path: "/admin/dashboard",
+        label: "Dashboard",
+        icon: "bi bi-speedometer2",
+      },
+
+      // News Management
+      {
+        path: "/admin/news",
+        label: "Quản lý tin tức",
+        icon: "bi bi-newspaper",
+        permission: "menu_news_manager",
+        subItems: [
+          {
+            path: "/admin/news",
+            label: "Danh sách tin tức",
+            icon: "bi bi-newspaper",
+            permission: "view_news",
+          },
+          {
+            path: "/admin/news-category",
+            label: "Danh mục tin tức",
+            icon: "bi bi-collection",
+            permission: "view_news_category",
+          },
+        ],
+      },
+
+      // Notification Management
+      {
+        path: "/admin/notifications",
+        label: "Quản lý thông báo",
+        icon: "bi bi-bell",
+        permission: "menu_notification_manager",
+        subItems: [
+          {
+            path: "/admin/notifications",
+            label: "Danh sách thông báo",
+            icon: "bi bi-bell",
+            permission: "view_notifications",
+          },
+          {
+            path: "/admin/notification-category",
+            label: "Danh mục thông báo",
+            icon: "bi bi-collection",
+            permission: "view_notification_category",
+          },
+        ],
+      },
+
+      // Product Management
+      {
+        path: "/admin/products",
+        label: "Quản lý sản phẩm",
+        icon: "bi bi-box",
+        permission: "menu_product_manager",
+        subItems: [
+          {
+            path: "/admin/products",
+            label: "Danh sách sản phẩm",
+            icon: "bi bi-box",
+            permission: "view_products",
+          },
+          {
+            path: "/admin/product-category",
+            label: "Danh mục sản phẩm",
+            icon: "bi bi-collection",
+            permission: "view_product_category",
+          },
+        ],
+      },
+
+      // Service Management
+      {
+        path: "/admin/services",
+        label: "Quản lý dịch vụ",
+        icon: "bi bi-gear",
+        permission: "menu_service_manager",
+        subItems: [
+          {
+            path: "/admin/services",
+            label: "Danh sách dịch vụ",
+            icon: "bi bi-gear",
+            permission: "view_services",
+          },
+        ],
+      },
+
+      // User Management
+      {
+        path: "/admin/users",
+        label: "Quản lý người dùng",
+        icon: "bi bi-people-fill",
+        permission: "menu_user_manager",
+        subItems: [
+          {
+            path: "/admin/users",
+            label: "Danh sách người dùng",
+            icon: "bi bi-person-lines-fill",
+            permission: "view_users",
+          },
+          {
+            path: "/admin/roles",
+            label: "Quản lý vai trò",
+            icon: "bi bi-person-badge",
+            permission: "menu_role_manager",
+          },
+          {
+            path: "/admin/permissions",
+            label: "Quản lý quyền",
+            icon: "bi bi-shield-lock",
+            permission: "menu_permission_manager",
+          },
+        ],
+      },
+
+      // Media Management
+      {
+        path: "/admin/albums",
+        label: "Quản lý thư viện",
+        icon: "bi bi-images",
+        permission: "file_upload",
+      },
+
+      // System Management
+      {
+        path: "/admin/system",
+        label: "Cài đặt hệ thống",
+        icon: "bi bi-gear-fill",
+        permission: "menu_config",
+        subItems: [
+          {
+            path: "/admin/config",
+            label: "Cấu hình Banner",
+            icon: "bi bi-sliders",
+            permission: "menu_config",
+          },
+          {
+            path: "/admin/system-settings",
+            label: "Cài đặt hệ thống",
+            icon: "bi bi-gear",
+            permission: "menu_config",
+          },
+          {
+            path: "/admin/routes",
+            label: "Quản lý Route",
+            icon: "bi bi-signpost",
+            permission: "menu_config",
+          },
+          {
+            path: "/admin/api-endpoints",
+            label: "Quản lý API Endpoint",
+            icon: "bi bi-plug",
+            permission: "menu_api_endpoint_manager",
+          },
+        ],
+      },
+    ];
+
+    // Filter navigation items based on user permissions
+    const filterItems = (items) => {
+      if (!userPermissions || userPermissions.length === 0) {
+        return []; // Hide all items if no permissions
+      }
+
+      return items.filter((item) => {
+        // If no permission required, show the item (like Dashboard)
+        if (!item.permission) return true;
+
+        // Check if user has the required permission
+        const hasRequiredPermission = hasPermission(item.permission);
+
+        // If item has subitems, filter them too
+        if (item.subItems) {
+          const filteredSubItems = filterItems(item.subItems);
+          item.subItems = filteredSubItems;
+          // Show parent item if it has permission OR if any subitem is visible
+          return hasRequiredPermission || filteredSubItems.length > 0;
+        }
+
+        return hasRequiredPermission;
+      });
+    };
+
+    const filteredItems = filterItems(allNavItems);
+    // console.log('Filtered nav items:', filteredItems); // Debug log - commented out to reduce spam
+    return filteredItems;
+  }
 
   const handleLogout = () => {
     if (window.confirm("Bạn có chắc chắn muốn đăng xuất?")) {
-      localStorage.removeItem("admin_token");
-      navigate("/admin/login");
+      logout();
+      navigate("/dang-nhap");
     }
   };
 
@@ -36,255 +299,503 @@ const AdminLayout = () => {
     }));
   };
 
-  const navItems = [
-    { path: "/admin", label: "Dashboard", icon: "bi bi-speedometer2", permission: "view_dashboard" },
-    { 
-      path: "/admin/products", 
-      label: "Sản phẩm", 
-      icon: "bi bi-box",
-      permission: "view_products"
-    },
-    { 
-      path: "/admin/services", 
-      label: "Dịch vụ", 
-      icon: "bi bi-gear",
-      permission: "view_services"
-    },
-    { 
-      path: "/admin/news", 
-      label: "Tin tức", 
-      icon: "bi bi-newspaper",
-      permission: "view_news"
-    },
-    { 
-      path: "/admin/notifications", 
-      label: "Thông báo", 
-      icon: "bi bi-bell",
-      permission: "view_notifications"
-    },
-    { 
-      path: "/admin/users", 
-      label: "Quản lý người dùng", 
-      icon: "bi bi-person-gear",
-      permission: "view_users"
-    },
-    { 
-      path: "/admin/routes", 
-      label: "Quản lý Routes", 
-      icon: "bi bi-diagram-3",
-      permission: "view_routes"
-    },
-    { 
-      path: "/admin/permissions", 
-      label: "Quản lý Quyền hạn", 
-      icon: "bi bi-shield-check",
-      permission: "view_permissions"
-    },
-    { 
-      path: "/admin/media", 
-      label: "Quản lý Media", 
-      icon: "bi bi-images",
-      permission: "view_media"
-    },
-    { 
-      path: "/admin/system-settings", 
-      label: "Cài đặt hệ thống", 
-      icon: "bi bi-gear-wide-connected",
-      permission: "view_system_settings"
-    },
-    { 
-      path: "/admin/config", 
-      label: "Cấu hình Banner", 
-      icon: "bi bi-sliders",
-      permission: "view_banner_config"
-    },
-    {
-      path: "/admin/menu",
-      label: "Danh mục",
-      icon: "bi bi-collection-fill",
-      subItems: [
-        { 
-          path: "/admin/product-category", 
-          label: "Loại sản phẩm",
-          permission: "view_product_categories"
-        },
-        { 
-          path: "/admin/news-category", 
-          label: "Loại tin tức",
-          permission: "view_news_categories"
-        },
-        { 
-          path: "/admin/notification-category", 
-          label: "Loại thông báo",
-          permission: "view_notification_categories"
-        },
-      ],
-    },
-  ];
+  const getPageTitle = () => {
+    // Simple page title logic based on pathname
+    const path = location.pathname;
 
-  // Filter nav items based on permissions
-  const filteredNavItems = navItems.map(item => {
-    if (item.subItems) {
-      return {
-        ...item,
-        subItems: item.subItems.filter(subItem => 
-          !subItem.permission || canAccess(subItem.permission)
-        )
-      };
-    }
-    return item;
-  }).filter(item => 
-    !item.permission || canAccess(item.permission)
-  );
+    const titleMap = {
+      "/admin": "Dashboard",
+      "/admin/news": "Quản lý tin tức",
+      "/admin/products": "Quản lý sản phẩm",
+      "/admin/services": "Quản lý dịch vụ",
+      "/admin/notifications": "Quản lý thông báo",
+      "/admin/news-category": "Danh mục tin tức",
+      "/admin/product-category": "Danh mục sản phẩm",
+      "/admin/notification-category": "Danh mục thông báo",
+      "/admin/users": "Quản lý người dùng",
+      "/admin/permissions": "Phân quyền",
+      "/admin/seo": "SEO Management",
+      "/admin/internal-docs": "Tài liệu nội bộ",
+      "/admin/library": "Thư viện",
+    };
 
-  useEffect(() => {
-    const activeParent = filteredNavItems.find(
-      (item) =>
-        item.subItems &&
-        item.subItems.some((si) => si.path === location.pathname)
-    );
-    if (activeParent && !openSubMenus[activeParent.path]) {
-      toggleSubMenu(activeParent.path);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
-
-  useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleLinkClick = () => {
-    if (window.innerWidth < 768) setSidebarOpen(false);
+    return titleMap[path] || "Admin Dashboard";
   };
 
+  const renderNavItem = (item) => {
+    const isActive = location.pathname === item.path;
+    const hasSubItems = item.subItems && item.subItems.length > 0;
+    const isSubMenuOpen = openSubMenus[item.path];
+
+    if (hasSubItems) {
+      return (
+        <li
+          key={item.path}
+          className="attech-admin-nav-item"
+          style={{ margin: "0.5rem 0" }}
+        >
+          <button
+            className={`attech-admin-nav-link ${
+              isActive ? "attech-admin-nav-active" : ""
+            }`}
+            onClick={() => toggleSubMenu(item.path)}
+            type="button"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.75rem",
+              padding: "0.75rem 1rem",
+              color: "#e2e8f0",
+              background: "transparent",
+              border: "none",
+              borderRadius: "8px",
+              margin: "0 0.75rem",
+              width: "calc(100% - 1.5rem)",
+              cursor: "pointer",
+            }}
+          >
+            <i className={item.icon}></i>
+            <span style={{ flex: 1, textAlign: "left" }}>{item.label}</span>
+            <i
+              className={`bi bi-chevron-${
+                isSubMenuOpen ? "down" : "right"
+              } attech-admin-submenu-toggle`}
+            ></i>
+          </button>
+          <ul
+            className={`attech-admin-submenu ${
+              isSubMenuOpen ? "attech-admin-submenu-open" : ""
+            }`}
+            style={{
+              listStyle: "none",
+              margin: 0,
+              padding: 0,
+              display: isSubMenuOpen ? "block" : "none",
+            }}
+          >
+            {item.subItems.map((subItem) => {
+              // Check permission for submenu item
+              if (subItem.permission && !hasPermission(subItem.permission)) {
+                return null;
+              }
+
+              return (
+                <li key={subItem.path} className="attech-admin-submenu-item">
+                  <Link
+                    to={subItem.path}
+                    className={`attech-admin-submenu-link ${
+                      location.pathname === subItem.path
+                        ? "attech-admin-submenu-active"
+                        : ""
+                    }`}
+                    onClick={(e) => {
+                      // Force navigation if needed
+                      setTimeout(() => {
+                        if (window.location.pathname !== subItem.path) {
+                          window.location.href = subItem.path;
+                        }
+                      }, 100);
+
+                      setSidebarOpen(false);
+                    }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.75rem",
+                      padding: "0.5rem 1rem 0.5rem 3rem",
+                      color: "#cbd5e1",
+                      textDecoration: "none",
+                      fontSize: "0.9rem",
+                      backgroundColor:
+                        location.pathname === subItem.path
+                          ? "rgba(59, 130, 246, 0.2)"
+                          : "transparent",
+                    }}
+                  >
+                    {subItem.icon && <i className={subItem.icon}></i>}
+                    <span>{subItem.label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </li>
+      );
+    }
+
+    return (
+      <li
+        key={item.path}
+        className="attech-admin-nav-item"
+        style={{ margin: "0.5rem 0" }}
+      >
+        <Link
+          to={item.path}
+          className={`attech-admin-nav-link ${
+            isActive ? "attech-admin-nav-active" : ""
+          }`}
+          onClick={(e) => {
+            setSidebarOpen(false);
+          }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            padding: "0.75rem 1rem",
+            color: "#e2e8f0",
+            textDecoration: "none",
+            borderRadius: "8px",
+            margin: "0 0.75rem",
+            backgroundColor: isActive
+              ? "rgba(59, 130, 246, 0.2)"
+              : "transparent",
+          }}
+        >
+          <i className={item.icon}></i>
+          <span>{item.label}</span>
+        </Link>
+      </li>
+    );
+  };
+
+  // renderUserInfo removed - user info now in header dropdown
+
   return (
-    <div className="admin-layout">
-      <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="sidebar-header">
-          <div className="sidebar-title">
-            <i className="bi bi-rocket-takeoff"></i>
-            <span>Admin Panel</span>
+    <div
+      className="attech-admin-dashboard-layout"
+      style={{ display: "flex", minHeight: "100vh" }}
+    >
+      {/* Sidebar */}
+      <nav
+        className={`attech-admin-sidebar-nav ${
+          sidebarOpen ? "attech-admin-sidebar-open" : ""
+        }`}
+        style={{
+          width: "280px",
+          backgroundColor: "#1e293b",
+          color: "#e2e8f0",
+          position: "fixed",
+          top: 0,
+          left: sidebarOpen ? 0 : "-280px", // Use exact pixel value
+          height: "100vh",
+          overflowY: "auto",
+          zIndex: 1040,
+          transition: "left 0.3s ease-in-out",
+          boxShadow: sidebarOpen ? "0 0 20px rgba(0, 0, 0, 0.3)" : "none",
+        }}
+      >
+        <div 
+          className="attech-admin-sidebar-header"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "1rem 1.5rem",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <i className="bi bi-gear-fill" style={{ color: "#3b82f6", fontSize: "1.25rem" }}></i>
+            <span style={{ fontWeight: "600", color: "#fff" }}>Admin Panel</span>
           </div>
+          <button
+            className="attech-admin-sidebar-toggle"
+            onClick={toggleSidebar}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#e2e8f0",
+              fontSize: "1.125rem",
+              cursor: "pointer",
+              padding: "0.25rem",
+            }}
+          >
+            <i className="bi bi-x-lg"></i>
+          </button>
         </div>
 
-        <ul className="nav flex-column mt-3">
-          {filteredNavItems.map((item) =>
-            item.subItems ? (
-              <li key={item.path} className="nav-item">
-                <button
-                  className={`nav-link d-flex align-items-center gap-2 w-100 ${
-                    location.pathname.startsWith(item.path)
-                      ? "active-parent"
-                      : ""
-                  }`}
-                  onClick={() => toggleSubMenu(item.path)}
-                  aria-expanded={!!openSubMenus[item.path]}
-                >
-                  <i className={item.icon}></i>
-                  <span>{item.label}</span>
-                  <i
-                    className={`bi bi-chevron-down ms-auto ${
-                      openSubMenus[item.path] ? "rotate-180" : ""
-                    }`}
-                  ></i>
-                </button>
-                <ul className={`sub-menu ${openSubMenus[item.path] ? "open" : ""}`}>
-                  {item.subItems.map((si) => (
-                    <li key={si.path}>
-                      <Link
-                        to={si.path}
-                        className={`nav-link d-flex align-items-center gap-2 w-100 ${
-                          location.pathname === si.path ? "active" : ""
-                        }`}
-                        onClick={handleLinkClick}
-                      >
-                        <span>{si.label}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ) : (
-              <li key={item.path} className="nav-item">
-                <Link
-                  to={item.path}
-                  className={`nav-link d-flex align-items-center gap-2 w-100 ${
-                    location.pathname === item.path ? "active" : ""
-                  }`}
-                  onClick={handleLinkClick}
-                >
-                  <i className={item.icon}></i>
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            )
-          )}
+        <div
+          className="attech-admin-sidebar-content"
+          style={{ padding: "1rem 0" }}
+        >
+          <ul
+            className="attech-admin-nav-menu"
+            style={{ listStyle: "none", margin: 0, padding: 0 }}
+          >
+            {navItems.map(renderNavItem)}
+          </ul>
+        </div>
 
-          <li className="nav-item mt-auto sidebar-logout-section">
+        <div
+          className="attech-admin-sidebar-footer"
+          style={{
+            padding: "1rem",
+            borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+            fontSize: "0.75rem",
+            color: "#94a3b8",
+            textAlign: "center",
+          }}
+        >
+          <div>Chương trình quản trị Website</div>
+          <div>Attech Admin Panel</div>
+          <div>v1.0.0</div>
+        </div>
+      </nav>
+
+      {/* Main Content */}
+      <div
+        className="attech-admin-main-content"
+        style={{
+          marginLeft: "0", // No margin for overlay mode
+          flex: 1,
+          backgroundColor: "#f8f9fa",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          width: "100%",
+        }}
+      >
+        {/* Header */}
+        <header
+          className="attech-admin-header"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "1rem 1.5rem",
+            backgroundColor: "#ffffff",
+            borderBottom: "1px solid #e5e7eb",
+            boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+            position: "sticky",
+            top: 0,
+            zIndex: 1000,
+          }}
+        >
+          <div
+            className="attech-admin-header-left"
+            style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+          >
             <button
-              className="nav-link d-flex align-items-center gap-2 w-100 btn btn-link"
-              onClick={handleLogout}
+              className="attech-admin-sidebar-toggle"
+              onClick={toggleSidebar}
+              style={{
+                background: "transparent",
+                border: "none",
+                fontSize: "1rem",
+                color: "#6b7280",
+                cursor: "pointer",
+                padding: "0.5rem",
+                borderRadius: "0.5rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                transition: "all 0.2s ease",
+                width: "36px",
+                height: "36px",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = "#f3f4f6";
+                e.target.style.color = "#374151";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = "transparent";
+                e.target.style.color = "#6b7280";
+              }}
             >
-              <i className="bi bi-box-arrow-right"></i>
-              <span>Đăng xuất</span>
+              <svg 
+                width="18" 
+                height="18" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
             </button>
-          </li>
-        </ul>
-      </div>
-
-      <div className="main-wrapper">
-        <header className="header">
-          <div className="header-left">
-            <button className="sidebar-toggle" onClick={toggleSidebar}>
-              <i className="bi bi-list"></i>
-            </button>
-            <div className="breadcrumb">
-              <span>Admin Panel</span>
-              <i className="bi bi-chevron-right"></i>
-              <span>{now.toLocaleDateString("vi-VN")}</span>
-            </div>
+            <h1
+              className="attech-admin-page-title"
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: "600",
+                color: "#1f2937",
+                margin: 0,
+              }}
+            >
+              {getPageTitle()}
+            </h1>
           </div>
 
-          <div className="header-right">
-            <div className="time-display">
-              <i className="bi bi-clock"></i>
-              <span>{now.toLocaleTimeString("vi-VN")}</span>
-            </div>
-
-            <div className="dropdown position-relative">
+          <div
+            className="attech-admin-header-right"
+            style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+          >
+            {/* User Dropdown */}
+            <div
+              className="attech-admin-user-dropdown"
+              style={{ position: "relative" }}
+            >
               <button
-                className="btn btn-outline-secondary d-flex align-items-center gap-2"
+                className="attech-admin-user-dropdown-toggle"
                 onClick={toggleDropdown}
-                aria-expanded={dropdownOpen}
+                type="button"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.5rem 0.75rem",
+                  background: "#f3f4f6",
+                  border: "1px solid #d1d5db",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "0.875rem",
+                  color: "#374151",
+                }}
               >
-                <Link to="/login" className="text-decoration-none" style={{color: 'inherit'}}>
-                  Đăng nhập người dùng
-                </Link>
-                <i className="bi bi-chevron-down"></i>
+                <i
+                  className="bi bi-person-circle"
+                  style={{ fontSize: "1.25rem" }}
+                ></i>
+                <span>{(user?.name || user?.username || 'Admin').toString()}</span>
+                <i
+                  className={`bi bi-chevron-${dropdownOpen ? "up" : "down"}`}
+                  style={{ fontSize: "0.75rem" }}
+                ></i>
               </button>
+
               {dropdownOpen && (
-                <ul className="dropdown-menu show position-absolute end-0 mt-2">
-                  <li>
-                    <button className="dropdown-item" onClick={handleAccount}>
-                      Tài khoản
-                    </button>
-                  </li>
-                  <li>
-                    <button className="dropdown-item" onClick={handleLogout}>
-                      Đăng xuất
-                    </button>
-                  </li>
-                </ul>
+                <div
+                  className="attech-admin-dropdown-menu"
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    right: 0,
+                    marginTop: "0.5rem",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #d1d5db",
+                    borderRadius: "8px",
+                    boxShadow: "0 10px 15px rgba(0, 0, 0, 0.1)",
+                    minWidth: "200px",
+                    zIndex: 1001,
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "0.75rem 1rem",
+                      borderBottom: "1px solid #e5e7eb",
+                    }}
+                  >
+                    <div style={{ fontWeight: "500", color: "#1f2937" }}>
+                      {(user?.name || user?.username || 'Admin').toString()}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
+                      {user?.email || ''}
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
+                      {user?.permissions?.length || 0} quyền
+                    </div>
+                  </div>
+                  <button
+                    className="attech-admin-dropdown-item"
+                    onClick={(e) => {
+                      handleAccount();
+                    }}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      padding: "0.75rem 1rem",
+                      background: "none",
+                      border: "none",
+                      textAlign: "left",
+                      cursor: "pointer",
+                      fontSize: "0.875rem",
+                      color: "#374151",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#f3f4f6")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "transparent")
+                    }
+                  >
+                    <i className="bi bi-person"></i>
+                    Tài khoản
+                  </button>
+                  <div
+                    className="attech-admin-dropdown-divider"
+                    style={{
+                      height: "1px",
+                      backgroundColor: "#e5e7eb",
+                      margin: "0.25rem 0",
+                    }}
+                  ></div>
+                  <button
+                    className="attech-admin-dropdown-item"
+                    onClick={handleLogout}
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.5rem",
+                      padding: "0.75rem 1rem",
+                      background: "none",
+                      border: "none",
+                      textAlign: "left",
+                      cursor: "pointer",
+                      fontSize: "0.875rem",
+                      color: "#dc2626",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.target.style.backgroundColor = "#fef2f2")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.target.style.backgroundColor = "transparent")
+                    }
+                  >
+                    <i className="bi bi-box-arrow-right"></i>
+                    Đăng xuất
+                  </button>
+                </div>
               )}
             </div>
           </div>
         </header>
 
-        <main className="flex-grow-1 p-4 main-content">
+        {/* Page Content */}
+        <main
+          className="attech-admin-page-content"
+          style={{
+            flex: 1,
+            overflow: "auto",
+          }}
+        >
           <Outlet />
         </main>
       </div>
+
+      {/* Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="attech-admin-sidebar-overlay"
+          onClick={toggleSidebar}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            zIndex: 1030,
+            transition: "opacity 0.3s ease-in-out",
+          }}
+        ></div>
+      )}
     </div>
   );
 };

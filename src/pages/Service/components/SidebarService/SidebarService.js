@@ -6,19 +6,29 @@ import { mockServices } from "../../../../utils/mockServices";
 
 const SidebarService = ({ openSidebar, setOpenSidebar }) => {
   const { t, currentLanguage } = useI18n();
-  const activeServices = mockServices.filter(s => s.status === 1);
-  
+  const activeServices = mockServices.filter((s) => s.status === 1);
+
   return (
     <div className={openSidebar ? "sidebar-service resize" : "sidebar-service"}>
       <div className="top-sidebar">
         <button
           onClick={() => setOpenSidebar(!openSidebar)}
-          aria-label={openSidebar ? (currentLanguage === 'vi' ? "Thu nhỏ sidebar" : "Collapse sidebar") : (currentLanguage === 'vi' ? "Mở rộng sidebar" : "Expand sidebar")}
+          aria-label={
+            openSidebar
+              ? currentLanguage === "vi"
+                ? "Thu nhỏ sidebar"
+                : "Collapse sidebar"
+              : currentLanguage === "vi"
+              ? "Mở rộng sidebar"
+              : "Expand sidebar"
+          }
           aria-expanded={!openSidebar}
         >
           <i className="fa fa-solid fa-bars"></i>
         </button>
-        {openSidebar ? null : <span>{t('navigation.services').toUpperCase()}</span>}
+        {openSidebar ? null : (
+          <span>{t("navigation.services").toUpperCase()}</span>
+        )}
         <hr />
       </div>
 
@@ -26,11 +36,19 @@ const SidebarService = ({ openSidebar, setOpenSidebar }) => {
         <LocalizedLink
           key={service.id}
           routeKey="SERVICE_DETAIL"
-          params={{ slug: currentLanguage === 'vi' ? service.slugVi : service.slugEn }}
+          params={{
+            slug: currentLanguage === "vi" ? service.slugVi : service.slugEn,
+          }}
           className="sp-nav-button"
-          aria-label={currentLanguage === 'vi' ? service.nameVi : service.nameEn}
+          aria-label={
+            currentLanguage === "vi" ? service.titleVi : service.titleEn
+          }
         >
-          {openSidebar ? null : <span>{currentLanguage === 'vi' ? service.nameVi : service.nameEn}</span>}
+          {openSidebar ? null : (
+            <span>
+              {currentLanguage === "vi" ? service.titleVi : service.titleEn}
+            </span>
+          )}
         </LocalizedLink>
       ))}
     </div>

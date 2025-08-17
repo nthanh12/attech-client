@@ -1,11 +1,12 @@
 export const mockServices = [
   {
     id: 1,
-    nameVi: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
-    nameEn: "CNS Service",
+    titleVi: "Dịch vụ thông tin dẫn đường giám sát (CNS)",
+    titleEn: "CNS Service",
     slugVi: "thong-tin-dan-duong-giam-sat",
     slugEn: "cns-service",
-    descriptionVi: "Dịch vụ CNS phục vụ điều hành bay, kỹ thuật và huấn luyện chuyên ngành.",
+    descriptionVi:
+      "Dịch vụ CNS phục vụ điều hành bay, kỹ thuật và huấn luyện chuyên ngành.",
     descriptionEn: "CNS services for flight operation, technical and training.",
     contentVi: `<p>C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay (ATTECH) tự h&agrave;o l&agrave; nh&agrave; cung cấp dịch vụ chuy&ecirc;n ng&agrave;nh Th&ocirc;ng tin (Communication &ndash; C), dẫn đường (Navigation &ndash; N), Gi&aacute;m s&aacute;t (Surveilance- S) h&agrave;ng kh&ocirc;ng h&agrave;ng đầu tại Việt Nam.</p>
 <p><strong>I. C&Aacute;C DỊCH VỤ DO C&Ocirc;NG TY CUNG CẤP:</strong></p>
@@ -64,16 +65,19 @@ export const mockServices = [
     contentEn: `<div class='service-header'><h1>CNS Service</h1><p>CNS service details in English...</p></div>`,
     timePosted: "2024-01-10T00:00:00Z",
     status: 1,
-    image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-ky-thuat-CNS-s.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2015/02/DV-ky-thuat-CNS-s.jpg",
   },
   {
     id: 2,
-    nameVi: "Dịch vụ Bay kiểm tra hiệu chuẩn",
-    nameEn: "Calibration Service",
+    titleVi: "Dịch vụ Bay kiểm tra hiệu chuẩn",
+    titleEn: "Calibration Service",
     slugVi: "bay-kiem-tra-hieu-chuan",
     slugEn: "calibration-service",
-    descriptionVi: "Dịch vụ bay kiểm tra hiệu chuẩn các thiết bị dẫn đường giám sát hàng không.",
-    descriptionEn: "Calibration flight service for navigation and surveillance equipment.",
+    descriptionVi:
+      "Dịch vụ bay kiểm tra hiệu chuẩn các thiết bị dẫn đường giám sát hàng không.",
+    descriptionEn:
+      "Calibration flight service for navigation and surveillance equipment.",
     contentVi: `<p>Đội Bay kiểm tra hiệu chuẩn được th&agrave;nh lập theo Quyết định số 115/QĐ-KTQLB ng&agrave;y 19 th&aacute;ng 08 năm 2010 với nhiệm vụ Tổ chức cung cấp dịch vụ bay kiểm tra hiệu chuẩn c&aacute;c thiết bị dẫn đường gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng v&agrave; bay đ&aacute;nh gi&aacute; phương thức bay.</p>
 <p>Năm 2010 Cục H&agrave;ng kh&ocirc;ng Việt Nam đ&atilde; cấp giấy ph&eacute;p c&ocirc;ng nhận ATTECH l&agrave; nh&agrave; cung cấp dịch vụ bay kiểm tra hiệu chuẩn v&agrave; bay đ&aacute;nh gi&aacute; phương thức bay duy nhất tại Việt Nam tu&acirc;n thủ v&agrave; đ&aacute;p ứng đầy đủ c&aacute;c ti&ecirc;u chuẩn khuyến c&aacute;o của tổ chức h&agrave;ng kh&ocirc;ng d&acirc;n dụng quốc tế ICAO, quy định ph&aacute;p luật hiện h&agrave;nh của Nh&agrave; nước.</p>
 <p><strong>HỆ THỐNG THIẾT BỊ</strong></p>
@@ -112,20 +116,22 @@ export const mockServices = [
     timePosted: "2024-01-15T00:00:00Z",
     status: 1,
     serviceCategoryId: 6,
-    serviceCategoryNameVi: "Dịch vụ bay kiểm tra",
-    serviceCategoryNameEn: "Flight Inspection Service",
+    serviceCategorytitleVi: "Dịch vụ bay kiểm tra",
+    serviceCategorytitleEn: "Flight Inspection Service",
     serviceCategorySlugVi: "dich-vu-bay-kiem-tra",
     serviceCategorySlugEn: "flight-inspection-service",
-    image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-BHC1.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-BHC1.jpg",
   },
   {
     id: 3,
-    nameVi: "Dịch vụ Thử nghiệm - Hiệu chuẩn",
-    nameEn: "Testing - Calibration Service",
+    titleVi: "Dịch vụ Thử nghiệm - Hiệu chuẩn",
+    titleEn: "Testing - Calibration Service",
     slugVi: "thu-nghiem-hieu-chuan",
     slugEn: "testing-calibration-service",
-    descriptionVi: "Dịch vụ thử nghiệm, hiệu chuẩn thiết bị đo lường, môi trường, quang học.",
-    descriptionEn: "Testing and calibration services for measuring, environmental, and optical equipment.",
+    descriptionVi:
+      "Dịch vụ thử nghiệm, hiệu chuẩn thiết bị đo lường, môi trường, quang học.",
+    descriptionEn:
+      "Testing and calibration services for measuring, environmental, and optical equipment.",
     contentVi: `<p>Với mục ti&ecirc;u cung cấp c&aacute;c&nbsp;<a title="sản phẩm" href="https://attech.com.vn/san-pham/">sản phẩm</a>, dịch vụ c&oacute; chất lượng cao nhất, đ&aacute;p ứng c&aacute;c ti&ecirc;u chuẩn quốc gia v&agrave; quốc tế, ATTECH x&aacute;c định phải kh&ocirc;ng ngừng n&acirc;ng cao năng lực hiệu chuẩn, thử nghiệm của m&igrave;nh. V&igrave; vậy, ATTECH đ&atilde; tập trung đầu tư về cơ sở vật chất v&agrave; con người cho hệ thống ph&ograve;ng th&iacute; nghiệm, &aacute;p dụng hệ thống quản l&yacute; chất lượng ISO/IEC 17025:2017. Đến nay, ph&ograve;ng th&iacute; nghiệm của ATTECH đ&atilde; được Văn ph&ograve;ng c&ocirc;ng nhận chất lượng thuộc Bộ Khoa học c&ocirc;ng nghệ Việt Nam cấp chứng chỉ VILAS. Với hệ thống ph&ograve;ng th&iacute; nghiệm đạt ti&ecirc;u chuẩn c&ugrave;ng với đội ngũ kỹ sư c&oacute; chuy&ecirc;n m&ocirc;n cao, gi&agrave;u kinh nghiệm, ATTECH cam kết cung cấp đến Qu&yacute; kh&aacute;ch h&agrave;ng c&aacute;c dịch vụ hiệu chuẩn, thử nghiệm tốt nhất v&agrave; tin cậy nhất.</p>
 <p><strong>NĂNG LỰC KINH NGHIỆM</strong></p>
 <p>Với gần 30 năm kinh nghiệm cung cấp dịch vụ, c&ugrave;ng với việc nhanh ch&oacute;ng &aacute;p dụng c&aacute;c hệ thống quản l&yacute; chất lượng ti&ecirc;n tiến như ISO 9001:2015, ISO/IEC 17025:2017, ATTECH đảm bảo đủ năng lực cung cấp dịch vụ thử nghiệm hiệu chuẩn, đ&aacute;p ứng ti&ecirc;u chuẩn của quốc gia v&agrave; quốc tế cho tất cả c&aacute;c kh&aacute;ch h&agrave;ng.</p>
@@ -148,16 +154,17 @@ export const mockServices = [
     timePosted: "2024-01-20T00:00:00Z",
     status: 1,
     serviceCategoryId: 3,
-    serviceCategoryNameVi: "Dịch vụ thử nghiệm",
-    serviceCategoryNameEn: "Testing Service",
+    serviceCategorytitleVi: "Dịch vụ thử nghiệm",
+    serviceCategorytitleEn: "Testing Service",
     serviceCategorySlugVi: "dich-vu-thu-nghiem",
     serviceCategorySlugEn: "testing-service",
-    image: "https://attech.com.vn/wp-content/uploads/2015/02/anh-thu-nghiem-hieu-chuan-2019.jpg"
+    image:
+      "https://attech.com.vn/wp-content/uploads/2015/02/anh-thu-nghiem-hieu-chuan-2019.jpg",
   },
   {
     id: 4,
-    nameVi: "Dịch vụ Kỹ thuật (Hàng không)",
-    nameEn: "Aviation Service",
+    titleVi: "Dịch vụ Kỹ thuật (Hàng không)",
+    titleEn: "Aviation Service",
     slugVi: "ky-thuat-hang-khong",
     slugEn: "aviation-service",
     descriptionVi: "Dịch vụ kỹ thuật chuyên ngành hàng không.",
@@ -167,16 +174,16 @@ export const mockServices = [
     timePosted: "2024-02-01T00:00:00Z",
     status: 1,
     serviceCategoryId: 2,
-    serviceCategoryNameVi: "Dịch vụ kỹ thuật",
-    serviceCategoryNameEn: "Technical Service",
+    serviceCategorytitleVi: "Dịch vụ kỹ thuật",
+    serviceCategorytitleEn: "Technical Service",
     serviceCategorySlugVi: "dich-vu-ky-thuat",
     serviceCategorySlugEn: "technical-service",
-    image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-HK.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-HK.jpg",
   },
   {
     id: 5,
-    nameVi: "Dịch vụ Huấn luyện - Đào tạo",
-    nameEn: "Training - Education Service",
+    titleVi: "Dịch vụ Huấn luyện - Đào tạo",
+    titleEn: "Training - Education Service",
     slugVi: "huan-luyen-dao-tao",
     slugEn: "training-education-service",
     descriptionVi: "Dịch vụ huấn luyện, đào tạo chuyên ngành CNS.",
@@ -203,16 +210,16 @@ export const mockServices = [
     timePosted: "2024-02-15T00:00:00Z",
     status: 1,
     serviceCategoryId: 4,
-    serviceCategoryNameVi: "Dịch vụ đào tạo",
-    serviceCategoryNameEn: "Training Service",
+    serviceCategorytitleVi: "Dịch vụ đào tạo",
+    serviceCategorytitleEn: "Training Service",
     serviceCategorySlugVi: "dich-vu-dao-tao",
     serviceCategorySlugEn: "training-service",
-    image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-HLDT-small.jpg"
+    image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-HLDT-small.jpg",
   },
   {
     id: 6,
-    nameVi: "Dịch vụ Tư vấn đầu tư và xây dựng QLDA",
-    nameEn: "Consulting - QLDA Service",
+    titleVi: "Dịch vụ Tư vấn đầu tư và xây dựng QLDA",
+    titleEn: "Consulting - QLDA Service",
     slugVi: "tu-van-dau-tu-xay-dung-qlda",
     slugEn: "consulting-qlda-service",
     descriptionVi: "Dịch vụ tư vấn đầu tư xây dựng và quản lý dự án.",
@@ -243,10 +250,10 @@ export const mockServices = [
     timePosted: "2024-03-01T00:00:00Z",
     status: 1,
     serviceCategoryId: 5,
-    serviceCategoryNameVi: "Dịch vụ tư vấn",
-    serviceCategoryNameEn: "Consulting Service",
+    serviceCategorytitleVi: "Dịch vụ tư vấn",
+    serviceCategorytitleEn: "Consulting Service",
     serviceCategorySlugVi: "dich-vu-tu-van",
     serviceCategorySlugEn: "consulting-service",
-    image: "https://attech.com.vn/wp-content/uploads/2015/02/TVTK-anhs.jpg"
-  }
-]; 
+    image: "https://attech.com.vn/wp-content/uploads/2015/02/TVTK-anhs.jpg",
+  },
+];

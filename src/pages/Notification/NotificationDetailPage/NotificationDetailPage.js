@@ -17,13 +17,15 @@ const NotificationDetailPage = () => {
 
   // Lấy thông báo từ mockNotifications theo category và slug
   const notificationItem = useMemo(() => {
-    if (currentLanguage === 'vi') {
+    if (currentLanguage === "vi") {
       return mockNotifications.find(
-        (item) => item.notificationCategorySlugVi === category && item.slugVi === slug
+        (item) =>
+          item.notificationCategorySlugVi === category && item.slugVi === slug
       );
     } else {
       return mockNotifications.find(
-        (item) => item.notificationCategorySlugEn === category && item.slugEn === slug
+        (item) =>
+          item.notificationCategorySlugEn === category && item.slugEn === slug
       );
     }
   }, [category, slug, currentLanguage]);
@@ -31,25 +33,32 @@ const NotificationDetailPage = () => {
   // Lọc thông báo cùng chuyên mục cho sidebar
   const filteredNotifications = useMemo(() => {
     if (!notificationItem) return [];
-    const categorySlug = currentLanguage === 'vi' 
-      ? notificationItem.notificationCategorySlugVi 
-      : notificationItem.notificationCategorySlugEn;
-    const titleField = currentLanguage === 'vi' ? 'titleVi' : 'titleEn';
-    const contentField = currentLanguage === 'vi' ? 'contentVi' : 'contentEn';
-    
-    let filtered = mockNotifications.filter(
-      (item) => {
-        const itemCategorySlug = currentLanguage === 'vi' 
-          ? item.notificationCategorySlugVi 
+    const categorySlug =
+      currentLanguage === "vi"
+        ? notificationItem.notificationCategorySlugVi
+        : notificationItem.notificationCategorySlugEn;
+    const titleField = currentLanguage === "vi" ? "titleVi" : "titleEn";
+    const contentField = currentLanguage === "vi" ? "contentVi" : "contentEn";
+
+    let filtered = mockNotifications.filter((item) => {
+      const itemCategorySlug =
+        currentLanguage === "vi"
+          ? item.notificationCategorySlugVi
           : item.notificationCategorySlugEn;
-        return itemCategorySlug === categorySlug &&
-          (item[titleField].toLowerCase().includes(searchTerm.toLowerCase()) ||
-           item[contentField].toLowerCase().includes(searchTerm.toLowerCase()));
-      }
+      return (
+        itemCategorySlug === categorySlug &&
+        (item[titleField].toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item[contentField].toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    });
+    filtered = filtered.sort(
+      (a, b) => new Date(b.timePosted) - new Date(a.timePosted)
     );
-    filtered = filtered.sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted));
     let top10 = filtered.slice(0, 10);
-    if (notificationItem && !top10.some((item) => item.id === notificationItem.id)) {
+    if (
+      notificationItem &&
+      !top10.some((item) => item.id === notificationItem.id)
+    ) {
       top10 = [notificationItem, ...top10];
     }
     // Loại trùng
@@ -68,14 +77,13 @@ const NotificationDetailPage = () => {
   const relatedNotifications = useMemo(() => {
     if (!notificationItem) return [];
     return mockNotifications
-      .filter(
-        (item) => {
-          const itemCategorySlug = currentLanguage === 'vi' 
-            ? item.notificationCategorySlugVi 
+      .filter((item) => {
+        const itemCategorySlug =
+          currentLanguage === "vi"
+            ? item.notificationCategorySlugVi
             : item.notificationCategorySlugEn;
-          return item.id !== notificationItem.id && itemCategorySlug === category;
-        }
-      )
+        return item.id !== notificationItem.id && itemCategorySlug === category;
+      })
       .slice(0, 3);
   }, [notificationItem, category, currentLanguage]);
 
@@ -88,7 +96,10 @@ const NotificationDetailPage = () => {
     const generateTableOfContents = () => {
       try {
         const parser = new DOMParser();
-        const content = currentLanguage === 'vi' ? notificationItem.contentVi : notificationItem.contentEn;
+        const content =
+          currentLanguage === "vi"
+            ? notificationItem.contentVi
+            : notificationItem.contentEn;
         const doc = parser.parseFromString(content, "text/html");
         const headings = Array.from(doc.querySelectorAll("h2, h3, h4"));
         return headings.map((heading, index) => ({
@@ -108,42 +119,67 @@ const NotificationDetailPage = () => {
 
   // Lazy loading for images
   useEffect(() => {
-    const images = document.querySelectorAll('.notification-detail-page .article-content img[loading="lazy"]');
-    
+    const images = document.querySelectorAll(
+      '.notification-detail-page .article-content img[loading="lazy"]'
+    );
+
     const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
           const img = entry.target;
-          img.classList.add('loaded');
+          img.classList.add("loaded");
           observer.unobserve(img);
         }
       });
     });
 
-    images.forEach(img => imageObserver.observe(img));
+    images.forEach((img) => imageObserver.observe(img));
 
     return () => {
-      images.forEach(img => imageObserver.unobserve(img));
+      images.forEach((img) => imageObserver.unobserve(img));
     };
   }, [notificationItem]);
 
   // Helper functions to get localized content
-  const getTitle = () => currentLanguage === 'vi' ? notificationItem?.titleVi : notificationItem?.titleEn;
-  const getDescription = () => currentLanguage === 'vi' ? notificationItem?.descriptionVi : notificationItem?.descriptionEn;
-  const getContent = () => currentLanguage === 'vi' ? notificationItem?.contentVi : notificationItem?.contentEn;
-  const getCategoryName = () => currentLanguage === 'vi' ? notificationItem?.notificationCategoryNameVi : notificationItem?.notificationCategoryNameEn;
-  const getCategorySlug = () => currentLanguage === 'vi' ? notificationItem?.notificationCategorySlugVi : notificationItem?.notificationCategorySlugEn;
-  const getSlug = () => currentLanguage === 'vi' ? notificationItem?.slugVi : notificationItem?.slugEn;
-  const getItemTitle = (item) => currentLanguage === 'vi' ? item.titleVi : item.titleEn;
-  const getItemSlug = (item) => currentLanguage === 'vi' ? item.slugVi : item.slugEn;
-  const getItemCategorySlug = (item) => currentLanguage === 'vi' ? item.notificationCategorySlugVi : item.notificationCategorySlugEn;
+  const getTitle = () =>
+    currentLanguage === "vi"
+      ? notificationItem?.titleVi
+      : notificationItem?.titleEn;
+  const getDescription = () =>
+    currentLanguage === "vi"
+      ? notificationItem?.descriptionVi
+      : notificationItem?.descriptionEn;
+  const getContent = () =>
+    currentLanguage === "vi"
+      ? notificationItem?.contentVi
+      : notificationItem?.contentEn;
+  const getCategoryName = () =>
+    currentLanguage === "vi"
+      ? notificationItem?.notificationCategorytitleVi
+      : notificationItem?.notificationCategorytitleEn;
+  const getCategorySlug = () =>
+    currentLanguage === "vi"
+      ? notificationItem?.notificationCategorySlugVi
+      : notificationItem?.notificationCategorySlugEn;
+  const getSlug = () =>
+    currentLanguage === "vi"
+      ? notificationItem?.slugVi
+      : notificationItem?.slugEn;
+  const getItemTitle = (item) =>
+    currentLanguage === "vi" ? item.titleVi : item.titleEn;
+  const getItemSlug = (item) =>
+    currentLanguage === "vi" ? item.slugVi : item.slugEn;
+  const getItemCategorySlug = (item) =>
+    currentLanguage === "vi"
+      ? item.notificationCategorySlugVi
+      : item.notificationCategorySlugEn;
 
   if (!isInitialized) {
     return (
       <div className="notification-detail-page">
         <div className="loading">
           <div className="loading-spinner" />
-          <p>{t('frontend.notifications.loading')}</p>
+          <p>{t("frontend.notifications.loading")}</p>
         </div>
       </div>
     );
@@ -153,10 +189,13 @@ const NotificationDetailPage = () => {
     return (
       <div className="notification-detail-page">
         <div className="not-found">
-          <h2>{t('frontend.notifications.notificationNotFound')}</h2>
-          <p>{t('frontend.notifications.notificationNotExist')}</p>
-          <Link to={currentLanguage === 'vi' ? '/thong-bao' : '/en/notifications'} className="back-to-notifications">
-            {t('frontend.notifications.backToNotifications')}
+          <h2>{t("frontend.notifications.notificationNotFound")}</h2>
+          <p>{t("frontend.notifications.notificationNotExist")}</p>
+          <Link
+            to={currentLanguage === "vi" ? "/thong-bao" : "/en/notifications"}
+            className="back-to-notifications"
+          >
+            {t("frontend.notifications.backToNotifications")}
           </Link>
         </div>
       </div>
@@ -168,31 +207,40 @@ const NotificationDetailPage = () => {
 
   return (
     <>
-      <SEO 
+      <SEO
         title={`${getTitle()} - ATTECH`}
         description={getDescription() || getTitle()}
-        url={currentLanguage === 'vi' ? `/thong-bao/${category}/${slug}` : `/en/notifications/${category}/${slug}`}
+        url={
+          currentLanguage === "vi"
+            ? `/thong-bao/${category}/${slug}`
+            : `/en/notifications/${category}/${slug}`
+        }
       />
       <div className="notification-detail-page">
-          {/* Sidebar */}
-          <aside className="notification-sidebar">
-          <h3>{t('frontend.notifications.sameCategory')}</h3>
+        {/* Sidebar */}
+        <aside className="notification-sidebar">
+          <h3>{t("frontend.notifications.sameCategory")}</h3>
           <input
             type="text"
-            placeholder={t('frontend.notifications.searchPlaceholder')}
+            placeholder={t("frontend.notifications.searchPlaceholder")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="notification-sidebar-search"
-            aria-label={t('frontend.notifications.searchNotifications')}
+            aria-label={t("frontend.notifications.searchNotifications")}
           />
           <ul>
             {filteredNotifications.length > 0 ? (
               filteredNotifications.map((item) => (
                 <li key={item.id}>
                   <Link
-                    to={currentLanguage === 'vi' 
-                      ? `/thong-bao/${getItemCategorySlug(item)}/${getItemSlug(item)}`
-                      : `/en/notifications/${getItemCategorySlug(item)}/${getItemSlug(item)}`
+                    to={
+                      currentLanguage === "vi"
+                        ? `/thong-bao/${getItemCategorySlug(
+                            item
+                          )}/${getItemSlug(item)}`
+                        : `/en/notifications/${getItemCategorySlug(
+                            item
+                          )}/${getItemSlug(item)}`
                     }
                     className={item.id === notificationItem.id ? "active" : ""}
                   >
@@ -202,13 +250,13 @@ const NotificationDetailPage = () => {
               ))
             ) : (
               <li className="no-results">
-                {t('frontend.notifications.noNotificationsFound')}
+                {t("frontend.notifications.noNotificationsFound")}
                 {searchTerm && (
                   <button
                     onClick={() => setSearchTerm("")}
                     className="clear-search"
                   >
-                    {t('frontend.notifications.clearSearch')}
+                    {t("frontend.notifications.clearSearch")}
                   </button>
                 )}
               </li>
@@ -220,13 +268,26 @@ const NotificationDetailPage = () => {
         <div className="notification-detail-container">
           {/* Breadcrumb */}
           <nav className="breadcrumb-nav">
-            <Link to={currentLanguage === 'vi' ? '/' : '/en'}>{t('navigation.home')}</Link> &gt;{' '}
-            <Link to={currentLanguage === 'vi' ? '/thong-bao' : '/en/notifications'}>{t('frontend.notifications.title')}</Link> &gt;{' '}
-            <Link to={currentLanguage === 'vi' 
-              ? `/thong-bao/${getCategorySlug()}`
-              : `/en/notifications/${getCategorySlug()}`
-            }>{getCategoryName()}</Link> &gt;{' '}
-            <span>{getTitle()}</span>
+            <Link to={currentLanguage === "vi" ? "/" : "/en"}>
+              {t("navigation.home")}
+            </Link>{" "}
+            &gt;{" "}
+            <Link
+              to={currentLanguage === "vi" ? "/thong-bao" : "/en/notifications"}
+            >
+              {t("frontend.notifications.title")}
+            </Link>{" "}
+            &gt;{" "}
+            <Link
+              to={
+                currentLanguage === "vi"
+                  ? `/thong-bao/${getCategorySlug()}`
+                  : `/en/notifications/${getCategorySlug()}`
+              }
+            >
+              {getCategoryName()}
+            </Link>{" "}
+            &gt; <span>{getTitle()}</span>
           </nav>
 
           {/* Article Header */}
@@ -236,14 +297,24 @@ const NotificationDetailPage = () => {
               <div className="article-meta">
                 <span className="article-date">
                   <i className="bi bi-calendar"></i>
-                  {notificationItem.timePosted ? new Date(notificationItem.timePosted).toLocaleDateString(currentLanguage === 'vi' ? 'vi-VN' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}
+                  {notificationItem.timePosted
+                    ? new Date(notificationItem.timePosted).toLocaleDateString(
+                        currentLanguage === "vi" ? "vi-VN" : "en-US",
+                        { year: "numeric", month: "long", day: "numeric" }
+                      )
+                    : ""}
                 </span>
                 <span className="article-category">
                   <i className="bi bi-tag"></i>
-                  <Link to={currentLanguage === 'vi' 
-                    ? `/thong-bao/${getCategorySlug()}`
-                    : `/en/notifications/${getCategorySlug()}`
-                  }>{getCategoryName()}</Link>
+                  <Link
+                    to={
+                      currentLanguage === "vi"
+                        ? `/thong-bao/${getCategorySlug()}`
+                        : `/en/notifications/${getCategorySlug()}`
+                    }
+                  >
+                    {getCategoryName()}
+                  </Link>
                 </span>
               </div>
             </header>
@@ -271,7 +342,9 @@ const NotificationDetailPage = () => {
               <div
                 dangerouslySetInnerHTML={{
                   __html: sanitizeHtml(getContent(), {
-                    allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+                    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+                      "img",
+                    ]),
                     allowedAttributes: {
                       ...sanitizeHtml.defaults.allowedAttributes,
                       img: ["src", "alt", "title", "class", "loading"],
@@ -285,18 +358,31 @@ const NotificationDetailPage = () => {
             {/* Article Footer */}
             <footer className="article-footer">
               <div className="article-tags">
-                <span className="tag-label">{t('frontend.notifications.category')}:</span>
-                <Link to={currentLanguage === 'vi' 
-                  ? `/thong-bao/${getCategorySlug()}`
-                  : `/en/notifications/${getCategorySlug()}`
-                } className="tag">
+                <span className="tag-label">
+                  {t("frontend.notifications.category")}:
+                </span>
+                <Link
+                  to={
+                    currentLanguage === "vi"
+                      ? `/thong-bao/${getCategorySlug()}`
+                      : `/en/notifications/${getCategorySlug()}`
+                  }
+                  className="tag"
+                >
                   {getCategoryName()}
                 </Link>
               </div>
               <div className="article-navigation">
-                <Link to={currentLanguage === 'vi' ? '/thong-bao' : '/en/notifications'} className="back-link">
+                <Link
+                  to={
+                    currentLanguage === "vi"
+                      ? "/thong-bao"
+                      : "/en/notifications"
+                  }
+                  className="back-link"
+                >
                   <i className="bi bi-arrow-left"></i>
-                  {t('frontend.notifications.backToNotificationsList')}
+                  {t("frontend.notifications.backToNotificationsList")}
                 </Link>
               </div>
             </footer>
@@ -305,14 +391,19 @@ const NotificationDetailPage = () => {
           {/* Related Notifications */}
           {relatedNotifications.length > 0 && (
             <section className="related-notifications">
-              <h2>{t('frontend.notifications.relatedNotifications')}</h2>
+              <h2>{t("frontend.notifications.relatedNotifications")}</h2>
               <div className="related-notifications-list">
                 {relatedNotifications.map((item) => (
                   <div className="related-notifications-item" key={item.id}>
                     <Link
-                      to={currentLanguage === 'vi' 
-                        ? `/thong-bao/${getItemCategorySlug(item)}/${getItemSlug(item)}`
-                        : `/en/notifications/${getItemCategorySlug(item)}/${getItemSlug(item)}`
+                      to={
+                        currentLanguage === "vi"
+                          ? `/thong-bao/${getItemCategorySlug(
+                              item
+                            )}/${getItemSlug(item)}`
+                          : `/en/notifications/${getItemCategorySlug(
+                              item
+                            )}/${getItemSlug(item)}`
                       }
                       className="related-notifications-link"
                     >
@@ -321,7 +412,18 @@ const NotificationDetailPage = () => {
                       </div>
                       <div className="related-notifications-info">
                         <h4>{getItemTitle(item)}</h4>
-                        <span className="related-notifications-date">{item.timePosted ? new Date(item.timePosted).toLocaleDateString(currentLanguage === 'vi' ? 'vi-VN' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''}</span>
+                        <span className="related-notifications-date">
+                          {item.timePosted
+                            ? new Date(item.timePosted).toLocaleDateString(
+                                currentLanguage === "vi" ? "vi-VN" : "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                }
+                              )
+                            : ""}
+                        </span>
                       </div>
                     </Link>
                   </div>

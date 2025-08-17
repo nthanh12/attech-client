@@ -1,8 +1,19 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import PageWrapper from '../components/PageWrapper';
 import ToastMessage from '../components/ToastMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { mockSystemSettings } from '../../utils/mockData.js';
+import { 
+  fetchSystemSettings,
+  updateSystemSettings,
+  resetSettingsToDefault,
+  exportSettings,
+  importSettings,
+  testEmailConfiguration,
+  clearSystemCache,
+  getTimezones,
+  getLanguages,
+  getCurrencies
+} from '../../services/systemSettingsService';
 import './SystemSettings.css';
 
 const SystemSettings = () => {
@@ -10,897 +21,913 @@ const SystemSettings = () => {
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('general');
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const [settings, setSettings] = useState({
+    general: {},
+    seo: {},
+    email: {},
+    social: {},
+    maintenance: {},
+    security: {},
+    backup: {}
+  });
+  const [tempSettings, setTempSettings] = useState({});
+  const [testingEmail, setTestingEmail] = useState(false);
+  const [clearingCache, setClearingCache] = useState(false);
 
-  // Định nghĩa các object empty cho từng phần settings
-  const emptyGeneralSettings = {
-    siteNameVi: '',
-    siteNameEn: '',
-    siteDescriptionVi: '',
-    siteDescriptionEn: '',
-    siteKeywordsVi: '',
-    siteKeywordsEn: '',
-    siteLogo: '',
-    siteFavicon: '',
-    maintenanceMode: false,
-    maintenanceMessageVi: '',
-    maintenanceMessageEn: ''
-  };
-  const emptyCompanyInfo = {
-    companyNameVi: '',
-    companyNameEn: '',
-    companyAddressVi: '',
-    companyAddressEn: '',
-    companyPhone: '',
-    companyEmail: '',
-    companyWebsite: '',
-    companyTaxCode: '',
-    companyLicense: '',
-    companyDescriptionVi: '',
-    companyDescriptionEn: ''
-  };
-  const emptyContactSettings = {
-    contactEmail: '',
-    supportEmail: '',
-    salesEmail: '',
-    contactPhone: '',
-    contactAddressVi: '',
-    contactAddressEn: '',
-    workingHoursVi: '',
-    workingHoursEn: '',
-    mapEmbed: ''
-  };
-  const emptySeoSettings = {
-    googleAnalytics: '',
-    googleTagManager: '',
-    facebookPixel: '',
-    metaTitleVi: '',
-    metaTitleEn: '',
-    metaDescriptionVi: '',
-    metaDescriptionEn: '',
-    ogImage: '',
-    twitterCard: '',
-    robotsTxt: '',
-    sitemapUrl: ''
-  };
-  const emptyEmailSettings = {
-    smtpHost: '',
-    smtpPort: '',
-    smtpUsername: '',
-    smtpPassword: '',
-    smtpEncryption: '',
-    fromName: '',
-    fromEmail: '',
-    replyToEmail: ''
-  };
-  const emptySocialSettings = {
-    facebookUrl: '',
-    twitterUrl: '',
-    linkedinUrl: '',
-    youtubeUrl: '',
-    instagramUrl: ''
-  };
-
-  // General Settings
-  const [generalSettings, setGeneralSettings] = useState({ ...emptyGeneralSettings });
-
-  // Company Information
-  const [companyInfo, setCompanyInfo] = useState({ ...emptyCompanyInfo });
-
-  // Contact Settings
-  const [contactSettings, setContactSettings] = useState({ ...emptyContactSettings });
-
-  // SEO Settings
-  const [seoSettings, setSeoSettings] = useState({ ...emptySeoSettings });
-
-  // Email Settings
-  const [emailSettings, setEmailSettings] = useState({ ...emptyEmailSettings });
-
-  // Social Media
-  const [socialSettings, setSocialSettings] = useState({ ...emptySocialSettings });
+  const timezones = getTimezones();
+  const languages = getLanguages();
+  const currencies = getCurrencies();
 
   useEffect(() => {
-    loadSettings();
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const settingsData = await fetchSystemSettings();
+        setSettings(settingsData);
+        setTempSettings(settingsData);
+        console.log('✅ System settings loaded successfully');
+      } catch (error) {
+        console.error('Failed to fetch system settings:', error);
+        setToast({ show: true, message: 'Không thể tải cài đặt hệ thống!', type: 'error' });
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
   }, []);
 
-  const loadSettings = async () => {
-    setLoading(true);
-    try {
-      // Sử dụng mock data thay vì API call
-      const settings = mockSystemSettings;
-      // Map dữ liệu cho General Settings
-      if (settings.general) {
-        setGeneralSettings(prev => ({
-          ...prev,
-          siteNameVi: settings.general.siteName?.vi || '',
-          siteNameEn: settings.general.siteName?.en || '',
-          siteDescriptionVi: settings.general.siteDescription?.vi || '',
-          siteDescriptionEn: settings.general.siteDescription?.en || '',
-          siteKeywordsVi: settings.general.siteKeywords?.vi || '',
-          siteKeywordsEn: settings.general.siteKeywords?.en || '',
-          maintenanceMode: settings.general.maintenanceMode || false,
-          maintenanceMessageVi: settings.general.maintenanceMessage?.vi || '',
-          maintenanceMessageEn: settings.general.maintenanceMessage?.en || '',
-          // Các trường khác nếu có
-        }));
+  const handleInputChange = (category, field, value) => {
+    setTempSettings(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [field]: value
       }
-      // Map dữ liệu cho Company Info
-      if (settings.company) {
-        setCompanyInfo(prev => ({
-          ...prev,
-          companyNameVi: settings.company.name?.vi || '',
-          companyNameEn: settings.company.name?.en || '',
-          companyAddressVi: settings.company.address?.vi || '',
-          companyAddressEn: settings.company.address?.en || '',
-          companyPhone: settings.company.phone || '',
-          companyEmail: settings.company.email || '',
-          companyWebsite: settings.company.website || '',
-          companyTaxCode: settings.company.taxCode || '',
-          companyLicense: settings.company.businessLicense || '',
-          companyDescriptionVi: settings.company.description?.vi || '',
-          companyDescriptionEn: settings.company.description?.en || '',
-        }));
-      }
-      // Map dữ liệu cho Contact Settings
-      if (settings.contact) {
-        setContactSettings(prev => ({
-          ...prev,
-          contactEmail: settings.contact.email || '',
-          supportEmail: '', // Không có trong mock, để trống
-          salesEmail: '', // Không có trong mock, để trống
-          contactPhone: settings.contact.phone || '',
-          contactAddressVi: settings.contact.officeAddress?.vi || '',
-          contactAddressEn: settings.contact.officeAddress?.en || '',
-          workingHoursVi: settings.contact.workingHours?.vi || '',
-          workingHoursEn: settings.contact.workingHours?.en || '',
-          mapEmbed: '', // Không có trong mock, để trống
-        }));
-      }
-      // Map dữ liệu cho SEO Settings
-      if (settings.seo) {
-        setSeoSettings(prev => ({
-          ...prev,
-          googleAnalytics: settings.seo.googleAnalytics || '',
-          googleTagManager: settings.seo.googleTagManager || '',
-          facebookPixel: settings.seo.facebookPixel || '',
-          metaTitleVi: settings.seo.metaTitle?.vi || '',
-          metaTitleEn: settings.seo.metaTitle?.en || '',
-          metaDescriptionVi: settings.seo.metaDescription?.vi || '',
-          metaDescriptionEn: settings.seo.metaDescription?.en || '',
-          ogImage: '', // Không có trong mock, để trống
-          twitterCard: '', // Không có trong mock, để trống
-          robotsTxt: settings.seo.robotsTxt || '',
-          sitemapUrl: settings.seo.sitemapUrl || '',
-        }));
-      }
-      // Map dữ liệu cho Email Settings
-      if (settings.email) {
-        setEmailSettings(prev => ({
-          ...prev,
-          smtpHost: settings.email.smtpHost || '',
-          smtpPort: settings.email.smtpPort || '',
-          smtpUsername: settings.email.smtpUsername || '',
-          smtpPassword: settings.email.smtpPassword || '',
-          smtpEncryption: settings.email.smtpEncryption || '',
-          fromName: settings.email.fromName?.vi || '',
-          fromEmail: settings.email.fromEmail || '',
-          replyToEmail: settings.email.replyTo || '',
-        }));
-      }
-      // Map dữ liệu cho Social Settings
-      if (settings.social) {
-        setSocialSettings(prev => ({
-          ...prev,
-          facebookUrl: settings.social.facebook || '',
-          twitterUrl: settings.social.twitter || '',
-          linkedinUrl: settings.social.linkedin || '',
-          youtubeUrl: settings.social.youtube || '',
-          instagramUrl: settings.social.instagram || '',
-        }));
-      }
-      setToast({ show: true, message: 'Tải cấu hình thành công!', type: 'success' });
-    } catch (error) {
-      setToast({ show: true, message: 'Lỗi khi tải cấu hình!', type: 'error' });
-    } finally {
-      setLoading(false);
-    }
+    }));
   };
 
-  const handleSave = async (settingsType) => {
+  const handleSave = async (category) => {
+    if (!tempSettings[category]) return;
+
     setSaving(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setToast({ show: true, message: 'Lưu cấu hình thành công!', type: 'success' });
+      await updateSystemSettings(category, tempSettings[category]);
+      setSettings(prev => ({
+        ...prev,
+        [category]: tempSettings[category]
+      }));
+      setToast({ show: true, message: 'Cập nhật cài đặt thành công!', type: 'success' });
     } catch (error) {
-      setToast({ show: true, message: 'Lỗi khi lưu cấu hình!', type: 'error' });
+      setToast({ show: true, message: error.message || 'Lỗi khi cập nhật cài đặt!', type: 'error' });
     } finally {
       setSaving(false);
     }
   };
 
-  const handleInputChange = (settings, setSettings, field, value) => {
-    setSettings(prev => ({ ...prev, [field]: value }));
+  const handleReset = async (category) => {
+    if (window.confirm('Bạn có chắc chắn muốn khôi phục cài đặt về mặc định?')) {
+      setSaving(true);
+      try {
+        const defaultSettings = await resetSettingsToDefault(category);
+        setSettings(prev => ({
+          ...prev,
+          [category]: defaultSettings
+        }));
+        setTempSettings(prev => ({
+          ...prev,
+          [category]: defaultSettings
+        }));
+        setToast({ show: true, message: 'Khôi phục cài đặt thành công!', type: 'success' });
+      } catch (error) {
+        setToast({ show: true, message: error.message || 'Lỗi khi khôi phục cài đặt!', type: 'error' });
+      } finally {
+        setSaving(false);
+      }
+    }
   };
 
-  const handleGeneralChange = (field, value) => {
-    setGeneralSettings(prev => ({ ...prev, [field]: value }));
+  const handleExport = async () => {
+    try {
+      await exportSettings();
+      setToast({ show: true, message: 'Xuất cài đặt thành công!', type: 'success' });
+    } catch (error) {
+      setToast({ show: true, message: error.message || 'Lỗi khi xuất cài đặt!', type: 'error' });
+    }
   };
+
+  const handleImport = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    try {
+      const importedSettings = await importSettings(file);
+      setSettings(importedSettings);
+      setTempSettings(importedSettings);
+      setToast({ show: true, message: 'Nhập cài đặt thành công!', type: 'success' });
+    } catch (error) {
+      setToast({ show: true, message: error.message || 'Lỗi khi nhập cài đặt!', type: 'error' });
+    }
+    
+    // Reset file input
+    event.target.value = '';
+  };
+
+  const handleTestEmail = async () => {
+    if (!tempSettings.email) return;
+
+    setTestingEmail(true);
+    try {
+      await testEmailConfiguration(tempSettings.email);
+      setToast({ show: true, message: 'Test email thành công!', type: 'success' });
+    } catch (error) {
+      setToast({ show: true, message: error.message || 'Test email thất bại!', type: 'error' });
+    } finally {
+      setTestingEmail(false);
+    }
+  };
+
+  const handleClearCache = async () => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa cache hệ thống?')) {
+      setClearingCache(true);
+      try {
+        await clearSystemCache();
+        setToast({ show: true, message: 'Xóa cache thành công!', type: 'success' });
+      } catch (error) {
+        setToast({ show: true, message: error.message || 'Lỗi khi xóa cache!', type: 'error' });
+      } finally {
+        setClearingCache(false);
+      }
+    }
+  };
+
+  const renderTabButtons = () => (
+    <div className="tab-buttons">
+      <button 
+        className={`tab-btn ${activeTab === 'general' ? 'active' : ''}`}
+        onClick={() => setActiveTab('general')}
+      >
+        <i className="bi bi-gear"></i>
+        Cài đặt chung
+      </button>
+      <button 
+        className={`tab-btn ${activeTab === 'seo' ? 'active' : ''}`}
+        onClick={() => setActiveTab('seo')}
+      >
+        <i className="bi bi-search"></i>
+        SEO
+      </button>
+      <button 
+        className={`tab-btn ${activeTab === 'email' ? 'active' : ''}`}
+        onClick={() => setActiveTab('email')}
+      >
+        <i className="bi bi-envelope"></i>
+        Email
+      </button>
+      <button 
+        className={`tab-btn ${activeTab === 'social' ? 'active' : ''}`}
+        onClick={() => setActiveTab('social')}
+      >
+        <i className="bi bi-share"></i>
+        Mạng xã hội
+      </button>
+      <button 
+        className={`tab-btn ${activeTab === 'maintenance' ? 'active' : ''}`}
+        onClick={() => setActiveTab('maintenance')}
+      >
+        <i className="bi bi-tools"></i>
+        Bảo trì
+      </button>
+      <button 
+        className={`tab-btn ${activeTab === 'security' ? 'active' : ''}`}
+        onClick={() => setActiveTab('security')}
+      >
+        <i className="bi bi-shield"></i>
+        Bảo mật
+      </button>
+      <button 
+        className={`tab-btn ${activeTab === 'backup' ? 'active' : ''}`}
+        onClick={() => setActiveTab('backup')}
+      >
+        <i className="bi bi-cloud-arrow-up"></i>
+        Sao lưu
+      </button>
+    </div>
+  );
 
   const renderGeneralSettings = () => (
     <div className="settings-section">
-      <h3>Cấu hình chung</h3>
-      <div className="form-group">
-        <label>Tên website (Tiếng Việt)</label>
-        <input
-          type="text"
-          value={generalSettings.siteNameVi}
-          onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'siteNameVi', e.target.value)}
-          placeholder="Nhập tên website"
-        />
-      </div>
-      <div className="form-group">
-        <label>Website Name (English)</label>
-        <input
-          type="text"
-          value={generalSettings.siteNameEn}
-          onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'siteNameEn', e.target.value)}
-          placeholder="Enter website name"
-        />
-      </div>
-      <div className="form-group">
-        <label>Mô tả website (Tiếng Việt)</label>
-        <Editor
-          tinymceScriptSrc="/tinymce/js/tinymce/tinymce.min.js"
-          licenseKey="gpl"
-          value={generalSettings.siteDescriptionVi}
-          onEditorChange={c => handleGeneralChange('siteDescriptionVi', c)}
-          init={{
-            base_url: '/tinymce',
-            suffix: '.min',
-            appendTo: 'body',
-            skin: 'oxide',
-            content_css: 'default',
-            menubar: true,
-            plugins: [
-              'advlist','autolink','lists','link','image','charmap','preview',
-              'anchor','searchreplace','visualblocks','code','fullscreen',
-              'insertdatetime','media','table','help','wordcount',
-              'emoticons','codesample'
-            ],
-            toolbar:
-              'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
-              'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-              'link image media table codesample charmap emoticons | removeformat | help',
-            height: 200,
-            branding: false,
-            promotion: false
-          }}
-        />
-      </div>
-      <div className="form-group">
-        <label>Website Description (English)</label>
-        <textarea
-          value={generalSettings.siteDescriptionEn}
-          onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'siteDescriptionEn', e.target.value)}
-          placeholder="Enter website description"
-          rows="3"
-        />
-      </div>
-      <div className="form-group">
-        <label>Từ khóa SEO (Tiếng Việt)</label>
-        <input
-          type="text"
-          value={generalSettings.siteKeywordsVi}
-          onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'siteKeywordsVi', e.target.value)}
-          placeholder="Nhập từ khóa SEO, phân cách bằng dấu phẩy"
-        />
-      </div>
-      <div className="form-group">
-        <label>SEO Keywords (English)</label>
-        <input
-          type="text"
-          value={generalSettings.siteKeywordsEn}
-          onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'siteKeywordsEn', e.target.value)}
-          placeholder="Enter SEO keywords, separated by commas"
-        />
-      </div>
-      <div className="form-group">
-        <label>Logo website</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'siteLogo', e.target.files[0])}
-        />
-      </div>
-      <div className="form-group">
-        <label>Favicon</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'siteFavicon', e.target.files[0])}
-        />
-      </div>
-      <div className="form-group">
-        <label>
+      <h3>Cài đặt chung</h3>
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>Tên website</label>
           <input
-            type="checkbox"
-            checked={generalSettings.maintenanceMode}
-            onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'maintenanceMode', e.target.checked)}
+            type="text"
+            value={tempSettings.general?.siteName || ''}
+            onChange={(e) => handleInputChange('general', 'siteName', e.target.value)}
+            className="form-control"
+            placeholder="Tên website"
           />
-          Chế độ bảo trì
-        </label>
+        </div>
+        <div className="form-group">
+          <label>Email liên hệ</label>
+          <input
+            type="email"
+            value={tempSettings.general?.contactEmail || ''}
+            onChange={(e) => handleInputChange('general', 'contactEmail', e.target.value)}
+            className="form-control"
+            placeholder="contact@example.com"
+          />
+        </div>
       </div>
-      {generalSettings.maintenanceMode && (
-        <>
-          <div className="form-group">
-            <label>Thông báo bảo trì (Tiếng Việt)</label>
-            <textarea
-              value={generalSettings.maintenanceMessageVi}
-              onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'maintenanceMessageVi', e.target.value)}
-              placeholder="Nhập thông báo bảo trì"
-              rows="3"
-            />
-          </div>
-          <div className="form-group">
-            <label>Maintenance Message (English)</label>
-            <textarea
-              value={generalSettings.maintenanceMessageEn}
-              onChange={(e) => handleInputChange(generalSettings, setGeneralSettings, 'maintenanceMessageEn', e.target.value)}
-              placeholder="Enter maintenance message"
-              rows="3"
-            />
-          </div>
-        </>
-      )}
-      <button 
-        className="btn btn-primary" 
-        onClick={() => handleSave('general')}
-        disabled={saving}
-      >
-        {saving ? 'Đang lưu...' : 'Lưu cấu hình chung'}
-      </button>
-    </div>
-  );
 
-  const renderCompanyInfo = () => (
-    <div className="settings-section">
-      <h3>Thông tin công ty</h3>
-      <div className="form-group">
-        <label>Tên công ty (Tiếng Việt)</label>
-        <input
-          type="text"
-          value={companyInfo.companyNameVi}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyNameVi', e.target.value)}
-          placeholder="Nhập tên công ty"
-        />
+      <div className="form-row">
+        <div className="form-group">
+          <label>Số điện thoại</label>
+          <input
+            type="tel"
+            value={tempSettings.general?.contactPhone || ''}
+            onChange={(e) => handleInputChange('general', 'contactPhone', e.target.value)}
+            className="form-control"
+            placeholder="+84 xxx xxx xxx"
+          />
+        </div>
+        <div className="form-group">
+          <label>Múi giờ</label>
+          <select
+            value={tempSettings.general?.timezone || 'Asia/Ho_Chi_Minh'}
+            onChange={(e) => handleInputChange('general', 'timezone', e.target.value)}
+            className="form-control"
+          >
+            {timezones.map(tz => (
+              <option key={tz.value} value={tz.value}>{tz.label}</option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div className="form-group">
-        <label>Company Name (English)</label>
-        <input
-          type="text"
-          value={companyInfo.companyNameEn}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyNameEn', e.target.value)}
-          placeholder="Enter company name"
-        />
-      </div>
-      <div className="form-group">
-        <label>Địa chỉ (Tiếng Việt)</label>
-        <textarea
-          value={companyInfo.companyAddressVi}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyAddressVi', e.target.value)}
-          placeholder="Nhập địa chỉ công ty"
-          rows="3"
-        />
-      </div>
-      <div className="form-group">
-        <label>Address (English)</label>
-        <textarea
-          value={companyInfo.companyAddressEn}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyAddressEn', e.target.value)}
-          placeholder="Enter company address"
-          rows="3"
-        />
-      </div>
-      <div className="form-group">
-        <label>Số điện thoại</label>
-        <input
-          type="text"
-          value={companyInfo.companyPhone}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyPhone', e.target.value)}
-          placeholder="Nhập số điện thoại"
-        />
-      </div>
-      <div className="form-group">
-        <label>Email</label>
-        <input
-          type="email"
-          value={companyInfo.companyEmail}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyEmail', e.target.value)}
-          placeholder="Nhập email công ty"
-        />
-      </div>
-      <div className="form-group">
-        <label>Website</label>
-        <input
-          type="url"
-          value={companyInfo.companyWebsite}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyWebsite', e.target.value)}
-          placeholder="Nhập URL website"
-        />
-      </div>
-      <div className="form-group">
-        <label>Mã số thuế</label>
-        <input
-          type="text"
-          value={companyInfo.companyTaxCode}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyTaxCode', e.target.value)}
-          placeholder="Nhập mã số thuế"
-        />
-      </div>
-      <div className="form-group">
-        <label>Giấy phép kinh doanh</label>
-        <input
-          type="text"
-          value={companyInfo.companyLicense}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyLicense', e.target.value)}
-          placeholder="Nhập số giấy phép"
-        />
-      </div>
-      <div className="form-group">
-        <label>Mô tả công ty (Tiếng Việt)</label>
-        <textarea
-          value={companyInfo.companyDescriptionVi}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyDescriptionVi', e.target.value)}
-          placeholder="Nhập mô tả công ty"
-          rows="4"
-        />
-      </div>
-      <div className="form-group">
-        <label>Company Description (English)</label>
-        <textarea
-          value={companyInfo.companyDescriptionEn}
-          onChange={(e) => handleInputChange(companyInfo, setCompanyInfo, 'companyDescriptionEn', e.target.value)}
-          placeholder="Enter company description"
-          rows="4"
-        />
-      </div>
-      <button 
-        className="btn btn-primary" 
-        onClick={() => handleSave('company')}
-        disabled={saving}
-      >
-        {saving ? 'Đang lưu...' : 'Lưu thông tin công ty'}
-      </button>
-    </div>
-  );
 
-  const renderContactSettings = () => (
-    <div className="settings-section">
-      <h3>Cấu hình liên hệ</h3>
-      <div className="form-group">
-        <label>Email liên hệ</label>
-        <input
-          type="email"
-          value={contactSettings.contactEmail}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'contactEmail', e.target.value)}
-          placeholder="Nhập email liên hệ"
-        />
+      <div className="form-row">
+        <div className="form-group">
+          <label>Ngôn ngữ</label>
+          <select
+            value={tempSettings.general?.language || 'vi'}
+            onChange={(e) => handleInputChange('general', 'language', e.target.value)}
+            className="form-control"
+          >
+            {languages.map(lang => (
+              <option key={lang.value} value={lang.value}>{lang.label}</option>
+            ))}
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Tiền tệ</label>
+          <select
+            value={tempSettings.general?.currency || 'VND'}
+            onChange={(e) => handleInputChange('general', 'currency', e.target.value)}
+            className="form-control"
+          >
+            {currencies.map(curr => (
+              <option key={curr.value} value={curr.value}>{curr.label}</option>
+            ))}
+          </select>
+        </div>
       </div>
+
       <div className="form-group">
-        <label>Email hỗ trợ</label>
-        <input
-          type="email"
-          value={contactSettings.supportEmail}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'supportEmail', e.target.value)}
-          placeholder="Nhập email hỗ trợ"
-        />
-      </div>
-      <div className="form-group">
-        <label>Email kinh doanh</label>
-        <input
-          type="email"
-          value={contactSettings.salesEmail}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'salesEmail', e.target.value)}
-          placeholder="Nhập email kinh doanh"
-        />
-      </div>
-      <div className="form-group">
-        <label>Số điện thoại liên hệ</label>
-        <input
-          type="text"
-          value={contactSettings.contactPhone}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'contactPhone', e.target.value)}
-          placeholder="Nhập số điện thoại"
-        />
-      </div>
-      <div className="form-group">
-        <label>Địa chỉ liên hệ (Tiếng Việt)</label>
+        <label>Mô tả website</label>
         <textarea
-          value={contactSettings.contactAddressVi}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'contactAddressVi', e.target.value)}
-          placeholder="Nhập địa chỉ liên hệ"
-          rows="3"
+          value={tempSettings.general?.siteDescription || ''}
+          onChange={(e) => handleInputChange('general', 'siteDescription', e.target.value)}
+          className="form-control"
+          placeholder="Mô tả ngắn về website"
+          rows={3}
         />
       </div>
+
       <div className="form-group">
-        <label>Contact Address (English)</label>
+        <label>Địa chỉ</label>
         <textarea
-          value={contactSettings.contactAddressEn}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'contactAddressEn', e.target.value)}
-          placeholder="Enter contact address"
-          rows="3"
+          value={tempSettings.general?.address || ''}
+          onChange={(e) => handleInputChange('general', 'address', e.target.value)}
+          className="form-control"
+          placeholder="Địa chỉ công ty"
+          rows={2}
         />
       </div>
-      <div className="form-group">
-        <label>Giờ làm việc (Tiếng Việt)</label>
-        <input
-          type="text"
-          value={contactSettings.workingHoursVi}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'workingHoursVi', e.target.value)}
-          placeholder="Nhập giờ làm việc"
-        />
-      </div>
-      <div className="form-group">
-        <label>Working Hours (English)</label>
-        <input
-          type="text"
-          value={contactSettings.workingHoursEn}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'workingHoursEn', e.target.value)}
-          placeholder="Enter working hours"
-        />
-      </div>
-      <div className="form-group">
-        <label>Embed Google Maps</label>
-        <textarea
-          value={contactSettings.mapEmbed}
-          onChange={(e) => handleInputChange(contactSettings, setContactSettings, 'mapEmbed', e.target.value)}
-          placeholder="Nhập mã embed Google Maps"
-          rows="4"
-        />
-      </div>
-      <button 
-        className="btn btn-primary" 
-        onClick={() => handleSave('contact')}
-        disabled={saving}
-      >
-        {saving ? 'Đang lưu...' : 'Lưu cấu hình liên hệ'}
-      </button>
     </div>
   );
 
   const renderSeoSettings = () => (
     <div className="settings-section">
-      <h3>Cấu hình SEO</h3>
+      <h3>Cài đặt SEO</h3>
+      
       <div className="form-group">
-        <label>Google Analytics ID</label>
+        <label>Meta Title</label>
         <input
           type="text"
-          value={seoSettings.googleAnalytics}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'googleAnalytics', e.target.value)}
-          placeholder="Nhập Google Analytics ID"
+          value={tempSettings.seo?.metaTitle || ''}
+          onChange={(e) => handleInputChange('seo', 'metaTitle', e.target.value)}
+          className="form-control"
+          placeholder="Tiêu đề meta cho SEO"
         />
       </div>
+
+      <div className="form-group">
+        <label>Meta Description</label>
+        <textarea
+          value={tempSettings.seo?.metaDescription || ''}
+          onChange={(e) => handleInputChange('seo', 'metaDescription', e.target.value)}
+          className="form-control"
+          placeholder="Mô tả meta cho SEO"
+          rows={3}
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Meta Keywords</label>
+        <input
+          type="text"
+          value={tempSettings.seo?.metaKeywords || ''}
+          onChange={(e) => handleInputChange('seo', 'metaKeywords', e.target.value)}
+          className="form-control"
+          placeholder="từ khóa, seo, website"
+        />
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Google Analytics ID</label>
+          <input
+            type="text"
+            value={tempSettings.seo?.googleAnalytics || ''}
+            onChange={(e) => handleInputChange('seo', 'googleAnalytics', e.target.value)}
+            className="form-control"
+            placeholder="G-XXXXXXXXXX"
+          />
+        </div>
+        <div className="form-group">
+          <label>Facebook Pixel ID</label>
+          <input
+            type="text"
+            value={tempSettings.seo?.facebookPixel || ''}
+            onChange={(e) => handleInputChange('seo', 'facebookPixel', e.target.value)}
+            className="form-control"
+            placeholder="123456789"
+          />
+        </div>
+      </div>
+
       <div className="form-group">
         <label>Google Tag Manager ID</label>
         <input
           type="text"
-          value={seoSettings.googleTagManager}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'googleTagManager', e.target.value)}
-          placeholder="Nhập Google Tag Manager ID"
+          value={tempSettings.seo?.googleTagManager || ''}
+          onChange={(e) => handleInputChange('seo', 'googleTagManager', e.target.value)}
+          className="form-control"
+          placeholder="GTM-XXXXXXX"
         />
       </div>
-      <div className="form-group">
-        <label>Facebook Pixel ID</label>
-        <input
-          type="text"
-          value={seoSettings.facebookPixel}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'facebookPixel', e.target.value)}
-          placeholder="Nhập Facebook Pixel ID"
-        />
-      </div>
-      <div className="form-group">
-        <label>Meta Title (Tiếng Việt)</label>
-        <input
-          type="text"
-          value={seoSettings.metaTitleVi}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'metaTitleVi', e.target.value)}
-          placeholder="Nhập meta title"
-        />
-      </div>
-      <div className="form-group">
-        <label>Meta Title (English)</label>
-        <input
-          type="text"
-          value={seoSettings.metaTitleEn}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'metaTitleEn', e.target.value)}
-          placeholder="Enter meta title"
-        />
-      </div>
-      <div className="form-group">
-        <label>Meta Description (Tiếng Việt)</label>
-        <textarea
-          value={seoSettings.metaDescriptionVi}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'metaDescriptionVi', e.target.value)}
-          placeholder="Nhập meta description"
-          rows="3"
-        />
-      </div>
-      <div className="form-group">
-        <label>Meta Description (English)</label>
-        <textarea
-          value={seoSettings.metaDescriptionEn}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'metaDescriptionEn', e.target.value)}
-          placeholder="Enter meta description"
-          rows="3"
-        />
-      </div>
-      <div className="form-group">
-        <label>Open Graph Image</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'ogImage', e.target.files[0])}
-        />
-      </div>
-      <div className="form-group">
-        <label>Twitter Card Type</label>
-        <select
-          value={seoSettings.twitterCard}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'twitterCard', e.target.value)}
-        >
-          <option value="summary">Summary</option>
-          <option value="summary_large_image">Summary Large Image</option>
-          <option value="app">App</option>
-          <option value="player">Player</option>
-        </select>
-      </div>
-      <div className="form-group">
-        <label>Robots.txt</label>
-        <textarea
-          value={seoSettings.robotsTxt}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'robotsTxt', e.target.value)}
-          placeholder="Nhập nội dung robots.txt"
-          rows="6"
-        />
-      </div>
-      <div className="form-group">
-        <label>Sitemap URL</label>
-        <input
-          type="url"
-          value={seoSettings.sitemapUrl}
-          onChange={(e) => handleInputChange(seoSettings, setSeoSettings, 'sitemapUrl', e.target.value)}
-          placeholder="Nhập URL sitemap"
-        />
-      </div>
-      <button 
-        className="btn btn-primary" 
-        onClick={() => handleSave('seo')}
-        disabled={saving}
-      >
-        {saving ? 'Đang lưu...' : 'Lưu cấu hình SEO'}
-      </button>
     </div>
   );
 
   const renderEmailSettings = () => (
     <div className="settings-section">
-      <h3>Cấu hình Email</h3>
-      <div className="form-group">
-        <label>SMTP Host</label>
-        <input
-          type="text"
-          value={emailSettings.smtpHost}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'smtpHost', e.target.value)}
-          placeholder="Nhập SMTP host"
-        />
+      <h3>Cài đặt Email</h3>
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>SMTP Host</label>
+          <input
+            type="text"
+            value={tempSettings.email?.smtpHost || ''}
+            onChange={(e) => handleInputChange('email', 'smtpHost', e.target.value)}
+            className="form-control"
+            placeholder="smtp.gmail.com"
+          />
+        </div>
+        <div className="form-group">
+          <label>SMTP Port</label>
+          <input
+            type="number"
+            value={tempSettings.email?.smtpPort || 587}
+            onChange={(e) => handleInputChange('email', 'smtpPort', parseInt(e.target.value))}
+            className="form-control"
+            placeholder="587"
+          />
+        </div>
       </div>
-      <div className="form-group">
-        <label>SMTP Port</label>
-        <input
-          type="number"
-          value={emailSettings.smtpPort}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'smtpPort', e.target.value)}
-          placeholder="Nhập SMTP port"
-        />
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>SMTP Username</label>
+          <input
+            type="text"
+            value={tempSettings.email?.smtpUsername || ''}
+            onChange={(e) => handleInputChange('email', 'smtpUsername', e.target.value)}
+            className="form-control"
+            placeholder="username@gmail.com"
+          />
+        </div>
+        <div className="form-group">
+          <label>SMTP Password</label>
+          <input
+            type="password"
+            value={tempSettings.email?.smtpPassword || ''}
+            onChange={(e) => handleInputChange('email', 'smtpPassword', e.target.value)}
+            className="form-control"
+            placeholder="••••••••"
+          />
+        </div>
       </div>
-      <div className="form-group">
-        <label>SMTP Username</label>
-        <input
-          type="text"
-          value={emailSettings.smtpUsername}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'smtpUsername', e.target.value)}
-          placeholder="Nhập SMTP username"
-        />
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>From Email</label>
+          <input
+            type="email"
+            value={tempSettings.email?.fromEmail || ''}
+            onChange={(e) => handleInputChange('email', 'fromEmail', e.target.value)}
+            className="form-control"
+            placeholder="noreply@example.com"
+          />
+        </div>
+        <div className="form-group">
+          <label>From Name</label>
+          <input
+            type="text"
+            value={tempSettings.email?.fromName || ''}
+            onChange={(e) => handleInputChange('email', 'fromName', e.target.value)}
+            className="form-control"
+            placeholder="Your Company"
+          />
+        </div>
       </div>
+
       <div className="form-group">
-        <label>SMTP Password</label>
-        <input
-          type="password"
-          value={emailSettings.smtpPassword}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'smtpPassword', e.target.value)}
-          placeholder="Nhập SMTP password"
-        />
+        <div className="form-check">
+          <input
+            type="checkbox"
+            id="smtpSecure"
+            checked={tempSettings.email?.smtpSecure || false}
+            onChange={(e) => handleInputChange('email', 'smtpSecure', e.target.checked)}
+            className="form-check-input"
+          />
+          <label htmlFor="smtpSecure" className="form-check-label">
+            Sử dụng SSL/TLS
+          </label>
+        </div>
       </div>
+
       <div className="form-group">
-        <label>SMTP Encryption</label>
-        <select
-          value={emailSettings.smtpEncryption}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'smtpEncryption', e.target.value)}
+        <button 
+          className="btn btn-secondary"
+          onClick={handleTestEmail}
+          disabled={testingEmail}
         >
-          <option value="tls">TLS</option>
-          <option value="ssl">SSL</option>
-          <option value="none">None</option>
-        </select>
+          {testingEmail ? 'Đang test...' : 'Test Email'}
+        </button>
       </div>
-      <div className="form-group">
-        <label>From Name</label>
-        <input
-          type="text"
-          value={emailSettings.fromName}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'fromName', e.target.value)}
-          placeholder="Nhập tên người gửi"
-        />
-      </div>
-      <div className="form-group">
-        <label>From Email</label>
-        <input
-          type="email"
-          value={emailSettings.fromEmail}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'fromEmail', e.target.value)}
-          placeholder="Nhập email người gửi"
-        />
-      </div>
-      <div className="form-group">
-        <label>Reply To Email</label>
-        <input
-          type="email"
-          value={emailSettings.replyToEmail}
-          onChange={(e) => handleInputChange(emailSettings, setEmailSettings, 'replyToEmail', e.target.value)}
-          placeholder="Nhập email reply to"
-        />
-      </div>
-      <button 
-        className="btn btn-primary" 
-        onClick={() => handleSave('email')}
-        disabled={saving}
-      >
-        {saving ? 'Đang lưu...' : 'Lưu cấu hình Email'}
-      </button>
     </div>
   );
 
   const renderSocialSettings = () => (
     <div className="settings-section">
       <h3>Mạng xã hội</h3>
-      <div className="form-group">
-        <label>Facebook URL</label>
-        <input
-          type="url"
-          value={socialSettings.facebookUrl}
-          onChange={(e) => handleInputChange(socialSettings, setSocialSettings, 'facebookUrl', e.target.value)}
-          placeholder="Nhập URL Facebook"
-        />
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>Facebook</label>
+          <input
+            type="url"
+            value={tempSettings.social?.facebook || ''}
+            onChange={(e) => handleInputChange('social', 'facebook', e.target.value)}
+            className="form-control"
+            placeholder="https://facebook.com/yourpage"
+          />
+        </div>
+        <div className="form-group">
+          <label>Twitter</label>
+          <input
+            type="url"
+            value={tempSettings.social?.twitter || ''}
+            onChange={(e) => handleInputChange('social', 'twitter', e.target.value)}
+            className="form-control"
+            placeholder="https://twitter.com/yourhandle"
+          />
+        </div>
       </div>
-      <div className="form-group">
-        <label>Twitter URL</label>
-        <input
-          type="url"
-          value={socialSettings.twitterUrl}
-          onChange={(e) => handleInputChange(socialSettings, setSocialSettings, 'twitterUrl', e.target.value)}
-          placeholder="Nhập URL Twitter"
-        />
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>LinkedIn</label>
+          <input
+            type="url"
+            value={tempSettings.social?.linkedin || ''}
+            onChange={(e) => handleInputChange('social', 'linkedin', e.target.value)}
+            className="form-control"
+            placeholder="https://linkedin.com/company/yourcompany"
+          />
+        </div>
+        <div className="form-group">
+          <label>YouTube</label>
+          <input
+            type="url"
+            value={tempSettings.social?.youtube || ''}
+            onChange={(e) => handleInputChange('social', 'youtube', e.target.value)}
+            className="form-control"
+            placeholder="https://youtube.com/c/yourchannel"
+          />
+        </div>
       </div>
-      <div className="form-group">
-        <label>LinkedIn URL</label>
-        <input
-          type="url"
-          value={socialSettings.linkedinUrl}
-          onChange={(e) => handleInputChange(socialSettings, setSocialSettings, 'linkedinUrl', e.target.value)}
-          placeholder="Nhập URL LinkedIn"
-        />
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Instagram</label>
+          <input
+            type="url"
+            value={tempSettings.social?.instagram || ''}
+            onChange={(e) => handleInputChange('social', 'instagram', e.target.value)}
+            className="form-control"
+            placeholder="https://instagram.com/yourhandle"
+          />
+        </div>
+        <div className="form-group">
+          <label>Zalo</label>
+          <input
+            type="url"
+            value={tempSettings.social?.zalo || ''}
+            onChange={(e) => handleInputChange('social', 'zalo', e.target.value)}
+            className="form-control"
+            placeholder="https://zalo.me/yourpage"
+          />
+        </div>
       </div>
-      <div className="form-group">
-        <label>YouTube URL</label>
-        <input
-          type="url"
-          value={socialSettings.youtubeUrl}
-          onChange={(e) => handleInputChange(socialSettings, setSocialSettings, 'youtubeUrl', e.target.value)}
-          placeholder="Nhập URL YouTube"
-        />
-      </div>
-      <div className="form-group">
-        <label>Instagram URL</label>
-        <input
-          type="url"
-          value={socialSettings.instagramUrl}
-          onChange={(e) => handleInputChange(socialSettings, setSocialSettings, 'instagramUrl', e.target.value)}
-          placeholder="Nhập URL Instagram"
-        />
-      </div>
-      <button 
-        className="btn btn-primary" 
-        onClick={() => handleSave('social')}
-        disabled={saving}
-      >
-        {saving ? 'Đang lưu...' : 'Lưu cấu hình mạng xã hội'}
-      </button>
     </div>
   );
+
+  const renderMaintenanceSettings = () => (
+    <div className="settings-section">
+      <h3>Chế độ bảo trì</h3>
+      
+      <div className="form-group">
+        <div className="form-check">
+          <input
+            type="checkbox"
+            id="maintenanceEnabled"
+            checked={tempSettings.maintenance?.enabled || false}
+            onChange={(e) => handleInputChange('maintenance', 'enabled', e.target.checked)}
+            className="form-check-input"
+          />
+          <label htmlFor="maintenanceEnabled" className="form-check-label">
+            Bật chế độ bảo trì
+          </label>
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Thông báo bảo trì</label>
+        <textarea
+          value={tempSettings.maintenance?.message || ''}
+          onChange={(e) => handleInputChange('maintenance', 'message', e.target.value)}
+          className="form-control"
+          placeholder="Website đang được bảo trì. Vui lòng quay lại sau."
+          rows={3}
+        />
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Thời gian bắt đầu</label>
+          <input
+            type="datetime-local"
+            value={tempSettings.maintenance?.startTime || ''}
+            onChange={(e) => handleInputChange('maintenance', 'startTime', e.target.value)}
+            className="form-control"
+          />
+        </div>
+        <div className="form-group">
+          <label>Thời gian kết thúc</label>
+          <input
+            type="datetime-local"
+            value={tempSettings.maintenance?.endTime || ''}
+            onChange={(e) => handleInputChange('maintenance', 'endTime', e.target.value)}
+            className="form-control"
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>IP được phép truy cập (mỗi IP một dòng)</label>
+        <textarea
+          value={tempSettings.maintenance?.allowedIps?.join('\n') || ''}
+          onChange={(e) => handleInputChange('maintenance', 'allowedIps', e.target.value.split('\n').filter(ip => ip.trim()))}
+          className="form-control"
+          placeholder="127.0.0.1&#10;::1"
+          rows={3}
+        />
+      </div>
+    </div>
+  );
+
+  const renderSecuritySettings = () => (
+    <div className="settings-section">
+      <h3>Cài đặt bảo mật</h3>
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>Số lần đăng nhập sai tối đa</label>
+          <input
+            type="number"
+            value={tempSettings.security?.maxLoginAttempts || 5}
+            onChange={(e) => handleInputChange('security', 'maxLoginAttempts', parseInt(e.target.value))}
+            className="form-control"
+            min="1"
+            max="10"
+          />
+        </div>
+        <div className="form-group">
+          <label>Thời gian khóa tài khoản (phút)</label>
+          <input
+            type="number"
+            value={tempSettings.security?.lockoutDuration || 30}
+            onChange={(e) => handleInputChange('security', 'lockoutDuration', parseInt(e.target.value))}
+            className="form-control"
+            min="5"
+            max="1440"
+          />
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Thời gian session (phút)</label>
+          <input
+            type="number"
+            value={tempSettings.security?.sessionTimeout || 1440}
+            onChange={(e) => handleInputChange('security', 'sessionTimeout', parseInt(e.target.value))}
+            className="form-control"
+            min="60"
+            max="10080"
+          />
+        </div>
+        <div className="form-group">
+          <div className="form-check" style={{ marginTop: '32px' }}>
+            <input
+              type="checkbox"
+              id="forceHttps"
+              checked={tempSettings.security?.forceHttps || false}
+              onChange={(e) => handleInputChange('security', 'forceHttps', e.target.checked)}
+              className="form-check-input"
+            />
+            <label htmlFor="forceHttps" className="form-check-label">
+              Bắt buộc HTTPS
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div className="form-group">
+        <div className="form-check">
+          <input
+            type="checkbox"
+            id="enableCaptcha"
+            checked={tempSettings.security?.enableCaptcha || false}
+            onChange={(e) => handleInputChange('security', 'enableCaptcha', e.target.checked)}
+            className="form-check-input"
+          />
+          <label htmlFor="enableCaptcha" className="form-check-label">
+            Bật Captcha
+          </label>
+        </div>
+      </div>
+
+      {tempSettings.security?.enableCaptcha && (
+        <div className="form-row">
+          <div className="form-group">
+            <label>reCAPTCHA Site Key</label>
+            <input
+              type="text"
+              value={tempSettings.security?.recaptchaSiteKey || ''}
+              onChange={(e) => handleInputChange('security', 'recaptchaSiteKey', e.target.value)}
+              className="form-control"
+              placeholder="6Lc..."
+            />
+          </div>
+          <div className="form-group">
+            <label>reCAPTCHA Secret Key</label>
+            <input
+              type="password"
+              value={tempSettings.security?.recaptchaSecretKey || ''}
+              onChange={(e) => handleInputChange('security', 'recaptchaSecretKey', e.target.value)}
+              className="form-control"
+              placeholder="6Lc..."
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const renderBackupSettings = () => (
+    <div className="settings-section">
+      <h3>Cài đặt sao lưu</h3>
+      
+      <div className="form-group">
+        <div className="form-check">
+          <input
+            type="checkbox"
+            id="backupEnabled"
+            checked={tempSettings.backup?.enabled || false}
+            onChange={(e) => handleInputChange('backup', 'enabled', e.target.checked)}
+            className="form-check-input"
+          />
+          <label htmlFor="backupEnabled" className="form-check-label">
+            Bật sao lưu tự động
+          </label>
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label>Tần suất sao lưu</label>
+          <select
+            value={tempSettings.backup?.frequency || 'daily'}
+            onChange={(e) => handleInputChange('backup', 'frequency', e.target.value)}
+            className="form-control"
+          >
+            <option value="hourly">Hàng giờ</option>
+            <option value="daily">Hàng ngày</option>
+            <option value="weekly">Hàng tuần</option>
+            <option value="monthly">Hàng tháng</option>
+          </select>
+        </div>
+        <div className="form-group">
+          <label>Thời gian lưu trữ (ngày)</label>
+          <input
+            type="number"
+            value={tempSettings.backup?.retention || 30}
+            onChange={(e) => handleInputChange('backup', 'retention', parseInt(e.target.value))}
+            className="form-control"
+            min="1"
+            max="365"
+          />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Vị trí lưu trữ</label>
+        <select
+          value={tempSettings.backup?.location || 'local'}
+          onChange={(e) => handleInputChange('backup', 'location', e.target.value)}
+          className="form-control"
+        >
+          <option value="local">Local Server</option>
+          <option value="s3">Amazon S3</option>
+          <option value="ftp">FTP Server</option>
+        </select>
+      </div>
+
+      {tempSettings.backup?.location === 's3' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>S3 Bucket</label>
+              <input
+                type="text"
+                value={tempSettings.backup?.s3Bucket || ''}
+                onChange={(e) => handleInputChange('backup', 's3Bucket', e.target.value)}
+                className="form-control"
+                placeholder="your-bucket-name"
+              />
+            </div>
+            <div className="form-group">
+              <label>S3 Region</label>
+              <input
+                type="text"
+                value={tempSettings.backup?.s3Region || ''}
+                onChange={(e) => handleInputChange('backup', 's3Region', e.target.value)}
+                className="form-control"
+                placeholder="us-east-1"
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label>S3 Access Key</label>
+              <input
+                type="text"
+                value={tempSettings.backup?.s3AccessKey || ''}
+                onChange={(e) => handleInputChange('backup', 's3AccessKey', e.target.value)}
+                className="form-control"
+                placeholder="AKIAIOSFODNN7EXAMPLE"
+              />
+            </div>
+            <div className="form-group">
+              <label>S3 Secret Key</label>
+              <input
+                type="password"
+                value={tempSettings.backup?.s3SecretKey || ''}
+                onChange={(e) => handleInputChange('backup', 's3SecretKey', e.target.value)}
+                className="form-control"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'general':
+        return renderGeneralSettings();
+      case 'seo':
+        return renderSeoSettings();
+      case 'email':
+        return renderEmailSettings();
+      case 'social':
+        return renderSocialSettings();
+      case 'maintenance':
+        return renderMaintenanceSettings();
+      case 'security':
+        return renderSecuritySettings();
+      case 'backup':
+        return renderBackupSettings();
+      default:
+        return renderGeneralSettings();
+    }
+  };
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  return (
-    <div className="system-settings">
-      <div className="page-header">
-        <h1>Cài đặt hệ thống</h1>
-      </div>
-
-      <div className="settings-container">
-        <div className="settings-tabs">
-          <button
-            className={`tab-button ${activeTab === 'general' ? 'active' : ''}`}
-            onClick={() => setActiveTab('general')}
-          >
-            <i className="bi bi-gear"></i>
-            Cấu hình chung
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'company' ? 'active' : ''}`}
-            onClick={() => setActiveTab('company')}
-          >
-            <i className="bi bi-building"></i>
-            Thông tin công ty
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'contact' ? 'active' : ''}`}
-            onClick={() => setActiveTab('contact')}
-          >
-            <i className="bi bi-telephone"></i>
-            Liên hệ
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'seo' ? 'active' : ''}`}
-            onClick={() => setActiveTab('seo')}
-          >
-            <i className="bi bi-search"></i>
-            SEO
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'email' ? 'active' : ''}`}
-            onClick={() => setActiveTab('email')}
-          >
-            <i className="bi bi-envelope"></i>
-            Email
-          </button>
-          <button
-            className={`tab-button ${activeTab === 'social' ? 'active' : ''}`}
-            onClick={() => setActiveTab('social')}
-          >
-            <i className="bi bi-share"></i>
-            Mạng xã hội
-          </button>
-        </div>
-
-        <div className="settings-content">
-          {activeTab === 'general' && renderGeneralSettings()}
-          {activeTab === 'company' && renderCompanyInfo()}
-          {activeTab === 'contact' && renderContactSettings()}
-          {activeTab === 'seo' && renderSeoSettings()}
-          {activeTab === 'email' && renderEmailSettings()}
-          {activeTab === 'social' && renderSocialSettings()}
-        </div>
-      </div>
-
-      <ToastMessage
-        show={toast.show}
-        message={toast.message}
-        type={toast.type}
-        onClose={() => setToast({ ...toast, show: false })}
-      />
+  const pageActions = (
+    <div className="page-actions">
+      <button 
+        className="btn btn-secondary"
+        onClick={handleClearCache}
+        disabled={clearingCache}
+        style={{ marginRight: '8px' }}
+      >
+        {clearingCache ? 'Đang xóa...' : 'Xóa Cache'}
+      </button>
+      <button 
+        className="btn btn-secondary"
+        onClick={handleExport}
+        style={{ marginRight: '8px' }}
+      >
+        Xuất cài đặt
+      </button>
+      <label className="btn btn-secondary" style={{ marginRight: '8px', cursor: 'pointer' }}>
+        Nhập cài đặt
+        <input
+          type="file"
+          accept=".json"
+          onChange={handleImport}
+          style={{ display: 'none' }}
+        />
+      </label>
+      <button 
+        className="btn btn-warning"
+        onClick={() => handleReset(activeTab)}
+        disabled={saving}
+        style={{ marginRight: '8px' }}
+      >
+        Khôi phục
+      </button>
+      <button 
+        className="btn btn-primary"
+        onClick={() => handleSave(activeTab)}
+        disabled={saving}
+      >
+        {saving ? 'Đang lưu...' : 'Lưu cài đặt'}
+      </button>
     </div>
+  );
+
+  return (
+    <PageWrapper actions={pageActions}>
+      <div className="admin-system-settings">
+        {renderTabButtons()}
+        
+        <div className="tab-content">
+          {renderTabContent()}
+        </div>
+
+        {toast.show && (
+          <ToastMessage 
+            message={toast.message} 
+            type={toast.type} 
+            onClose={() => setToast({ ...toast, show: false })} 
+          />
+        )}
+      </div>
+    </PageWrapper>
   );
 };
 
-export default SystemSettings; 
+export default SystemSettings;

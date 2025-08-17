@@ -1,6 +1,52 @@
-import api from "../api";
+import api from '../api';
 
-// Enhanced Authentication Service with JWT handling
+/**
+ * Đăng ký user mới (Admin only)
+ * @param {Object} userData - User data
+ * @param {string} userData.username - Tên đăng nhập
+ * @param {string} userData.password - Mật khẩu
+ * @param {string} userData.fullName - Tên đầy đủ
+ * @param {string} userData.email - Email (optional)
+ * @param {string} userData.phone - Số điện thoại (optional)
+ * @param {number} userData.userType - Loại user: 1=system, 2=manager, 3=staff
+ * @param {number} userData.status - Trạng thái: 1=active, 0=inactive
+ * @param {Array} userData.roleIds - Danh sách role IDs
+ * @returns {Promise<Object>} Response data
+ */
+export const register = async (userData) => {
+  try {
+    console.log("👤 Attempting user registration...");
+    const response = await api.post("/api/auth/register", userData);
+    
+    console.log("📡 Register response:", response.data);
+    
+    if (response.data.status === 1) {
+      console.log("✅ User registration successful");
+      
+      return {
+        success: true,
+        data: response.data.data,
+        message: response.data.message || "User registration successful"
+      };
+    }
+    
+    return {
+      success: false,
+      message: response.data.message || "User registration failed"
+    };
+    
+  } catch (error) {
+    console.error("❌ User registration failed:", error.response?.data || error.message);
+    console.error("🔍 Full error response:", error.response);
+    console.error("🔍 Request data sent:", userData);
+    
+    return {
+      success: false,
+      message: error.response?.data?.Message || error.message || "User registration failed"
+    };
+  }
+};
+
 export const login = async (username, password) => {
   try {
     console.log("🔐 Attempting login...");
@@ -8,110 +54,154 @@ export const login = async (username, password) => {
       username,
       password
     });
-    
-    // Handle backend response format: {status: 1, data: {token: "..."}}
-    if (response.data && response.data.status === 1 && response.data.data) {
-      const { token } = response.data.data;
+
+    console.log("📡 Login response:", response.data);
+
+    if (response.data.status === 1 && response.data.data) {
+      const { token, user } = response.data.data;
       
-      if (token) {
-        // Store token in localStorage
-        localStorage.setItem('token', token);
-        console.log("✅ Login successful, token stored");
-        
-        return {
-          success: true,
-          token: token,
-          message: response.data.message || "Login successful"
-        };
-      }
+      // Store token
+      localStorage.setItem('auth_token', token);
+      
+      console.log("✅ Login successful, token stored");
+      
+      return {
+        success: true,
+        user: user,
+        message: response.data.message || "Login successful"
+      };
     }
-    
-    throw new Error(response.data?.message || "Invalid login response");
-    
+
+    // If status is not 1, it's a failed login
+    return {
+      success: false,
+      message: response.data.message || "Login failed"
+    };
+
   } catch (error) {
     console.error("❌ Login failed:", error.response?.data || error.message);
     
     return {
       success: false,
-      message: error.response?.data?.message || error.message || "Login failed"
+      message: error.response?.data?.Message || error.message || "Login failed"
     };
   }
 };
 
-export const register = async (userData) => {
+export const changePassword = async (currentPassword, newPassword) => {
   try {
-    console.log("📝 Attempting registration...");
-    const response = await api.post("/api/auth/register", userData);
-    
-    // Handle backend response format
-    if (response.data && response.data.status === 1) {
-      console.log("✅ Registration successful");
+    console.log("🔐 Attempting password change...");
+    const response = await api.post("/api/auth/change-password", {
+      currentPassword,
+      newPassword
+    });
+
+    console.log("📡 Change password response:", response.data);
+
+    if (response.data.status === 1) {
+      console.log("✅ Password changed successfully");
       
       return {
         success: true,
-        message: response.data.message || "Registration successful"
+        message: response.data.message || "Password changed successfully"
       };
     }
-    
-    throw new Error(response.data?.message || "Registration failed");
-    
+
+    return {
+      success: false,
+      message: response.data.message || "Password change failed"
+    };
+
   } catch (error) {
-    console.error("❌ Registration failed:", error.response?.data || error.message);
+    console.error("❌ Password change failed:", error.response?.data || error.message);
     
     return {
       success: false,
-      message: error.response?.data?.message || error.message || "Registration failed"
+      message: error.response?.data?.Message || error.message || "Password change failed"
     };
   }
 };
 
 export const logout = () => {
-  console.log("🚪 Logging out...");
-  localStorage.removeItem('token');
-};
-
-export const getToken = () => {
-  return localStorage.getItem('token');
+  localStorage.removeItem('auth_token');
+  localStorage.removeItem('refreshToken');
+  console.log("🚪 Logged out, tokens cleared");
 };
 
 export const isAuthenticated = () => {
-  const token = getToken();
-  if (!token) return false;
-  
+  const token = localStorage.getItem('auth_token');
+  return !!token;
+};
+
+export const getToken = () => {
+  return localStorage.getItem('auth_token');
+};
+
+export const refreshToken = async () => {
   try {
-    // Simple token validation (check if not expired)
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const currentTime = Date.now() / 1000;
+    const currentToken = localStorage.getItem('auth_token');
     
-    return payload.exp > currentTime;
+    if (!currentToken) {
+      throw new Error('No token available');
+    }
+
+    const response = await api.post('/api/auth/refresh-token', {
+      token: currentToken
+    });
+
+    if (response.data.status === 1 && response.data.data) {
+      const { token } = response.data.data;
+      localStorage.setItem('auth_token', token);
+      console.log("✅ Token refreshed successfully");
+      return true;
+    }
+
+    throw new Error('Token refresh failed');
+
   } catch (error) {
-    console.error("❌ Token validation error:", error);
+    console.error("❌ Token refresh failed:", error);
+    logout();
     return false;
   }
 };
 
-export const getCurrentUser = () => {
-  const token = getToken();
-  if (!token) return null;
-  
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return {
-      username: payload.sub || payload.username,
-      roles: payload.roles || [],
-      exp: payload.exp
-    };
-  } catch (error) {
-    console.error("❌ Error parsing token:", error);
-    return null;
-  }
+// Mock user data for development
+export const getMockUser = () => {
+  return {
+    id: 1,
+    username: 'admin',
+    name: 'Administrator',
+    email: 'admin@attech.com',
+    role: 'admin',
+    permissions: [
+      'menu_view',
+      'view_news',
+      'create_news',
+      'edit_news',
+      'delete_news',
+      'view_products',
+      'create_products',
+      'edit_products',
+      'delete_products',
+      'view_services',
+      'create_services',
+      'edit_services',
+      'delete_services',
+      'view_notifications',
+      'create_notifications',
+      'edit_notifications',
+      'delete_notifications',
+      'manage_users',
+      'manage_roles',
+      'manage_permissions',
+      'system_settings',
+      'file_upload',
+      'seo_management',
+      'language_management'
+    ],
+    lastLogin: '2024-01-15T10:30:00Z',
+    status: 'active'
+  };
 };
 
-export default {
-  login,
-  register,
-  logout,
-  getToken,
-  isAuthenticated,
-  getCurrentUser
-}; 
+ 

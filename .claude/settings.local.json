@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "Bash(npm run build:*)",
@@ -8,7 +9,19 @@
       "Bash(npm start)",
       "Bash(grep:*)",
       "Bash(ls:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(rm:*)",
+      "Bash(taskkill:*)",
+      "Bash(\"taskkill\" \"/F\" \"/PID\" \"14492\")",
+      "Bash(cmd /c:*)",
+      "Bash(npm run lint:*)",
+      "Bash(curl:*)",
+      "Bash(set DANGEROUSLY_DISABLE_HOST_CHECK=true)",
+      "Bash(npm run dev:*)",
+      "Bash(npm run:*)",
+      "Bash(npx serve:*)",
+      "Bash(rg:*)",
+      "Bash(npx eslint:*)"
     ],
     "deny": []
   }

@@ -1,284 +1,606 @@
-import React, { useState, useCallback } from "react";
-import { mockBannerConfig } from "../../utils/mockData.js";
+import React, { useState, useEffect, useCallback } from "react";
+import PageWrapper from "../components/PageWrapper";
+import DataTable from "../components/DataTable";
+import FormModal from "../components/FormModal";
+import ToastMessage from "../components/ToastMessage";
+import LoadingSpinner from "../components/LoadingSpinner";
+import { 
+  fetchBanners, 
+  createBanner, 
+  updateBanner, 
+  deleteBanner, 
+  updateBannerStatus,
+  getBannerPositions 
+} from "../../services/bannerService";
 import "./ConfigBanner.css";
-import MediaPicker from "../../components/MediaPicker/MediaPicker";
-import Modal from "../../components/Shared/UI/Modal";
 
 const ConfigBanner = () => {
   const [banners, setBanners] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  
   const emptyBanner = {
     id: null,
-    imageUrl: "",
     titleVi: "",
     titleEn: "",
     descriptionVi: "",
     descriptionEn: "",
-    link: "",
+    imageUrl: "",
+    linkUrl: "",
+    position: "homepage_main",
+    order: 1,
+    status: "active",
+    startDate: "",
+    endDate: ""
   };
+  
   const [currentBanner, setCurrentBanner] = useState({ ...emptyBanner });
   const [errors, setErrors] = useState({});
-  const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [sortConfig, setSortConfig] = useState({ key: "order", direction: "asc" });
+  const [filters, setFilters] = useState({
+    search: "",
+    status: "",
+    position: ""
+  });
+  const [toast, setToast] = useState({ show: false, message: "", type: "" });
+  const [activeTab, setActiveTab] = useState('vi');
 
-  // Load banners from mock data
-  React.useEffect(() => {
-    const homepageBanners = mockBannerConfig.homepage?.slides || [];
-    setBanners(homepageBanners);
-  }, []);
+  const positions = getBannerPositions();
 
-  const handleShowModal = useCallback((banner = null) => {
-    if (banner) {
-      setCurrentBanner(banner);
-      setEditMode(true);
-    } else {
-      setCurrentBanner({ ...emptyBanner });
-      setEditMode(false);
-    }
-    setShowModal(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const bannersData = await fetchBanners();
+        setBanners(bannersData);
+        console.log('✅ Banners loaded successfully', bannersData);
+      } catch (error) {
+        console.error('Failed to fetch banners:', error);
+        setBanners([]);
+        setToast({ show: true, message: 'Không thể tải danh sách banner!', type: 'error' });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
   }, []);
 
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
+    setEditMode(false);
     setErrors({});
+    setCurrentBanner({ ...emptyBanner });
+    setActiveTab('vi');
   }, []);
 
-  const handleInputChange = useCallback((e) => {
-    const { name, value } = e.target;
-    setCurrentBanner((prev) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: "" }));
-  }, []);
+  const handleAddNew = () => {
+    setEditMode(false);
+    setCurrentBanner({ ...emptyBanner });
+    setErrors({});
+    setActiveTab('vi');
+    setShowModal(true);
+  };
 
-  const handleImageChange = useCallback((e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        setCurrentBanner((prev) => ({ ...prev, imageUrl: ev.target.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  }, []);
+  const handleEdit = (banner) => {
+    setEditMode(true);
+    setCurrentBanner({
+      id: banner.id,
+      titleVi: banner.titleVi || "",
+      titleEn: banner.titleEn || "",
+      descriptionVi: banner.descriptionVi || "",
+      descriptionEn: banner.descriptionEn || "",
+      imageUrl: banner.imageUrl || "",
+      linkUrl: banner.linkUrl || "",
+      position: banner.position || "homepage_main",
+      order: banner.order || 1,
+      status: banner.status === 1 ? "active" : "inactive",
+      startDate: banner.startDate ? banner.startDate.split('T')[0] : "",
+      endDate: banner.endDate ? banner.endDate.split('T')[0] : ""
+    });
+    setErrors({});
+    setActiveTab('vi');
+    setShowModal(true);
+  };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!currentBanner.titleVi)
-      newErrors.titleVi = "Tiêu đề tiếng Việt là bắt buộc";
-    if (!currentBanner.titleEn)
-      newErrors.titleEn = "Tiêu đề tiếng Anh là bắt buộc";
-    if (!currentBanner.imageUrl) newErrors.imageUrl = "Ảnh banner là bắt buộc";
+    
+    if (!currentBanner.titleVi.trim()) {
+      newErrors.titleVi = 'Tiêu đề tiếng Việt là bắt buộc';
+    }
+    
+    if (!currentBanner.titleEn.trim()) {
+      newErrors.titleEn = 'Tiêu đề tiếng Anh là bắt buộc';
+    }
+
+    if (!currentBanner.imageUrl.trim()) {
+      newErrors.imageUrl = 'Hình ảnh banner là bắt buộc';
+    }
+
+    if (!currentBanner.position) {
+      newErrors.position = 'Vị trí hiển thị là bắt buộc';
+    }
+
+    if (!currentBanner.order || currentBanner.order < 1) {
+      newErrors.order = 'Thứ tự hiển thị phải lớn hơn 0';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     if (!validateForm()) return;
-    if (editMode) {
-      setBanners((prev) =>
-        prev.map((b) => (b.id === currentBanner.id ? currentBanner : b))
-      );
+
+    setSubmitLoading(true);
+    try {
+      const bannerData = {
+        titleVi: currentBanner.titleVi,
+        titleEn: currentBanner.titleEn,
+        descriptionVi: currentBanner.descriptionVi,
+        descriptionEn: currentBanner.descriptionEn,
+        imageUrl: currentBanner.imageUrl,
+        linkUrl: currentBanner.linkUrl,
+        position: currentBanner.position,
+        order: parseInt(currentBanner.order),
+        status: currentBanner.status === "active" ? 1 : 0,
+        startDate: currentBanner.startDate || null,
+        endDate: currentBanner.endDate || null
+      };
+
+      if (editMode) {
+        await updateBanner(currentBanner.id, bannerData);
+        setBanners(prev => prev.map(item => 
+          item.id === currentBanner.id ? { ...item, ...bannerData } : item
+        ));
+        setToast({ show: true, message: 'Cập nhật banner thành công!', type: 'success' });
+      } else {
+        const newBanner = await createBanner(bannerData);
+        setBanners(prev => [newBanner, ...prev]);
+        setToast({ show: true, message: 'Thêm banner thành công!', type: 'success' });
+      }
+      handleCloseModal();
+    } catch (error) {
+      setToast({ show: true, message: error.message || 'Lỗi khi lưu banner!', type: 'error' });
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
+  const handleDeleteBanner = async (id) => {
+    if (window.confirm('Bạn có chắc chắn muốn xóa banner này?')) {
+      try {
+        await deleteBanner(id);
+        setBanners(prev => prev.filter(item => item.id !== id));
+        setToast({ show: true, message: 'Xóa banner thành công!', type: 'success' });
+      } catch (error) {
+        setToast({ show: true, message: error.message || 'Lỗi khi xóa banner!', type: 'error' });
+      }
+    }
+  };
+
+  const handleToggleStatus = async (banner) => {
+    try {
+      const newStatus = banner.status === 1 ? 0 : 1;
+      await updateBannerStatus(banner.id, newStatus);
+      setBanners(prev => prev.map(item => 
+        item.id === banner.id ? { ...item, status: newStatus } : item
+      ));
+      setToast({ show: true, message: 'Cập nhật trạng thái thành công!', type: 'success' });
+    } catch (error) {
+      setToast({ show: true, message: error.message || 'Lỗi khi cập nhật trạng thái!', type: 'error' });
+    }
+  };
+
+  const handleInputChange = (field, value) => {
+    setCurrentBanner(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const filteredBanners = banners.filter(item => {
+    const matchesSearch = item.titleVi.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.titleEn.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.descriptionVi.toLowerCase().includes(filters.search.toLowerCase()) ||
+                         item.descriptionEn.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesStatus = !filters.status || 
+                         (filters.status === "active" && item.status === 1) ||
+                         (filters.status === "inactive" && item.status === 0);
+    const matchesPosition = !filters.position || item.position === filters.position;
+    
+    return matchesSearch && matchesStatus && matchesPosition;
+  });
+
+  const sortedBanners = [...filteredBanners].sort((a, b) => {
+    const aValue = a[sortConfig.key];
+    const bValue = b[sortConfig.key];
+    
+    if (sortConfig.direction === 'asc') {
+      return aValue > bValue ? 1 : -1;
     } else {
-      setBanners((prev) => [...prev, { ...currentBanner, id: Date.now() }]);
+      return aValue < bValue ? 1 : -1;
     }
-    handleCloseModal();
-  };
+  });
 
-  const handleDelete = (id) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa banner này?")) {
-      setBanners((prev) => prev.filter((b) => b.id !== id));
-    }
-  };
+  const paginatedBanners = sortedBanners.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-  return (
-    <div className="admin-banner-config">
-      <div className="card">
-        <div className="card-header">
-          <h3>Cấu hình Banner Trang chủ</h3>
-          <button className="btn btn-primary" onClick={() => handleShowModal()}>
-            Thêm banner mới
+  const totalPages = Math.ceil(sortedBanners.length / itemsPerPage);
+
+  const columns = [
+    { 
+      key: 'imageUrl', 
+      label: 'Hình ảnh',
+      render: value => value ? (
+        <img 
+          src={value} 
+          alt="Banner" 
+          className="banner-thumbnail"
+          style={{ width: '60px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+        />
+      ) : <span className="text-muted">Chưa có ảnh</span>
+    },
+    { key: 'titleVi', label: 'Tiêu đề (VI)', sortable: true },
+    { key: 'titleEn', label: 'Tiêu đề (EN)', sortable: true },
+    { 
+      key: 'position', 
+      label: 'Vị trí', 
+      sortable: true,
+      render: value => {
+        const pos = positions.find(p => p.value === value);
+        return pos ? pos.label : value;
+      }
+    },
+    { key: 'order', label: 'Thứ tự', sortable: true },
+    {
+      key: 'status',
+      label: 'Trạng thái',
+      sortable: true,
+      render: (value, item) => (
+        <button 
+          onClick={() => handleToggleStatus(item)}
+          className={`status-badge ${value === 1 || value === 'active' ? 'active' : 'inactive'}`}
+        >
+          {value === 1 || value === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+        </button>
+      )
+    },
+    {
+      key: 'actions',
+      label: 'Thao tác',
+      render: (value, item) => (
+        <div className="action-buttons">
+          <button className="btn btn-sm btn-primary" onClick={() => handleEdit(item)} title="Chỉnh sửa">
+            <i className="bi bi-pencil"></i>
+            <span>Sửa</span>
+          </button>
+          <button className="btn btn-sm btn-danger" onClick={() => handleDeleteBanner(item.id)} title="Xóa">
+            <i className="bi bi-trash"></i>
+            <span>Xóa</span>
           </button>
         </div>
-        <div className="card-body">
-          <div className="banner-list">
-            {banners.length === 0 ? (
-              <div className="no-data">Chưa có banner nào</div>
-            ) : (
-              <table className="banner-table">
-                <thead>
-                  <tr>
-                    <th>Ảnh</th>
-                    <th>Tiêu đề (Vi)</th>
-                    <th>Tiêu đề (En)</th>
-                    <th>Mô tả (Vi)</th>
-                    <th>Mô tả (En)</th>
-                    <th>Link</th>
-                    <th>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {banners.map((banner) => (
-                    <tr key={banner.id}>
-                      <td>
-                        <img
-                          src={banner.imageUrl}
-                          alt={banner.titleVi}
-                          style={{
-                            width: 120,
-                            height: 40,
-                            objectFit: "cover",
-                            borderRadius: 6,
-                          }}
-                        />
-                      </td>
-                      <td>{banner.titleVi}</td>
-                      <td>{banner.titleEn}</td>
-                      <td>{banner.descriptionVi}</td>
-                      <td>{banner.descriptionEn}</td>
-                      <td>{banner.link}</td>
-                      <td>
-                        <button
-                          className="btn btn-edit"
-                          onClick={() => handleShowModal(banner)}
-                        >
-                          Sửa
-                        </button>
-                        <button
-                          className="btn btn-delete"
-                          onClick={() => handleDelete(banner.id)}
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
+      )
+    }
+  ];
+
+  const handleSort = useCallback((key) => {
+    setSortConfig((prev) => ({
+      key,
+      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
+    }));
+  }, []);
+
+  const renderFilters = () => (
+    <div className="filters-section">
+      <div className="filter-group">
+        <input
+          type="text"
+          placeholder="Tìm kiếm banner..."
+          value={filters.search}
+          onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
+          className="form-control"
+        />
+      </div>
+      <div className="filter-group">
+        <select
+          value={filters.status}
+          onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+          className="form-control"
+        >
+          <option value="">Tất cả trạng thái</option>
+          <option value="active">Hoạt động</option>
+          <option value="inactive">Không hoạt động</option>
+        </select>
+      </div>
+      <div className="filter-group">
+        <select
+          value={filters.position}
+          onChange={(e) => setFilters(prev => ({ ...prev, position: e.target.value }))}
+          className="form-control"
+        >
+          <option value="">Tất cả vị trí</option>
+          {positions.map(pos => (
+            <option key={pos.value} value={pos.value}>{pos.label}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+
+  const renderBannerForm = () => (
+    <div className="banner-form">
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button type="button" className={`btn btn-tab${activeTab === 'vi' ? ' active' : ''}`} onClick={() => setActiveTab('vi')}>Thông tin & Tiếng Việt</button>
+        <button type="button" className={`btn btn-tab${activeTab === 'en' ? ' active' : ''}`} onClick={() => setActiveTab('en')}>Tiếng Anh</button>
+      </div>
+      
+      {activeTab === 'vi' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Tiêu đề (VI) *</label>
+                            <input
+                type="text"
+                value={currentBanner.titleVi}
+                onChange={e => handleInputChange('titleVi', e.target.value)}
+                className={`form-control ${errors.titleVi ? 'is-invalid' : ''}`}
+                placeholder="Nhập tiêu đề tiếng Việt"
+              />
+              {errors.titleVi && <div className="invalid-feedback">{errors.titleVi}</div>}
+            </div>
+            <div className="form-group">
+              <label>Tiêu đề (EN)</label>
+              <input 
+                type="text" 
+                value={currentBanner.titleEn} 
+                onChange={e => handleInputChange('titleEn', e.target.value)} 
+                className="form-control" 
+                placeholder="Nhập tiêu đề tiếng Anh" 
+              />
+            </div>
           </div>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label>Mô tả (VI)</label>
+                            <textarea
+                value={currentBanner.descriptionVi}
+                onChange={e => handleInputChange('descriptionVi', e.target.value)}
+                className="form-control"
+                placeholder="Nhập mô tả tiếng Việt"
+                rows={3}
+              />
+            </div>
+            <div className="form-group">
+              <label>Mô tả (EN)</label>
+                            <textarea
+                value={currentBanner.descriptionEn}
+                onChange={e => handleInputChange('descriptionEn', e.target.value)}
+                className="form-control"
+                placeholder="Nhập mô tả tiếng Anh"
+                rows={3}
+              />
+            </div>
+          </div>
+        </>
+      )}
+      
+      {activeTab === 'en' && (
+        <>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Tiêu đề (EN) *</label>
+              <input 
+                type="text" 
+                value={currentBanner.titleEn} 
+                onChange={e => handleInputChange('titleEn', e.target.value)} 
+                className={`form-control ${errors.titleEn ? 'is-invalid' : ''}`} 
+                placeholder="Nhập tiêu đề tiếng Anh" 
+              />
+              {errors.titleEn && <div className="invalid-feedback">{errors.titleEn}</div>}
+            </div>
+            <div className="form-group">
+              <label>Tiêu đề (VI)</label>
+              <input 
+                type="text" 
+                value={currentBanner.titleVi} 
+                onChange={e => handleInputChange('titleVi', e.target.value)} 
+                className="form-control" 
+                placeholder="Nhập tiêu đề tiếng Việt" 
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label>Mô tả (EN)</label>
+              <textarea 
+                value={currentBanner.descriptionEn} 
+                onChange={e => handleInputChange('descriptionEn', e.target.value)} 
+                className="form-control" 
+                placeholder="Nhập mô tả tiếng Anh"
+                rows={3}
+              />
+            </div>
+            <div className="form-group">
+              <label>Mô tả (VI)</label>
+              <textarea 
+                value={currentBanner.descriptionVi} 
+                onChange={e => handleInputChange('descriptionVi', e.target.value)} 
+                className="form-control" 
+                placeholder="Nhập mô tả tiếng Việt"
+                rows={3}
+              />
+            </div>
+          </div>
+        </>
+      )}
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>URL Hình ảnh *</label>
+          <input 
+            type="url" 
+            value={currentBanner.imageUrl} 
+            onChange={e => handleInputChange('imageUrl', e.target.value)} 
+            className={`form-control ${errors.imageUrl ? 'is-invalid' : ''}`} 
+            placeholder="https://example.com/image.jpg" 
+          />
+          {errors.imageUrl && <div className="invalid-feedback">{errors.imageUrl}</div>}
+        </div>
+        <div className="form-group">
+          <label>URL Liên kết</label>
+          <input 
+            type="url" 
+            value={currentBanner.linkUrl} 
+            onChange={e => handleInputChange('linkUrl', e.target.value)} 
+            className="form-control" 
+            placeholder="https://example.com/page" 
+          />
         </div>
       </div>
-      {showModal && (
-        <Modal
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>Vị trí hiển thị *</label>
+          <select 
+            value={currentBanner.position} 
+            onChange={e => handleInputChange('position', e.target.value)} 
+            className={`form-control ${errors.position ? 'is-invalid' : ''}`}
+          >
+            {positions.map(pos => (
+              <option key={pos.value} value={pos.value}>{pos.label}</option>
+            ))}
+          </select>
+          {errors.position && <div className="invalid-feedback">{errors.position}</div>}
+        </div>
+        <div className="form-group">
+          <label>Thứ tự hiển thị *</label>
+          <input 
+            type="number" 
+            value={currentBanner.order} 
+            onChange={e => handleInputChange('order', e.target.value)} 
+            className={`form-control ${errors.order ? 'is-invalid' : ''}`} 
+            min="1"
+          />
+          {errors.order && <div className="invalid-feedback">{errors.order}</div>}
+        </div>
+      </div>
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>Ngày bắt đầu</label>
+          <input 
+            type="date" 
+            value={currentBanner.startDate} 
+            onChange={e => handleInputChange('startDate', e.target.value)} 
+            className="form-control" 
+          />
+        </div>
+        <div className="form-group">
+          <label>Ngày kết thúc</label>
+          <input 
+            type="date" 
+            value={currentBanner.endDate} 
+            onChange={e => handleInputChange('endDate', e.target.value)} 
+            className="form-control" 
+          />
+        </div>
+      </div>
+      
+      <div className="form-row">
+        <div className="form-group">
+          <label>Trạng thái</label>
+          <select 
+            value={currentBanner.status} 
+            onChange={e => handleInputChange('status', e.target.value)} 
+            className="form-control"
+          >
+            <option value="active">Hoạt động</option>
+            <option value="inactive">Không hoạt động</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  const pageActions = (
+    <button 
+      className="btn btn-primary" 
+      onClick={handleAddNew}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        padding: '0.75rem 1rem',
+        backgroundColor: '#3b82f6',
+        color: 'white',
+        border: 'none',
+        borderRadius: '6px',
+        fontSize: '0.875rem',
+        fontWeight: '500',
+        cursor: 'pointer'
+      }}
+    >
+      <i className="bi bi-plus"></i>
+      Thêm banner
+    </button>
+  );
+
+  return (
+    <PageWrapper actions={pageActions}>
+      <div className="admin-banner-config">
+        
+        {renderFilters()}
+
+        <div className="admin-table-container">
+          <DataTable
+            data={paginatedBanners}
+            columns={columns}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            sortConfig={sortConfig}
+            onSort={handleSort}
+            itemsPerPage={itemsPerPage}
+            totalItems={sortedBanners.length}
+            tableClassName="admin-table"
+          />
+        </div>
+
+        <FormModal
           show={showModal}
           onClose={handleCloseModal}
-          title={editMode ? "Chỉnh sửa banner" : "Thêm banner mới"}
+          title={editMode ? 'Chỉnh sửa banner' : 'Thêm banner mới'}
+          onSubmit={handleSubmit}
+          submitText={editMode ? 'Cập nhật' : 'Thêm'}
+          submitLoading={submitLoading}
           width={1000}
         >
-          <form className="modal-body" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Tiêu đề (Tiếng Việt) *</label>
-              <input
-                type="text"
-                name="titleVi"
-                className="form-control"
-                value={currentBanner.titleVi}
-                onChange={handleInputChange}
-              />
-              {errors.titleVi && (
-                <span className="error-text">{errors.titleVi}</span>
-              )}
-            </div>
-            <div className="form-group">
-              <label>Tiêu đề (English) *</label>
-              <input
-                type="text"
-                name="titleEn"
-                className="form-control"
-                value={currentBanner.titleEn}
-                onChange={handleInputChange}
-              />
-              {errors.titleEn && (
-                <span className="error-text">{errors.titleEn}</span>
-              )}
-            </div>
-            <div className="form-group">
-              <label>Mô tả (Tiếng Việt)</label>
-              <input
-                type="text"
-                name="descriptionVi"
-                className="form-control"
-                value={currentBanner.descriptionVi}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Mô tả (English)</label>
-              <input
-                type="text"
-                name="descriptionEn"
-                className="form-control"
-                value={currentBanner.descriptionEn}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Link</label>
-              <input
-                type="text"
-                name="link"
-                className="form-control"
-                value={currentBanner.link}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="form-group">
-              <label>Ảnh banner *</label>
-              <div style={{ display: "flex", gap: 8 }}>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={() => setShowMediaPicker(true)}
-                >
-                  Chọn từ media
-                </button>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  style={{ display: "inline-block" }}
-                />
-              </div>
-              {currentBanner.imageUrl && (
-                <img
-                  src={currentBanner.imageUrl}
-                  alt="Preview"
-                  style={{
-                    width: 120,
-                    marginTop: 8,
-                    borderRadius: 6,
-                    border: "1px solid #eee",
-                  }}
-                />
-              )}
-              <MediaPicker
-                show={showMediaPicker}
-                onClose={() => setShowMediaPicker(false)}
-                onSelect={(url) =>
-                  setCurrentBanner((prev) => ({ ...prev, imageUrl: url }))
-                }
-                width={800}
-              />
-              {errors.imageUrl && (
-                <span className="error-text">{errors.imageUrl}</span>
-              )}
-            </div>
-            <div className="form-actions">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                onClick={handleCloseModal}
-              >
-                Hủy
-              </button>
-              <button type="submit" className="btn btn-primary">
-                {editMode ? "Cập nhật" : "Thêm mới"}
-              </button>
-            </div>
-          </form>
-        </Modal>
-      )}
-    </div>
+          {renderBannerForm()}
+        </FormModal>
+
+        {toast.show && (
+          <ToastMessage 
+            message={toast.message} 
+            type={toast.type} 
+            onClose={() => setToast({ ...toast, show: false })} 
+          />
+        )}
+      </div>
+    </PageWrapper>
   );
 };
 

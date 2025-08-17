@@ -7,10 +7,7 @@ import { mockProducts } from "./mockProducts.js";
 import { mockServices } from "./mockServices.js";
 import { mockNotifications } from "./mockNotifications.js";
 import { mockRoutes } from "./mockRoutes.js";
-import { mockUsers } from "./mockUsers.js";
 import { mockSystemSettings } from "./mockSystemSettings.js";
-import { mockPermissions } from "./mockPermissions.js";
-import { mockMedia } from "./mockMedia.js";
 
 // Import categories
 import { mockNewsCategories } from "./mockNewsCategories.js";
@@ -29,10 +26,7 @@ export {
   mockServices,
   mockNotifications,
   mockRoutes,
-  mockUsers,
   mockSystemSettings,
-  mockPermissions,
-  mockMedia,
 
   // Categories
   mockNewsCategories,
@@ -44,63 +38,6 @@ export {
   validateSlug,
   generateRoutes,
 };
-
-// Mock roles
-export const mockRoles = [
-  {
-    id: 1,
-    name: "Super Admin",
-    description: "Quản trị viên cao cấp",
-    permissions: ["*"],
-  },
-  {
-    id: 2,
-    name: "Admin",
-    description: "Quản trị viên",
-    permissions: ["dashboard", "content", "users", "settings"],
-  },
-  {
-    id: 3,
-    name: "Editor",
-    description: "Biên tập viên",
-    permissions: ["dashboard", "content"],
-  },
-  {
-    id: 4,
-    name: "Author",
-    description: "Tác giả",
-    permissions: ["dashboard", "content.create", "content.edit"],
-  },
-  {
-    id: 5,
-    name: "User",
-    description: "Người dùng",
-    permissions: ["dashboard"],
-  },
-];
-
-// Mock departments
-export const mockDepartments = [
-  { id: 1, name: "IT", description: "Phòng Công nghệ thông tin" },
-  { id: 2, name: "Marketing", description: "Phòng Marketing" },
-  { id: 3, name: "Sales", description: "Phòng Kinh doanh" },
-  { id: 4, name: "HR", description: "Phòng Nhân sự" },
-  { id: 5, name: "Finance", description: "Phòng Tài chính" },
-  { id: 6, name: "Operations", description: "Phòng Vận hành" },
-  { id: 7, name: "Legal", description: "Phòng Pháp chế" },
-  { id: 8, name: "Customer Service", description: "Phòng Chăm sóc khách hàng" },
-];
-
-export const mockPositions = [
-  { id: 1, name: "Quản trị viên", description: "Quản trị hệ thống" },
-  { id: 2, name: "Biên tập viên", description: "Biên tập nội dung" },
-  { id: 3, name: "Tác giả", description: "Viết nội dung" },
-  { id: 4, name: "Nhân viên", description: "Nhân viên thường" },
-  { id: 5, name: "Trưởng phòng", description: "Quản lý phòng ban" },
-  { id: 6, name: "Phó phòng", description: "Phó trưởng phòng" },
-  { id: 7, name: "Chuyên viên", description: "Chuyên viên kỹ thuật" },
-  { id: 8, name: "Thực tập sinh", description: "Thực tập sinh" },
-];
 
 // Mock banner config
 export const mockBannerConfig = {
@@ -187,7 +124,7 @@ export const sortByTimePosted = (items, direction = "desc") => {
 export const searchItems = (
   items,
   searchTerm,
-  fields = ["titleVi", "titleEn", "nameVi", "nameEn"]
+  fields = ["titleVi", "titleEn", "titleVi", "titleEn"]
 ) => {
   if (!searchTerm) return items;
   const term = searchTerm.toLowerCase();
@@ -204,8 +141,8 @@ Tất cả mock data đều tuân theo cấu trúc bilingual nhất quán:
 
 1. Categories (mock*Categories):
    - id: number
-   - nameVi: string (tên tiếng Việt)
-   - nameEn: string (tên tiếng Anh)
+   - titleVi: string (tên tiếng Việt)
+   - titleEn: string (tên tiếng Anh)
    - slugVi: string (slug tiếng Việt)
    - slugEn: string (slug tiếng Anh)
    - descriptionVi: string (mô tả tiếng Việt)
@@ -214,8 +151,8 @@ Tất cả mock data đều tuân theo cấu trúc bilingual nhất quán:
 
 2. Main Data (mockNews, mockProducts, mockServices, mockNotifications):
    - id: number
-   - titleVi/nameVi: string (tiêu đề/ tên tiếng Việt)
-   - titleEn/nameEn: string (tiêu đề/ tên tiếng Anh)
+   - titleVi/titleVi: string (tiêu đề/ tên tiếng Việt)
+   - titleEn/titleEn: string (tiêu đề/ tên tiếng Anh)
    - slugVi: string (slug tiếng Việt)
    - slugEn: string (slug tiếng Anh)
    - descriptionVi: string (mô tả tiếng Việt)
@@ -225,8 +162,8 @@ Tất cả mock data đều tuân theo cấu trúc bilingual nhất quán:
    - timePosted: string (ISO date string)
    - status: number (1 = active, 0 = inactive)
    - *CategoryId: number (ID của category)
-   - *CategoryNameVi: string (tên category tiếng Việt)
-   - *CategoryNameEn: string (tên category tiếng Anh)
+   - *CategorytitleVi: string (tên category tiếng Việt)
+   - *CategorytitleEn: string (tên category tiếng Anh)
    - *CategorySlugVi: string (slug category tiếng Việt)
    - *CategorySlugEn: string (slug category tiếng Anh)
    - image: string (URL hình ảnh)

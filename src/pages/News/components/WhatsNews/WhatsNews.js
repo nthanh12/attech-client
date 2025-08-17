@@ -9,12 +9,15 @@ import "./WhatsNews.css";
 const WhatsNews = () => {
   const { currentLanguage, t } = useI18n();
   // Lấy category ngành hàng không từ mockNewsCategories
-  const aviationCategory = mockNewsCategories.find(cat =>
+  const aviationCategory = mockNewsCategories.find((cat) =>
     currentLanguage === "vi"
       ? cat.slugVi === "tin-nganh-hang-khong"
       : cat.slugEn === "aviation-news"
   );
-  const aviationSlug = currentLanguage === "vi" ? aviationCategory?.slugVi : aviationCategory?.slugEn;
+  const aviationSlug =
+    currentLanguage === "vi"
+      ? aviationCategory?.slugVi
+      : aviationCategory?.slugEn;
   const aviationNews = mockNews
     .filter(
       (n) =>
@@ -38,19 +41,26 @@ const WhatsNews = () => {
 
   const newsToShow = aviationNews.slice(0, newsCount);
 
-  const getTitle = (news) => currentLanguage === "vi" ? news.titleVi : news.titleEn;
-  const getSlug = (news) => currentLanguage === "vi" ? news.slugVi : news.slugEn;
-  const getCategorySlug = (news) => currentLanguage === "vi" ? news.postCategorySlugVi : news.postCategorySlugEn;
-  const getDateLocale = () => currentLanguage === "vi" ? "vi-VN" : "en-US";
+  const getTitle = (news) =>
+    currentLanguage === "vi" ? news.titleVi : news.titleEn;
+  const getSlug = (news) =>
+    currentLanguage === "vi" ? news.slugVi : news.slugEn;
+  const getCategorySlug = (news) =>
+    currentLanguage === "vi"
+      ? news.postCategorySlugVi
+      : news.postCategorySlugEn;
+  const getDateLocale = () => (currentLanguage === "vi" ? "vi-VN" : "en-US");
   const getNewsLink = (news) =>
     currentLanguage === "vi"
       ? `/tin-tuc/${getCategorySlug(news)}/${getSlug(news)}`
       : `/en/news/${getCategorySlug(news)}/${getSlug(news)}`;
 
-  // Lấy tên category ngành hàng không (ưu tiên i18n, fallback sang nameVi/nameEn nếu chưa có key i18n)
+  // Lấy tên category ngành hàng không (ưu tiên i18n, fallback sang titleVi/titleEn nếu chưa có key i18n)
   const aviationCategoryName =
     t("frontend.home.newsCategories.aviationNews") ||
-    (currentLanguage === "vi" ? aviationCategory?.nameVi : aviationCategory?.nameEn) ||
+    (currentLanguage === "vi"
+      ? aviationCategory?.titleVi
+      : aviationCategory?.titleEn) ||
     "Tin ngành hàng không";
 
   return (
@@ -65,7 +75,13 @@ const WhatsNews = () => {
                 </div>
               </div>
               <div className="col-lg-2 col-md-2 text-end d-none d-md-block">
-                <ViewAllButton to={currentLanguage === "vi" ? `/tin-tuc/${aviationSlug}` : `/en/news/${aviationSlug}`} />
+                <ViewAllButton
+                  to={
+                    currentLanguage === "vi"
+                      ? `/tin-tuc/${aviationSlug}`
+                      : `/en/news/${aviationSlug}`
+                  }
+                />
               </div>
             </div>
             <div className="row">
@@ -79,14 +95,12 @@ const WhatsNews = () => {
                         </div>
                         <div className="what-cap">
                           <span className="title-news">
-                            {new Date(news.timePosted).toLocaleDateString(getDateLocale())}
+                            {new Date(news.timePosted).toLocaleDateString(
+                              getDateLocale()
+                            )}
                           </span>
                           <h4>
-                            <Link
-                              to={getNewsLink(news)}
-                            >
-                              {getTitle(news)}
-                            </Link>
+                            <Link to={getNewsLink(news)}>{getTitle(news)}</Link>
                           </h4>
                         </div>
                       </div>
@@ -94,7 +108,13 @@ const WhatsNews = () => {
                   </div>
                   {/* Nút xem tất cả cho mobile */}
                   <div className="d-block d-md-none mt-3 text-center">
-                    <ViewAllButton to={currentLanguage === "vi" ? `/tin-tuc/${aviationSlug}` : `/en/news/${aviationSlug}`} />
+                    <ViewAllButton
+                      to={
+                        currentLanguage === "vi"
+                          ? `/tin-tuc/${aviationSlug}`
+                          : `/en/news/${aviationSlug}`
+                      }
+                    />
                   </div>
                 </div>
               </div>

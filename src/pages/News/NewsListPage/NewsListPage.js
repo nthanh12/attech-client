@@ -17,28 +17,38 @@ const NewsListPage = () => {
   const itemsPerPage = 9;
 
   // Tìm category hiện tại
-  const currentCategory = mockNewsCategories.find(cat => (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category);
+  const currentCategory = mockNewsCategories.find(
+    (cat) => (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
+  );
 
   // Lọc tin tức theo category
   const childSlugs = [
     "hoat-dong-cong-ty",
     "dang-bo-cong-ty",
     "doan-thanh-nien-cong-ty",
-    "cong-doan-cong-ty"
+    "cong-doan-cong-ty",
   ];
-  let filteredItems = category 
-    ? (category === "tin-hoat-dong"
-        ? mockNews.filter(news => childSlugs.includes(news.postCategorySlugVi))
-        : mockNews.filter(news => (currentLanguage === "vi" ? news.postCategorySlugVi : news.postCategorySlugEn) === category)
-      )
+  let filteredItems = category
+    ? category === "tin-hoat-dong"
+      ? mockNews.filter((news) => childSlugs.includes(news.postCategorySlugVi))
+      : mockNews.filter(
+          (news) =>
+            (currentLanguage === "vi"
+              ? news.postCategorySlugVi
+              : news.postCategorySlugEn) === category
+        )
     : mockNews;
   // Lọc theo searchTerm
   if (searchTerm.trim() !== "") {
     const lower = searchTerm.toLowerCase();
-    filteredItems = filteredItems.filter(item => {
+    filteredItems = filteredItems.filter((item) => {
       const title = currentLanguage === "vi" ? item.titleVi : item.titleEn;
-      const desc = currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn;
-      return title.toLowerCase().includes(lower) || desc.toLowerCase().includes(lower);
+      const desc =
+        currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn;
+      return (
+        title.toLowerCase().includes(lower) ||
+        desc.toLowerCase().includes(lower)
+      );
     });
   }
 
@@ -62,10 +72,10 @@ const NewsListPage = () => {
       <div className="news-list-page newslist-minimal">
         <div className="container">
           <div className="not-found newslist-empty">
-            <h2>{t('frontend.news.categoryNotFound')}</h2>
-            <p>{t('frontend.news.categoryNotExist', {category})}</p>
+            <h2>{t("frontend.news.categoryNotFound")}</h2>
+            <p>{t("frontend.news.categoryNotExist", { category })}</p>
             <LocalizedLink routeKey="NEWS" className="back-to-news">
-              {t('frontend.news.backToNews')}
+              {t("frontend.news.backToNews")}
             </LocalizedLink>
           </div>
         </div>
@@ -74,8 +84,12 @@ const NewsListPage = () => {
   }
 
   const getCategoryTitle = () => {
-    if (!category) return t('frontend.news.allNews');
-    return currentCategory ? (currentLanguage === "vi" ? currentCategory.nameVi : currentCategory.nameEn) : t('frontend.news.title');
+    if (!category) return t("frontend.news.allNews");
+    return currentCategory
+      ? currentLanguage === "vi"
+        ? currentCategory.titleVi
+        : currentCategory.titleEn
+      : t("frontend.news.title");
   };
 
   const handlePageChange = (pageNumber) => {
@@ -85,7 +99,9 @@ const NewsListPage = () => {
 
   const formatDate = (dateString) => {
     const d = new Date(dateString);
-    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth()+1).toString().padStart(2, "0")}/${d.getFullYear()}`;
+    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${d.getFullYear()}`;
   };
 
   if (loading) {
@@ -94,7 +110,7 @@ const NewsListPage = () => {
         <div className="container">
           <div className="loading newslist-loading">
             <div className="loading-spinner" />
-            <p>{t('frontend.news.loading')}</p>
+            <p>{t("frontend.news.loading")}</p>
           </div>
         </div>
       </div>
@@ -105,22 +121,28 @@ const NewsListPage = () => {
     <div className="news-list-root news-list-page newslist-minimal">
       <div className="container">
         <h1 className="page-title-minimal">{getCategoryTitle()}</h1>
-        <div style={{display:'flex',justifyContent:'flex-end',marginBottom:18}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: 18,
+          }}
+        >
           <input
             type="text"
-            placeholder={t('frontend.news.searchPlaceholder')}
+            placeholder={t("frontend.news.searchPlaceholder")}
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              padding: '7px 14px',
+              padding: "7px 14px",
               borderRadius: 20,
-              border: '1.5px solid #e0e7ef',
+              border: "1.5px solid #e0e7ef",
               fontSize: 15,
               minWidth: 220,
-              outline: 'none',
-              boxShadow: '0 1px 4px rgba(37,99,235,0.04)',
-              transition: 'border 0.18s',
-              color: '#1a237e'
+              outline: "none",
+              boxShadow: "0 1px 4px rgba(37,99,235,0.04)",
+              transition: "border 0.18s",
+              color: "#1a237e",
             }}
           />
         </div>
@@ -128,18 +150,37 @@ const NewsListPage = () => {
           {currentItems.length > 0 ? (
             currentItems.map((item) => (
               <div className="newslist-card-minimal" key={item.id}>
-                <LocalizedLink 
-                  to={currentLanguage === 'vi' ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}` : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`} 
+                <LocalizedLink
+                  to={
+                    currentLanguage === "vi"
+                      ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`
+                      : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`
+                  }
                   className="newslist-img-link-minimal"
                 >
-                  <img src={item.image} alt={currentLanguage === "vi" ? item.titleVi : item.titleEn} className="newslist-img-minimal" title={currentLanguage === "vi" ? item.titleVi : item.titleEn}/>
+                  <img
+                    src={item.image}
+                    alt={currentLanguage === "vi" ? item.titleVi : item.titleEn}
+                    className="newslist-img-minimal"
+                    title={
+                      currentLanguage === "vi" ? item.titleVi : item.titleEn
+                    }
+                  />
                 </LocalizedLink>
                 <div className="newslist-content-minimal">
-                  <span className="newslist-date-minimal">{formatDate(item.timePosted)}</span>
-                  <LocalizedLink 
-                    to={currentLanguage === 'vi' ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}` : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`} 
-                    className="newslist-title-minimal clamp-2-lines" 
-                    title={currentLanguage === "vi" ? item.titleVi : item.titleEn}
+                  <span className="newslist-date-minimal">
+                    {formatDate(item.timePosted)}
+                  </span>
+                  <LocalizedLink
+                    to={
+                      currentLanguage === "vi"
+                        ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`
+                        : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`
+                    }
+                    className="newslist-title-minimal clamp-2-lines"
+                    title={
+                      currentLanguage === "vi" ? item.titleVi : item.titleEn
+                    }
                   >
                     {currentLanguage === "vi" ? item.titleVi : item.titleEn}
                   </LocalizedLink>
@@ -148,7 +189,7 @@ const NewsListPage = () => {
             ))
           ) : (
             <div className="newslist-empty">
-              <p>{t('frontend.news.noNewsInCategory')}</p>
+              <p>{t("frontend.news.noNewsInCategory")}</p>
             </div>
           )}
         </div>
@@ -165,7 +206,9 @@ const NewsListPage = () => {
               <button
                 key={page + 1}
                 onClick={() => handlePageChange(page + 1)}
-                className={`pagination-btn-minimal${currentPage === page + 1 ? " active" : ""}`}
+                className={`pagination-btn-minimal${
+                  currentPage === page + 1 ? " active" : ""
+                }`}
               >
                 {page + 1}
               </button>

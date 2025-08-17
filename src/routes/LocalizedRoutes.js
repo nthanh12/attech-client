@@ -34,7 +34,7 @@ const Gallery = lazy(() => import("../pages/CompanyInfo/components/Gallery/Galle
 const GalleryDetail = lazy(() => import("../pages/CompanyInfo/components/Gallery/GalleryDetail"));
 
 const NotFoundPage = lazy(() => import("../pages/NotFound/NotFoundPage"));
-const UserLogin = lazy(() => import('../pages/Login/Login'));
+const LoginPage = lazy(() => import('../pages/Auth/LoginPage'));
 
 // Minimal loading component to avoid double loading indicators
 const PageLoader = () => {
@@ -159,8 +159,9 @@ const LocalizedRoutes = () => {
           <Route path="/en/contact" element={<ContactPage />} />
 
           {/* Login Routes */}
-          <Route path="/dang-nhap" element={<UserLogin />} />
-          <Route path="/en/login" element={<UserLogin />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dang-nhap" element={<LoginPage />} />
+          <Route path="/en/login" element={<LoginPage />} />
 
           {/* 404 Not Found */}
           <Route path="*" element={<NotFoundPage />} />

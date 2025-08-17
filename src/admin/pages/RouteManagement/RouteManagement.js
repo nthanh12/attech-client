@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import PageWrapper from '../../components/PageWrapper';
 import DataTable from '../../components/DataTable';
 import FormModal from '../../components/FormModal';
 import ToastMessage from '../../components/ToastMessage';
@@ -362,14 +363,32 @@ const RouteManagement = () => {
     return <LoadingSpinner />;
   }
 
+  const pageActions = (
+    <button 
+      className="btn btn-primary" 
+      onClick={() => handleShowModal()}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        padding: '0.75rem 1rem',
+        backgroundColor: '#3b82f6',
+        color: 'white',
+        border: 'none',
+        borderRadius: '6px',
+        fontSize: '0.875rem',
+        fontWeight: '500',
+        cursor: 'pointer'
+      }}
+    >
+      <i className="bi bi-plus"></i>
+      Thêm Route mới
+    </button>
+  );
+
   return (
-    <div className="admin-route-management">
-      <div className="page-header">
-        <h1>Quản lý Routes</h1>
-        <button className="btn btn-primary" onClick={() => handleShowModal()}>
-          Thêm Route mới
-        </button>
-      </div>
+    <PageWrapper actions={pageActions}>
+      <div className="admin-route-management">
 
       <div className="filters-section">
         <div className="filter-group">
@@ -485,7 +504,8 @@ const RouteManagement = () => {
         type={toast.type}
         onClose={() => setToast({ show: false, message: "", type: "" })}
       />
-    </div>
+      </div>
+    </PageWrapper>
   );
 };
 

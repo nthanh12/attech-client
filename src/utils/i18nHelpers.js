@@ -1,4 +1,4 @@
-import i18n from '../i18n';
+import i18n from "../i18n";
 
 /**
  * Get content in current language from AttechServer API format
@@ -8,22 +8,22 @@ import i18n from '../i18n';
  * @returns {string} Content in current language or fallback
  */
 export const getLocalizedContent = (item, field) => {
-  if (!item) return '';
-  
-  const currentLang = i18n.language || 'vi';
-  
+  if (!item) return "";
+
+  const currentLang = i18n.language || "vi";
+
   // AttechServer API format: fieldVi, fieldEn
   const viField = `${field}Vi`;
   const enField = `${field}En`;
-  
+
   // Get content in current language
-  if (currentLang === 'vi') {
+  if (currentLang === "vi") {
     // Try Vietnamese first, fallback to English
     const viContent = item[viField];
     if (viContent && viContent.trim()) {
       return viContent;
     }
-    
+
     const enContent = item[enField];
     if (enContent && enContent.trim()) {
       return enContent;
@@ -34,15 +34,15 @@ export const getLocalizedContent = (item, field) => {
     if (enContent && enContent.trim()) {
       return enContent;
     }
-    
+
     const viContent = item[viField];
     if (viContent && viContent.trim()) {
       return viContent;
     }
   }
-  
+
   // Final fallback - try base field name
-  return item[field] || '';
+  return item[field] || "";
 };
 
 /**
@@ -51,7 +51,7 @@ export const getLocalizedContent = (item, field) => {
  * @returns {string} Title in current language
  */
 export const getLocalizedTitle = (item) => {
-  return getLocalizedContent(item, 'title');
+  return getLocalizedContent(item, "title");
 };
 
 /**
@@ -60,16 +60,16 @@ export const getLocalizedTitle = (item) => {
  * @returns {string} Description in current language
  */
 export const getLocalizedDescription = (item) => {
-  return getLocalizedContent(item, 'description');
+  return getLocalizedContent(item, "description");
 };
 
 /**
  * Get name in current language
- * @param {Object} item - Item with nameVi/nameEn
+ * @param {Object} item - Item with titleVi/titleEn
  * @returns {string} Name in current language
  */
 export const getLocalizedName = (item) => {
-  return getLocalizedContent(item, 'name');
+  return getLocalizedContent(item, "name");
 };
 
 /**
@@ -78,7 +78,7 @@ export const getLocalizedName = (item) => {
  * @returns {string} Content in current language
  */
 export const getLocalizedContentText = (item) => {
-  return getLocalizedContent(item, 'content');
+  return getLocalizedContent(item, "content");
 };
 
 /**
@@ -87,7 +87,7 @@ export const getLocalizedContentText = (item) => {
  * @returns {string} Summary in current language
  */
 export const getLocalizedSummary = (item) => {
-  return getLocalizedContent(item, 'summary');
+  return getLocalizedContent(item, "summary");
 };
 
 /**
@@ -97,23 +97,23 @@ export const getLocalizedSummary = (item) => {
  * @returns {string} Formatted date
  */
 export const formatLocalizedDate = (date, options = {}) => {
-  if (!date) return '';
-  
-  const currentLang = i18n.language || 'vi';
-  const locale = currentLang === 'vi' ? 'vi-VN' : 'en-US';
-  
+  if (!date) return "";
+
+  const currentLang = i18n.language || "vi";
+  const locale = currentLang === "vi" ? "vi-VN" : "en-US";
+
   const defaultOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    ...options
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    ...options,
   };
-  
+
   try {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    const dateObj = typeof date === "string" ? new Date(date) : date;
     return new Intl.DateTimeFormat(locale, defaultOptions).format(dateObj);
   } catch (error) {
-    console.error('Error formatting date:', error);
+    console.error("Error formatting date:", error);
     return date.toString();
   }
 };
@@ -125,17 +125,17 @@ export const formatLocalizedDate = (date, options = {}) => {
  * @returns {string} Category name in current language
  */
 export const getCategoryName = (category, categories = []) => {
-  if (!category) return '';
-  
+  if (!category) return "";
+
   // If category is an ID, find the category object
-  if (typeof category === 'number' || typeof category === 'string') {
-    const categoryObj = categories.find(c => c.id === parseInt(category));
+  if (typeof category === "number" || typeof category === "string") {
+    const categoryObj = categories.find((c) => c.id === parseInt(category));
     if (categoryObj) {
       return getLocalizedName(categoryObj);
     }
     return category.toString();
   }
-  
+
   // If category is an object
   return getLocalizedName(category);
 };
@@ -148,10 +148,10 @@ export const getCategoryName = (category, categories = []) => {
  */
 export const truncateText = (text, maxLength = 100) => {
   if (!text || text.length <= maxLength) return text;
-  
-  const currentLang = i18n.language || 'vi';
-  const ellipsis = currentLang === 'vi' ? '...' : '...';
-  
+
+  const currentLang = i18n.language || "vi";
+  const ellipsis = currentLang === "vi" ? "..." : "...";
+
   return text.substring(0, maxLength - ellipsis.length) + ellipsis;
 };
 
@@ -161,10 +161,10 @@ export const truncateText = (text, maxLength = 100) => {
  * @returns {string} Slug in current language
  */
 export const getLocalizedSlug = (item) => {
-  if (!item) return '';
-  
-  const currentLang = i18n.language || 'vi';
-  const slugField = currentLang === 'vi' ? 'slugVi' : 'slugEn';
-  
-  return item[slugField] || item.slug || '';
+  if (!item) return "";
+
+  const currentLang = i18n.language || "vi";
+  const slugField = currentLang === "vi" ? "slugVi" : "slugEn";
+
+  return item[slugField] || item.slug || "";
 };

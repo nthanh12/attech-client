@@ -1,5 +1,6 @@
 import { useContext, createContext, useState, useEffect } from 'react';
-import { mockPermissions, mockRoles, hasPermission, checkUserPermission } from '../../utils/mockPermissions';
+import api from '../../api';
+import { useAuth } from '../../contexts/AuthContext';
 
 const PermissionContext = createContext();
 
@@ -8,32 +9,100 @@ export function PermissionProvider({ children }) {
   const [userPermissions, setUserPermissions] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user, isAuthenticated } = useAuth();
+
+  // Fetch permissions từ API
+  const fetchPermissions = async () => {
+    try {
+      const response = await api.get('/api/permission/list');
+      if (response.data.status === 1 && response.data.data) {
+        setPermissions(response.data.data);
+      }
+    } catch (error) {
+      console.error('❌ Failed to fetch permissions:', error);
+    }
+  };
+
+  // Fetch user permissions từ API
+  const fetchUserPermissions = async (userId) => {
+    try {
+      // TODO: Thay bằng endpoint lấy permissions của user
+      // const response = await api.get(`/api/user/${userId}/permissions`);
+      
+      // Tạm thời: Nếu là admin thì có tất cả permissions
+      if (user?.userType === 'admin') {
+        const flatPermissions = permissions.flatMap(parent => 
+          parent.children.map(child => child.permissionKey)
+        );
+        setUserPermissions(flatPermissions);
+      } else {
+        setUserPermissions([]);
+      }
+    } catch (error) {
+      console.error('❌ Failed to fetch user permissions:', error);
+      setUserPermissions([]);
+    }
+  };
 
   useEffect(() => {
-    // Load permissions và roles từ mock data
-    setPermissions(mockPermissions);
-    setRoles(mockRoles);
-    
-    // Mock current user (Super Admin)
-    const mockUser = {
-      id: 1,
-      username: 'admin',
-      fullName: 'Super Admin',
-      role: 'Super Admin',
-      userType: 'admin',
-      permissions: mockRoles.find(r => r.name === 'Super Admin')?.permissions || []
+    const loadPermissionsData = async () => {
+      setLoading(true);
+      
+      try {
+        // Fetch permissions list trước
+        const permissionsResponse = await api.get('/api/permission/list');
+        let permissionsData = [];
+        
+        if (permissionsResponse.data.status === 1 && permissionsResponse.data.data) {
+          permissionsData = permissionsResponse.data.data;
+          setPermissions(permissionsData);
+        }
+        
+        // Fetch user permissions từ /api/auth/me
+        if (isAuthenticated() && user) {
+          try {
+            const userResponse = await api.get('/api/auth/me');
+            if (userResponse.data.status === 1 && userResponse.data.data) {
+              const userData = userResponse.data.data;
+              setCurrentUser(userData);
+              
+              // Lấy permissions từ user data
+              const userPermissions = userData.permissions || [];
+              setUserPermissions(userPermissions);
+              
+              console.log('👤 Current user data:', userData);
+              console.log('🔑 User permissions loaded:', userPermissions);
+            }
+          } catch (userError) {
+            console.error('❌ Error fetching user data:', userError);
+            // Fallback: sử dụng user data từ context
+            setCurrentUser(user);
+            setUserPermissions(user.permissions || []);
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error loading permissions:', error);
+        // Fallback: chỉ cho truy cập dashboard nếu có lỗi
+        if (isAuthenticated() && user) {
+          setCurrentUser(user);
+          setUserPermissions(['menu_dashboard']);
+        }
+      }
+      
+      setLoading(false);
     };
-    
-    setCurrentUser(mockUser);
-    setUserPermissions(mockUser.permissions);
-  }, []);
+
+    loadPermissionsData();
+  }, [user, isAuthenticated]);
 
   const hasUserPermission = (permission) => {
-    return hasPermission(userPermissions, permission);
+    if (!Array.isArray(userPermissions)) return false;
+    return userPermissions.includes(permission);
   };
 
   const checkPermission = (permission) => {
-    return checkUserPermission(currentUser, permission);
+    return hasUserPermission(permission);
   };
 
   const canAccess = (requiredPermissions) => {
@@ -68,13 +137,16 @@ export function PermissionProvider({ children }) {
       userPermissions,
       permissions,
       roles,
+      loading,
       hasUserPermission,
       checkPermission,
       canAccess,
       getPermissionsByRole,
       getAllPermissions,
       updateUserPermissions,
-      setCurrentUser
+      setCurrentUser,
+      fetchPermissions,
+      fetchUserPermissions
     }}>
       {children}
     </PermissionContext.Provider>

@@ -1,315 +1,601 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { 
-  mockProducts, 
-  mockServices, 
-  mockNews, 
-  mockNotifications, 
-  mockUsers,
-  mockBannerConfig,
-  getSystemSetting
-} from "../../utils/mockData.js";
+import PageWrapper from "../components/PageWrapper";
+import LoadingSpinner from "../components/LoadingSpinner";
+import ToastMessage from "../components/ToastMessage";
+import AccessDenied from "../../components/AccessDenied";
+import { useAuth } from "../../contexts/AuthContext";
+import {
+  fetchAllDashboardData,
+  fetchRealTimeMetrics,
+  exportDashboardData,
+  refreshDashboardCache,
+  formatNumber,
+  formatPercentage,
+  getTimePeriods,
+} from "../../services/dashboardService";
 import "./Dashboard.css";
 
-// Khoảng thời gian lựa chọn
-const PERIODS = [
-  { label: "7 ngày", value: 7 },
-  { label: "30 ngày", value: 30 },
-  { label: "90 ngày", value: 90 },
-];
-
-// Dữ liệu mẫu có ngày tạo
-const today = new Date("2024-06-07"); // giả lập ngày hiện tại
-function daysAgo(dateStr) {
-  const d = new Date(dateStr);
-  return Math.floor((today - d) / (1000 * 60 * 60 * 24));
-}
-
-// Sử dụng mock data thay vì hardcoded
-const mockData = {
-  products: mockProducts.map(p => ({
-    id: p.id,
-    name: p.nameVi,
-    createdAt: p.timePosted
-  })),
-  services: mockServices.map(s => ({
-    id: s.id,
-    name: s.nameVi,
-    createdAt: s.timePosted
-  })),
-  news: mockNews.map(n => ({
-    id: n.id,
-    title: n.titleVi,
-    createdAt: n.timePosted
-  })),
-  notifications: mockNotifications.map(notif => ({
-    id: notif.id,
-    title: notif.titleVi,
-    createdAt: notif.timePosted
-  })),
-  accounts: mockUsers.map(u => ({
-    id: u.id,
-    username: u.username,
-    createdAt: u.createdAt
-  })),
-  banners: mockBannerConfig.homepage?.slides?.map((banner, index) => ({
-    id: banner.id,
-    title: banner.titleVi,
-    createdAt: new Date(Date.now() - index * 24 * 60 * 60 * 1000).toISOString()
-  })) || []
-};
-
-const statConfig = [
-  { key: "products", label: "Sản phẩm mới", faIcon: "fa-solid fa-box", link: "/admin/products", color: "#3b82f6" },
-  { key: "services", label: "Dịch vụ mới", faIcon: "fa-solid fa-cogs", link: "/admin/services", color: "#10b981" },
-  { key: "news", label: "Tin tức mới", faIcon: "fa-solid fa-newspaper", link: "/admin/news", color: "#f59e42" },
-  { key: "notifications", label: "Thông báo mới", faIcon: "fa-solid fa-bell", link: "/admin/notifications", color: "#ef4444" },
-  { key: "accounts", label: "Tài khoản mới", faIcon: "fa-solid fa-users", link: "/admin/users", color: "#6366f1" },
-  { key: "banners", label: "Banner mới", faIcon: "fa-solid fa-image", link: "/admin/config", color: "#fbbf24" },
-];
-
-const mockRecent = {
-  products: mockData.products.slice(0, 2),
-  news: mockData.news.slice(0, 2),
-  notifications: mockData.notifications.slice(0, 2),
-};
-
-const mockNotices = [
-  "Có 1 banner chưa đủ thông tin.",
-  "2 sản phẩm đang ở trạng thái ẩn.",
-  "Tài khoản admin mới được tạo hôm qua.",
-];
-
-const quickActions = [
-  { label: "Thêm sản phẩm", icon: "bi bi-plus-circle", link: "/admin/products" },
-  { label: "Thêm tin tức", icon: "bi bi-plus-circle", link: "/admin/news" },
-  { label: "Thêm banner", icon: "bi bi-plus-circle", link: "/admin/config" },
-  { label: "Cấu hình hệ thống", icon: "bi bi-sliders", link: "/admin/config" },
-];
-
-// Nhật ký hoạt động (mock)
-const mockAuditLog = [
-  { id: 1, user: "admin", action: "Thêm sản phẩm mới", target: "Thiết bị A", time: "2 phút trước" },
-  { id: 2, user: "editor", action: "Cập nhật banner", target: "Banner 2", time: "10 phút trước" },
-  { id: 3, user: "admin", action: "Xóa tin tức", target: "Hội thảo công nghệ 2024", time: "1 giờ trước" },
-  { id: 4, user: "admin", action: "Đăng nhập hệ thống", target: "", time: "2 giờ trước" },
-  { id: 5, user: "editor", action: "Sửa dịch vụ", target: "Dịch vụ B", time: "3 giờ trước" },
-];
-
-// Trạng thái hệ thống (mock)
-const mockSystemStatus = {
-  api: "Online",
-  storage: "80%",
-  errors: 1,
-  lastError: "Lỗi kết nối SMTP (10 phút trước)"
-};
-
-// Lịch sự kiện nội bộ (mock)
-const mockEvents = [
-  { id: 1, name: "Bảo trì hệ thống", date: "2024-06-10", desc: "Bảo trì định kỳ hệ thống từ 22:00 - 23:00" },
-  { id: 2, name: "Họp nội bộ ATTECH", date: "2024-06-15", desc: "Họp tổng kết quý II" },
-  { id: 3, name: "Ra mắt sản phẩm mới", date: "2024-06-20", desc: "Giới thiệu sản phẩm mới tới khách hàng" },
-];
-
-// Thống kê truy cập (mock)
-const mockTraffic = [
-  { date: "06/01", visits: 120 },
-  { date: "06/02", visits: 150 },
-  { date: "06/03", visits: 180 },
-  { date: "06/04", visits: 90 },
-  { date: "06/05", visits: 200 },
-  { date: "06/06", visits: 170 },
-  { date: "06/07", visits: 210 },
-];
-
-// Tính toán tổng, trung bình, cao nhất
-const totalVisits = mockTraffic.reduce((sum, item) => sum + item.visits, 0);
-const avgVisits = Math.round(totalVisits / mockTraffic.length);
-const maxItem = mockTraffic.reduce((max, item) => item.visits > max.visits ? item : max, mockTraffic[0]);
-
 const Dashboard = () => {
-  const [period, setPeriod] = useState(7);
-  // InfoCard state
-  const [now, setNow] = useState(new Date());
-  // Giả lập số người online và lượt truy cập hôm nay
-  const onlineUsers = 5;
-  const todayVisits = 120;
+  const { user: currentUser } = useAuth();
+  const [loading, setLoading] = useState(true);
+  
+  const [refreshing, setRefreshing] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState("last7days");
+  const [dashboardData, setDashboardData] = useState(null);
+  const [realTimeMetrics, setRealTimeMetrics] = useState(null);
+  const [accessDenied, setAccessDenied] = useState(false);
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    type: "success",
+  });
+  const [lastUpdated, setLastUpdated] = useState(null);
+
+  const timePeriods = getTimePeriods();
+
+  // Fetch dashboard data
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      
+      // Check permission before making API call
+      if (!currentUser?.permissions?.includes('menu_dashboard')) {
+        setAccessDenied(true);
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        // Try to fetch real data from API
+        const data = await fetchAllDashboardData();
+        setDashboardData(data);
+        setAccessDenied(false);
+      } catch (apiError) {
+        // Check if it's a 401 unauthorized error
+        if (apiError.message && apiError.message.includes('401')) {
+          console.warn("⚠️ Dashboard access denied (401)");
+          setAccessDenied(true);
+          return;
+        }
+        
+        console.warn("⚠️ Dashboard API not available, using static data:", apiError.message);
+        
+        // Use static dashboard data when API is not available
+        const staticData = {
+          overview: {
+            totalUsers: 0,
+            totalProducts: 0,
+            totalServices: 0,
+            totalNews: 0,
+            totalNotifications: 0,
+            activeUsers: 0
+          },
+          charts: {
+            userGrowth: { labels: [], datasets: [] },
+            contentDistribution: { labels: [], datasets: [] }
+          }
+        };
+        setDashboardData(staticData);
+        setAccessDenied(false);
+      }
+      
+      setLastUpdated(new Date());
+    } catch (error) {
+      console.error("Failed to initialize dashboard:", error);
+      setToast({
+        show: true,
+        message: "Không thể khởi tạo dashboard!",
+        type: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [currentUser]);
+
+  // Fetch real-time metrics
+  const fetchRealTime = useCallback(async () => {
+    try {
+      // Check permission before making API call
+      if (!currentUser?.permissions?.includes('menu_dashboard')) {
+        console.warn("⚠️ User doesn't have menu_dashboard permission for realtime");
+        return;
+      }
+      
+      const metrics = await fetchRealTimeMetrics();
+      setRealTimeMetrics(metrics);
+    } catch (error) {
+      // Check if it's a 401 unauthorized error
+      if (error.message && error.message.includes('401')) {
+        console.warn("⚠️ Real-time metrics access denied (401)");
+        setAccessDenied(true);
+        return;
+      }
+      
+      console.warn("⚠️ Real-time metrics API not available:", error.message);
+      // Use static real-time metrics when API is not available
+      setRealTimeMetrics({
+        cpuUsage: 0,
+        memoryUsage: 0,
+        diskUsage: 0,
+        networkTraffic: { incoming: 0, outgoing: 0 },
+        activeUsers: 0,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }, [currentUser]);
+
+  // Handle refresh
+  const handleRefresh = async () => {
+    try {
+      setRefreshing(true);
+      
+      try {
+        await refreshDashboardCache();
+      } catch (cacheError) {
+        console.warn("⚠️ Cache refresh API not available:", cacheError.message);
+      }
+      
+      await fetchData();
+      setToast({
+        show: true,
+        message: "Làm mới dữ liệu thành công!",
+        type: "success",
+      });
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.message || "Lỗi khi làm mới dữ liệu!",
+        type: "error",
+      });
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  // Handle export
+  const handleExport = async (format = "json") => {
+    try {
+      setExporting(true);
+      
+      try {
+        await exportDashboardData(format);
+        setToast({
+          show: true,
+          message: "Xuất dữ liệu thành công!",
+          type: "success",
+        });
+      } catch (exportError) {
+        console.warn("⚠️ Export API not available:", exportError.message);
+        setToast({
+          show: true,
+          message: "Tính năng xuất dữ liệu chưa khả dụng!",
+          type: "warning",
+        });
+      }
+    } catch (error) {
+      setToast({
+        show: true,
+        message: error.message || "Lỗi khi xuất dữ liệu!",
+        type: "error",
+      });
+    } finally {
+      setExporting(false);
+    }
+  };
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
+    fetchData();
+  }, [fetchData]);
 
-  // Tính số mới tạo trong khoảng period ngày gần nhất
-  const stats = statConfig.map((cfg) => {
-    const total = mockData[cfg.key].length;
-    const recent = mockData[cfg.key].filter(item => daysAgo(item.createdAt) < period).length;
-    return { ...cfg, total, recent };
-  });
+  // Set up real-time updates
+  useEffect(() => {
+    fetchRealTime();
+    const interval = setInterval(fetchRealTime, 30000); // Update every 30 seconds
+    return () => clearInterval(interval);
+  }, [fetchRealTime]);
 
-  return (
-    <div className="admin-dashboard">
-      <div className="dashboard-period">
-        <span>Xem số mới trong: </span>
-        <select value={period} onChange={e => setPeriod(Number(e.target.value))}>
-          {PERIODS.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
-        </select>
-      </div>
-      <div className="dashboard-stats">
-        {stats.map((stat) => (
-          <Link to={stat.link} className="stat-card" key={stat.label} style={{ borderLeft: `6px solid ${stat.color}` }}>
-            <div className="stat-icon" style={{ background: stat.color + '22', color: stat.color }}>
-              <i className={stat.faIcon}></i>
+  const renderOverviewCards = () => {
+    if (!dashboardData?.overview) return null;
+
+    const { overview } = dashboardData;
+    console.log("🔍 Rendering overview cards with data:", overview);
+
+    const cards = [
+      {
+        title: "Tổng người dùng",
+        value: formatNumber(overview.totalUsers),
+        icon: "bi-people",
+        color: "#3b82f6",
+        link: "/admin/users",
+        change: overview.userGrowthRate ? `${overview.userGrowthRate > 0 ? '+' : ''}${overview.userGrowthRate}%` : "",
+        changeType: overview.userGrowthRate > 0 ? "positive" : "negative",
+      },
+      {
+        title: "Sản phẩm",
+        value: formatNumber(overview.totalProducts),
+        icon: "bi-box",
+        color: "#10b981",
+        link: "/admin/products",
+        change: "",
+        changeType: "neutral",
+      },
+      {
+        title: "Dịch vụ",
+        value: formatNumber(overview.totalServices),
+        icon: "bi-gear",
+        color: "#f59e0b",
+        link: "/admin/services",
+        change: "",
+        changeType: "neutral",
+      },
+      {
+        title: "Tin tức",
+        value: formatNumber(overview.totalNews),
+        icon: "bi-newspaper",
+        color: "#ef4444",
+        link: "/admin/news",
+        change: "",
+        changeType: "neutral",
+      },
+      {
+        title: "Thông báo",
+        value: formatNumber(overview.totalNotifications),
+        icon: "bi-bell",
+        color: "#8b5cf6",
+        link: "/admin/notifications",
+        change: "",
+        changeType: "neutral",
+      },
+    ];
+
+    return (
+      <div className="overview-cards">
+        {cards.map((card, index) => (
+          <div key={index} className="overview-card">
+            <div className="card-icon" style={{ backgroundColor: card.color }}>
+              <i className={`bi ${card.icon}`}></i>
             </div>
-            <div className="stat-label">{stat.label}</div>
-            <div className="stat-value">+{stat.recent}</div>
-            <div className="stat-total">Tổng: {stat.total}</div>
-          </Link>
+            <div className="card-content">
+              <h3>{card.title}</h3>
+              <div className="card-value">{card.value}</div>
+              <div className={`card-change ${card.changeType}`}>
+                <i
+                  className={`bi ${
+                    card.changeType === "positive"
+                      ? "bi-arrow-up"
+                      : "bi-arrow-down"
+                  }`}
+                ></i>
+                {card.change}
+              </div>
+            </div>
+            {card.link !== "#" && (
+              <Link to={card.link} className="card-link">
+                <i className="bi bi-arrow-right"></i>
+              </Link>
+            )}
+          </div>
         ))}
       </div>
+    );
+  };
 
-      <div className="dashboard-content">
-        <div className="dashboard-left">
-          <div className="dashboard-section">
-            <h3>Thông tin hệ thống</h3>
-            <div className="info-cards">
-              <div className="info-card">
-                <div className="info-icon">
-                  <i className="bi bi-clock"></i>
-                </div>
-                <div className="info-content">
-                  <div className="info-label">Thời gian hiện tại</div>
-                  <div className="info-value">{now.toLocaleString('vi-VN')}</div>
-                </div>
-              </div>
-              <div className="info-card">
-                <div className="info-icon">
-                  <i className="bi bi-people"></i>
-                </div>
-                <div className="info-content">
-                  <div className="info-label">Người dùng online</div>
-                  <div className="info-value">{onlineUsers}</div>
-                </div>
-              </div>
-              <div className="info-card">
-                <div className="info-icon">
-                  <i className="bi bi-graph-up"></i>
-                </div>
-                <div className="info-content">
-                  <div className="info-label">Lượt truy cập hôm nay</div>
-                  <div className="info-value">{todayVisits}</div>
-                </div>
-              </div>
+  const renderSystemMetrics = () => {
+    if (!realTimeMetrics) return null;
+
+    // Safe access with fallback values
+    const cpuUsage = realTimeMetrics.cpuUsage || 0;
+    const memoryUsage = realTimeMetrics.memoryUsage || 0;
+    const diskUsage = realTimeMetrics.diskUsage || 0;
+    const activeUsers = realTimeMetrics.activeUsers || 0;
+
+    return (
+      <div className="system-metrics">
+        <h3>Hiệu suất hệ thống</h3>
+        <div className="metrics-grid">
+          <div className="metric-item">
+            <div className="metric-label">CPU</div>
+            <div className="metric-bar">
+              <div
+                className="metric-fill cpu"
+                style={{ width: `${cpuUsage}%` }}
+              ></div>
             </div>
+            <div className="metric-value">{formatPercentage(cpuUsage)}</div>
           </div>
 
-          <div className="dashboard-section">
-            <h3>Thống kê truy cập</h3>
-            <div className="traffic-stats">
-              <div className="traffic-item">
-                <span className="traffic-label">Tổng lượt truy cập:</span>
-                <span className="traffic-value">{totalVisits}</span>
-              </div>
-              <div className="traffic-item">
-                <span className="traffic-label">Trung bình/ngày:</span>
-                <span className="traffic-value">{avgVisits}</span>
-              </div>
-              <div className="traffic-item">
-                <span className="traffic-label">Cao nhất:</span>
-                <span className="traffic-value">{maxItem.visits} ({maxItem.date})</span>
-              </div>
+          <div className="metric-item">
+            <div className="metric-label">Memory</div>
+            <div className="metric-bar">
+              <div
+                className="metric-fill memory"
+                style={{ width: `${memoryUsage}%` }}
+              ></div>
             </div>
+            <div className="metric-value">{formatPercentage(memoryUsage)}</div>
           </div>
 
-          <div className="dashboard-section">
-            <h3>Trạng thái hệ thống</h3>
-            <div className="system-status">
-              <div className="status-item">
-                <span className="status-label">API:</span>
-                <span className={`status-value status-${mockSystemStatus.api.toLowerCase()}`}>
-                  {mockSystemStatus.api}
-                </span>
-              </div>
-              <div className="status-item">
-                <span className="status-label">Storage:</span>
-                <span className="status-value">{mockSystemStatus.storage}</span>
-              </div>
-              <div className="status-item">
-                <span className="status-label">Lỗi:</span>
-                <span className="status-value">{mockSystemStatus.errors}</span>
-              </div>
-              {mockSystemStatus.lastError && (
-                <div className="status-item">
-                  <span className="status-label">Lỗi cuối:</span>
-                  <span className="status-value error">{mockSystemStatus.lastError}</span>
-                </div>
-              )}
+          <div className="metric-item">
+            <div className="metric-label">Disk</div>
+            <div className="metric-bar">
+              <div
+                className="metric-fill disk"
+                style={{ width: `${diskUsage}%` }}
+              ></div>
             </div>
-          </div>
-        </div>
-
-        <div className="dashboard-right">
-          <div className="dashboard-section">
-            <h3>Hoạt động gần đây</h3>
-            <div className="recent-activities">
-              {mockAuditLog.map((log) => (
-                <div key={log.id} className="activity-item">
-                  <div className="activity-icon">
-                    <i className="bi bi-activity"></i>
-                  </div>
-                  <div className="activity-content">
-                    <div className="activity-user">{log.user}</div>
-                    <div className="activity-action">{log.action}</div>
-                    {log.target && <div className="activity-target">{log.target}</div>}
-                    <div className="activity-time">{log.time}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <div className="metric-value">{formatPercentage(diskUsage)}</div>
           </div>
 
-          <div className="dashboard-section">
-            <h3>Sự kiện sắp tới</h3>
-            <div className="upcoming-events">
-              {mockEvents.map((event) => (
-                <div key={event.id} className="event-item">
-                  <div className="event-date">{event.date}</div>
-                  <div className="event-content">
-                    <div className="event-name">{event.name}</div>
-                    <div className="event-desc">{event.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="dashboard-section">
-            <h3>Thao tác nhanh</h3>
-            <div className="quick-actions">
-              {quickActions.map((action, index) => (
-                <Link key={index} to={action.link} className="quick-action">
-                  <i className={action.icon}></i>
-                  <span>{action.label}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="dashboard-section">
-            <h3>Thông báo</h3>
-            <div className="notices">
-              {mockNotices.map((notice, index) => (
-                <div key={index} className="notice-item">
-                  <i className="bi bi-exclamation-triangle"></i>
-                  <span>{notice}</span>
-                </div>
-              ))}
+          <div className="metric-item">
+            <div className="metric-label">Users Online</div>
+            <div className="metric-value-large">
+              {formatNumber(activeUsers)}
             </div>
           </div>
         </div>
       </div>
+    );
+  };
+
+  const renderRecentActivities = () => {
+    if (!dashboardData?.recentActivities) return null;
+
+    return (
+      <div className="recent-activities">
+        <h3>Hoạt động gần đây</h3>
+        <div className="activities-list">
+          {dashboardData.recentActivities.map((activity) => (
+            <div
+              key={activity.id}
+              className={`activity-item ${activity.severity}`}
+            >
+              <div className="activity-icon">
+                <i className={`bi ${activity.icon}`}></i>
+              </div>
+              <div className="activity-content">
+                <div className="activity-message">{activity.message}</div>
+                <div className="activity-time">
+                  {new Date(activity.timestamp).toLocaleString("vi-VN")}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderQuickActions = () => {
+    const actions = [
+      {
+        label: "Thêm sản phẩm",
+        icon: "bi-plus-circle",
+        link: "/admin/products",
+        color: "#10b981",
+      },
+      {
+        label: "Thêm tin tức",
+        icon: "bi-plus-circle",
+        link: "/admin/news",
+        color: "#3b82f6",
+      },
+      {
+        label: "Thêm dịch vụ",
+        icon: "bi-plus-circle",
+        link: "/admin/services",
+        color: "#f59e0b",
+      },
+      {
+        label: "Quản lý banner",
+        icon: "bi-image",
+        link: "/admin/banners",
+        color: "#ef4444",
+      },
+      {
+        label: "Cài đặt hệ thống",
+        icon: "bi-gear",
+        link: "/admin/settings",
+        color: "#8b5cf6",
+      },
+      {
+        label: "Quản lý users",
+        icon: "bi-people",
+        link: "/admin/users",
+        color: "#06b6d4",
+      },
+    ];
+
+    return (
+      <div className="quick-actions">
+        <h3>Thao tác nhanh</h3>
+        <div className="actions-grid">
+          {actions.map((action, index) => (
+            <Link key={index} to={action.link} className="action-item">
+              <div
+                className="action-icon"
+                style={{ backgroundColor: action.color }}
+              >
+                <i className={`bi ${action.icon}`}></i>
+              </div>
+              <span>{action.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderContentStats = () => {
+    if (!dashboardData?.contentStats) return null;
+
+    const { contentStats } = dashboardData;
+
+    return (
+      <div className="content-stats">
+        <h3>Thống kê nội dung tháng này</h3>
+        <div className="stats-grid">
+          <div className="stat-item">
+            <div className="stat-icon news">
+              <i className="bi bi-newspaper"></i>
+            </div>
+            <div className="stat-content">
+              <div className="stat-label">Tin tức mới</div>
+              <div className="stat-value">
+                {contentStats.newsPublishedThisMonth}
+              </div>
+            </div>
+          </div>
+
+          <div className="stat-item">
+            <div className="stat-icon products">
+              <i className="bi bi-box"></i>
+            </div>
+            <div className="stat-content">
+              <div className="stat-label">Sản phẩm mới</div>
+              <div className="stat-value">
+                {contentStats.productsAddedThisMonth}
+              </div>
+            </div>
+          </div>
+
+          <div className="stat-item">
+            <div className="stat-icon services">
+              <i className="bi bi-gear"></i>
+            </div>
+            <div className="stat-content">
+              <div className="stat-label">Dịch vụ mới</div>
+              <div className="stat-value">
+                {contentStats.servicesAddedThisMonth}
+              </div>
+            </div>
+          </div>
+
+          <div className="stat-item">
+            <div className="stat-icon notifications">
+              <i className="bi bi-bell"></i>
+            </div>
+            <div className="stat-content">
+              <div className="stat-label">Thông báo</div>
+              <div className="stat-value">
+                {contentStats.notificationsThisMonth}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="growth-rate">
+          <i className="bi bi-graph-up"></i>
+          Thêm:{" "}
+          <strong>{formatPercentage(contentStats.contentGrowthRate)}</strong> so
+          với tháng trước
+        </div>
+      </div>
+    );
+  };
+
+  // Check access permission
+  if (accessDenied) {
+    return (
+      <PageWrapper>
+        <AccessDenied
+          message="Bạn không có quyền truy cập trang này. Vui lòng liên hệ quản trị viên."
+          user={currentUser ? {
+            userLevel: currentUser.userLevel,
+            userType: currentUser.userType,
+            name: currentUser.name,
+            username: currentUser.username
+          } : null}
+        />
+      </PageWrapper>
+    );
+  }
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  const pageActions = (
+    <div className="dashboard-actions">
+      <select
+        value={selectedPeriod}
+        onChange={(e) => setSelectedPeriod(e.target.value)}
+        className="period-select"
+      >
+        {timePeriods.map((period) => (
+          <option key={period.value} value={period.value}>
+            {period.label}
+          </option>
+        ))}
+      </select>
+
+      <button
+        className="btn btn-secondary"
+        onClick={handleRefresh}
+        disabled={refreshing}
+        style={{ marginLeft: "8px" }}
+      >
+        <i className={`bi bi-arrow-clockwise ${refreshing ? "spin" : ""}`}></i>
+        {refreshing ? "Đang làm mới..." : "Làm mới"}
+      </button>
+
+      <button
+        className="btn btn-secondary"
+        onClick={() => handleExport("json")}
+        disabled={exporting}
+        style={{ marginLeft: "8px" }}
+      >
+        <i className="bi bi-download"></i>
+        {exporting ? "Đang xuất..." : "Xuất dữ liệu"}
+      </button>
     </div>
+  );
+
+  return (
+    <PageWrapper actions={pageActions}>
+      <div className="admin-dashboard">
+        {/* Header với thời gian cập nhật */}
+        <div className="dashboard-header">
+          <h2>Dashboard Tổng quan</h2>
+          {lastUpdated && (
+            <div className="last-updated">
+              <i className="bi bi-clock"></i>
+              Cập nhật lần cuối: {lastUpdated.toLocaleString("vi-VN")}
+            </div>
+          )}
+        </div>
+
+        {/* Overview Cards */}
+        {renderOverviewCards()}
+
+        {/* Main Content Grid */}
+        <div className="dashboard-grid">
+          {/* System Metrics */}
+          <div className="dashboard-section">{renderSystemMetrics()}</div>
+
+          {/* Content Stats */}
+          <div className="dashboard-section">{renderContentStats()}</div>
+
+          {/* Recent Activities */}
+          <div className="dashboard-section full-width">
+            {renderRecentActivities()}
+          </div>
+
+          {/* Quick Actions */}
+          <div className="dashboard-section">{renderQuickActions()}</div>
+        </div>
+
+        {toast.show && (
+          <ToastMessage
+            message={toast.message}
+            type={toast.type}
+            onClose={() => setToast({ ...toast, show: false })}
+          />
+        )}
+      </div>
+    </PageWrapper>
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

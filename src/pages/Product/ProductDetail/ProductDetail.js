@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../ProductDetail/ProductDetail.css";
-import { mockProducts } from '../../../utils/mockData';
-import { useI18n } from '../../../hooks/useI18n';
+import { mockProducts } from "../../../utils/mockData";
+import { useI18n } from "../../../hooks/useI18n";
 
 const ProductDetail = () => {
   const { category, slug } = useParams();
   const { currentLanguage } = useI18n();
   // Map mockProducts sang format i18n
-  const products = mockProducts.map(item => ({
+  const products = mockProducts.map((item) => ({
     id: item.id,
-    slug: currentLanguage === 'vi' ? item.slugVi : item.slugEn,
-    title: currentLanguage === 'vi' ? item.nameVi : item.nameEn,
-    fullTitle: currentLanguage === 'vi' ? item.nameVi : item.nameEn,
-    category: currentLanguage === 'vi' ? item.productCategoryNameVi : item.productCategoryNameEn,
-    description: currentLanguage === 'vi' ? item.descriptionVi : item.descriptionEn,
+    slug: currentLanguage === "vi" ? item.slugVi : item.slugEn,
+    title: currentLanguage === "vi" ? item.titleVi : item.titleEn,
+    fullTitle: currentLanguage === "vi" ? item.titleVi : item.titleEn,
+    category:
+      currentLanguage === "vi"
+        ? item.productCategorytitleVi
+        : item.productCategorytitleEn,
+    description:
+      currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn,
     image: item.image,
-    categorySlug: currentLanguage === 'vi' ? item.productCategorySlugVi : item.productCategorySlugEn,
-    content: currentLanguage === 'vi' ? item.contentVi : item.contentEn
+    categorySlug:
+      currentLanguage === "vi"
+        ? item.productCategorySlugVi
+        : item.productCategorySlugEn,
+    content: currentLanguage === "vi" ? item.contentVi : item.contentEn,
   }));
 
   useEffect(() => {
@@ -30,7 +37,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
 
   if (!product) {
-    return <div>{currentLanguage === 'en' ? 'Loading...' : 'Đang tải...'}</div>;
+    return <div>{currentLanguage === "en" ? "Loading..." : "Đang tải..."}</div>;
   }
 
   return (

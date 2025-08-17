@@ -183,8 +183,8 @@
       "categories": "Danh mục sản phẩm",
       "fields": {
         "name": "Tên sản phẩm",
-        "nameVi": "Tên (VI)",
-        "nameEn": "Tên (EN)",
+        "titleVi": "Tên (VI)",
+        "titleEn": "Tên (EN)",
         "description": "Mô tả",
         "descriptionVi": "Mô tả (VI)",
         "descriptionEn": "Mô tả (EN)",
@@ -201,8 +201,8 @@
       "edit": "Chỉnh sửa dịch vụ",
       "fields": {
         "name": "Tên dịch vụ",
-        "nameVi": "Tên (VI)",
-        "nameEn": "Tên (EN)",
+        "titleVi": "Tên (VI)",
+        "titleEn": "Tên (EN)",
         "description": "Mô tả",
         "descriptionVi": "Mô tả (VI)",
         "descriptionEn": "Mô tả (EN)"

@@ -1,639 +1,541 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import 'tinymce/tinymce';
-import 'tinymce/icons/default';
-import 'tinymce/themes/silver';
-import 'tinymce/skins/ui/oxide/skin.min.css';
-import 'tinymce/skins/content/default/content.min.css';
-import 'tinymce/plugins/advlist';
-import 'tinymce/plugins/autolink';
-import 'tinymce/plugins/lists';
-import 'tinymce/plugins/link';
-import 'tinymce/plugins/image';
-import 'tinymce/plugins/code';
-import 'tinymce/plugins/table';
-import 'tinymce/plugins/help';
-import 'tinymce/plugins/wordcount';
-import 'tinymce/plugins/charmap';
-import 'tinymce/plugins/preview';
-import 'tinymce/plugins/anchor';
-import 'tinymce/plugins/searchreplace';
-import 'tinymce/plugins/visualblocks';
-import 'tinymce/plugins/fullscreen';
-import 'tinymce/plugins/insertdatetime';
-import 'tinymce/plugins/media';
-import 'tinymce/plugins/emoticons';
-import 'tinymce/plugins/codesample';
-import "./NotificationsList.css";
-import "../styles/adminTable.css";
-import "../styles/adminCommon.css";
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
-  getNotifications,
-  getNotificationCategories,
-  createNotification,
-  updateNotification,
+  fetchNotification,
+  fetchNotificationCategories,
   deleteNotification,
-} from "../../api";
-import { mockNotifications, mockNotificationCategories } from "../../utils/mockData.js";
+  getNotificationById,
+} from "../../services/notificationService";
+import { getApiUrl } from "../../config/apiConfig";
+import NotificationCreationForm from "../components/NotificationCreationForm";
 import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
-import LoadingSpinner from "../components/LoadingSpinner";
-import { Link } from "react-router-dom";
-import { Editor } from '@tinymce/tinymce-react';
-import ReactModal from 'react-modal';
-import ImageUpload from "../../components/UI/ImageUpload";
+import PageWrapper from "../components/PageWrapper";
+import "./NotificationsList.css";
+import "../styles/adminTable.css";
+import "../styles/adminCommon.css";
 
-const NotificationsList = () => {
+const NotificationList = () => {
+  const { t } = useTranslation();
+
+  // Data state
   const [notification, setNotification] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // UI state
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [submitLoading, setSubmitLoading] = useState(false);
-  // Định nghĩa object emptyNotification để dùng cho khởi tạo/reset form
-  const emptyNotification = {
-    id: null,
-    titleVi: "",
-    titleEn: "",
-    category: "",
-    content: "",
-    summaryVi: "",
-    summaryEn: "",
-    imageUrl: "",
-    slug: "",
-    featured: false,
-    status: "active",
-    publishDate: new Date().toISOString().split("T")[0],
-  };
-  const [currentNotification, setCurrentNotification] = useState({ ...emptyNotification });
-  const [errors, setErrors] = useState({});
+  const [editingNotification, setEditingNotification] = useState(null);
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    type: "info",
+  });
+
+  // Pagination & filters
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
-  const [sortConfig, setSortConfig] = useState({ key: "id", direction: "asc" });
+  const [sortConfig, setSortConfig] = useState({
+    key: "id",
+    direction: "desc",
+  });
   const [filters, setFilters] = useState({
     search: "",
     category: "",
     status: "",
+    dateFrom: "",
+    dateTo: "",
   });
-  const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [translating, setTranslating] = useState({});
-  const [activeTab, setActiveTab] = useState('vi');
 
-  // Hàm dịch sử dụng backend proxy, fallback copy text
-  const translateProxy = async (text) => {
-    if (!text) return '';
-    const res = await fetch('/api/translate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text,
-        source: 'vi',
-        target: 'en'
-      })
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    return data.translatedText;
-  };
-
-  const handleTranslate = async (fromField, toField) => {
-    const text = currentNotification[fromField] || '';
-    if (!text) return;
-    setTranslating(prev => ({ ...prev, [toField]: true }));
-    try {
-      const translated = await translateProxy(text);
-      setCurrentNotification(prev => ({ ...prev, [toField]: translated }));
-    } catch (err) {
-      setCurrentNotification(prev => ({ ...prev, [toField]: text }));
-    } finally {
-      setTranslating(prev => ({ ...prev, [toField]: false }));
-    }
-  };
-
+  // Load data on mount
   useEffect(() => {
-    setNotification(mockNotifications);
-    // Sử dụng mock categories thay vì API call
-    setCategories(mockNotificationCategories);
+    loadData();
   }, []);
 
-  const handleCloseModal = useCallback(() => {
-    setShowModal(false);
-    setEditMode(false);
-    setErrors({});
-    setCurrentNotification({ ...emptyNotification });
-  }, []);
-
-  const handleAddNew = () => {
-    setEditMode(false);
-    setCurrentNotification({ ...emptyNotification });
-    setErrors({});
-    setShowModal(true);
-  };
-
-  const handleEdit = (notificationItem) => {
-    setEditMode(true);
-    setCurrentNotification({
-      id: notificationItem.id,
-      titleVi: notificationItem.titleVi || "",
-      titleEn: notificationItem.titleEn || "",
-      category: notificationItem.notificationCategoryId || "",
-      contentVi: notificationItem.contentVi || "",
-      contentEn: notificationItem.contentEn || "",
-      summaryVi: notificationItem.descriptionVi || "",
-      summaryEn: notificationItem.descriptionEn || "",
-      imageUrl: notificationItem.image || "",
-      slug: notificationItem.slugVi || "",
-      featured: notificationItem.featured || false,
-      status: notificationItem.status === 1 ? "active" : "inactive",
-      publishDate: notificationItem.timePosted ? notificationItem.timePosted.split("T")[0] : new Date().toISOString().split("T")[0],
-    });
-    setErrors({});
-    setShowModal(true);
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!currentNotification.titleVi.trim()) {
-      newErrors.titleVi = 'Tiêu đề tiếng Việt là bắt buộc';
-    }
-    if (!currentNotification.titleEn.trim()) {
-      newErrors.titleEn = 'Tiêu đề tiếng Anh là bắt buộc';
-    }
-    
-    if (!currentNotification.category) {
-      newErrors.category = 'Danh mục là bắt buộc';
-    }
-    
-    if (!currentNotification.contentVi.trim()) {
-      newErrors.contentVi = 'Nội dung tiếng Việt là bắt buộc';
-    }
-    if (!currentNotification.contentEn.trim()) {
-      newErrors.contentEn = 'Nội dung tiếng Anh là bắt buộc';
-    }
-    if (!currentNotification.summaryVi.trim()) {
-      newErrors.summaryVi = 'Tóm tắt tiếng Việt là bắt buộc';
-    }
-    if (!currentNotification.summaryEn.trim()) {
-      newErrors.summaryEn = 'Tóm tắt tiếng Anh là bắt buộc';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async () => {
-    if (!validateForm()) return;
-
-    setSubmitLoading(true);
+  const loadData = async () => {
+    setIsLoading(true);
     try {
-      if (editMode) {
-        // Update notification
-        setNotification(prev => prev.map(item => 
-          item.id === currentNotification.id ? {
-            ...item,
-            titleVi: currentNotification.titleVi,
-            titleEn: currentNotification.titleEn,
-            contentVi: currentNotification.contentVi,
-            contentEn: currentNotification.contentEn,
-            descriptionVi: currentNotification.summaryVi,
-            descriptionEn: currentNotification.summaryEn,
-            slugVi: currentNotification.slug,
-            slugEn: currentNotification.slug,
-            notificationCategoryId: currentNotification.category,
-            status: currentNotification.status === "active" ? 1 : 0,
-            image: currentNotification.imageUrl,
-            featured: currentNotification.featured
-          } : item
-        ));
-        setToast({ show: true, message: 'Cập nhật thông báo thành công!', type: 'success' });
-      } else {
-        // Create new notification
-        const newNotification = {
-          id: Date.now(),
-          titleVi: currentNotification.titleVi,
-          titleEn: currentNotification.titleEn,
-          contentVi: currentNotification.contentVi,
-          contentEn: currentNotification.contentEn,
-          descriptionVi: currentNotification.summaryVi,
-          descriptionEn: currentNotification.summaryEn,
-          slugVi: currentNotification.slug,
-          slugEn: currentNotification.slug,
-          notificationCategoryId: currentNotification.category,
-          status: currentNotification.status === "active" ? 1 : 0,
-          image: currentNotification.imageUrl,
-          featured: currentNotification.featured,
-          timePosted: new Date().toISOString()
-        };
-        setNotification(prev => [newNotification, ...prev]);
-        setToast({ show: true, message: 'Thêm thông báo thành công!', type: 'success' });
-      }
-      handleCloseModal();
+      const [notificationData, categoriesData] = await Promise.all([
+        fetchNotification(),
+        fetchNotificationCategories(),
+      ]);
+
+      setNotification(notificationData?.items || []);
+      setCategories(categoriesData || []);
     } catch (error) {
-      setToast({ show: true, message: 'Lỗi khi lưu thông báo!', type: 'error' });
+      console.error("Load data failed:", error);
+      setToast({
+        show: true,
+        message: "Tải dữ liệu thất bại: " + error.message,
+        type: "error",
+      });
     } finally {
-      setSubmitLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const handleDeleteNotification = (id) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa thông báo này?')) {
-      setNotification(prev => prev.filter(item => item.id !== id));
-      setToast({ show: true, message: 'Xóa thông báo thành công!', type: 'success' });
+  // Handlers
+  const handleAdd = () => {
+    setEditMode(false);
+    setEditingNotification(null);
+    setShowModal(true);
+  };
+
+  const handleEdit = async (notificationItem) => {
+    setEditMode(true);
+    setEditingNotification(notificationItem); // Set basic data first
+
+    try {
+      // Fetch full DetailNotificationDto with attachments
+      const fullNotificationData = await getNotificationById(
+        notificationItem.id
+      );
+      setEditingNotification(fullNotificationData);
+      setShowModal(true); // Only show modal after data is loaded
+    } catch (error) {
+      console.error("Error loading notification detail:", error);
+      setToast({
+        show: true,
+        message: "Lỗi tải chi tiết thông báo: " + error.message,
+        type: "error",
+      });
+      // Fallback to basic data and show modal
+      setEditingNotification(notificationItem);
+      setShowModal(true);
     }
   };
 
-  const handleInputChange = (field, value) => {
-    setCurrentNotification(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+  const handleDelete = async (notificationItem) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa thông báo này?")) {
+      try {
+        const response = await deleteNotification(notificationItem.id);
+        if (response && response.status === 1) {
+          // Reload data from server to ensure consistency
+          await loadData();
+          setToast({
+            show: true,
+            message: "Xóa thông báo thành công!",
+            type: "success",
+          });
+        } else {
+          throw new Error("Delete failed");
+        }
+      } catch (error) {
+        setToast({
+          show: true,
+          message: `Xóa thông báo thất bại: ${error.message}`,
+          type: "error",
+        });
+      }
     }
   };
 
-  const filteredNotifications = notification.filter(item => {
-    const matchesSearch = item.titleVi.toLowerCase().includes(filters.search.toLowerCase()) ||
-                         item.titleEn.toLowerCase().includes(filters.search.toLowerCase()) ||
-                         item.descriptionVi.toLowerCase().includes(filters.search.toLowerCase()) ||
-                         item.descriptionEn.toLowerCase().includes(filters.search.toLowerCase());
-    const matchesCategory = !filters.category || item.notificationCategoryId === parseInt(filters.category);
-    const matchesStatus = !filters.status || 
-                         (filters.status === "active" && item.status === 1) ||
-                         (filters.status === "inactive" && item.status === 0);
-    
-    return matchesSearch && matchesCategory && matchesStatus;
+  const handleFormSuccess = async (savedNotification) => {
+    try {
+      // Reload data from server to ensure consistency
+      await loadData();
+
+      if (editMode) {
+        setToast({
+          show: true,
+          message: "Cập nhật thông báo thành công!",
+          type: "success",
+        });
+      } else {
+        setToast({
+          show: true,
+          message: "Thêm thông báo thành công!",
+          type: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Error reloading data:", error);
+      // Fallback to old behavior if loadData fails
+      if (editMode) {
+        setNotification((prev) =>
+          prev.map((item) =>
+            item.id === savedNotification.id
+              ? { ...item, ...savedNotification }
+              : item
+          )
+        );
+        setToast({
+          show: true,
+          message: "Cập nhật thông báo thành công!",
+          type: "success",
+        });
+      } else {
+        setNotification((prev) => [savedNotification, ...prev]);
+        setToast({
+          show: true,
+          message: "Thêm thông báo thành công!",
+          type: "success",
+        });
+      }
+    }
+
+    setShowModal(false);
+    setEditingNotification(null);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setEditingNotification(null);
+  };
+
+  // Filtering and sorting logic
+  const filteredNotification = notification.filter((item) => {
+    // Search filter
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      const matchesTitle =
+        item.titleVi?.toLowerCase().includes(searchTerm) ||
+        item.titleEn?.toLowerCase().includes(searchTerm);
+      if (!matchesTitle) return false;
+    }
+
+    // Category filter
+    if (filters.category) {
+      if (item.notificationCategoryId !== parseInt(filters.category))
+        return false;
+    }
+
+    // Status filter
+    if (filters.status) {
+      const itemStatus = parseInt(item.status);
+      if (filters.status === "active" && itemStatus !== 1) return false;
+      if (filters.status === "inactive" && itemStatus !== 0) return false;
+    }
+
+    // Date filter
+    if (filters.dateFrom || filters.dateTo) {
+      const itemDate = new Date(item.timePosted);
+      const fromDate = filters.dateFrom ? new Date(filters.dateFrom) : null;
+      const toDate = filters.dateTo ? new Date(filters.dateTo) : null;
+
+      if (fromDate && toDate) {
+        if (itemDate < fromDate || itemDate > toDate) return false;
+      } else if (fromDate) {
+        if (itemDate < fromDate) return false;
+      } else if (toDate) {
+        if (itemDate > toDate) return false;
+      }
+    }
+
+    return true;
   });
 
-  const sortedNotifications = [...filteredNotifications].sort((a, b) => {
-    const aValue = a[sortConfig.key];
-    const bValue = b[sortConfig.key];
-    
-    if (sortConfig.direction === 'asc') {
+  const sortedNotification = filteredNotification.sort((a, b) => {
+    let aValue = a[sortConfig.key];
+    let bValue = b[sortConfig.key];
+
+    if (sortConfig.key === "timePosted") {
+      aValue = new Date(aValue);
+      bValue = new Date(bValue);
+    }
+
+    if (sortConfig.direction === "asc") {
       return aValue > bValue ? 1 : -1;
     } else {
       return aValue < bValue ? 1 : -1;
     }
   });
 
-  const paginatedNotifications = sortedNotifications.slice(
+  const paginatedNotification = sortedNotification.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  const totalPages = Math.ceil(sortedNotifications.length / itemsPerPage);
-
+  // Table columns
   const columns = [
-    { key: 'id', label: 'ID', sortable: true },
-    { key: 'titleVi', label: 'Tiêu đề (VI)', sortable: true },
+    { key: "id", label: "ID", sortable: true, width: "80px" },
     {
-      key: 'notificationCategoryNameVi',
-      label: 'Danh mục',
-      sortable: true
+      key: "featuredImage",
+      label: "Ảnh",
+      width: "100px",
+      render: (item) => {
+        // NotificationDto có field ImageUrl trực tiếp
+        const rawImageUrl = item.ImageUrl || item.imageUrl;
+
+        // Nếu là relative path, thêm base URL
+        const imageUrl = rawImageUrl
+          ? rawImageUrl.startsWith("http")
+            ? rawImageUrl
+            : getApiUrl(rawImageUrl)
+          : null;
+
+        return (
+          <div className="notification-thumbnail-container">
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt={item.titleVi || "Notification"}
+                className="notification-thumbnail"
+                onError={(e) => {
+                  e.target.style.display = "none";
+                  e.target.nextElementSibling.style.display = "flex";
+                }}
+              />
+            ) : null}
+            <div
+              className="no-image-placeholder"
+              style={{ display: imageUrl ? "none" : "flex" }}
+            >
+              <i className="fas fa-image"></i>
+            </div>
+          </div>
+        );
+      },
     },
-    { key: "imageUrl", label: "Ảnh", render: (value) => value ? <img src={value} alt="Ảnh" style={{width: 60, height: 40, objectFit: 'cover'}} /> : '' },
+    { key: "titleVi", label: "Tiêu đề", sortable: true, width: "250px" },
     {
-      key: 'timePosted',
-      label: 'Ngày đăng',
-      sortable: true,
-      render: (value) => new Date(value).toLocaleDateString('vi-VN')
+      key: "category",
+      label: "Danh mục",
+      width: "150px",
+      render: (item) => {
+        const category = categories.find(
+          (cat) => cat.id === item.notificationCategoryId
+        );
+        return category?.titleVi || "N/A";
+      },
     },
     {
-      key: 'status',
-      label: 'Trạng thái',
-      sortable: true,
-      render: (value) => (
-        <span className={`status-badge ${value === 1 ? 'active' : 'inactive'}`}>
-          {value === 1 ? 'Hoạt động' : 'Không hoạt động'}
+      key: "status",
+      label: "Trạng thái",
+      width: "120px",
+      render: (item) => (
+        <span
+          className={`badge ${
+            item.status === 1 ? "badge-success" : "badge-secondary"
+          }`}
+        >
+          {item.status === 1 ? "Hoạt động" : "Không hoạt động"}
         </span>
-      )
+      ),
     },
     {
-      key: 'actions',
-      label: 'Thao tác',
-      render: (value, item) => (
-        <div className="action-buttons">
-          <button
-            className="btn btn-sm btn-primary"
-            onClick={() => handleEdit(item)}
-            title="Chỉnh sửa"
-          >
-            <i className="bi bi-pencil"></i>
-            <span>Sửa</span>
-          </button>
-          <button
-            className="btn btn-sm btn-danger"
-            onClick={() => handleDeleteNotification(item.id)}
-            title="Xóa"
-          >
-            <i className="bi bi-trash"></i>
-            <span>Xóa</span>
-          </button>
-        </div>
-      )
-    }
+      key: "timePosted",
+      label: "Ngày đăng",
+      sortable: true,
+      width: "140px",
+      render: (item) => new Date(item.timePosted).toLocaleDateString("vi-VN"),
+    },
   ];
 
-  const handleSort = useCallback((key) => {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-    }));
-  }, []);
+  const actions = [
+    {
+      label: "Sửa",
+      onClick: handleEdit,
+      className: "btn btn-sm btn-primary",
+    },
+    {
+      label: "Xóa",
+      onClick: handleDelete,
+      className: "btn btn-sm btn-danger",
+    },
+  ];
 
-  const renderFilters = () => (
-    <div className="filters-section">
-      <div className="filter-group">
-        <input
-          type="text"
-          placeholder="Tìm kiếm thông báo..."
-          value={filters.search}
-          onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-          className="form-control"
-        />
-      </div>
-      <div className="filter-group">
-        <select
-          value={filters.category}
-          onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
-          className="form-control"
-        >
-          <option value="">Tất cả danh mục</option>
-          {categories.map(category => (
-            <option key={category.id} value={category.id}>{category.nameVi}</option>
-          ))}
-        </select>
-      </div>
-      <div className="filter-group">
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-          className="form-control"
-        >
-          <option value="">Tất cả trạng thái</option>
-          <option value="active">Hoạt động</option>
-          <option value="inactive">Không hoạt động</option>
-        </select>
-      </div>
-    </div>
-  );
-
-  const renderNotificationForm = () => (
-    <div className="notification-form">
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        <button type="button" className={`btn btn-tab${activeTab === 'vi' ? ' active' : ''}`} onClick={() => setActiveTab('vi')}>Thông tin & Tiếng Việt</button>
-        <button type="button" className={`btn btn-tab${activeTab === 'en' ? ' active' : ''}`} onClick={() => setActiveTab('en')}>Tiếng Anh</button>
-      </div>
-      {activeTab === 'vi' && (
-        <>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Tiêu đề (VI) *</label>
-              <input
-                type="text"
-                value={currentNotification.titleVi}
-                onChange={(e) => handleInputChange('titleVi', e.target.value)}
-                className={`form-control ${errors.titleVi ? 'is-invalid' : ''}`}
-                placeholder="Nhập tiêu đề tiếng Việt"
-              />
-              {errors.titleVi && <div className="invalid-feedback">{errors.titleVi}</div>}
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Slug</label>
-              <input
-                type="text"
-                value={currentNotification.slug}
-                onChange={(e) => handleInputChange('slug', e.target.value)}
-                className="form-control"
-                placeholder="Nhập slug (tự động tạo nếu để trống)"
-              />
-            </div>
-            <div className="form-group">
-              <ImageUpload
-                value={currentNotification.imageUrl}
-                onChange={url => handleInputChange('imageUrl', url)}
-                label="Ảnh *"
-              />
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Tóm tắt (VI) *</label>
-              <textarea
-                value={currentNotification.summaryVi}
-                onChange={(e) => handleInputChange('summaryVi', e.target.value)}
-                className={`form-control ${errors.summaryVi ? 'is-invalid' : ''}`}
-                rows="3"
-                placeholder="Nhập tóm tắt tiếng Việt"
-              />
-              {errors.summaryVi && <div className="invalid-feedback">{errors.summaryVi}</div>}
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Nội dung (VI) *</label>
-            <Editor
-              value={currentNotification.contentVi}
-              onEditorChange={c => handleInputChange('contentVi', c)}
-              init={{
-                menubar: true,
-                plugins: [
-                  'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                  'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                  'insertdatetime', 'media', 'table', 'help', 'wordcount',
-                  'emoticons', 'codesample'
-                ],
-                toolbar:
-                  'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
-                  'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-                  'link image media table codesample charmap emoticons | removeformat | help',
-                height: 300,
-                branding: false,
-                promotion: false,
-                appendTo: document.body
-              }}
-            />
-            {errors.contentVi && <div className="invalid-feedback">{errors.contentVi}</div>}
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Trạng thái</label>
-              <select
-                value={currentNotification.status}
-                onChange={(e) => handleInputChange('status', e.target.value)}
-                className="form-control"
-              >
-                <option value="active">Hoạt động</option>
-                <option value="inactive">Không hoạt động</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label>Nổi bật</label>
-              <select
-                value={currentNotification.featured}
-                onChange={(e) => handleInputChange('featured', e.target.value === 'true')}
-                className="form-control"
-              >
-                <option value={false}>Không</option>
-                <option value={true}>Có</option>
-              </select>
-            </div>
-          </div>
-        </>
-      )}
-      {activeTab === 'en' && (
-        <>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Title (EN) *</label>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <input
-                  type="text"
-                  value={currentNotification.titleEn}
-                  onChange={(e) => handleInputChange('titleEn', e.target.value)}
-                  className={`form-control ${errors.titleEn ? 'is-invalid' : ''}`}
-                  placeholder="Enter title in English"
-                />
-                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('titleVi', 'titleEn')} title="Dịch từ tiếng Việt" disabled={!!translating.titleEn}>{translating.titleEn ? 'Đang dịch...' : 'Dịch'}</button>
-              </div>
-              {errors.titleEn && <div className="invalid-feedback">{errors.titleEn}</div>}
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Summary (EN) *</label>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <textarea
-                  value={currentNotification.summaryEn}
-                  onChange={(e) => handleInputChange('summaryEn', e.target.value)}
-                  className={`form-control ${errors.summaryEn ? 'is-invalid' : ''}`}
-                  rows="3"
-                  placeholder="Enter summary in English"
-                />
-                <button type="button" className="btn btn-sm btn-secondary" onClick={() => handleTranslate('summaryVi', 'summaryEn')} title="Dịch từ tiếng Việt" disabled={!!translating.summaryEn}>{translating.summaryEn ? 'Đang dịch...' : 'Dịch'}</button>
-              </div>
-              {errors.summaryEn && <div className="invalid-feedback">{errors.summaryEn}</div>}
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Content (EN) *</label>
-            <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-              <div style={{ flex: 1 }}>
-                <Editor
-                  value={currentNotification.contentEn}
-                  onEditorChange={c => handleInputChange('contentEn', c)}
-                  init={{
-                    menubar: true,
-                    plugins: [
-                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                      'insertdatetime', 'media', 'table', 'help', 'wordcount',
-                      'emoticons', 'codesample'
-                    ],
-                    toolbar:
-                      'undo redo | blocks | bold italic underline strikethrough forecolor backcolor | ' +
-                      'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | ' +
-                      'link image media table codesample charmap emoticons | removeformat | help',
-                    height: 300,
-                    branding: false,
-                    promotion: false,
-                    appendTo: document.body
-                  }}
-                />
-              </div>
-              <button
-                type="button"
-                className="btn btn-sm btn-secondary"
-                style={{ height: 36, marginTop: 4 }}
-                onClick={() => handleTranslate('contentVi', 'contentEn')}
-                title="Dịch từ tiếng Việt"
-                disabled={!!translating.contentEn || !currentNotification.contentVi}
-              >
-                {translating.contentEn ? "Đang dịch..." : "Dịch"}
-              </button>
-            </div>
-            {errors.contentEn && <div className="invalid-feedback">{errors.contentEn}</div>}
-          </div>
-        </>
-      )}
+  // Page Actions for the sticky action bar
+  const pageActions = (
+    <div style={{ display: "flex", gap: "0.5rem" }}>
+      <button
+        className="btn btn-outline-secondary"
+        onClick={loadData}
+        disabled={isLoading}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.75rem 1rem",
+          backgroundColor: "#f8f9fa",
+          color: "#6c757d",
+          border: "1px solid #dee2e6",
+          borderRadius: "6px",
+          fontSize: "0.875rem",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+        title="Làm mới danh sách thông báo"
+      >
+        <i className="fas fa-refresh"></i>
+        Làm mới
+      </button>
+      <button
+        className="btn btn-primary"
+        onClick={handleAdd}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.75rem 1rem",
+          backgroundColor: "#3b82f6",
+          color: "white",
+          border: "none",
+          borderRadius: "6px",
+          fontSize: "0.875rem",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+      >
+        <i className="fas fa-plus"></i>
+        Thêm thông báo
+      </button>
     </div>
   );
 
   if (isLoading) {
-    return <LoadingSpinner />;
+    return (
+      <PageWrapper actions={pageActions}>
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </PageWrapper>
+    );
   }
 
   return (
-    <div className="admin-notifications-list">
-      {/* Nơi TinyMCE sẽ render toolbar ra ngoài modal */}
-      <div id="tiny-toolbar-container" />
-      <div className="page-header">
-        <h1>Quản lý thông báo</h1>
-        <button className="btn btn-primary" onClick={handleAddNew}>
-          <i className="bi bi-plus"></i>
-          Thêm thông báo
-        </button>
-      </div>
+    <PageWrapper actions={pageActions}>
+      <div className="admin-notification-list">
+        {/* Filters Section */}
+        <div className="filters-section">
+          <div className="filter-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Tìm kiếm theo tiêu đề..."
+              value={filters.search}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, search: e.target.value }))
+              }
+            />
+          </div>
+          <div className="filter-group">
+            <select
+              className="form-control"
+              value={filters.category}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, category: e.target.value }))
+              }
+            >
+              <option key="all" value="">
+                Tất cả danh mục
+              </option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.titleVi}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="filter-group">
+            <select
+              className="form-control"
+              value={filters.status}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, status: e.target.value }))
+              }
+            >
+              <option key="all-status" value="">
+                Tất cả trạng thái
+              </option>
+              <option key="active" value="active">
+                Hoạt động
+              </option>
+              <option key="inactive" value="inactive">
+                Không hoạt động
+              </option>
+            </select>
+          </div>
+          <div className="filter-group">
+            <input
+              type="date"
+              className="form-control"
+              placeholder="Từ ngày"
+              value={filters.dateFrom}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, dateFrom: e.target.value }))
+              }
+            />
+          </div>
+          <div className="filter-group">
+            <input
+              type="date"
+              className="form-control"
+              placeholder="Đến ngày"
+              value={filters.dateTo}
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, dateTo: e.target.value }))
+              }
+            />
+          </div>
+          <div className="filter-group">
+            <button
+              className="btn btn-secondary"
+              onClick={() =>
+                setFilters({
+                  search: "",
+                  category: "",
+                  status: "",
+                  dateFrom: "",
+                  dateTo: "",
+                })
+              }
+            >
+              <i className="fas fa-times"></i>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
 
-      {renderFilters()}
-
-      <div className="admin-table-container">
+        {/* Data Table */}
         <DataTable
-          data={paginatedNotifications}
+          data={paginatedNotification}
           columns={columns}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          actions={actions}
           sortConfig={sortConfig}
-          onSort={handleSort}
+          onSort={(key) => {
+            setSortConfig((prev) => ({
+              key,
+              direction:
+                prev.key === key && prev.direction === "desc" ? "asc" : "desc",
+            }));
+          }}
+          currentPage={currentPage}
+          totalPages={Math.ceil(filteredNotification.length / itemsPerPage)}
+          onPageChange={setCurrentPage}
+          totalItems={filteredNotification.length}
           itemsPerPage={itemsPerPage}
-          totalItems={sortedNotifications.length}
-          tableClassName="admin-table"
+        />
+
+        {/* Modal with NotificationCreationForm */}
+        <FormModal
+          show={showModal}
+          onClose={handleCloseModal}
+          title={editMode ? "Chỉnh sửa thông báo" : "Thêm thông báo mới"}
+          size="xl"
+          showActions={false}
+        >
+          <NotificationCreationForm
+            categories={categories}
+            editingNotification={editingNotification}
+            onSuccess={handleFormSuccess}
+            onCancel={handleCloseModal}
+          />
+        </FormModal>
+
+        <ToastMessage
+          show={toast.show}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, show: false })}
         />
       </div>
-
-      <ReactModal
-        isOpen={showModal}
-        onRequestClose={handleCloseModal}
-        contentLabel="Thông báo"
-        style={{
-          overlay: { zIndex: 1000, background: 'rgba(0,0,0,0.5)' },
-          content: {
-            zIndex: 1001,
-            maxWidth: '1000px',
-            width: '90vw',
-            minWidth: '320px',
-            margin: 'auto',
-            borderRadius: 12,
-            padding: 0,
-            border: 'none',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.18)'
-          }
-        }}
-        ariaHideApp={false}
-      >
-        <div className="modal-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px 24px 0 24px', borderBottom: '1px solid #eee' }}>
-          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 600 }}>{editMode ? 'Chỉnh sửa thông báo' : 'Thêm thông báo mới'}</h2>
-          <button className="modal-close" onClick={handleCloseModal} aria-label="Đóng" style={{ background: 'none', border: 'none', fontSize: 24, cursor: 'pointer', color: '#6b7280' }}>✕</button>
-        </div>
-        <div className="modal-body" style={{ padding: '24px' }}>
-          {renderNotificationForm()}
-        </div>
-        <div className="modal-footer" style={{ display: 'flex', justifyContent: 'flex-end', gap: 12, padding: '0 24px 24px 24px', borderTop: '1px solid #eee' }}>
-          <button onClick={handleCloseModal} className="btn btn-secondary">Hủy</button>
-          <button onClick={handleSubmit} className="btn btn-primary" disabled={submitLoading}>
-            {submitLoading ? 'Đang xử lý...' : (editMode ? 'Cập nhật' : 'Thêm')}
-          </button>
-        </div>
-      </ReactModal>
-
-      <ToastMessage
-        show={toast.show}
-        message={toast.message}
-        type={toast.type}
-        onClose={() => setToast({ ...toast, show: false })}
-      />
-    </div>
+    </PageWrapper>
   );
 };
 
-export default NotificationsList; 
+export default NotificationList;

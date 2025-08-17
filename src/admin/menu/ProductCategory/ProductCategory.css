@@ -414,92 +414,7 @@
   cursor: not-allowed;
 }
 
-/* Modal Styles */
-.admin-product-category .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-}
-
-.admin-product-category .modal.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-.admin-product-category .modal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.admin-product-category .modal-content {
-  background: white;
-  border-radius: 12px;
-  max-width: 800px;
-  width: 90vw;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-  transform: translateY(-20px);
-  transition: transform 0.3s ease;
-}
-
-.admin-product-category .modal.show .modal-content {
-  transform: translateY(0);
-}
-
-.admin-product-category .modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.admin-product-category .modal-header h5 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.admin-product-category .modal-close {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #6b7280;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.admin-product-category .modal-close:hover {
-  background: #f3f4f6;
-  color: #374151;
-}
-
-.admin-product-category .modal-body {
-  padding: 24px;
-}
+/* Modal styles removed - using FormModal component instead */
 
 .admin-product-category .form-grid {
   display: grid;
@@ -600,10 +515,7 @@
     grid-template-columns: 1fr;
   }
 
-  .admin-product-category .modal-content {
-    width: 95vw;
-    margin: 10px;
-  }
+  /* Modal responsive styles removed - using FormModal component instead */
 
   .admin-product-category .form-grid {
     grid-template-columns: 1fr;

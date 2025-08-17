@@ -105,6 +105,59 @@
   box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
 }
 
+/* Status Badges - Global styles */
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-align: center;
+  min-width: 80px;
+}
+
+.badge-success {
+  background: #d1fae5 !important;
+  color: #065f46 !important;
+  border: 1px solid #a7f3d0 !important;
+}
+
+.badge-secondary {
+  background: #f3f4f6 !important;
+  color: #374151 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+/* Reset Button */
+.btn-reset,
+.btn-secondary {
+  background: #6b7280 !important;
+  color: white !important;
+  border: 1px solid #6b7280 !important;
+}
+
+.btn-reset:hover,
+.btn-secondary:hover {
+  background: #4b5563 !important;
+  border-color: #4b5563 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(107, 114, 128, 0.3);
+}
+
+.btn-outline-secondary {
+  background: transparent !important;
+  color: #6b7280 !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.btn-outline-secondary:hover {
+  background: #6b7280 !important;
+  color: white !important;
+  border-color: #6b7280 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(107, 114, 128, 0.3);
+}
+
 .btn-secondary {
   background: #6b7280;
   color: white;
@@ -295,6 +348,36 @@
   overflow-y: auto !important;
   z-index: 10000 !important;
   min-width: 500px;
+}
+
+/* TinyMCE Fullscreen Fix - Ensure it appears above sidebar */
+.tox-fullscreen {
+  z-index: 2000 !important;
+}
+
+.tox-tinymce.tox-fullscreen {
+  z-index: 2000 !important;
+}
+
+.tox-dialog-wrap {
+  z-index: 2100 !important;
+}
+
+.tox-dialog {
+  z-index: 2100 !important;
+}
+
+/* TinyMCE Fullscreen Overlay */
+.tox-fullscreen .tox-editor-container {
+  z-index: 2000 !important;
+}
+
+.tox-fullscreen .tox-toolbar-overlord {
+  z-index: 2001 !important;
+}
+
+.tox-fullscreen .tox-statusbar {
+  z-index: 2001 !important;
 }
 
 .modal.show .modal-content {

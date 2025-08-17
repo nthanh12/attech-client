@@ -31,31 +31,31 @@ src/utils/
 
 ```javascript
 // Import từng file riêng lẻ
-import { mockNews } from './utils/mockNews.js';
-import { mockProducts } from './utils/mockProducts.js';
+import { mockNews } from "./utils/mockNews.js";
+import { mockProducts } from "./utils/mockProducts.js";
 
 // Hoặc import từ index file
-import { 
-  mockNews, 
-  mockProducts, 
+import {
+  mockNews,
+  mockProducts,
   mockServices,
   mockUsers,
   mockSystemSettings,
   mockPermissions,
   mockNewsCategories,
-  mockProductCategories 
-} from './utils/mockData.js';
+  mockProductCategories,
+} from "./utils/mockData.js";
 ```
 
 ### Cấu trúc dữ liệu
 
-#### 1. Categories (mock*Categories)
+#### 1. Categories (mock\*Categories)
 
 ```javascript
 {
   id: 1,
-  nameVi: "Tin hoạt động",
-  nameEn: "Activities", 
+  titleVi: "Tin hoạt động",
+  titleEn: "Activities",
   slugVi: "tin-hoat-dong",
   slugEn: "activities",
   descriptionVi: "Tin tức về các hoạt động của công ty",
@@ -80,8 +80,8 @@ import {
   timePosted: "2024-01-15T00:00:00Z",
   status: 1,
   postCategoryId: 14,
-  postCategoryNameVi: "Công đoàn công ty",
-  postCategoryNameEn: "Company Union",
+  postCategorytitleVi: "Công đoàn công ty",
+  postCategorytitleEn: "Company Union",
   postCategorySlugVi: "cong-doan-cong-ty",
   postCategorySlugEn: "company-union",
   image: "https://picsum.photos/300/200?random=1"
@@ -183,7 +183,7 @@ import {
 ### Slug Generator
 
 ```javascript
-import { generateSlug } from './utils/slugGenerator.js';
+import { generateSlug } from "./utils/slugGenerator.js";
 
 const slug = generateSlug("Hội nghị Công đoàn năm 2024");
 // Kết quả: "hoi-nghi-cong-doan-nam-2024"
@@ -192,7 +192,7 @@ const slug = generateSlug("Hội nghị Công đoàn năm 2024");
 ### Slug Helper
 
 ```javascript
-import { createSlug } from './utils/slugHelper.js';
+import { createSlug } from "./utils/slugHelper.js";
 
 const slug = createSlug("Company Activities", "en");
 // Kết quả: "company-activities"
@@ -201,7 +201,7 @@ const slug = createSlug("Company Activities", "en");
 ### Route Generator
 
 ```javascript
-import { generateRoutes } from './utils/routeGenerator.js';
+import { generateRoutes } from "./utils/routeGenerator.js";
 
 const routes = generateRoutes(mockRoutes);
 // Tạo routes từ mock data
@@ -210,54 +210,58 @@ const routes = generateRoutes(mockRoutes);
 ### User Management
 
 ```javascript
-import { 
-  getUserById, 
-  getUsersByRole, 
+import {
+  getUserById,
+  getUsersByRole,
   getActiveUsers,
-  hasUserPermission 
-} from './utils/mockUsers.js';
+  hasUserPermission,
+} from "./utils/mockUsers.js";
 
 const user = getUserById(1);
-const adminUsers = getUsersByRole('Super Admin');
+const adminUsers = getUsersByRole("Super Admin");
 const activeUsers = getActiveUsers();
-const canEdit = hasUserPermission(1, 'edit_product');
+const canEdit = hasUserPermission(1, "edit_product");
 ```
 
 ### System Settings
 
 ```javascript
-import { 
-  getSystemSetting, 
+import {
+  getSystemSetting,
   updateSystemSetting,
-  getBannerConfig 
-} from './utils/mockSystemSettings.js';
+  getBannerConfig,
+} from "./utils/mockSystemSettings.js";
 
-const siteName = getSystemSetting('general.siteName.vi');
-const bannerConfig = getBannerConfig('homepage');
-updateSystemSetting('general.maintenanceMode', true);
+const siteName = getSystemSetting("general.siteName.vi");
+const bannerConfig = getBannerConfig("homepage");
+updateSystemSetting("general.maintenanceMode", true);
 ```
 
 ## Quy tắc đặt tên
 
 ### Fields bilingual
-- `nameVi` / `nameEn`: Tên tiếng Việt / Anh
-- `titleVi` / `titleEn`: Tiêu đề tiếng Việt / Anh  
+
+- `titleVi` / `titleEn`: Tên tiếng Việt / Anh
+- `titleVi` / `titleEn`: Tiêu đề tiếng Việt / Anh
 - `descriptionVi` / `descriptionEn`: Mô tả tiếng Việt / Anh
 - `contentVi` / `contentEn`: Nội dung tiếng Việt / Anh
 - `slugVi` / `slugEn`: Slug tiếng Việt / Anh
 - `labelVi` / `labelEn`: Nhãn tiếng Việt / Anh
 
 ### Category fields
+
 - `*CategoryId`: ID của category
-- `*CategoryNameVi` / `*CategoryNameEn`: Tên category
+- `*CategorytitleVi` / `*CategorytitleEn`: Tên category
 - `*CategorySlugVi` / `*CategorySlugEn`: Slug category
 
 ### Status fields
+
 - `status`: 1 = active, 0 = inactive (cho categories)
 - `status`: 'active' | 'inactive' | 'suspended' (cho users)
 - `is_active`: true = active, false = inactive (cho routes)
 
 ### User fields
+
 - `userType`: 'admin' | 'user'
 - `role`: 'Super Admin' | 'Admin' | 'Editor' | 'Author' | 'Viewer' | 'Customer' | 'Manager' | 'Analyst' | 'Support'
 
@@ -274,34 +278,36 @@ updateSystemSetting('general.maintenanceMode', true);
 ## Ví dụ sử dụng trong components
 
 ```javascript
-import React, { useState, useEffect } from 'react';
-import { 
-  mockNews, 
+import React, { useState, useEffect } from "react";
+import {
+  mockNews,
   mockNewsCategories,
   mockUsers,
-  getSystemSetting 
-} from '../utils/mockData.js';
+  getSystemSetting,
+} from "../utils/mockData.js";
 
 const NewsList = () => {
   const [news, setNews] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [siteName, setSiteName] = useState('');
+  const [siteName, setSiteName] = useState("");
 
   useEffect(() => {
     // Simulate API call
     const fetchData = async () => {
       try {
         // Mock API response
-        const newsData = mockNews.filter(item => item.status === 1);
-        const categoriesData = mockNewsCategories.filter(item => item.status === 1);
-        const siteNameSetting = getSystemSetting('general.siteName.vi');
-        
+        const newsData = mockNews.filter((item) => item.status === 1);
+        const categoriesData = mockNewsCategories.filter(
+          (item) => item.status === 1
+        );
+        const siteNameSetting = getSystemSetting("general.siteName.vi");
+
         setNews(newsData);
         setCategories(categoriesData);
         setSiteName(siteNameSetting);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -315,20 +321,22 @@ const NewsList = () => {
   return (
     <div>
       <h1>{siteName}</h1>
-      
-      {Array.isArray(categories) && categories.map(category => (
-        <div key={category.id}>
-          <h3>{category.nameVi}</h3>
-          <p>{category.descriptionVi}</p>
-        </div>
-      ))}
-      
-      {Array.isArray(news) && news.map(item => (
-        <div key={item.id}>
-          <h2>{item.titleVi}</h2>
-          <p>{item.descriptionVi}</p>
-        </div>
-      ))}
+
+      {Array.isArray(categories) &&
+        categories.map((category) => (
+          <div key={category.id}>
+            <h3>{category.titleVi}</h3>
+            <p>{category.descriptionVi}</p>
+          </div>
+        ))}
+
+      {Array.isArray(news) &&
+        news.map((item) => (
+          <div key={item.id}>
+            <h2>{item.titleVi}</h2>
+            <p>{item.descriptionVi}</p>
+          </div>
+        ))}
     </div>
   );
 };
@@ -347,11 +355,11 @@ Khi chuyển từ mock data sang API thực:
 
 ```javascript
 // Thay vì:
-import { mockNews } from '../utils/mockData.js';
+import { mockNews } from "../utils/mockData.js";
 
 // Sử dụng:
 const fetchNews = async () => {
-  const response = await fetch('/api/news');
+  const response = await fetch("/api/news");
   const data = await response.json();
   return data;
 };
@@ -360,28 +368,33 @@ const fetchNews = async () => {
 ## Mock Data Summary
 
 ### Categories (4 files)
+
 - **mockNewsCategories.js**: 7 categories cho tin tức
-- **mockProductCategories.js**: 8 categories cho sản phẩm  
+- **mockProductCategories.js**: 8 categories cho sản phẩm
 - **mockServiceCategories.js**: 8 categories cho dịch vụ
 - **mockNotificationCategories.js**: 7 categories cho thông báo
 
 ### Main Data (4 files)
+
 - **mockNews.js**: 10 tin tức mẫu
 - **mockProducts.js**: 8 sản phẩm mẫu
 - **mockServices.js**: 8 dịch vụ mẫu
 - **mockNotifications.js**: 8 thông báo mẫu
 
 ### Management (3 files)
+
 - **mockUsers.js**: 8 users mẫu + departments + positions
 - **mockSystemSettings.js**: System settings + banner config
 - **mockPermissions.js**: Permissions + roles
 
 ### Routes (1 file)
+
 - **mockRoutes.js**: 50+ routes cho website
 
 ### Utilities (3 files)
+
 - **slugGenerator.js**: Tạo slug từ text
 - **slugHelper.js**: Helper functions cho slug
 - **routeGenerator.js**: Generator cho routes
 
-**Tổng cộng**: 15 files mock data với đầy đủ tính năng cho admin management system. 
+**Tổng cộng**: 15 files mock data với đầy đủ tính năng cho admin management system.

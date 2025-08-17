@@ -34,8 +34,8 @@
 
 /* WYSIWYG Content Styles */
 .cns-container img {
-  max-width: 100%;
-  height: auto;
+  width: 100% !important;
+  height: auto !important;
   display: block;
   margin: 20px auto;
 }
@@ -351,6 +351,8 @@
   }
 
   .cns-container img {
+    width: 100%;
+    height: auto;
     margin: 15px auto;
   }
 

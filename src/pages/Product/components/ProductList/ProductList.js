@@ -5,41 +5,55 @@ import { useLocalizedRouting } from "../../../../hooks/useLocalizedRouting";
 import ProductItem from "../ProductItem/ProductItem";
 import Sidebar from "../Sidebar/Sidebar";
 import "../ProductList/ProductList.css";
-import { mockProducts, mockProductCategories } from '../../../../utils/mockData';
+import {
+  mockProducts,
+  mockProductCategories,
+} from "../../../../utils/mockData";
 
 // Map mockProducts sang format cho ProductItem với i18n
-const getProducts = (currentLanguage) => mockProducts.map(item => ({
-  id: item.id,
-  slug: currentLanguage === 'vi' ? item.slugVi : item.slugEn,
-  title: currentLanguage === 'vi' ? item.nameVi : item.nameEn,
-  fullTitle: currentLanguage === 'vi' ? item.nameVi : item.nameEn,
-  category: currentLanguage === 'vi' ? item.productCategoryNameVi : item.productCategoryNameEn,
-  description: currentLanguage === 'vi' ? item.descriptionVi : item.descriptionEn,
-  image: item.image,
-  categorySlug: currentLanguage === 'vi' ? item.productCategorySlugVi : item.productCategorySlugEn,
-  originalItem: item // Keep original for reference
-}));
+const getProducts = (currentLanguage) =>
+  mockProducts.map((item) => ({
+    id: item.id,
+    slug: currentLanguage === "vi" ? item.slugVi : item.slugEn,
+    title: currentLanguage === "vi" ? item.titleVi : item.titleEn,
+    fullTitle: currentLanguage === "vi" ? item.titleVi : item.titleEn,
+    category:
+      currentLanguage === "vi"
+        ? item.productCategorytitleVi
+        : item.productCategorytitleEn,
+    description:
+      currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn,
+    image: item.image,
+    categorySlug:
+      currentLanguage === "vi"
+        ? item.productCategorySlugVi
+        : item.productCategorySlugEn,
+    originalItem: item, // Keep original for reference
+  }));
 
 // Tạo mảng categories từ mockProductCategories với i18n
-const getCategories = (currentLanguage) => mockProductCategories.map(cat => ({
-  name: currentLanguage === 'vi' ? cat.nameVi : cat.nameEn,
-  slug: currentLanguage === 'vi' ? cat.slugVi : cat.slugEn
-}));
+const getCategories = (currentLanguage) =>
+  mockProductCategories.map((cat) => ({
+    name: currentLanguage === "vi" ? cat.titleVi : cat.titleEn,
+    slug: currentLanguage === "vi" ? cat.slugVi : cat.slugEn,
+  }));
 
 // CategoryNav component with i18n
 const CategoryNav = ({ categories, selectedCategory, onSelectCategory, t }) => {
   return (
     <div className="attech-category-nav">
       <button
-        className={`attech-category-btn ${!selectedCategory ? 'active' : ''}`}
-        onClick={() => onSelectCategory('')}
+        className={`attech-category-btn ${!selectedCategory ? "active" : ""}`}
+        onClick={() => onSelectCategory("")}
       >
-        {t('frontend.products.allProducts')}
+        {t("frontend.products.allProducts")}
       </button>
-      {categories.map(cat => (
+      {categories.map((cat) => (
         <button
           key={cat.slug}
-          className={`attech-category-btn ${selectedCategory === cat.slug ? 'active' : ''}`}
+          className={`attech-category-btn ${
+            selectedCategory === cat.slug ? "active" : ""
+          }`}
           onClick={() => onSelectCategory(cat.slug)}
         >
           {cat.name}
@@ -47,7 +61,7 @@ const CategoryNav = ({ categories, selectedCategory, onSelectCategory, t }) => {
       ))}
       <button
         className="attech-category-btn"
-        onClick={() => window.open('https://attech.vr360.one/', '_blank')}
+        onClick={() => window.open("https://attech.vr360.one/", "_blank")}
       >
         VR 360
       </button>
@@ -59,10 +73,10 @@ const ProductList = () => {
   const { category } = useParams();
   const { t, currentLanguage } = useI18n();
   const { navigateToRoute } = useLocalizedRouting();
-  
+
   const products = getProducts(currentLanguage);
   const categories = getCategories(currentLanguage);
-  
+
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [viewMode, setViewMode] = useState("grid");
@@ -73,7 +87,7 @@ const ProductList = () => {
     return saved ? JSON.parse(saved) : [];
   });
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  
+
   // Thêm state cho phân trang
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
@@ -85,27 +99,28 @@ const ProductList = () => {
 
   useEffect(() => {
     let result = [...products];
-    
+
     if (selectedCategory) {
-      result = result.filter(product => 
-        product.categorySlug === selectedCategory
+      result = result.filter(
+        (product) => product.categorySlug === selectedCategory
       );
     }
 
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
-      result = result.filter(product =>
-        product.title.toLowerCase().includes(searchLower) ||
-        product.description.toLowerCase().includes(searchLower)
+      result = result.filter(
+        (product) =>
+          product.title.toLowerCase().includes(searchLower) ||
+          product.description.toLowerCase().includes(searchLower)
       );
     }
 
     result.sort((a, b) => {
       switch (sortBy) {
         case "name":
-          return (a.title || '').localeCompare(b.title || '');
+          return (a.title || "").localeCompare(b.title || "");
         case "category":
-          return (a.category || '').localeCompare(b.category || '');
+          return (a.category || "").localeCompare(b.category || "");
         default:
           return 0;
       }
@@ -117,7 +132,10 @@ const ProductList = () => {
   // Khôi phục lại phân trang như ban đầu
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
   const navigate = useNavigate();
@@ -125,9 +143,9 @@ const ProductList = () => {
     setSelectedCategory(category);
     setIsSidebarOpen(false);
     if (category) {
-      navigateToRoute('PRODUCT_CATEGORY', { category });
+      navigateToRoute("PRODUCT_CATEGORY", { category });
     } else {
-      navigateToRoute('PRODUCTS');
+      navigateToRoute("PRODUCTS");
     }
   };
 
@@ -144,10 +162,10 @@ const ProductList = () => {
   };
 
   const handleToggleFavorite = (product) => {
-    setFavoriteProducts(prev => {
-      const isFavorite = prev.some(p => p.id === product.id);
+    setFavoriteProducts((prev) => {
+      const isFavorite = prev.some((p) => p.id === product.id);
       if (isFavorite) {
-        return prev.filter(p => p.id !== product.id);
+        return prev.filter((p) => p.id !== product.id);
       }
       return [...prev, product];
     });
@@ -180,7 +198,7 @@ const ProductList = () => {
         >
           <i className="fas fa-angle-double-left"></i>
         </button>
-        
+
         <button
           className="attech-pagination-button"
           onClick={() => handlePageChange(currentPage - 1)}
@@ -189,10 +207,12 @@ const ProductList = () => {
           <i className="fas fa-angle-left"></i>
         </button>
 
-        {pageNumbers.map(number => (
+        {pageNumbers.map((number) => (
           <button
             key={number}
-            className={`attech-pagination-button ${currentPage === number ? 'active' : ''}`}
+            className={`attech-pagination-button ${
+              currentPage === number ? "active" : ""
+            }`}
             onClick={() => handlePageChange(number)}
           >
             {number}
@@ -225,7 +245,7 @@ const ProductList = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -233,7 +253,7 @@ const ProductList = () => {
       <div className="attech-controls-wrapper">
         <div className="attech-controls-inner">
           <div className="attech-controls-top">
-            <button 
+            <button
               className="attech-filter-toggle-btn"
               onClick={() => setIsSidebarOpen(true)}
             >
@@ -246,32 +266,40 @@ const ProductList = () => {
               <input
                 type="text"
                 className="attech-search-input"
-                placeholder={t('frontend.products.searchPlaceholder')}
+                placeholder={t("frontend.products.searchPlaceholder")}
                 value={searchTerm}
                 onChange={handleSearch}
               />
             </div>
 
             <div className="attech-product-filters">
-              <select 
+              <select
                 className="attech-sort-select"
                 value={sortBy}
                 onChange={handleSort}
               >
-                <option value="name">{t('frontend.products.sortByName')}</option>
-                <option value="category">{t('frontend.products.sortByCategory')}</option>
+                <option value="name">
+                  {t("frontend.products.sortByName")}
+                </option>
+                <option value="category">
+                  {t("frontend.products.sortByCategory")}
+                </option>
               </select>
 
               <div className="attech-view-mode">
                 <button
-                  className={`attech-view-btn ${viewMode === 'grid' ? 'active' : ''}`}
-                  onClick={() => handleViewMode('grid')}
+                  className={`attech-view-btn ${
+                    viewMode === "grid" ? "active" : ""
+                  }`}
+                  onClick={() => handleViewMode("grid")}
                 >
                   <i className="fas fa-th"></i>
                 </button>
                 <button
-                  className={`attech-view-btn ${viewMode === 'list' ? 'active' : ''}`}
-                  onClick={() => handleViewMode('list')}
+                  className={`attech-view-btn ${
+                    viewMode === "list" ? "active" : ""
+                  }`}
+                  onClick={() => handleViewMode("list")}
                 >
                   <i className="fas fa-list"></i>
                 </button>
@@ -293,25 +321,25 @@ const ProductList = () => {
       <div className={`attech-product-grid ${viewMode}`}>
         {currentProducts.length > 0 ? (
           currentProducts.map((product, index) => (
-            <div 
-              key={product.id} 
+            <div
+              key={product.id}
               className="attech-product-item-wrapper"
               style={{
-                animation: `fadeIn 0.3s ease-in-out forwards ${index * 0.1}s`
+                animation: `fadeIn 0.3s ease-in-out forwards ${index * 0.1}s`,
               }}
             >
               <ProductItem
                 product={product}
                 viewMode={viewMode}
                 onToggleFavorite={handleToggleFavorite}
-                isFavorite={favoriteProducts.some(p => p.id === product.id)}
+                isFavorite={favoriteProducts.some((p) => p.id === product.id)}
               />
             </div>
           ))
         ) : (
           <div className="attech-no-products">
             <i className="fas fa-box-open"></i>
-            <p>{t('frontend.products.noProductsFound')}</p>
+            <p>{t("frontend.products.noProductsFound")}</p>
           </div>
         )}
       </div>

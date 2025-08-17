@@ -15,21 +15,24 @@ const NotificationListPage = () => {
   const itemsPerPage = 9;
 
   // Lọc dữ liệu theo category param
-  let filteredItems = !category || category === "all-act"
-    ? mockNotifications
-    : mockNotifications.filter(item => {
-        const categorySlug = currentLanguage === 'vi' 
-          ? item.notificationCategorySlugVi 
-          : item.notificationCategorySlugEn;
-        return categorySlug === category;
-      });
+  let filteredItems =
+    !category || category === "all-act"
+      ? mockNotifications
+      : mockNotifications.filter((item) => {
+          const categorySlug =
+            currentLanguage === "vi"
+              ? item.notificationCategorySlugVi
+              : item.notificationCategorySlugEn;
+          return categorySlug === category;
+        });
 
   // Lọc theo searchTerm
   if (searchTerm.trim() !== "") {
     const lower = searchTerm.toLowerCase();
-    filteredItems = filteredItems.filter(item => {
-      const title = currentLanguage === 'vi' ? item.titleVi : item.titleEn;
-      const description = currentLanguage === 'vi' ? item.descriptionVi : item.descriptionEn;
+    filteredItems = filteredItems.filter((item) => {
+      const title = currentLanguage === "vi" ? item.titleVi : item.titleEn;
+      const description =
+        currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn;
       return (
         title.toLowerCase().includes(lower) ||
         description?.toLowerCase().includes(lower)
@@ -38,7 +41,9 @@ const NotificationListPage = () => {
   }
 
   // Sắp xếp giảm dần theo timePosted (mới nhất lên đầu)
-  const sortedItems = filteredItems.slice().sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted));
+  const sortedItems = filteredItems
+    .slice()
+    .sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted));
 
   // Phân trang
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -56,20 +61,23 @@ const NotificationListPage = () => {
   }, [category, currentLanguage]);
 
   const getCategoryTitle = () => {
-    if (!category || category === "all-act") return t('frontend.notifications.allNotifications');
-    const found = mockNotifications.find(item => {
-      const categorySlug = currentLanguage === 'vi' 
-        ? item.notificationCategorySlugVi 
-        : item.notificationCategorySlugEn;
+    if (!category || category === "all-act")
+      return t("frontend.notifications.allNotifications");
+    const found = mockNotifications.find((item) => {
+      const categorySlug =
+        currentLanguage === "vi"
+          ? item.notificationCategorySlugVi
+          : item.notificationCategorySlugEn;
       return categorySlug === category;
     });
     if (found) {
-      const categoryName = currentLanguage === 'vi' 
-        ? found.notificationCategoryNameVi 
-        : found.notificationCategoryNameEn;
+      const categoryName =
+        currentLanguage === "vi"
+          ? found.notificationCategorytitleVi
+          : found.notificationCategorytitleEn;
       return categoryName;
     }
-    return t('frontend.notifications.title');
+    return t("frontend.notifications.title");
   };
 
   const handlePageChange = (pageNumber) => {
@@ -79,7 +87,9 @@ const NotificationListPage = () => {
 
   const formatDate = (dateString) => {
     const d = new Date(dateString);
-    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth()+1).toString().padStart(2, "0")}/${d.getFullYear()}`;
+    return `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1)
+      .toString()
+      .padStart(2, "0")}/${d.getFullYear()}`;
   };
 
   if (loading) {
@@ -88,7 +98,7 @@ const NotificationListPage = () => {
         <div className="container">
           <div className="loading notificationlist-loading">
             <div className="loading-spinner" />
-            <p>{t('frontend.notifications.loading')}</p>
+            <p>{t("frontend.notifications.loading")}</p>
           </div>
         </div>
       </div>
@@ -99,22 +109,28 @@ const NotificationListPage = () => {
     <div className="notification-list-root notification-list-page notificationlist-minimal">
       <div className="container">
         <h1 className="page-title-minimal">{getCategoryTitle()}</h1>
-        <div style={{display:'flex',justifyContent:'flex-end',marginBottom:18}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            marginBottom: 18,
+          }}
+        >
           <input
             type="text"
-            placeholder={t('frontend.notifications.searchPlaceholder')}
+            placeholder={t("frontend.notifications.searchPlaceholder")}
             value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              padding: '7px 14px',
+              padding: "7px 14px",
               borderRadius: 20,
-              border: '1.5px solid #e0e7ef',
+              border: "1.5px solid #e0e7ef",
               fontSize: 15,
               minWidth: 220,
-              outline: 'none',
-              boxShadow: '0 1px 4px rgba(37,99,235,0.04)',
-              transition: 'border 0.18s',
-              color: '#1a237e'
+              outline: "none",
+              boxShadow: "0 1px 4px rgba(37,99,235,0.04)",
+              transition: "border 0.18s",
+              color: "#1a237e",
             }}
           />
         </div>
@@ -122,26 +138,46 @@ const NotificationListPage = () => {
           {currentItems.length > 0 ? (
             currentItems.map((item) => (
               <div className="notificationlist-card-minimal" key={item.id}>
-                <Link to={currentLanguage === 'vi' 
-                  ? `/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`
-                  : `/en/notifications/${item.notificationCategorySlugEn}/${item.slugEn}`
-                } className="notificationlist-img-link-minimal">
-                  <img src={item.image} alt={currentLanguage === 'vi' ? item.titleVi : item.titleEn} className="notificationlist-img-minimal" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}/>
+                <Link
+                  to={
+                    currentLanguage === "vi"
+                      ? `/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`
+                      : `/en/notifications/${item.notificationCategorySlugEn}/${item.slugEn}`
+                  }
+                  className="notificationlist-img-link-minimal"
+                >
+                  <img
+                    src={item.image}
+                    alt={currentLanguage === "vi" ? item.titleVi : item.titleEn}
+                    className="notificationlist-img-minimal"
+                    title={
+                      currentLanguage === "vi" ? item.titleVi : item.titleEn
+                    }
+                  />
                 </Link>
                 <div className="notificationlist-content-minimal">
-                  <span className="notificationlist-date-minimal">{formatDate(item.timePosted)}</span>
-                  <Link to={currentLanguage === 'vi' 
-                    ? `/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`
-                    : `/en/notifications/${item.notificationCategorySlugEn}/${item.slugEn}`
-                  } className="notificationlist-title-minimal clamp-2-lines" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}>
-                    {currentLanguage === 'vi' ? item.titleVi : item.titleEn}
+                  <span className="notificationlist-date-minimal">
+                    {formatDate(item.timePosted)}
+                  </span>
+                  <Link
+                    to={
+                      currentLanguage === "vi"
+                        ? `/thong-bao/${item.notificationCategorySlugVi}/${item.slugVi}`
+                        : `/en/notifications/${item.notificationCategorySlugEn}/${item.slugEn}`
+                    }
+                    className="notificationlist-title-minimal clamp-2-lines"
+                    title={
+                      currentLanguage === "vi" ? item.titleVi : item.titleEn
+                    }
+                  >
+                    {currentLanguage === "vi" ? item.titleVi : item.titleEn}
                   </Link>
                 </div>
               </div>
             ))
           ) : (
             <div className="notificationlist-empty">
-              <p>{t('frontend.notifications.noNotificationsInCategory')}</p>
+              <p>{t("frontend.notifications.noNotificationsInCategory")}</p>
             </div>
           )}
         </div>
@@ -158,7 +194,9 @@ const NotificationListPage = () => {
               <button
                 key={page + 1}
                 onClick={() => handlePageChange(page + 1)}
-                className={`pagination-btn-notificationlist-minimal${currentPage === page + 1 ? " active" : ""}`}
+                className={`pagination-btn-notificationlist-minimal${
+                  currentPage === page + 1 ? " active" : ""
+                }`}
               >
                 {page + 1}
               </button>

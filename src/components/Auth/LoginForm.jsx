@@ -43,7 +43,7 @@ const LoginForm = ({ onLoginSuccess, onSwitchToRegister }) => {
       }
     } catch (error) {
       console.error('❌ Login error:', error);
-      setError('Login failed. Please try again.');
+      setError(error.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

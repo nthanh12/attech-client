@@ -112,12 +112,13 @@ const UploadTest = () => {
       <div style={{ fontSize: '12px', color: '#666' }}>
         <p><strong>Expected BE Endpoints:</strong></p>
         <ul>
-          <li>POST /api/upload/image - Single image upload</li>
-          <li>POST /api/upload/multi-upload - Multiple files</li>
-          <li>POST /api/upload/video - Video upload</li>
-          <li>POST /api/upload/document - Document upload</li>
-          <li>GET /api/media/find-all - List all media</li>
+          <li>POST /api/upload/file - Universal upload (TinyMCE)</li>
+          <li>POST /api/media/upload - Media files (images/videos/audio)</li>
+          <li>POST /api/documents/upload - Document files (PDF/DOC/XLS)</li>
+          <li>GET /api/media/gallery - Media gallery</li>
+          <li>GET /api/documents/library - Document library</li>
           <li>DELETE /api/media/delete/:id - Delete media</li>
+          <li>DELETE /api/documents/delete/:id - Delete document</li>
         </ul>
       </div>
     </div>

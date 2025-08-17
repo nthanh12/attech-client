@@ -66,7 +66,7 @@ const PartNews = () => {
         <div className="news__grid">
           {orderedNewsGroups.map((group, index) => (
             <article 
-              key={group.slug} 
+              key={group.slugVi} 
               className="news__card"
               data-aos="fade-up"
               data-aos-delay={index * 100}

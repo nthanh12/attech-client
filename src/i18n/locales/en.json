@@ -183,8 +183,8 @@
       "categories": "Product Categories",
       "fields": {
         "name": "Product Name",
-        "nameVi": "Name (VI)",
-        "nameEn": "Name (EN)",
+        "titleVi": "Name (VI)",
+        "titleEn": "Name (EN)",
         "description": "Description",
         "descriptionVi": "Description (VI)",
         "descriptionEn": "Description (EN)",
@@ -201,8 +201,8 @@
       "edit": "Edit Service",
       "fields": {
         "name": "Service Name",
-        "nameVi": "Name (VI)",
-        "nameEn": "Name (EN)",
+        "titleVi": "Name (VI)",
+        "titleEn": "Name (EN)",
         "description": "Description",
         "descriptionVi": "Description (VI)",
         "descriptionEn": "Description (EN)"

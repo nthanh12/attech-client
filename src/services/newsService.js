@@ -1,120 +1,467 @@
 import api from "../api";
-import { mockNews } from "../utils/mockNews";
-import { mockNewsCategories } from "../utils/mockNewsCategories";
+import { getApiBaseUrl } from "../config/apiConfig";
 
-// Tin tức với correct backend endpoint
-export async function fetchNewsWithFallback() {
+// Get all news with pagination - matches BE format exactly
+export async function fetchNews(pageIndex = 1, pageSize = 10) {
   try {
-    console.log("🔍 Fetching news from backend: GET /api/news/find-all");
-    const response = await api.get("/api/news/find-all");
-    
-    // Handle new backend response format: {status: 1, data: {items: [], totalItems: 0}}
-    if (response.data && response.data.status === 1 && response.data.data) {
-      const newsData = response.data.data.items || [];
-      console.log("✅ News data loaded successfully", newsData);
-      return newsData;
+    const response = await api.get("/api/news/find-all", {
+      params: { pageIndex, pageSize },
+    });
+
+    // Handle BE response format: camelCase
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.data
+    ) {
+      const dataObj = response.data.data;
+      const result = {
+        items: dataObj.items || [],
+        totalCount: dataObj.totalItems || 0,
+        totalPages: Math.ceil((dataObj.totalItems || 0) / pageSize),
+        currentPage: pageIndex,
+        pageSize,
+      };
+      return result;
     }
-    
-    // Fallback: Handle direct array
-    if (response.data && Array.isArray(response.data)) {
-      console.log("✅ News data loaded (direct array)", response.data);
-      return response.data;
-    }
-    
-    throw new Error("Invalid data format");
-    
+
+    throw new Error("Invalid response format");
   } catch (error) {
-    console.error("❌ Failed to fetch news from backend:", error.response?.status, error.message);
-    console.log("⚠️ Using mock news data");
-    return mockNews;
+    throw error;
   }
 }
 
-export async function fetchNewsCategoriesWithFallback() {
+// Get news categories - matches BE NewsCategoryController
+export async function fetchNewsCategories() {
   try {
-    console.log("🔍 Fetching news categories from backend: GET /api/news-categories/find-all");
-    const response = await api.get("/api/news-categories/find-all");
+    const response = await api.get("/api/news-category/find-all");
     
-    // Handle new backend response format: {status: 1, data: {items: [], totalItems: 0}}
-    if (response.data && response.data.status === 1 && response.data.data) {
-      const categoriesData = response.data.data.items || [];
-      console.log("✅ News categories loaded successfully", categoriesData);
-      return categoriesData;
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.data &&
+      response.data.data.items
+    ) {
+      return response.data.data.items;
     }
-    
-    // Fallback: Handle direct array
-    if (response.data && Array.isArray(response.data)) {
-      console.log("✅ News categories loaded (direct array)", response.data);
-      return response.data;
-    }
-    
-    throw new Error("Invalid data format");
-    
+
+    throw new Error("Invalid categories response");
   } catch (error) {
-    console.error("❌ Failed to fetch news categories from backend:", error.response?.status, error.message);
-    console.log("⚠️ Using mock news categories data");
-    return mockNewsCategories;
+    console.error("❌ fetchNewsCategories error:", error);
+    throw error;
   }
 }
 
-// CRUD cho news - Using correct backend endpoints
-export const getNews = async (params = {}) => {
-  const response = await api.get("/api/news/find-all", { params });
-  return response.data;
-};
-
+// Get news by ID - for editing (returns DetailNewsDto)
 export const getNewsById = async (id) => {
-  const response = await api.get(`/api/news/find-by-id/${id}`);
-  return response.data;
+  try {
+    const response = await api.get(`/api/news/find-by-id/${id}`);
+
+    // Handle API format
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.data
+    ) {
+      return response.data.data; // Return DetailNewsDto directly
+    }
+
+    throw new Error("Invalid news detail response");
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const getNewsBySlug = async (slug) => {
-  const response = await api.get(`/api/news/detail/${slug}`);
-  return response.data;
+// Create news - UPDATED to use new attachment system
+export const createNews = async (newsData) => {
+  try {
+    // Step 1: Prepare data to match CreateNewsDto exactly
+    const formData = new FormData();
+
+    // Required fields
+    formData.append("titleVi", newsData.titleVi || "");
+    formData.append("titleEn", newsData.titleEn || "");
+    formData.append("newsCategoryId", String(newsData.newsCategoryId || ""));
+    formData.append("contentVi", newsData.contentVi || "");
+    formData.append("contentEn", newsData.contentEn || "");
+    formData.append("descriptionVi", newsData.descriptionVi || "");
+    formData.append("descriptionEn", newsData.descriptionEn || "");
+    formData.append("slugVi", newsData.SlugVi || "");
+    formData.append("slugEn", newsData.SlugEn || "");
+    formData.append("isOutstanding", newsData.isOutstanding ? "true" : "false");
+
+    // Ensure Status is a valid integer (1 for active, 0 for inactive)
+    const statusValue =
+      typeof newsData.Status === "number"
+        ? newsData.Status
+        : newsData.Status === "active"
+        ? 1
+        : newsData.Status === "inactive"
+        ? 0
+        : 1;
+    formData.append("Status", String(statusValue));
+
+    // Ensure timePosted is valid ISO string
+    const timePosted = newsData.timePosted || new Date().toISOString();
+    formData.append("timePosted", timePosted);
+
+    // Step 2: Handle attachments using new system
+    if (newsData.FeaturedImageId) {
+      formData.append("FeaturedImageId", String(newsData.FeaturedImageId));
+    }
+
+    const attachmentIds = newsData.attachmentIds;
+    if (attachmentIds && attachmentIds.length > 0) {
+      attachmentIds.forEach((id) => {
+        formData.append("attachmentIds", String(id));
+      });
+    }
+
+    const response = await api.post("/api/news/create", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 300000, // 5 minutes
+    });
+
+    // Handle BE response format
+    if (response.data && response.data.status === 1) {
+      return response.data;
+    }
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const createNews = async (data) => {
-  const response = await api.post("/api/news/create", data);
-  return response.data;
+// Update news - UPDATED to use new attachment system
+export const updateNews = async (id, newsData) => {
+  try {
+    const formData = new FormData();
+
+    // Required ID
+    formData.append("Id", String(id));
+
+    // All fields from UpdateNewsDto
+    formData.append("titleVi", newsData.titleVi || "");
+    formData.append("titleEn", newsData.titleEn || "");
+    formData.append("newsCategoryId", String(newsData.newsCategoryId || ""));
+    formData.append("contentVi", newsData.contentVi || "");
+    formData.append("contentEn", newsData.contentEn || "");
+    formData.append("descriptionVi", newsData.descriptionVi || "");
+    formData.append("descriptionEn", newsData.descriptionEn || "");
+    formData.append("slugVi", newsData.SlugVi || "");
+    formData.append("slugEn", newsData.SlugEn || "");
+    formData.append("isOutstanding", newsData.isOutstanding ? "true" : "false");
+
+    // Ensure Status is a valid integer (1 for active, 0 for inactive)
+    const statusValue =
+      typeof newsData.Status === "number"
+        ? newsData.Status
+        : newsData.Status === "active"
+        ? 1
+        : newsData.Status === "inactive"
+        ? 0
+        : 1;
+    formData.append("Status", String(statusValue));
+
+    // Ensure timePosted is valid ISO string
+    const timePosted = newsData.timePosted || new Date().toISOString();
+    formData.append("timePosted", timePosted);
+
+    // Handle attachments
+    if (newsData.FeaturedImageId) {
+      formData.append("FeaturedImageId", String(newsData.FeaturedImageId));
+    }
+
+    const attachmentIds = newsData.attachmentIds;
+    if (attachmentIds && attachmentIds.length > 0) {
+      attachmentIds.forEach((id) => {
+        formData.append("attachmentIds", String(id));
+      });
+    }
+
+    const response = await api.put("/api/news/update", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 300000,
+    });
+
+    // Handle BE response format
+    if (response.data && response.data.status === 1) {
+      return response.data;
+    }
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const updateNews = async (data) => {
-  const response = await api.put("/api/news/update", data);
-  return response.data;
-};
-
+// Delete news
 export const deleteNews = async (id) => {
-  const response = await api.delete(`/api/news/delete/${id}`);
-  return response.data;
+  try {
+    const response = await api.delete(`/api/news/delete/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const updateNewsStatus = async (id, status) => {
-  const response = await api.put("/api/news/update-post-status", { id, status });
-  return response.data;
+// ============================================================
+// ATTACHMENT API SERVICE - NEW: Using /api/attachments
+// ============================================================
+
+// Upload file temporarily - returns attachment ID
+export const uploadFile = async (file, relationType = "image") => {
+  try {
+    const formData = new FormData();
+    formData.append("File", file);
+    formData.append("RelationType", relationType);
+
+    const response = await api.post("/api/attachments/upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 300000,
+    });
+
+    // Handle API format
+    if (response.data && response.data.status === 1) {
+      return response.data.data; // Returns {id, previewUrl, fileName, etc}
+    }
+
+    throw new Error("Upload failed");
+  } catch (error) {
+    throw error;
+  }
 };
 
-// CRUD cho danh mục news - Using correct backend endpoints
+// ============================================================
+// CHUYÊN DỤNG: UPLOAD ẢNH ĐẠI DIỆN
+// ============================================================
+export const uploadFeaturedImage = async (imageFile) => {
+  try {
+    const formData = new FormData();
+    formData.append("Image", imageFile);
+
+    const response = await api.post(
+      "/api/attachments/upload-featured",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        timeout: 300000,
+      }
+    );
+
+    // Handle API format
+    if (response.data && response.data.status === 1) {
+      return response.data.data;
+    }
+
+    throw new Error("Featured image upload failed");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ============================================================
+// CHUYÊN DỤNG: UPLOAD ALBUM ẢNH (NHIỀU ẢNH CÙNG LÚC)
+// ============================================================
+export const uploadAlbumImages = async (imageFiles) => {
+  try {
+    const formData = new FormData();
+
+    // Append multiple image files
+    imageFiles.forEach((file) => {
+      formData.append("Images", file);
+    });
+
+    const response = await api.post("/api/attachments/upload-album", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 600000, // 10 minutes for multiple files
+    });
+
+    // Handle API format
+    if (response.data && response.data.status === 1) {
+      return response.data.data; // BulkUploadResponseDto
+    }
+
+    throw new Error("Album upload failed");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ============================================================
+// CHUYÊN DỤNG: UPLOAD FILE ĐÍNH KÈM (NHIỀU FILE BẤT KỲ)
+// ============================================================
+export const uploadAttachmentFiles = async (files) => {
+  try {
+    const formData = new FormData();
+
+    // Append multiple files of any type
+    files.forEach((file) => {
+      formData.append("Files", file);
+    });
+
+    const response = await api.post(
+      "/api/attachments/upload-attachments",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        timeout: 600000, // 10 minutes for multiple files
+      }
+    );
+
+    // Handle API format
+    if (response.data && response.data.status === 1) {
+      return response.data.data; // BulkUploadResponseDto
+    }
+
+    throw new Error("Attachment upload failed");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ============================================================
+// BULK UPLOAD TỔNG QUÁT
+// ============================================================
+export const bulkUploadFiles = async (files, relationType = "album") => {
+  try {
+    const formData = new FormData();
+
+    files.forEach((file) => {
+      formData.append("Files", file);
+    });
+    formData.append("RelationType", relationType);
+
+    const response = await api.post("/api/attachments/bulk-upload", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      timeout: 600000,
+    });
+
+    // Handle API format
+    if (response.data && response.data.status === 1) {
+      return response.data.data; // BulkUploadResponseDto
+    }
+
+    throw new Error("Bulk upload failed");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Get file URL by attachment ID
+export const getAttachmentUrl = (attachmentId) => {
+  if (!attachmentId) return null;
+
+  // Backend runs on configured API URL, not frontend localhost:3000
+  const baseUrl = getApiBaseUrl();
+
+  // Use the original endpoint that was working
+  const url = `${baseUrl}/api/attachments/${attachmentId}`;
+
+  return url;
+};
+
+// Get attachments by entity
+export const getAttachmentsByEntity = async (objectType, objectId) => {
+  try {
+    const response = await api.get(
+      `/api/attachments/entity/${objectType}/${objectId}`
+    );
+
+    // Handle API format
+    if (response.data && response.data.status === 1) {
+      const dataObj = response.data.data;
+      return dataObj || [];
+    }
+
+    return [];
+  } catch (error) {
+    return [];
+  }
+};
+
+// Delete attachment
+export const deleteAttachment = async (attachmentId) => {
+  try {
+    const response = await api.delete(`/api/attachments/${attachmentId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ============================================================
+// NEWS CATEGORY API
+// ============================================================
+
 export const getNewsCategories = async () => {
-  const response = await api.get("/api/news-categories/find-all");
-  return response.data;
-};
+  try {
+    const response = await api.get("/api/news-category/find-all");
 
-export const getNewsCategoryById = async (id) => {
-  const response = await api.get(`/api/news-categories/find-by-id/${id}`);
-  return response.data;
+    // Handle API format
+    if (response.data && response.data.status === 1) {
+      const dataObj = response.data.data;
+      return dataObj?.items || [];
+    }
+
+    return [];
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const createNewsCategory = async (data) => {
-  const response = await api.post("/api/news-categories/create", data);
-  return response.data;
+  try {
+    const response = await api.post("/api/news-category/create", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const updateNewsCategory = async (data) => {
-  const response = await api.put("/api/news-categories/update", data);
-  return response.data;
+  try {
+    const response = await api.put("/api/news-category/update", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteNewsCategory = async (id) => {
-  const response = await api.delete(`/api/news-categories/delete/${id}`);
-  return response.data;
-}; 
+  try {
+    const response = await api.delete(`/api/news-category/delete/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// ============================================================
+// SPECIAL: UPLOAD CONTENT IMAGE FOR TINYMCE
+// ============================================================
+export const uploadContentImage = async (file, callback, failure) => {
+  try {
+    const result = await uploadFile(file, "content");
+    const imageUrl = `${getApiBaseUrl()}${result.previewUrl}`;
+
+    callback(imageUrl);
+  } catch (error) {
+    failure("Upload failed: " + error.message);
+  }
+};
