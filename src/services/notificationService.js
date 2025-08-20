@@ -1,11 +1,15 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
 
-// Get all notification with pagination - matches BE format exactly
-export async function fetchNotification(pageIndex = 1, pageSize = 10) {
+// Get all notification with pagination - FIXED parameters
+export async function fetchNotification(pageNumber = 1, pageSize = 10, keyword = "") {
   try {
     const response = await api.get("/api/notification/find-all", {
-      params: { pageIndex, pageSize },
+      params: {
+        pageNumber,  // Changed from pageIndex
+        pageSize,
+        keyword      // Added keyword support
+      },
     });
 
     // Handle BE response format: camelCase
@@ -13,9 +17,9 @@ export async function fetchNotification(pageIndex = 1, pageSize = 10) {
       const dataObj = response.data.data;
       const result = {
         items: dataObj.items || [],
-        totalCount: dataObj.totalItems || 0,
+        totalItems: dataObj.totalItems || 0,  // Match backend property
         totalPages: Math.ceil((dataObj.totalItems || 0) / pageSize),
-        currentPage: pageIndex,
+        currentPage: dataObj.page || pageNumber,  // Backend returns 'page'
         pageSize,
       };
       return result;
@@ -51,10 +55,14 @@ export async function fetchNotificationCategories() {
 // Get notification by ID - for editing (returns DetailNotificationDto)
 export const getNotificationById = async (id) => {
   try {
-    const response = await api.get(`/api/notification/find-by-id/${id}`);
+    const response = await api.get(`/api/notification/detail/${id}`);
 
     // Handle API format
-    if (response.data && response.data.status === 1 && response.data.data) {
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.data
+    ) {
       return response.data.data; // Return DetailNotificationDto directly
     }
 
@@ -64,71 +72,62 @@ export const getNotificationById = async (id) => {
   }
 };
 
-// Create notification - UPDATED to use new attachment system
+// Get notification by slug - for admin preview (returns DetailNotificationDto)  
+export const getNotificationBySlug = async (slug) => {
+  try {
+    const response = await api.get(`/api/notification/detail/slug/${slug}`);
+
+    // Handle API format
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.data
+    ) {
+      return response.data.data; // Return DetailNotificationDto directly
+    }
+
+    throw new Error("Invalid notification detail response");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Create notification - FIXED to use JSON instead of FormData
 export const createNotification = async (notificationData) => {
   try {
-    // Step 1: Prepare data to match CreateNotificationDto exactly
-    const formData = new FormData();
+    // JSON payload - NOT FormData
+    const payload = {
+      titleVi: notificationData.titleVi || "",
+      titleEn: notificationData.titleEn || "",
+      notificationCategoryId: notificationData.notificationCategoryId || 0,
+      contentVi: notificationData.contentVi || "",
+      contentEn: notificationData.contentEn || "",
+      descriptionVi: notificationData.descriptionVi || "",
+      descriptionEn: notificationData.descriptionEn || "",
+      slugVi: notificationData.slugVi || "",  // Fixed casing
+      slugEn: notificationData.slugEn || "",  // Fixed casing
+      isOutstanding: notificationData.isOutstanding || false,
 
-    // Required fields
-    formData.append("titleVi", notificationData.titleVi || "");
-    formData.append("titleEn", notificationData.titleEn || "");
-    formData.append(
-      "notificationCategoryId",
-      String(notificationData.notificationCategoryId || "")
-    );
-    formData.append("contentVi", notificationData.contentVi || "");
-    formData.append("contentEn", notificationData.contentEn || "");
-    formData.append("descriptionVi", notificationData.descriptionVi || "");
-    formData.append("descriptionEn", notificationData.descriptionEn || "");
-    formData.append("slugVi", notificationData.SlugVi || "");
-    formData.append("slugEn", notificationData.SlugEn || "");
-    formData.append(
-      "isOutstanding",
-      notificationData.isOutstanding ? "true" : "false"
-    );
+      // Status - fixed casing
+      status: typeof notificationData.status === "number"
+        ? notificationData.status
+        : notificationData.status === "active" ? 1
+        : notificationData.status === "inactive" ? 0
+        : 1,
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof notificationData.Status === "number"
-        ? notificationData.Status
-        : notificationData.Status === "active"
-        ? 1
-        : notificationData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      timePosted: notificationData.timePosted || new Date().toISOString(),
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = notificationData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
+      // Attachments
+      featuredImageId: notificationData.featuredImageId ?? null,
+      attachmentIds: notificationData.attachmentIds || []
+    };
 
-    // Step 2: Handle attachments using new system
-    if (notificationData.FeaturedImageId) {
-      formData.append(
-        "FeaturedImageId",
-        String(notificationData.FeaturedImageId)
-      );
-    }
-
-    const attachmentIds = notificationData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.post("/api/notification/create", formData, {
+    const response = await api.post("/api/notification/create", payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // Changed from multipart
       },
-      timeout: 300000, // 5 minutes
+      timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -136,73 +135,42 @@ export const createNotification = async (notificationData) => {
   }
 };
 
-// Update notification - UPDATED to use new attachment system
+// Update notification - FIXED to use JSON instead of FormData
 export const updateNotification = async (id, notificationData) => {
   try {
-    const formData = new FormData();
+    // JSON payload - ID only in URL, NOT in body
+    const payload = {
+      titleVi: notificationData.titleVi || "",
+      titleEn: notificationData.titleEn || "",
+      notificationCategoryId: notificationData.notificationCategoryId || 0,
+      contentVi: notificationData.contentVi || "",
+      contentEn: notificationData.contentEn || "",
+      descriptionVi: notificationData.descriptionVi || "",
+      descriptionEn: notificationData.descriptionEn || "",
+      slugVi: notificationData.slugVi || "",  // Fixed casing
+      slugEn: notificationData.slugEn || "",  // Fixed casing
+      isOutstanding: notificationData.isOutstanding || false,
 
-    // Required ID
-    formData.append("Id", String(id));
+      // Status - fixed casing
+      status: typeof notificationData.status === "number"
+        ? notificationData.status
+        : notificationData.status === "active" ? 1
+        : notificationData.status === "inactive" ? 0
+        : 1,
 
-    // All fields from UpdateNotificationDto
-    formData.append("titleVi", notificationData.titleVi || "");
-    formData.append("titleEn", notificationData.titleEn || "");
-    formData.append(
-      "notificationCategoryId",
-      String(notificationData.notificationCategoryId || "")
-    );
-    formData.append("contentVi", notificationData.contentVi || "");
-    formData.append("contentEn", notificationData.contentEn || "");
-    formData.append("descriptionVi", notificationData.descriptionVi || "");
-    formData.append("descriptionEn", notificationData.descriptionEn || "");
-    formData.append("slugVi", notificationData.SlugVi || "");
-    formData.append("slugEn", notificationData.SlugEn || "");
-    formData.append(
-      "isOutstanding",
-      notificationData.isOutstanding ? "true" : "false"
-    );
+      timePosted: notificationData.timePosted || new Date().toISOString(),
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof notificationData.Status === "number"
-        ? notificationData.Status
-        : notificationData.Status === "active"
-        ? 1
-        : notificationData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      // Attachments
+      featuredImageId: notificationData.featuredImageId ?? null,
+      attachmentIds: notificationData.attachmentIds || []
+    };
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = notificationData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
-
-    // Handle attachments
-    if (notificationData.FeaturedImageId) {
-      formData.append(
-        "FeaturedImageId",
-        String(notificationData.FeaturedImageId)
-      );
-    }
-
-    const attachmentIds = notificationData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.put("/api/notification/update", formData, {
+    const response = await api.put(`/api/notification/update/${id}`, payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // JSON not FormData
       },
       timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -373,18 +341,6 @@ export const bulkUploadFiles = async (files, relationType = "album") => {
   }
 };
 
-// Get file URL by attachment ID
-export const getAttachmentUrl = (attachmentId) => {
-  if (!attachmentId) return null;
-
-  // Backend runs on configured API URL, not frontend localhost:3000
-  const baseUrl = getApiBaseUrl();
-
-  // Use the original endpoint that was working
-  const url = `${baseUrl}/api/attachments/${attachmentId}`;
-
-  return url;
-};
 
 // Get attachments by entity
 export const getAttachmentsByEntity = async (objectType, objectId) => {
@@ -416,7 +372,7 @@ export const deleteAttachment = async (attachmentId) => {
 };
 
 // ============================================================
-// NEWS CATEGORY API
+// NOTIFICATION CATEGORY API
 // ============================================================
 
 export const getNotificationCategories = async () => {
@@ -477,3 +433,4 @@ export const uploadContentImage = async (file, callback, failure) => {
     failure("Upload failed: " + error.message);
   }
 };
+

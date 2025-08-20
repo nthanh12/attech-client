@@ -216,7 +216,150 @@ export const getBannerPositions = () => {
   ];
 };
 
+// ============================================================
+// NEW BANNER SETTING API - Based on /api/setting endpoint
+// ============================================================
+
+/**
+ * Get all banner settings (banner1, banner2, logo, etc.)
+ */
+export const getAllBannerSettings = async () => {
+  try {
+    console.log('🎌 Fetching all banner settings from API...');
+    const response = await api.get('/api/setting');
+    
+    if (response.data?.status === 1) {
+      console.log('✅ Banner settings fetched successfully from API');
+      return response.data.data;
+    } else {
+      console.warn('⚠️ API returned invalid setting data, using fallback');
+      return {
+        Banner1: { url: null, uploadedAt: null },
+        Banner2: { url: null, uploadedAt: null },
+        Logo: { url: null, uploadedAt: null }
+      };
+    }
+  } catch (error) {
+    console.warn('⚠️ Failed to fetch banner settings from API:', error.message);
+    return {
+      Banner1: { url: null, uploadedAt: null },
+      Banner2: { url: null, uploadedAt: null },
+      Logo: { url: null, uploadedAt: null }
+    };
+  }
+};
+
+/**
+ * Get specific banner setting by key (banner1, banner2, logo)
+ */
+export const getBannerSetting = async (key) => {
+  try {
+    console.log(`🎌 Fetching banner setting: ${key}`);
+    const response = await api.get(`/api/setting/${key}`);
+    
+    // Handle direct response format from spec
+    if (response.data && response.data.url) {
+      console.log(`✅ Banner setting ${key} fetched successfully`);
+      return {
+        settingKey: response.data.settingKey || key,
+        url: response.data.url,
+        id: response.data.id,
+        fileName: response.data.fileName,
+        fileSize: response.data.fileSize,
+        uploadDate: response.data.uploadDate
+      };
+    } else {
+      console.warn(`⚠️ API returned invalid data for ${key}, using fallback`);
+      return { url: null, uploadDate: null };
+    }
+  } catch (error) {
+    console.warn(`⚠️ Failed to fetch banner setting ${key}:`, error.message);
+    return { url: null, uploadDate: null };
+  }
+};
+
+/**
+ * Upload banner file for specific key
+ */
+export const uploadBannerSetting = async (key, file) => {
+  try {
+    console.log(`🎌 Uploading banner ${key}:`, file.name);
+    
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await api.post(`/api/setting/${key}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    
+    // Handle direct response format from spec
+    if (response.data && response.data.url) {
+      console.log(`✅ Banner ${key} uploaded successfully:`, response.data);
+      return {
+        settingKey: response.data.settingKey || key,
+        url: response.data.url,
+        id: response.data.id,
+        fileName: response.data.fileName,
+        fileSize: response.data.fileSize,
+        uploadDate: response.data.uploadDate
+      };
+    } else {
+      throw new Error(response.data?.message || 'Upload failed');
+    }
+  } catch (error) {
+    console.error(`❌ Failed to upload banner ${key}:`, error);
+    throw new Error(`Upload banner ${key} thất bại: ${error.response?.data?.message || error.message}`);
+  }
+};
+
+/**
+ * Delete banner setting
+ */
+export const deleteBannerSetting = async (key) => {
+  try {
+    console.log(`🎌 Deleting banner setting: ${key}`);
+    const response = await api.delete(`/api/setting/${key}`);
+    
+    if (response.data?.status === 1) {
+      console.log(`✅ Banner setting ${key} deleted successfully`);
+      return response.data.data;
+    } else {
+      throw new Error(response.data?.message || 'Delete failed');
+    }
+  } catch (error) {
+    console.error(`❌ Failed to delete banner setting ${key}:`, error);
+    throw new Error(`Xóa banner ${key} thất bại: ${error.response?.data?.message || error.message}`);
+  }
+};
+
+/**
+ * Get predefined banner keys and their display names
+ */
+export const getBannerKeys = () => {
+  return [
+    // Main banners
+    { key: 'banner1', label: 'Banner chính 1', description: 'Banner chính hiển thị trên trang chủ' },
+    { key: 'banner2', label: 'Banner chính 2', description: 'Banner phụ hiển thị trên trang chủ' },
+    { key: 'banner3', label: 'Banner chính 3', description: 'Banner bổ sung cho trang chủ' },
+    { key: 'banner4', label: 'Banner chính 4', description: 'Banner bổ sung cho trang chủ' },
+    { key: 'banner5', label: 'Banner chính 5', description: 'Banner bổ sung cho trang chủ' },
+    
+    // Logos
+    { key: 'logo', label: 'Logo website', description: 'Logo chính hiển thị trên header' },
+    { key: 'favicon', label: 'Favicon', description: 'Icon hiển thị trên tab browser' },
+    { key: 'footerlogo', label: 'Logo footer', description: 'Logo hiển thị ở cuối trang' },
+    
+    // Background images
+    { key: 'herobackground', label: 'Ảnh nền Hero', description: 'Ảnh nền cho section hero' },
+    { key: 'aboutbackground', label: 'Ảnh nền About', description: 'Ảnh nền cho trang giới thiệu' },
+    { key: 'contactbackground', label: 'Ảnh nền Contact', description: 'Ảnh nền cho trang liên hệ' }
+  ];
+};
+
 export default {
+  // Original banner management APIs
   fetchBanners,
   fetchBannersByPosition,
   fetchActiveBanners,
@@ -225,5 +368,12 @@ export default {
   deleteBanner,
   updateBannerStatus,
   updateBannerOrder,
-  getBannerPositions
+  getBannerPositions,
+  
+  // New banner setting APIs
+  getAllBannerSettings,
+  getBannerSetting,
+  uploadBannerSetting,
+  deleteBannerSetting,
+  getBannerKeys
 };

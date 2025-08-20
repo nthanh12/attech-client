@@ -67,10 +67,11 @@ const AccountManagement = () => {
 
     setLoading(true);
     try {
-      const result = await changePassword(
-        passwordForm.currentPassword,
-        passwordForm.newPassword
-      );
+      const result = await changePassword({
+        currentPassword: passwordForm.currentPassword,
+        newPassword: passwordForm.newPassword,
+        confirmPassword: passwordForm.confirmPassword
+      });
 
       if (result.success) {
         setMessage({
@@ -86,6 +87,12 @@ const AccountManagement = () => {
           confirmPassword: ''
         });
         setErrors({});
+
+        // Show success message and logout after delay
+        setTimeout(() => {
+          alert('Đổi mật khẩu thành công! Bạn sẽ được đăng xuất để đăng nhập lại với mật khẩu mới.');
+          logout();
+        }, 2000);
       } else {
         setMessage({
           show: true,

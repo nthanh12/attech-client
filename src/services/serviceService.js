@@ -1,11 +1,15 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
 
-// Get all service with pagination - matches BE format exactly
-export async function fetchService(pageIndex = 1, pageSize = 10) {
+// Get all service with pagination - FIXED parameters
+export async function fetchService(pageNumber = 1, pageSize = 10, keyword = "") {
   try {
     const response = await api.get("/api/service/find-all", {
-      params: { pageIndex, pageSize },
+      params: {
+        pageNumber,  // Changed from pageIndex
+        pageSize,
+        keyword      // Added keyword support
+      },
     });
 
     // Handle BE response format: camelCase
@@ -13,10 +17,10 @@ export async function fetchService(pageIndex = 1, pageSize = 10) {
       const dataObj = response.data.data;
       const result = {
         items: dataObj.items || [],
-        totalCount: dataObj.totalItems || 0,
+        totalItems: dataObj.totalItems || 0,  // Match backend property
         totalPages: Math.ceil((dataObj.totalItems || 0) / pageSize),
-        currentPage: pageIndex,
-        pageSize,
+        currentPage: dataObj.page || pageNumber,  // Backend returns 'page'
+        pageSize: dataObj.pageSize || pageSize,
       };
       return result;
     }
@@ -30,7 +34,7 @@ export async function fetchService(pageIndex = 1, pageSize = 10) {
 // Get service by ID - for editing (returns DetailServiceDto)
 export const getServiceById = async (id) => {
   try {
-    const response = await api.get(`/api/service/find-by-id/${id}`);
+    const response = await api.get(`/api/service/detail/${id}`);
 
     // Handle API format
     if (response.data && response.data.status === 1 && response.data.data) {
@@ -43,64 +47,57 @@ export const getServiceById = async (id) => {
   }
 };
 
-// Create service - UPDATED to use new attachment system
+// Get service by slug - for admin preview (returns DetailServiceDto)  
+export const getServiceBySlug = async (slug) => {
+  try {
+    const response = await api.get(`/api/service/detail/slug/${slug}`);
+
+    // Handle API format
+    if (response.data && response.data.status === 1 && response.data.data) {
+      return response.data.data; // Return DetailServiceDto directly
+    }
+
+    throw new Error("Invalid service detail response");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Create service - FIXED to use JSON instead of FormData
 export const createService = async (serviceData) => {
   try {
-    // Step 1: Prepare data to match CreateServiceDto exactly
-    const formData = new FormData();
+    // JSON payload - NOT FormData
+    const payload = {
+      titleVi: serviceData.titleVi || "",
+      titleEn: serviceData.titleEn || "",
+      contentVi: serviceData.contentVi || "",
+      contentEn: serviceData.contentEn || "",
+      descriptionVi: serviceData.descriptionVi || "",
+      descriptionEn: serviceData.descriptionEn || "",
+      slugVi: serviceData.slugVi || "",  // Fixed casing
+      slugEn: serviceData.slugEn || "",  // Fixed casing
+      isOutstanding: serviceData.isOutstanding || false,
 
-    // Required fields
-    formData.append("titleVi", serviceData.titleVi || "");
-    formData.append("titleEn", serviceData.titleEn || "");
-    formData.append("contentVi", serviceData.contentVi || "");
-    formData.append("contentEn", serviceData.contentEn || "");
-    formData.append("descriptionVi", serviceData.descriptionVi || "");
-    formData.append("descriptionEn", serviceData.descriptionEn || "");
-    formData.append("slugVi", serviceData.SlugVi || "");
-    formData.append("slugEn", serviceData.SlugEn || "");
-    formData.append(
-      "isOutstanding",
-      serviceData.isOutstanding ? "true" : "false"
-    );
+      // Status - fixed casing
+      status: typeof serviceData.status === "number"
+        ? serviceData.status
+        : serviceData.status === "active" ? 1
+        : serviceData.status === "inactive" ? 0
+        : 1,
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof serviceData.Status === "number"
-        ? serviceData.Status
-        : serviceData.Status === "active"
-        ? 1
-        : serviceData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      timePosted: serviceData.timePosted || new Date().toISOString(),
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = serviceData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
+      // Attachments
+      featuredImageId: serviceData.featuredImageId ?? null,
+      attachmentIds: serviceData.attachmentIds || []
+    };
 
-    // Step 2: Handle attachments using new system
-    if (serviceData.FeaturedImageId) {
-      formData.append("FeaturedImageId", String(serviceData.FeaturedImageId));
-    }
-
-    const attachmentIds = serviceData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.post("/api/service/create", formData, {
+    const response = await api.post("/api/service/create", payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // Changed from multipart
       },
-      timeout: 300000, // 5 minutes
+      timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -108,66 +105,41 @@ export const createService = async (serviceData) => {
   }
 };
 
-// Update service - UPDATED to use new attachment system
+// Update service - FIXED to use JSON instead of FormData
 export const updateService = async (id, serviceData) => {
   try {
-    const formData = new FormData();
+    // JSON payload - ID only in URL, NOT in body
+    const payload = {
+      titleVi: serviceData.titleVi || "",
+      titleEn: serviceData.titleEn || "",
+      contentVi: serviceData.contentVi || "",
+      contentEn: serviceData.contentEn || "",
+      descriptionVi: serviceData.descriptionVi || "",
+      descriptionEn: serviceData.descriptionEn || "",
+      slugVi: serviceData.slugVi || "",  // Fixed casing
+      slugEn: serviceData.slugEn || "",  // Fixed casing
+      isOutstanding: serviceData.isOutstanding || false,
 
-    // Required ID
-    formData.append("Id", String(id));
+      // Status - fixed casing
+      status: typeof serviceData.status === "number"
+        ? serviceData.status
+        : serviceData.status === "active" ? 1
+        : serviceData.status === "inactive" ? 0
+        : 1,
 
-    // All fields from UpdateServiceDto
-    formData.append("titleVi", serviceData.titleVi || "");
-    formData.append("titleEn", serviceData.titleEn || "");
-    formData.append("contentVi", serviceData.contentVi || "");
-    formData.append("contentEn", serviceData.contentEn || "");
-    formData.append("descriptionVi", serviceData.descriptionVi || "");
-    formData.append("descriptionEn", serviceData.descriptionEn || "");
-    formData.append("slugVi", serviceData.SlugVi || "");
-    formData.append("slugEn", serviceData.SlugEn || "");
-    formData.append(
-      "isOutstanding",
-      serviceData.isOutstanding ? "true" : "false"
-    );
+      timePosted: serviceData.timePosted || new Date().toISOString(),
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof serviceData.Status === "number"
-        ? serviceData.Status
-        : serviceData.Status === "active"
-        ? 1
-        : serviceData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      // Attachments
+      featuredImageId: serviceData.featuredImageId ?? null,
+      attachmentIds: serviceData.attachmentIds || []
+    };
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = serviceData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
-
-    // Handle attachments
-    if (serviceData.FeaturedImageId) {
-      formData.append("FeaturedImageId", String(serviceData.FeaturedImageId));
-    }
-
-    const attachmentIds = serviceData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.put("/api/service/update", formData, {
+    const response = await api.put(`/api/service/update/${id}`, payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // JSON not FormData
       },
       timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -338,18 +310,6 @@ export const bulkUploadFiles = async (files, relationType = "album") => {
   }
 };
 
-// Get file URL by attachment ID
-export const getAttachmentUrl = (attachmentId) => {
-  if (!attachmentId) return null;
-
-  // Backend runs on configured API URL, not frontend localhost:3000
-  const baseUrl = getApiBaseUrl();
-
-  // Use the original endpoint that was working
-  const url = `${baseUrl}/api/attachments/${attachmentId}`;
-
-  return url;
-};
 
 // Get attachments by entity
 export const getAttachmentsByEntity = async (objectType, objectId) => {

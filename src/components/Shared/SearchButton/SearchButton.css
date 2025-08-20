@@ -1,0 +1,23 @@
+/* Shared Search Button Component */
+.shared-search-button {
+  /* Base styles are handled via inline styles in component */
+  /* This file exists for any additional shared button styling */
+}
+
+/* Focus styles for accessibility */
+.shared-search-button:focus {
+  outline: 2px solid #4a90e2;
+  outline-offset: 2px;
+}
+
+/* Active/pressed state */
+.shared-search-button:active {
+  transform: scale(0.98);
+}
+
+/* Disabled state */
+.shared-search-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}

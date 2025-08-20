@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Editor } from "@tinymce/tinymce-react";
-import api from "../../api";
 import { generateSlug } from "../../utils/slugUtils";
 import { translateViToEn } from "../../services/translationService";
+import api from "../../api";
 import {
   handleFeaturedImageUpload,
   processEntityAttachments,
@@ -11,6 +11,8 @@ import {
 } from "../../services/attachmentService";
 import { tinymceConfig } from "../../config/tinymceConfig";
 import { uploadFiles, FileType, EntityType } from "../../services/fileService";
+import { createService, updateService } from "../../services/serviceService";
+import { getApiUrl } from "../../config/apiConfig";
 import ToastMessage from "./ToastMessage";
 import "./ServiceCreationForm.css";
 
@@ -119,12 +121,64 @@ const ServiceCreationForm = ({
 
   const loadExistingAttachments = async () => {
     try {
-      // Load existing gallery images and attachments if in edit mode
-      if (editingService.galleryImages) {
-        setGalleryImages(editingService.galleryImages);
-      }
-      if (editingService.attachments) {
-        setAttachments(editingService.attachments);
+      if (editingService) {
+        // Load featured image from imageUrl (API response uses lowercase)
+        const imageUrl = editingService.imageUrl || editingService.ImageUrl;
+        if (imageUrl) {
+          const fullImageUrl = imageUrl.startsWith("http")
+            ? imageUrl
+            : getApiUrl(imageUrl);
+          setFeaturedImagePreview(fullImageUrl);
+        }
+
+        // Set featured image ID from BE response
+        if (editingService.featuredImageId !== null && editingService.featuredImageId !== undefined) {
+          setFeaturedImageId(editingService.featuredImageId);
+        }
+
+        // Load attachments from DetailServiceDto.attachments (lowercase)
+        if (editingService.attachments) {
+          // Gallery images từ attachments.images
+          if (
+            editingService.attachments.images &&
+            editingService.attachments.images.length > 0
+          ) {
+            // Transform API data to match component's expected format
+            const transformedImages = editingService.attachments.images.map(
+              (img, index) => ({
+                id: img.id,
+                name: img.originalFileName,
+                size: img.fileSize,
+                type: img.contentType,
+                uploading: false,
+                preview: getApiUrl(img.url),
+                attachmentId: img.id,
+                url: img.url,
+              })
+            );
+            setGalleryImages(transformedImages);
+          }
+
+          // File attachments từ attachments.documents
+          if (
+            editingService.attachments.documents &&
+            editingService.attachments.documents.length > 0
+          ) {
+            // Transform API data to match component's expected format
+            const transformedDocs = editingService.attachments.documents.map(
+              (doc, index) => ({
+                id: doc.id,
+                name: doc.originalFileName,
+                size: doc.fileSize,
+                type: doc.contentType,
+                uploading: false,
+                attachmentId: doc.id,
+                url: doc.url,
+              })
+            );
+            setAttachments(transformedDocs);
+          }
+        }
       }
     } catch (error) {
       console.error("Failed to load existing attachments:", error);
@@ -457,15 +511,15 @@ const ServiceCreationForm = ({
         attachments.map((att) => att.attachmentId || att.id)
       );
 
-      // 1. Create or Update service
+      // 1. Create or Update service using service methods
       const response = isEditMode
-        ? await api.put(`/api/service/${editingService.id}`, serviceData)
-        : await api.post("/api/service/create", serviceData);
+        ? await updateService(editingService.id, serviceData)
+        : await createService(serviceData);
 
-      console.log("🔍 BE Response:", response.data);
+      console.log("🔍 BE Response:", response);
 
-      if (response.data?.status === 1 && response.data?.data?.id) {
-        const serviceId = response.data.data.id;
+      if (response?.status === 1 && response?.data?.id) {
+        const serviceId = response.data.id;
 
         // 2. Process attachments - chỉ xử lý content attachments,
         // không cần associate attachmentIds vì BE đã handle rồi
@@ -486,11 +540,11 @@ const ServiceCreationForm = ({
         });
 
         setTimeout(() => {
-          if (onSuccess) onSuccess(response.data.data);
+          if (onSuccess) onSuccess(response.data);
         }, 1000);
       } else {
         // Handle BE error response với proper message
-        const errorMessage = response.data?.message || "Lưu thất bại";
+        const errorMessage = response?.message || "Lưu thất bại";
         throw new Error(errorMessage);
       }
     } catch (error) {

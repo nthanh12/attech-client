@@ -1,41 +1,40 @@
-/* ServiceItem.css */
+/* ServiceItem.css - Refined & Elegant */
 
 .service-item {
-  position: relative;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s ease;
+  background: #ffffff;
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .service-item:hover {
-  border-color: #002a5c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
 
 .service-img {
   position: relative;
   width: 100%;
-  padding-top: 60%;
+  aspect-ratio: 4/3;
   overflow: hidden;
 }
 
 .service-img img {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  object-position: center;
+  transition: transform 0.2s ease;
 }
 
 .service-item:hover .service-img img {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .service-overlay {
@@ -45,9 +44,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1rem;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
 }
 
 .service-item:hover .service-overlay {
@@ -55,130 +54,110 @@
 }
 
 .service-overlay p {
-  color: #fff;
-  font-size: 1rem;
-  line-height: 1.6;
+  color: #ffffff;
+  font-size: 0.85rem;
+  line-height: 1.4;
   text-align: center;
   margin: 0;
+  font-weight: 400;
 }
 
 .card-body {
-  padding: 1.25rem;
+  padding: 1rem;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
 
 .service-title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #1a365d;
-  margin: 0 0 0.5rem;
-  line-height: 1.4;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.service-item .card-footer {
-  padding: 1rem;
-  border-top: 1px solid #e5e7eb;
-  text-align: center;
-}
-
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #002a5c;
+.card-footer {
+  padding: 0 1rem 1rem 1rem;
+  border: none;
   background: transparent;
-  border: 1px solid #002a5c;
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.btn-primary:hover {
-  color: #fff;
-  background: #002a5c;
-}
-
-.btn-primary i {
-  transition: transform 0.3s ease;
-}
-
-.btn-primary:hover i {
-  transform: translateX(4px);
+  margin-top: auto;
 }
 
 .service-detail-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.3rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 600;
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
   color: #002a5c;
-  background: #fff;
-  border: 2px solid #002a5c;
-  border-radius: 2.5rem;
-  box-shadow: none;
-  transition: background 0.22s, color 0.22s, border-color 0.22s;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
   text-decoration: none;
-  cursor: pointer;
-  letter-spacing: 0.01em;
-}
-
-.service-detail-btn i {
-  color: #002a5c;
-  transition: color 0.22s, transform 0.22s;
+  transition: all 0.2s ease;
 }
 
 .service-detail-btn:hover {
-  background: #002a5c;
-  color: #fff;
+  background: #f8fafc;
   border-color: #002a5c;
+  color: #002a5c;
 }
 
-.service-detail-btn:hover i {
-  color: #fff;
-  transform: translateX(4px);
-}
-
+/* Responsive */
 @media (max-width: 768px) {
+  .service-item {
+    border-radius: 10px;
+  }
+
   .card-body {
-    padding: 1.25rem;
+    padding: 0.875rem;
   }
   
   .card-footer {
-    padding: 1.25rem;
+    padding: 0 0.875rem 0.875rem 0.875rem;
   }
 
   .service-title {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
   }
 
-  .btn-primary {
-    padding: 0.75rem 1.25rem;
-    font-size: 0.9rem;
+  .service-detail-btn {
+    padding: 0.55rem 0.875rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+  
+  .service-overlay p {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 480px) {
+  .service-item {
+    border-radius: 8px;
+  }
+
   .card-body {
-    padding: 1rem;
+    padding: 0.75rem;
   }
   
   .card-footer {
-    padding: 1rem;
+    padding: 0 0.75rem 0.75rem 0.75rem;
   }
 
   .service-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
-  .btn-primary {
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
+  .service-detail-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
   }
 }

@@ -1,11 +1,15 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
 
-// Get all news with pagination - matches BE format exactly
-export async function fetchNews(pageIndex = 1, pageSize = 10) {
+// Get all news with pagination - FIXED parameters
+export async function fetchNews(pageNumber = 1, pageSize = 10, keyword = "") {
   try {
     const response = await api.get("/api/news/find-all", {
-      params: { pageIndex, pageSize },
+      params: {
+        pageNumber,  // Changed from pageIndex
+        pageSize,
+        keyword      // Added keyword support
+      },
     });
 
     // Handle BE response format: camelCase
@@ -17,10 +21,10 @@ export async function fetchNews(pageIndex = 1, pageSize = 10) {
       const dataObj = response.data.data;
       const result = {
         items: dataObj.items || [],
-        totalCount: dataObj.totalItems || 0,
+        totalItems: dataObj.totalItems || 0,  // Match backend property
         totalPages: Math.ceil((dataObj.totalItems || 0) / pageSize),
-        currentPage: pageIndex,
-        pageSize,
+        currentPage: dataObj.page || pageNumber,  // Backend returns 'page'
+        pageSize: dataObj.pageSize || pageSize,
       };
       return result;
     }
@@ -55,7 +59,7 @@ export async function fetchNewsCategories() {
 // Get news by ID - for editing (returns DetailNewsDto)
 export const getNewsById = async (id) => {
   try {
-    const response = await api.get(`/api/news/find-by-id/${id}`);
+    const response = await api.get(`/api/news/detail/${id}`);
 
     // Handle API format
     if (
@@ -72,62 +76,62 @@ export const getNewsById = async (id) => {
   }
 };
 
-// Create news - UPDATED to use new attachment system
+// Get news by slug - for admin preview (returns DetailNewsDto)  
+export const getNewsBySlug = async (slug) => {
+  try {
+    const response = await api.get(`/api/news/detail/slug/${slug}`);
+
+    // Handle API format
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.data
+    ) {
+      return response.data.data; // Return DetailNewsDto directly
+    }
+
+    throw new Error("Invalid news detail response");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Create news - FIXED to use JSON instead of FormData
 export const createNews = async (newsData) => {
   try {
-    // Step 1: Prepare data to match CreateNewsDto exactly
-    const formData = new FormData();
+    // JSON payload - NOT FormData
+    const payload = {
+      titleVi: newsData.titleVi || "",
+      titleEn: newsData.titleEn || "",
+      newsCategoryId: newsData.newsCategoryId || 0,
+      contentVi: newsData.contentVi || "",
+      contentEn: newsData.contentEn || "",
+      descriptionVi: newsData.descriptionVi || "",
+      descriptionEn: newsData.descriptionEn || "",
+      slugVi: newsData.slugVi || "",  // Fixed casing
+      slugEn: newsData.slugEn || "",  // Fixed casing
+      isOutstanding: newsData.isOutstanding || false,
 
-    // Required fields
-    formData.append("titleVi", newsData.titleVi || "");
-    formData.append("titleEn", newsData.titleEn || "");
-    formData.append("newsCategoryId", String(newsData.newsCategoryId || ""));
-    formData.append("contentVi", newsData.contentVi || "");
-    formData.append("contentEn", newsData.contentEn || "");
-    formData.append("descriptionVi", newsData.descriptionVi || "");
-    formData.append("descriptionEn", newsData.descriptionEn || "");
-    formData.append("slugVi", newsData.SlugVi || "");
-    formData.append("slugEn", newsData.SlugEn || "");
-    formData.append("isOutstanding", newsData.isOutstanding ? "true" : "false");
+      // Status - fixed casing
+      status: typeof newsData.status === "number"
+        ? newsData.status
+        : newsData.status === "active" ? 1
+        : newsData.status === "inactive" ? 0
+        : 1,
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof newsData.Status === "number"
-        ? newsData.Status
-        : newsData.Status === "active"
-        ? 1
-        : newsData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      timePosted: newsData.timePosted || new Date().toISOString(),
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = newsData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
+      // Attachments
+      featuredImageId: newsData.featuredImageId ?? null,
+      attachmentIds: newsData.attachmentIds || []
+    };
 
-    // Step 2: Handle attachments using new system
-    if (newsData.FeaturedImageId) {
-      formData.append("FeaturedImageId", String(newsData.FeaturedImageId));
-    }
-
-    const attachmentIds = newsData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.post("/api/news/create", formData, {
+    const response = await api.post("/api/news/create", payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // Changed from multipart
       },
-      timeout: 300000, // 5 minutes
+      timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -135,64 +139,42 @@ export const createNews = async (newsData) => {
   }
 };
 
-// Update news - UPDATED to use new attachment system
+// Update news - FIXED to use JSON instead of FormData
 export const updateNews = async (id, newsData) => {
   try {
-    const formData = new FormData();
+    // JSON payload - ID only in URL, NOT in body
+    const payload = {
+      titleVi: newsData.titleVi || "",
+      titleEn: newsData.titleEn || "",
+      newsCategoryId: newsData.newsCategoryId || 0,
+      contentVi: newsData.contentVi || "",
+      contentEn: newsData.contentEn || "",
+      descriptionVi: newsData.descriptionVi || "",
+      descriptionEn: newsData.descriptionEn || "",
+      slugVi: newsData.slugVi || "",  // Fixed casing
+      slugEn: newsData.slugEn || "",  // Fixed casing
+      isOutstanding: newsData.isOutstanding || false,
 
-    // Required ID
-    formData.append("Id", String(id));
+      // Status - fixed casing
+      status: typeof newsData.status === "number"
+        ? newsData.status
+        : newsData.status === "active" ? 1
+        : newsData.status === "inactive" ? 0
+        : 1,
 
-    // All fields from UpdateNewsDto
-    formData.append("titleVi", newsData.titleVi || "");
-    formData.append("titleEn", newsData.titleEn || "");
-    formData.append("newsCategoryId", String(newsData.newsCategoryId || ""));
-    formData.append("contentVi", newsData.contentVi || "");
-    formData.append("contentEn", newsData.contentEn || "");
-    formData.append("descriptionVi", newsData.descriptionVi || "");
-    formData.append("descriptionEn", newsData.descriptionEn || "");
-    formData.append("slugVi", newsData.SlugVi || "");
-    formData.append("slugEn", newsData.SlugEn || "");
-    formData.append("isOutstanding", newsData.isOutstanding ? "true" : "false");
+      timePosted: newsData.timePosted || new Date().toISOString(),
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof newsData.Status === "number"
-        ? newsData.Status
-        : newsData.Status === "active"
-        ? 1
-        : newsData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      // Attachments
+      featuredImageId: newsData.featuredImageId ?? null,
+      attachmentIds: newsData.attachmentIds || []
+    };
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = newsData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
-
-    // Handle attachments
-    if (newsData.FeaturedImageId) {
-      formData.append("FeaturedImageId", String(newsData.FeaturedImageId));
-    }
-
-    const attachmentIds = newsData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.put("/api/news/update", formData, {
+    const response = await api.put(`/api/news/update/${id}`, payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // JSON not FormData
       },
       timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -363,18 +345,6 @@ export const bulkUploadFiles = async (files, relationType = "album") => {
   }
 };
 
-// Get file URL by attachment ID
-export const getAttachmentUrl = (attachmentId) => {
-  if (!attachmentId) return null;
-
-  // Backend runs on configured API URL, not frontend localhost:3000
-  const baseUrl = getApiBaseUrl();
-
-  // Use the original endpoint that was working
-  const url = `${baseUrl}/api/attachments/${attachmentId}`;
-
-  return url;
-};
 
 // Get attachments by entity
 export const getAttachmentsByEntity = async (objectType, objectId) => {
@@ -465,3 +435,4 @@ export const uploadContentImage = async (file, callback, failure) => {
     failure("Upload failed: " + error.message);
   }
 };
+

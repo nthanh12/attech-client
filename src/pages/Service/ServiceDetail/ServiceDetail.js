@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useI18n } from "../../../hooks/useI18n";
 import { mockServices } from "../../../utils/mockServices";
 import LocalizedLink from "../../../components/Shared/LocalizedLink";
+import ErrorPage from "../../../components/Shared/ErrorPage";
 import "./ServiceDetail.css";
 
 const ServiceDetail = () => {
@@ -17,12 +18,20 @@ const ServiceDetail = () => {
 
   if (!service) {
     return (
-      <div className="service-not-found">
-        <h2>{t("frontend.services.noServices")}</h2>
-        <LocalizedLink routeKey="SERVICES" className="back-link">
-          {t("common.back")}
-        </LocalizedLink>
-      </div>
+      <ErrorPage
+        title="Dịch vụ không tồn tại"
+        message="Xin lỗi, dịch vụ bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+        suggestions={[
+          "Kiểm tra lại đường link",
+          "Tìm kiếm dịch vụ khác",
+          "Quay lại trang danh sách dịch vụ",
+        ]}
+        type="service"
+        backRoute="HOME"
+        backText="Về trang chủ"
+        listRoute="SERVICES"
+        listText="Xem tất cả dịch vụ"
+      />
     );
   }
 
@@ -32,14 +41,6 @@ const ServiceDetail = () => {
     currentLanguage === "vi" ? service.descriptionVi : service.descriptionEn;
   const content =
     currentLanguage === "vi" ? service.contentVi : service.contentEn;
-  const category =
-    currentLanguage === "vi"
-      ? service.serviceCategorytitleVi
-      : service.serviceCategorytitleEn;
-  const categorySlug =
-    currentLanguage === "vi"
-      ? service.serviceCategorySlugVi
-      : service.serviceCategorySlugEn;
   const postedDate = new Date(service.timePosted).toLocaleDateString(
     currentLanguage === "vi" ? "vi-VN" : "en-US"
   );
@@ -60,15 +61,6 @@ const ServiceDetail = () => {
         {/* Ảnh đại diện */}
         <div className="service-detail-imgbox">
           <img src={service.image} alt={title} className="service-detail-img" />
-        </div>
-        {/* Thông tin nhanh */}
-        <div className="service-detail-meta">
-          <span className="service-detail-category">
-            <i className="fas fa-layer-group"></i> {category}
-          </span>
-          <span className="service-detail-date">
-            <i className="far fa-calendar-alt"></i> {postedDate}
-          </span>
         </div>
         {/* Tiêu đề & mô tả */}
         <h1 className="service-detail-title">{title}</h1>

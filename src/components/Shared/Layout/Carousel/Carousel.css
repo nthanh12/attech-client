@@ -1,7 +1,7 @@
 .carousel .carousel-inner .carousel-item {
     position: relative;
     overflow: hidden;
-    height: 50vh;
+    height: 65vh;
 }
 
 .carousel .carousel-inner .carousel-item img {
@@ -151,7 +151,7 @@
 }
 
 .carousel-img-3 {
-    object-position: 50% 65%; /* Ảnh 3: căn trên */
+    object-position: 50% 0%; /* Ảnh 3: căn trên */
 }
 @media (max-width: 768px) {
     .carousel-img-1 {

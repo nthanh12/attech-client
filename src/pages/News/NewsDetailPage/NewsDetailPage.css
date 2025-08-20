@@ -13,8 +13,8 @@
   grid-template-columns: 320px 1fr;
   gap: 32px;
   max-width: 1200px;
-  margin: 40px auto 0 auto;
-  padding: 24px;
+  margin: 0 auto;
+  padding: 0 24px;
   background: #f8fafc;
   border-radius: 18px;
 }

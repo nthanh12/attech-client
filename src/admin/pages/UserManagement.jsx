@@ -191,8 +191,8 @@ const UserManagement = () => {
           const usersFromAPI = usersData.data?.items || [];
           const mappedUsers = usersFromAPI.map(mapUserFromAPI);
 
-          console.log('📊 API Response users:', usersFromAPI);
-          console.log('📊 Mapped users for table:', mappedUsers);
+          console.log("📊 API Response users:", usersFromAPI);
+          console.log("📊 Mapped users for table:", mappedUsers);
 
           setUsers(mappedUsers);
         } else {
@@ -766,13 +766,17 @@ const UserManagement = () => {
       render: (row) => {
         // Convert userType number back to userLevel string for display
         const userLevel =
-          row.userType === 1 ? "system" : row.userType === 2 ? "manager" : "staff";
+          row.userType === 1
+            ? "system"
+            : row.userType === 2
+            ? "manager"
+            : "staff";
         const shortText =
           userLevel === "system"
-            ? "SYS"
+            ? "SYSTEM"
             : userLevel === "manager"
-            ? "MGR"
-            : "STF";
+            ? "MANAGER"
+            : "STAFF";
         return (
           <span
             className={`badge bg-${getUserLevelColor(userLevel)}`}
@@ -793,7 +797,7 @@ const UserManagement = () => {
         return roleNames ? (
           <span
             className="role-badge"
-            style={{ fontSize: "0.875rem", wordBreak: "break-word" }}
+            style={{ fontSize: "0.65rem", wordBreak: "break-word" }}
           >
             {roleNames.length > 15
               ? roleNames.substring(0, 15) + "..."
@@ -814,7 +818,7 @@ const UserManagement = () => {
           className={`status-badge ${row.status === 1 ? "active" : "inactive"}`}
           style={{ fontSize: "0.8rem" }}
         >
-          {row.status === 1 ? "Active" : "Inactive"}
+          {row.status === 1 ? "Hoạt động" : "Không hoạt động"}
         </span>
       ),
     },
@@ -825,9 +829,9 @@ const UserManagement = () => {
       width: "130px",
       render: (row) => {
         const lastLogin = row.LastLogin || row.lastLogin;
-        console.log('LastLogin debug:', { lastLogin, row });
+        console.log("LastLogin debug:", { lastLogin, row });
         try {
-          return lastLogin 
+          return lastLogin
             ? new Date(lastLogin).toLocaleDateString("vi-VN")
             : "Chưa đăng nhập";
         } catch (error) {
@@ -968,8 +972,8 @@ const UserManagement = () => {
             className="form-control"
           >
             <option value="">Tất cả trạng thái</option>
-            <option value={1}>Active</option>
-            <option value={0}>Inactive</option>
+            <option value={1}>Hoạt động</option>
+            <option value={0}>Không hoạt động</option>
           </select>
         </div>
       </div>
@@ -1272,8 +1276,8 @@ const UserManagement = () => {
             }
             className={`form-control ${errors.status ? "is-invalid" : ""}`}
           >
-            <option value={1}>Active</option>
-            <option value={0}>Inactive</option>
+            <option value={1}>Hoạt động</option>
+            <option value={0}>Không hoạt động</option>
           </select>
           {errors.status && (
             <div className="invalid-feedback">{errors.status}</div>
@@ -1329,7 +1333,9 @@ const UserManagement = () => {
                         className="badge bg-success me-1 mb-1"
                       >
                         {role.name}{" "}
-                        {role.status === 1 ? "(Active)" : "(Inactive)"}
+                        {role.status === 1
+                          ? "(Hoạt động)"
+                          : "(Không hoạt động)"}
                       </span>
                     ))}
                   </div>
@@ -1376,7 +1382,11 @@ const UserManagement = () => {
           ) : (
             // Khi Create: Checkbox list để chọn vai trò
             <div>
-              <div className={`user-roles-container ${errors.roleIds ? "is-invalid" : ""}`}>
+              <div
+                className={`user-roles-container ${
+                  errors.roleIds ? "is-invalid" : ""
+                }`}
+              >
                 {Array.isArray(roles) && roles.length > 0 ? (
                   roles.map((role) => (
                     <div key={role.id} className="user-role-item">
@@ -1389,11 +1399,14 @@ const UserManagement = () => {
                           const currentRoleIds = selectedUser.roleIds || [];
                           const newRoleIds = e.target.checked
                             ? [...currentRoleIds, role.id]
-                            : currentRoleIds.filter(id => id !== role.id);
+                            : currentRoleIds.filter((id) => id !== role.id);
                           handleInputChange("roleIds", newRoleIds);
                         }}
                       />
-                      <label htmlFor={`role-${role.id}`} className="user-role-label">
+                      <label
+                        htmlFor={`role-${role.id}`}
+                        className="user-role-label"
+                      >
                         <strong>{role.name}</strong>
                         {role.description && (
                           <small className="user-role-description">
@@ -1410,7 +1423,9 @@ const UserManagement = () => {
                 )}
               </div>
               {errors.roleIds && (
-                <div className="invalid-feedback" style={{ display: "block" }}>{errors.roleIds}</div>
+                <div className="invalid-feedback" style={{ display: "block" }}>
+                  {errors.roleIds}
+                </div>
               )}
               <small className="form-text text-muted">
                 Chọn một hoặc nhiều vai trò cho người dùng
@@ -1510,12 +1525,16 @@ const UserManagement = () => {
       <PageWrapper>
         <AccessDenied
           message="Bạn không có quyền quản lý người dùng"
-          user={currentUser ? {
-            userLevel: currentUser.userLevel,
-            userType: currentUser.userType,
-            name: currentUser.name,
-            username: currentUser.username
-          } : null}
+          user={
+            currentUser
+              ? {
+                  userLevel: currentUser.userLevel,
+                  userType: currentUser.userType,
+                  name: currentUser.name,
+                  username: currentUser.username,
+                }
+              : null
+          }
         />
       </PageWrapper>
     );
@@ -1594,10 +1613,10 @@ const UserManagement = () => {
             </small>
           </div>
 
-          {console.log('🔍 Table data check:', {
+          {console.log("🔍 Table data check:", {
             paginatedUsers: paginatedUsers.slice(0, 2),
             firstUserLastLogin: paginatedUsers[0]?.lastLogin,
-            totalUsers: paginatedUsers.length
+            totalUsers: paginatedUsers.length,
           })}
           <DataTable
             data={paginatedUsers}

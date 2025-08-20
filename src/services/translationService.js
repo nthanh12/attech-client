@@ -22,25 +22,14 @@ export const translateText = async (text, sourceLanguage = 'vi', targetLanguage 
   try {
     console.log(`🔄 Translating: "${text}" from ${sourceLanguage} to ${targetLanguage}`);
     
-    // Gọi API translate từ backend
-    const response = await fetch(getApiUrl('/api/Translate'), {
-      method: 'POST',
-      headers: {
-        'accept': '*/*',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: text.trim(),
-        source: sourceLanguage,
-        target: targetLanguage
-      })
+    // Gọi API translate từ backend sử dụng api instance (có authentication)
+    const response = await api.post('/api/Translate', {
+      text: text.trim(),
+      source: sourceLanguage,
+      target: targetLanguage
     });
 
-    if (!response.ok) {
-      throw new Error(`Translation API error: ${response.status}`);
-    }
-
-    const data = await response.json();
+    const data = response.data;
 
     const translatedText = data?.translatedText || data?.data?.translatedText || text;
     console.log(`✅ Translation result: "${translatedText}"`);

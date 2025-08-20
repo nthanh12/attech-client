@@ -1,0 +1,219 @@
+/* Shared Error Page Component */
+.shared-error-page {
+  background: #f8f9fa;
+  padding: 40px 0;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+}
+
+.shared-error-page .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.shared-error-page .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 48px 32px;
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.shared-error-page .error-icon {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  animation: pulse 2s infinite;
+}
+
+.shared-error-page .error-icon i {
+  font-size: 32px;
+  color: white;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.shared-error-page .error-content {
+  width: 100%;
+}
+
+.shared-error-page .error-title {
+  font-size: 28px;
+  color: #1a365d;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+.shared-error-page .error-message {
+  font-size: 18px;
+  color: #718096;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.shared-error-page .error-suggestions {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.shared-error-page .error-suggestions h3 {
+  font-size: 18px;
+  color: #1a365d;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.shared-error-page .error-suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.shared-error-page .error-suggestions li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  color: #4a5568;
+  font-size: 16px;
+}
+
+.shared-error-page .error-suggestions li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #4a90e2;
+  font-weight: bold;
+}
+
+.shared-error-page .error-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.shared-error-page .btn-primary,
+.shared-error-page .btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.shared-error-page .btn-primary {
+  background: linear-gradient(135deg, #4a90e2, #357abd);
+  color: white;
+}
+
+.shared-error-page .btn-primary:hover {
+  background: linear-gradient(135deg, #357abd, #2c5aa0);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  color: white;
+}
+
+.shared-error-page .btn-secondary {
+  background: transparent;
+  color: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.shared-error-page .btn-secondary:hover {
+  background: #4a90e2;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+/* Mobile responsive for error page */
+@media (max-width: 768px) {
+  .shared-error-page {
+    padding: 20px 0;
+  }
+  
+  .shared-error-page .error-container {
+    padding: 32px 20px;
+  }
+  
+  .shared-error-page .error-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 24px;
+  }
+  
+  .shared-error-page .error-icon i {
+    font-size: 24px;
+  }
+  
+  .shared-error-page .error-title {
+    font-size: 24px;
+  }
+  
+  .shared-error-page .error-message {
+    font-size: 16px;
+  }
+  
+  .shared-error-page .error-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .shared-error-page .btn-primary,
+  .shared-error-page .btn-secondary {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .shared-error-page .error-container {
+    padding: 24px 16px;
+  }
+  
+  .shared-error-page .error-title {
+    font-size: 20px;
+  }
+  
+  .shared-error-page .error-message {
+    font-size: 14px;
+  }
+  
+  .shared-error-page .error-suggestions {
+    padding: 16px;
+  }
+  
+  .shared-error-page .error-suggestions h3 {
+    font-size: 16px;
+  }
+  
+  .shared-error-page .error-suggestions li {
+    font-size: 14px;
+  }
+}

@@ -5,7 +5,6 @@ import {
   fetchNewsCategories,
   deleteNews,
   getNewsById,
-  getAttachmentUrl,
 } from "../../services/newsService";
 import { getApiUrl } from "../../config/apiConfig";
 import NewsCreationForm from "../components/NewsCreationForm";

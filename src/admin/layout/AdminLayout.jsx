@@ -52,8 +52,15 @@ const AdminLayout = () => {
   // Handle authentication state
   useEffect(() => {
     const authStatus = isAuthenticated();
+    console.log('🔍 AdminLayout auth check:', { 
+      pathname: location.pathname, 
+      loading, 
+      authStatus, 
+      user: user?.username 
+    });
 
     if (!loading && !authStatus) {
+      console.log('❌ Not authenticated, redirecting to login');
       navigate("/dang-nhap", { replace: true });
     }
   }, [loading, isAuthenticated, navigate, location.pathname, user]);
@@ -484,7 +491,7 @@ const AdminLayout = () => {
           boxShadow: sidebarOpen ? "0 0 20px rgba(0, 0, 0, 0.3)" : "none",
         }}
       >
-        <div 
+        <div
           className="attech-admin-sidebar-header"
           style={{
             display: "flex",
@@ -495,8 +502,13 @@ const AdminLayout = () => {
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <i className="bi bi-gear-fill" style={{ color: "#3b82f6", fontSize: "1.25rem" }}></i>
-            <span style={{ fontWeight: "600", color: "#fff" }}>Admin Panel</span>
+            <i
+              className="bi bi-gear-fill"
+              style={{ color: "#3b82f6", fontSize: "1.25rem" }}
+            ></i>
+            <span style={{ fontWeight: "600", color: "#fff" }}>
+              Admin Panel
+            </span>
           </div>
           <button
             className="attech-admin-sidebar-toggle"
@@ -602,14 +614,14 @@ const AdminLayout = () => {
                 e.target.style.color = "#6b7280";
               }}
             >
-              <svg 
-                width="18" 
-                height="18" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
               >
                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -634,6 +646,39 @@ const AdminLayout = () => {
             className="attech-admin-header-right"
             style={{ display: "flex", alignItems: "center", gap: "1rem" }}
           >
+            {/* Home Button */}
+            <Link
+              to="/"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                padding: "0.5rem 0.75rem",
+                background: "#315851ff",
+                color: "#ffffff",
+                border: "none",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontSize: "0.875rem",
+                fontWeight: "500",
+                transition: "all 0.2s ease",
+                cursor: "pointer",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.transform = "translateY(-1px)";
+                e.target.style.boxShadow = "0 4px 8px rgba(59, 130, 246, 0.3)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.transform = "translateY(0)";
+                e.target.style.boxShadow = "none";
+              }}
+            >
+              <i className="bi bi-house-door" style={{ fontSize: "1rem" }}></i>
+              <span>Trang chủ</span>
+            </Link>
+
             {/* User Dropdown */}
             <div
               className="attech-admin-user-dropdown"
@@ -660,7 +705,9 @@ const AdminLayout = () => {
                   className="bi bi-person-circle"
                   style={{ fontSize: "1.25rem" }}
                 ></i>
-                <span>{(user?.name || user?.username || 'Admin').toString()}</span>
+                <span>
+                  {(user?.name || user?.username || "Admin").toString()}
+                </span>
                 <i
                   className={`bi bi-chevron-${dropdownOpen ? "up" : "down"}`}
                   style={{ fontSize: "0.75rem" }}
@@ -690,10 +737,10 @@ const AdminLayout = () => {
                     }}
                   >
                     <div style={{ fontWeight: "500", color: "#1f2937" }}>
-                      {(user?.name || user?.username || 'Admin').toString()}
+                      {(user?.name || user?.username || "Admin").toString()}
                     </div>
                     <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
-                      {user?.email || ''}
+                      {user?.email || ""}
                     </div>
                     <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
                       {user?.permissions?.length || 0} quyền
@@ -775,6 +822,7 @@ const AdminLayout = () => {
             overflow: "auto",
           }}
         >
+          {console.log('🔍 AdminLayout rendering Outlet for path:', location.pathname)}
           <Outlet />
         </main>
       </div>

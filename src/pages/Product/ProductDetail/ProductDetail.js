@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import "../ProductDetail/ProductDetail.css";
 import { mockProducts } from "../../../utils/mockData";
 import { useI18n } from "../../../hooks/useI18n";
+import ErrorPage from "../../../components/Shared/ErrorPage";
 
 const ProductDetail = () => {
   const { category, slug } = useParams();
@@ -37,7 +38,22 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
 
   if (!product) {
-    return <div>{currentLanguage === "en" ? "Loading..." : "Đang tải..."}</div>;
+    return (
+      <ErrorPage
+        title="Sản phẩm không tồn tại"
+        message="Xin lỗi, sản phẩm bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+        suggestions={[
+          "Kiểm tra lại đường link",
+          "Tìm kiếm sản phẩm khác",
+          "Quay lại trang danh sách sản phẩm"
+        ]}
+        type="product"
+        backRoute="HOME"
+        backText="Về trang chủ"
+        listRoute="PRODUCTS"
+        listText="Xem tất cả sản phẩm"
+      />
+    );
   }
 
   return (

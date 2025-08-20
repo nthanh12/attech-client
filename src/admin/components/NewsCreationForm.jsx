@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Editor } from "@tinymce/tinymce-react";
-import api from "../../api";
 import { generateSlug } from "../../utils/slugUtils";
 import { translateViToEn } from "../../services/translationService";
+import api from "../../api";
 import {
   handleFeaturedImageUpload,
   processEntityAttachments,
   cleanupBlobUrls,
 } from "../../services/attachmentService";
 import { tinymceConfig } from "../../config/tinymceConfig";
-import { uploadFiles, FileType, EntityType } from "../../services/fileService";
+import { createNews, updateNews } from "../../services/newsService";
 import { getApiUrl } from "../../config/apiConfig";
 import ToastMessage from "./ToastMessage";
 import "./NewsCreationForm.css";
@@ -132,7 +132,7 @@ const NewsCreationForm = ({
         }
 
         // Set featured image ID from BE response
-        if (editingNews.featuredImageId) {
+        if (editingNews.featuredImageId !== null && editingNews.featuredImageId !== undefined) {
           setFeaturedImageId(editingNews.featuredImageId);
         }
 
@@ -480,9 +480,8 @@ const NewsCreationForm = ({
 
     setLoading(true);
     try {
-      // Prepare data
+      // Prepare data - ID not needed in body (only in URL)
       const newsData = {
-        ...(isEditMode && { id: editingNews.id }), // Include ID for update
         titleVi: formData.titleVi.trim(),
         titleEn: formData.titleEn?.trim() || "",
         descriptionVi: formData.descriptionVi.trim(),
@@ -522,15 +521,15 @@ const NewsCreationForm = ({
         attachments.map((att) => att.attachmentId || att.id)
       );
 
-      // 1. Create or Update news
+      // 1. Create or Update news using newsService methods
       const response = isEditMode
-        ? await api.put("/api/news/update", newsData)
-        : await api.post("/api/news/create", newsData);
+        ? await updateNews(editingNews.id, newsData)
+        : await createNews(newsData);
 
-      console.log("🔍 BE Response:", response.data);
+      console.log("🔍 BE Response:", response);
 
-      if (response.data?.status === 1 && response.data?.data?.id) {
-        const newsId = response.data.data.id;
+      if (response?.status === 1 && response?.data?.id) {
+        const newsId = response.data.id;
 
         // 2. Process attachments - chỉ xử lý content attachments,
         // không cần associate attachmentIds vì BE đã handle rồi
@@ -551,15 +550,22 @@ const NewsCreationForm = ({
         });
 
         setTimeout(() => {
-          if (onSuccess) onSuccess(response.data.data);
+          if (onSuccess) onSuccess(response.data);
         }, 1000);
       } else {
         // Handle BE error response với proper message
-        const errorMessage = response.data?.message || "Lưu thất bại";
+        const errorMessage = response?.message || "Lưu thất bại";
         throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("Save failed:", error);
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
+      
       setToast({
         show: true,
         message:

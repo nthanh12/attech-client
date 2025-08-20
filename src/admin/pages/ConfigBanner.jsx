@@ -4,6 +4,7 @@ import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
+import BannerManager from "../components/BannerManager";
 import { 
   fetchBanners, 
   createBanner, 
@@ -15,6 +16,8 @@ import {
 import "./ConfigBanner.css";
 
 const ConfigBanner = () => {
+  console.log('🎌 ConfigBanner component is rendering...');
+  const [activeMainTab, setActiveMainTab] = useState('settings'); // 'settings' or 'management'
   const [banners, setBanners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -52,23 +55,26 @@ const ConfigBanner = () => {
   const positions = getBannerPositions();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const bannersData = await fetchBanners();
-        setBanners(bannersData);
-        console.log('✅ Banners loaded successfully', bannersData);
-      } catch (error) {
-        console.error('Failed to fetch banners:', error);
-        setBanners([]);
-        setToast({ show: true, message: 'Không thể tải danh sách banner!', type: 'error' });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    fetchData();
-  }, []);
+    // Chỉ fetch data khi ở tab "management"
+    if (activeMainTab === 'management') {
+      const fetchData = async () => {
+        setIsLoading(true);
+        try {
+          const bannersData = await fetchBanners();
+          setBanners(bannersData);
+          console.log('✅ Banners loaded successfully', bannersData);
+        } catch (error) {
+          console.error('Failed to fetch banners:', error);
+          setBanners([]);
+          setToast({ show: true, message: 'Không thể tải danh sách banner!', type: 'error' });
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
+      fetchData();
+    }
+  }, [activeMainTab]);
 
   const handleCloseModal = useCallback(() => {
     setShowModal(false);
@@ -559,38 +565,74 @@ const ConfigBanner = () => {
     </button>
   );
 
+  const renderTabNavigation = () => (
+    <div className="tab-navigation" style={{ marginBottom: '24px' }}>
+      <div className="tab-buttons">
+        <button
+          className={`tab-button ${activeMainTab === 'settings' ? 'active' : ''}`}
+          onClick={() => setActiveMainTab('settings')}
+        >
+          <i className="bi bi-gear"></i>
+          Cài đặt Banner
+        </button>
+        <button
+          className={`tab-button ${activeMainTab === 'management' ? 'active' : ''}`}
+          onClick={() => setActiveMainTab('management')}
+        >
+          <i className="bi bi-table"></i>
+          Quản lý Banner
+        </button>
+      </div>
+      <div className="tab-description">
+        {activeMainTab === 'settings' ? (
+          <p>Quản lý banner và logo chính của website (banner1, banner2, logo)</p>
+        ) : (
+          <p>Quản lý banner theo vị trí và thời gian hiển thị</p>
+        )}
+      </div>
+    </div>
+  );
+
   return (
-    <PageWrapper actions={pageActions}>
+    <PageWrapper actions={activeMainTab === 'management' ? pageActions : null}>
       <div className="admin-banner-config">
         
-        {renderFilters()}
+        {renderTabNavigation()}
 
-        <div className="admin-table-container">
-          <DataTable
-            data={paginatedBanners}
-            columns={columns}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            sortConfig={sortConfig}
-            onSort={handleSort}
-            itemsPerPage={itemsPerPage}
-            totalItems={sortedBanners.length}
-            tableClassName="admin-table"
-          />
-        </div>
+        {activeMainTab === 'settings' ? (
+          <BannerManager />
+        ) : (
+          <>
+            {renderFilters()}
 
-        <FormModal
-          show={showModal}
-          onClose={handleCloseModal}
-          title={editMode ? 'Chỉnh sửa banner' : 'Thêm banner mới'}
-          onSubmit={handleSubmit}
-          submitText={editMode ? 'Cập nhật' : 'Thêm'}
-          submitLoading={submitLoading}
-          width={1000}
-        >
-          {renderBannerForm()}
-        </FormModal>
+            <div className="admin-table-container">
+              <DataTable
+                data={paginatedBanners}
+                columns={columns}
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                sortConfig={sortConfig}
+                onSort={handleSort}
+                itemsPerPage={itemsPerPage}
+                totalItems={sortedBanners.length}
+                tableClassName="admin-table"
+              />
+            </div>
+
+            <FormModal
+              show={showModal}
+              onClose={handleCloseModal}
+              title={editMode ? 'Chỉnh sửa banner' : 'Thêm banner mới'}
+              onSubmit={handleSubmit}
+              submitText={editMode ? 'Cập nhật' : 'Thêm'}
+              submitLoading={submitLoading}
+              width={1000}
+            >
+              {renderBannerForm()}
+            </FormModal>
+          </>
+        )}
 
         {toast.show && (
           <ToastMessage 

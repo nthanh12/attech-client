@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import "../AlertBox/AlertBox.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -7,7 +8,7 @@ import "../../../../styles/swiper-custom.css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { useI18n } from "../../../../hooks/useI18n";
 import { Link } from "react-router-dom";
-import { mockNews } from "../../../../utils/mockNews";
+import { getLatestNews, getNewsCategories, formatNewsForDisplay } from "../../../../services/clientNewsService";
 
 function formatDate(isoString, lang) {
   const d = new Date(isoString);
@@ -16,6 +17,30 @@ function formatDate(isoString, lang) {
 
 const AlertBox = () => {
   const { currentLanguage } = useI18n();
+  const [latestNews, setLatestNews] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [categoriesData, newsData] = await Promise.all([
+          getNewsCategories(),
+          getLatestNews(12)
+        ]);
+        
+        setCategories(categoriesData);
+        setLatestNews(newsData);
+      } catch (error) {
+        console.error("Error loading latest news:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
   return (
     <div className="alert-box">
       <Swiper
@@ -40,35 +65,52 @@ const AlertBox = () => {
           1200: { slidesPerView: 5, spaceBetween: 20 },
         }}
       >
-        {mockNews.slice(0, 12).map((item) => {
-          const title = currentLanguage === 'vi' ? item.titleVi : item.titleEn;
-          const categorySlug = currentLanguage === 'vi' ? item.postCategorySlugVi : item.postCategorySlugEn;
-          const slug = currentLanguage === 'vi' ? item.slugVi : item.slugEn;
-          const link = currentLanguage === 'vi'
-            ? `/tin-tuc/${categorySlug}/${slug}`
-            : `/en/news/${categorySlug}/${slug}`;
-          return (
-            <SwiperSlide key={item.id}>
-              <Link
-                to={link}
-                aria-label={`Read more about ${title}`}
-              >
-                <div className="wrap-item">
-                  <div className="item-img" title={title}>
-                    <img src={item.image} alt={title} loading="lazy" />
+        {loading ? (
+          <SwiperSlide>
+            <div className="wrap-item">
+              <div className="loading-item">Loading news...</div>
+            </div>
+          </SwiperSlide>
+        ) : (
+          latestNews.map((item) => {
+            const formattedItem = formatNewsForDisplay(item, currentLanguage);
+            const category = categories.find(cat => cat.id === item.newsCategoryId);
+            const categorySlug = currentLanguage === 'vi' ? category?.slugVi : category?.slugEn;
+            
+            const link = currentLanguage === 'vi'
+              ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+              : `/en/news/${categorySlug}/${formattedItem.slug}`;
+              
+            return (
+              <SwiperSlide key={item.id}>
+                <Link
+                  to={link}
+                  aria-label={`Read more about ${formattedItem.title}`}
+                >
+                  <div className="wrap-item">
+                    <div className="item-img" title={formattedItem.title}>
+                      <img 
+                        src={formattedItem.imageUrl || '/images/default-news.jpg'} 
+                        alt={formattedItem.title} 
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = '/images/default-news.jpg';
+                        }}
+                      />
+                    </div>
+                    <div className="item-description" title={formattedItem.title}>
+                      <p className="item-time">
+                        <i className="fa fa-calendar-days" aria-hidden="true"></i>{" "}
+                        {formattedItem.formattedDate}
+                      </p>
+                      <p className="item-text">{formattedItem.title}</p>
+                    </div>
                   </div>
-                  <div className="item-description" title={title}>
-                    <p className="item-time">
-                      <i className="fa fa-calendar-days" aria-hidden="true"></i>{" "}
-                      {formatDate(item.timePosted, currentLanguage)}
-                    </p>
-                    <p className="item-text">{title}</p>
-                  </div>
-                </div>
-              </Link>
-            </SwiperSlide>
-          );
-        })}
+                </Link>
+              </SwiperSlide>
+            );
+          })
+        )}
       </Swiper>
     </div>
   );

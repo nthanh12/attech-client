@@ -5,14 +5,11 @@
 import { mockNews } from "./mockNews.js";
 import { mockProducts } from "./mockProducts.js";
 import { mockServices } from "./mockServices.js";
-import { mockNotifications } from "./mockNotifications.js";
 import { mockRoutes } from "./mockRoutes.js";
 import { mockSystemSettings } from "./mockSystemSettings.js";
 
 // Import categories
-import { mockNewsCategories } from "./mockNewsCategories.js";
 import { mockProductCategories } from "./mockProductCategories.js";
-import { mockNotificationCategories } from "./mockNotificationCategories.js";
 
 // Import utilities
 import { generateSlug, validateSlug } from "./slugGenerator.js";
@@ -24,14 +21,11 @@ export {
   mockNews,
   mockProducts,
   mockServices,
-  mockNotifications,
   mockRoutes,
   mockSystemSettings,
 
   // Categories
-  mockNewsCategories,
   mockProductCategories,
-  mockNotificationCategories,
 
   // Utilities
   generateSlug,

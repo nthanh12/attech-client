@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Editor } from "@tinymce/tinymce-react";
-import api from "../../api";
 import { generateSlug } from "../../utils/slugUtils";
 import { translateViToEn } from "../../services/translationService";
+import api from "../../api";
 import {
   handleFeaturedImageUpload,
   processEntityAttachments,
@@ -11,6 +11,8 @@ import {
 } from "../../services/attachmentService";
 import { tinymceConfig } from "../../config/tinymceConfig";
 import { uploadFiles, FileType, EntityType } from "../../services/fileService";
+import { createProduct, updateProduct } from "../../services/productService";
+import { getApiUrl } from "../../config/apiConfig";
 import ToastMessage from "./ToastMessage";
 import "./ProductCreationForm.css";
 
@@ -120,12 +122,64 @@ const ProductCreationForm = ({
 
   const loadExistingAttachments = async () => {
     try {
-      // Load existing gallery images and attachments if in edit mode
-      if (editingProduct.galleryImages) {
-        setGalleryImages(editingProduct.galleryImages);
-      }
-      if (editingProduct.attachments) {
-        setAttachments(editingProduct.attachments);
+      if (editingProduct) {
+        // Load featured image from imageUrl (API response uses lowercase)
+        const imageUrl = editingProduct.imageUrl || editingProduct.ImageUrl;
+        if (imageUrl) {
+          const fullImageUrl = imageUrl.startsWith("http")
+            ? imageUrl
+            : getApiUrl(imageUrl);
+          setFeaturedImagePreview(fullImageUrl);
+        }
+
+        // Set featured image ID from BE response
+        if (editingProduct.featuredImageId !== null && editingProduct.featuredImageId !== undefined) {
+          setFeaturedImageId(editingProduct.featuredImageId);
+        }
+
+        // Load attachments from DetailProductDto.attachments (lowercase)
+        if (editingProduct.attachments) {
+          // Gallery images từ attachments.images
+          if (
+            editingProduct.attachments.images &&
+            editingProduct.attachments.images.length > 0
+          ) {
+            // Transform API data to match component's expected format
+            const transformedImages = editingProduct.attachments.images.map(
+              (img, index) => ({
+                id: img.id,
+                name: img.originalFileName,
+                size: img.fileSize,
+                type: img.contentType,
+                uploading: false,
+                preview: getApiUrl(img.url),
+                attachmentId: img.id,
+                url: img.url,
+              })
+            );
+            setGalleryImages(transformedImages);
+          }
+
+          // File attachments từ attachments.documents
+          if (
+            editingProduct.attachments.documents &&
+            editingProduct.attachments.documents.length > 0
+          ) {
+            // Transform API data to match component's expected format
+            const transformedDocs = editingProduct.attachments.documents.map(
+              (doc, index) => ({
+                id: doc.id,
+                name: doc.originalFileName,
+                size: doc.fileSize,
+                type: doc.contentType,
+                uploading: false,
+                attachmentId: doc.id,
+                url: doc.url,
+              })
+            );
+            setAttachments(transformedDocs);
+          }
+        }
       }
     } catch (error) {
       console.error("Failed to load existing attachments:", error);
@@ -462,15 +516,15 @@ const ProductCreationForm = ({
         attachments.map((att) => att.attachmentId || att.id)
       );
 
-      // 1. Create or Update product
+      // 1. Create or Update product using service methods
       const response = isEditMode
-        ? await api.put(`/api/product/${editingProduct.id}`, productData)
-        : await api.post("/api/product/create", productData);
+        ? await updateProduct(editingProduct.id, productData)
+        : await createProduct(productData);
 
-      console.log("🔍 BE Response:", response.data);
+      console.log("🔍 BE Response:", response);
 
-      if (response.data?.status === 1 && response.data?.data?.id) {
-        const productId = response.data.data.id;
+      if (response?.status === 1 && response?.data?.id) {
+        const productId = response.data.id;
 
         // 2. Process attachments - chỉ xử lý content attachments,
         // không cần associate attachmentIds vì BE đã handle rồi
@@ -491,11 +545,11 @@ const ProductCreationForm = ({
         });
 
         setTimeout(() => {
-          if (onSuccess) onSuccess(response.data.data);
+          if (onSuccess) onSuccess(response.data);
         }, 1000);
       } else {
         // Handle BE error response với proper message
-        const errorMessage = response.data?.message || "Lưu thất bại";
+        const errorMessage = response?.message || "Lưu thất bại";
         throw new Error(errorMessage);
       }
     } catch (error) {

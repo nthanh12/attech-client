@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import sanitizeHtml from "sanitize-html";
-import { mockNews } from "../../../utils/mockNews";
+import { getNewsBySlug, getNewsCategories, getRelatedNews, formatNewsForDisplay } from "../../../services/clientNewsService";
 import { useI18n } from "../../../hooks/useI18n";
 import { getLanguageFromPath } from "../../../utils/routeHelpers";
 import LocalizedLink from "../../../components/Shared/LocalizedLink";
+import SearchBox from "../../../components/Shared/SearchBox";
+import ErrorPage from "../../../components/Shared/ErrorPage";
 import SEO from "../../../components/SEO/SEO";
 import { useLocation } from "react-router-dom";
 import "./NewsDetailPage.css";
@@ -14,43 +16,86 @@ const NewsDetailPage = () => {
   const { currentLanguage } = useI18n();
   const { t: tNews } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const { category: categorySlug, slug: newsSlug } = useParams();
   const isEnglish = getLanguageFromPath(location.pathname) === "en";
   const [newsItem, setNewsItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [relatedNews, setRelatedNews] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Handle search
+  const handleSearchChange = useCallback((value) => {
+    setSearchTerm(value);
+  }, []);
+
+  const handleSearch = useCallback((term) => {
+    if (term.trim()) {
+      // Navigate to news list page with search
+      const url = currentLanguage === "vi" ? `/tin-tuc?search=${encodeURIComponent(term)}` : `/en/news?search=${encodeURIComponent(term)}`;
+      navigate(url);
+    }
+  }, [navigate, currentLanguage]);
+
+  const handleSelectSuggestion = useCallback((suggestion) => {
+    // Navigate directly to the selected news article
+    const category = categories.find(cat => cat.id === suggestion.newsCategoryId);
+    const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+    
+    if (categorySlug && suggestion.slug) {
+      const url = currentLanguage === "vi" 
+        ? `/tin-tuc/${categorySlug}/${suggestion.slug}`
+        : `/en/news/${categorySlug}/${suggestion.slug}`;
+      navigate(url);
+    }
+  }, [navigate, currentLanguage, categories]);
 
   useEffect(() => {
-    const fetchNewsDetail = async () => {
+    const loadData = async () => {
       try {
         setLoading(true);
-        // Find news item by matching correct language slug
-        const item = mockNews.find((n) => {
-          const categoryMatch = isEnglish
-            ? n.postCategorySlugEn === categorySlug
-            : n.postCategorySlugVi === categorySlug;
-          const slugMatch = isEnglish
-            ? n.slugEn === newsSlug
-            : n.slugVi === newsSlug;
-          return categoryMatch && slugMatch;
-        });
+        
+        // Load categories first
+        const categoriesData = await getNewsCategories();
+        setCategories(categoriesData);
+        
+        // Find category by slug
+        const category = categoriesData.find(cat => 
+          isEnglish ? cat.slugEn === categorySlug : cat.slugVi === categorySlug
+        );
+        
+        if (!category) {
+          setError("Category not found");
+          return;
+        }
 
-        if (item) {
-          setNewsItem(item);
+        // Try to get news by slug
+        try {
+          const newsData = await getNewsBySlug(newsSlug, isEnglish ? "en" : "vi");
+          setNewsItem(newsData);
+          
+          // Load related news
+          const related = await getRelatedNews(newsData.id, newsData.newsCategoryId, 5);
+          setRelatedNews(related);
+          
           setError(null);
-        } else {
+        } catch (slugError) {
           setError("Article not found");
         }
+
       } catch (err) {
+        console.error("Error loading news detail:", err);
         setError("Error loading article");
       } finally {
         setLoading(false);
         setIsInitialized(true);
       }
     };
-    fetchNewsDetail();
+
+    loadData();
   }, [categorySlug, newsSlug, isEnglish]);
 
   // Generate Table of Contents from content headings
@@ -104,63 +149,7 @@ const NewsDetailPage = () => {
     };
   }, [newsItem]);
 
-  // Sidebar: Lọc tin cùng chuyên mục, tìm kiếm, tối đa 10 tin, luôn có tin đang xem
-  const filteredNews = useMemo(() => {
-    if (!newsItem) return [];
-    const categorySlugField = isEnglish
-      ? "postCategorySlugEn"
-      : "postCategorySlugVi";
-    const targetCategorySlug = isEnglish
-      ? newsItem.postCategorySlugEn
-      : newsItem.postCategorySlugVi;
 
-    let filtered = mockNews.filter(
-      (n) =>
-        n[categorySlugField] === targetCategorySlug &&
-        ((isEnglish ? n.titleEn : n.titleVi)
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-          (isEnglish ? n.contentEn : n.contentVi)
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()))
-    );
-    filtered = filtered.sort(
-      (a, b) => new Date(b.timePosted) - new Date(a.timePosted)
-    );
-    let top10 = filtered.slice(0, 10);
-    if (newsItem && !top10.some((n) => n.id === newsItem.id)) {
-      top10 = [newsItem, ...top10];
-    }
-    // Loại trùng
-    const unique = [];
-    const ids = new Set();
-    for (const n of top10) {
-      if (!ids.has(n.id)) {
-        unique.push(n);
-        ids.add(n.id);
-      }
-    }
-    return unique;
-  }, [newsItem, searchTerm, isEnglish]);
-
-  // Related news: tối đa 3 tin cùng chuyên mục, loại trừ tin đang xem
-  const relatedNews = useMemo(() => {
-    if (!newsItem) return [];
-    const categorySlugField = isEnglish
-      ? "postCategorySlugEn"
-      : "postCategorySlugVi";
-    const targetCategorySlug = isEnglish
-      ? newsItem.postCategorySlugEn
-      : newsItem.postCategorySlugVi;
-
-    return mockNews
-      .filter(
-        (n) =>
-          n.id !== newsItem.id && n[categorySlugField] === targetCategorySlug
-      )
-      .sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted))
-      .slice(0, 3);
-  }, [newsItem, isEnglish]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString(
@@ -179,10 +168,17 @@ const NewsDetailPage = () => {
     isEnglish ? newsItem?.descriptionEn : newsItem?.descriptionVi;
   const getContent = () =>
     isEnglish ? newsItem?.contentEn : newsItem?.contentVi;
-  const getCategoryName = () =>
-    isEnglish ? newsItem?.postCategorytitleEn : newsItem?.postCategorytitleVi;
-  const getCategorySlug = () =>
-    isEnglish ? newsItem?.postCategorySlugEn : newsItem?.postCategorySlugVi;
+  const getCategoryName = () => {
+    if (!newsItem?.newsCategoryId) return "";
+    const category = categories.find(cat => cat.id === newsItem.newsCategoryId);
+    return isEnglish ? category?.titleEn : category?.titleVi;
+  };
+  
+  const getCategorySlug = () => {
+    if (!newsItem?.newsCategoryId) return "";
+    const category = categories.find(cat => cat.id === newsItem.newsCategoryId);
+    return isEnglish ? category?.slugEn : category?.slugVi;
+  };
 
   if (!isInitialized || loading) {
     return (
@@ -199,17 +195,20 @@ const NewsDetailPage = () => {
 
   if (error || !newsItem) {
     return (
-      <div className="news-detail-page">
-        <div className="container">
-          <div className="error">
-            <h2>{tNews("frontend.news.articleNotFound")}</h2>
-            <p>{error || tNews("frontend.news.articleNotExist")}</p>
-            <LocalizedLink routeKey="NEWS" className="back-to-news">
-              {tNews("frontend.news.backToNews")}
-            </LocalizedLink>
-          </div>
-        </div>
-      </div>
+      <ErrorPage
+        title="Tin tức không tồn tại"
+        message="Xin lỗi, tin tức bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+        suggestions={[
+          "Kiểm tra lại đường link",
+          "Tìm kiếm tin tức khác",
+          "Quay lại trang danh sách tin tức"
+        ]}
+        type="news"
+        backRoute="HOME"
+        backText="Về trang chủ"
+        listRoute="NEWS"
+        listText="Xem tất cả tin tức"
+      />
     );
   }
 
@@ -228,42 +227,45 @@ const NewsDetailPage = () => {
         <div className="news-detail-layout">
           {/* Sidebar */}
           <aside className="news-sidebar">
+            {/* Search Box */}
+            <div className="sidebar-search">
+              <h3>Tìm kiếm tin tức</h3>
+              <SearchBox
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onSearch={handleSearch}
+                onSelectSuggestion={handleSelectSuggestion}
+                placeholder={tNews("frontend.news.searchPlaceholder")}
+                style={{ minWidth: "100%", fontSize: 14 }}
+              />
+            </div>
+            
             <h3>{tNews("frontend.news.relatedNews")}</h3>
-            <input
-              type="text"
-              placeholder={tNews("frontend.news.searchPlaceholder")}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="news-sidebar-search"
-              aria-label={tNews("frontend.news.searchNews")}
-            />
             <ul>
-              {filteredNews.length > 0 ? (
-                filteredNews.map((n) => (
-                  <li key={n.id}>
-                    <Link
-                      to={
-                        currentLanguage === "vi"
-                          ? `/tin-tuc/${n.postCategorySlugVi}/${n.slugVi}`
-                          : `/en/news/${n.postCategorySlugEn}/${n.slugEn}`
-                      }
-                      className={n.id === newsItem.id ? "active" : ""}
-                    >
-                      {currentLanguage === "vi" ? n.titleVi : n.titleEn}
-                    </Link>
-                  </li>
-                ))
+              {relatedNews.length > 0 ? (
+                relatedNews.map((n) => {
+                  const formattedItem = formatNewsForDisplay(n, currentLanguage);
+                  const category = categories.find(cat => cat.id === n.newsCategoryId);
+                  const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+                  
+                  return (
+                    <li key={n.id}>
+                      <Link
+                        to={
+                          currentLanguage === "vi"
+                            ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+                            : `/en/news/${categorySlug}/${formattedItem.slug}`
+                        }
+                        className={n.id === newsItem?.id ? "active" : ""}
+                      >
+                        {formattedItem.title}
+                      </Link>
+                    </li>
+                  );
+                })
               ) : (
                 <li className="no-results">
-                  {tNews("frontend.news.noNewsFound")}
-                  {searchTerm && (
-                    <button
-                      onClick={() => setSearchTerm("")}
-                      className="clear-search"
-                    >
-                      {tNews("frontend.news.clearSearch")}
-                    </button>
-                  )}
+                  {tNews("frontend.news.noRelatedNews")}
                 </li>
               )}
             </ul>
@@ -318,15 +320,21 @@ const NewsDetailPage = () => {
               </header>
 
               {/* Article Image */}
-              {newsItem.image && (
-                <div className="article-image">
-                  <img
-                    src={newsItem.image}
-                    alt={getTitle()}
-                    title={getTitle()}
-                  />
-                </div>
-              )}
+              {(() => {
+                const formattedItem = formatNewsForDisplay(newsItem, currentLanguage);
+                return formattedItem?.imageUrl && (
+                  <div className="article-image">
+                    <img
+                      src={formattedItem.imageUrl}
+                      alt={getTitle()}
+                      title={getTitle()}
+                      onError={(e) => {
+                        e.target.src = '/images/default-news.jpg';
+                      }}
+                    />
+                  </div>
+                );
+              })()}
 
               {/* Article Description */}
               {getDescription() && (
@@ -424,43 +432,6 @@ const NewsDetailPage = () => {
               </footer>
             </article>
 
-            {/* Related News */}
-            {relatedNews.length > 0 && (
-              <section className="related-news">
-                <h2>{tNews("frontend.news.relatedNews")}</h2>
-                <div className="related-news-list">
-                  {relatedNews.map((n) => (
-                    <div className="related-news-item" key={n.id}>
-                      <Link
-                        to={
-                          currentLanguage === "vi"
-                            ? `/tin-tuc/${n.postCategorySlugVi}/${n.slugVi}`
-                            : `/en/news/${n.postCategorySlugEn}/${n.slugEn}`
-                        }
-                        className="related-news-link"
-                      >
-                        <div className="related-news-thumb">
-                          <img
-                            src={n.image}
-                            alt={
-                              currentLanguage === "vi" ? n.titleVi : n.titleEn
-                            }
-                          />
-                        </div>
-                        <div className="related-news-info">
-                          <h4>
-                            {currentLanguage === "vi" ? n.titleVi : n.titleEn}
-                          </h4>
-                          <span className="related-news-date">
-                            {formatDate(n.timePosted)}
-                          </span>
-                        </div>
-                      </Link>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
           </div>
         </div>
       </div>

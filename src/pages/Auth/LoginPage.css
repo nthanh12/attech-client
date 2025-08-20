@@ -91,7 +91,6 @@
 }
 
 .login-card:hover {
-  transform: translateY(-12px);
   border-color: rgba(135, 206, 235, 0.4);
   box-shadow: 
     0 35px 70px rgba(12, 30, 61, 0.4),

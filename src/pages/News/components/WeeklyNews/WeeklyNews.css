@@ -64,7 +64,6 @@
 }
 
 .weekly-news-area .weekly-single:hover {
-  transform: translateY(-3px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-color: #d1d5db;
 }
@@ -238,7 +237,7 @@
 
 @media (max-width: 575px) {
   .weekly-news-area .container {
-    padding: 0;
+    padding: 0 !important;
   }
 
   .weekly-news-area .weekly-news-active {

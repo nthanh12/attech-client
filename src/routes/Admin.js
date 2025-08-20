@@ -146,6 +146,15 @@ const Admin = () => {
         /> */}
 
         <Route
+          path="config"
+          element={
+            <ProtectedRoute requiredPermissions={["menu_config"]}>
+              <ConfigBanner />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="banners"
           element={
             <ProtectedRoute requiredPermissions={["menu_view"]}>
@@ -158,6 +167,15 @@ const Admin = () => {
           path="settings"
           element={
             <ProtectedRoute requiredPermissions={["menu_view"]}>
+              <SystemSettings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="system-settings"
+          element={
+            <ProtectedRoute requiredPermissions={["menu_config"]}>
               <SystemSettings />
             </ProtectedRoute>
           }

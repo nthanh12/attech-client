@@ -10,7 +10,8 @@ import {
   cleanupBlobUrls,
 } from "../../services/attachmentService";
 import { tinymceConfig } from "../../config/tinymceConfig";
-import { uploadFiles, FileType, EntityType } from "../../services/fileService";
+import { createNotification, updateNotification } from "../../services/notificationService";
+import { getApiUrl } from "../../config/apiConfig";
 import ToastMessage from "./ToastMessage";
 import "./NotificationCreationForm.css";
 
@@ -120,12 +121,70 @@ const NotificationCreationForm = ({
 
   const loadExistingAttachments = async () => {
     try {
-      // Load existing gallery images and attachments if in edit mode
-      if (editingNotification.galleryImages) {
-        setGalleryImages(editingNotification.galleryImages);
-      }
-      if (editingNotification.attachments) {
-        setAttachments(editingNotification.attachments);
+      if (editingNotification) {
+        // Load featured image from imageUrl (API response uses lowercase)
+        const imageUrl = editingNotification.imageUrl || editingNotification.ImageUrl;
+        if (imageUrl) {
+          const fullImageUrl = imageUrl.startsWith("http")
+            ? imageUrl
+            : getApiUrl(imageUrl);
+          setFeaturedImagePreview(fullImageUrl);
+        }
+
+        // Set featured image ID from BE response
+        if (editingNotification.featuredImageId !== null && editingNotification.featuredImageId !== undefined) {
+          setFeaturedImageId(editingNotification.featuredImageId);
+        }
+
+        // Load attachments from DetailNotificationDto.attachments (lowercase)
+        if (editingNotification.attachments) {
+          // Gallery images từ attachments.images
+          if (
+            editingNotification.attachments.images &&
+            editingNotification.attachments.images.length > 0
+          ) {
+            // Transform API data to match component's expected format
+            const transformedImages = editingNotification.attachments.images.map(
+              (img, index) => ({
+                id: img.id,
+                name: img.originalFileName,
+                size: img.fileSize,
+                type: img.contentType,
+                uploading: false,
+                preview: getApiUrl(img.url),
+                attachmentId: img.id,
+                url: img.url,
+              })
+            );
+            setGalleryImages(transformedImages);
+          }
+
+          // File attachments từ attachments.documents
+          if (
+            editingNotification.attachments.documents &&
+            editingNotification.attachments.documents.length > 0
+          ) {
+            // Transform API data to match component's expected format
+            const transformedDocs = editingNotification.attachments.documents.map(
+              (doc, index) => ({
+                id: doc.id,
+                name: doc.originalFileName,
+                size: doc.fileSize,
+                type: doc.contentType,
+                uploading: false,
+                attachmentId: doc.id,
+                url: doc.url,
+              })
+            );
+            setAttachments(transformedDocs);
+          }
+        }
+
+        console.log("✅ Loaded existing attachments:", {
+          featuredImage: editingNotification.ImageUrl || editingNotification.imageUrl,
+          galleryCount: editingNotification.attachments?.images?.length || 0,
+          documentsCount: editingNotification.attachments?.documents?.length || 0,
+        });
       }
     } catch (error) {
       console.error("Failed to load existing attachments:", error);
@@ -449,10 +508,7 @@ const NotificationCreationForm = ({
       };
 
       console.log("💾 Saving notification with new flow...", { isEditMode });
-      console.log(
-        "📤 Data gửi lên BE:",
-        JSON.stringify(notificationData, null, 2)
-      );
+      console.log("📤 Data gửi lên BE:", JSON.stringify(notificationData, null, 2));
       console.log("🖼️ Featured image ID:", featuredImageId);
       console.log("🎨 Gallery images raw:", galleryImages);
       console.log(
@@ -465,18 +521,15 @@ const NotificationCreationForm = ({
         attachments.map((att) => att.attachmentId || att.id)
       );
 
-      // 1. Create or Update notification
+      // 1. Create or Update notification using notificationService methods
       const response = isEditMode
-        ? await api.put(
-            `/api/notification/${editingNotification.id}`,
-            notificationData
-          )
-        : await api.post("/api/notification/create", notificationData);
+        ? await updateNotification(editingNotification.id, notificationData)
+        : await createNotification(notificationData);
 
-      console.log("🔍 BE Response:", response.data);
+      console.log("🔍 BE Response:", response);
 
-      if (response.data?.status === 1 && response.data?.data?.id) {
-        const notificationId = response.data.data.id;
+      if (response?.status === 1 && response?.data?.id) {
+        const notificationId = response.data.id;
 
         // 2. Process attachments - chỉ xử lý content attachments,
         // không cần associate attachmentIds vì BE đã handle rồi
@@ -501,15 +554,22 @@ const NotificationCreationForm = ({
         });
 
         setTimeout(() => {
-          if (onSuccess) onSuccess(response.data.data);
+          if (onSuccess) onSuccess(response.data);
         }, 1000);
       } else {
         // Handle BE error response với proper message
-        const errorMessage = response.data?.message || "Lưu thất bại";
+        const errorMessage = response?.message || "Lưu thất bại";
         throw new Error(errorMessage);
       }
     } catch (error) {
       console.error("Save failed:", error);
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
+      
       setToast({
         show: true,
         message:

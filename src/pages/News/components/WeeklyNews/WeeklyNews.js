@@ -1,82 +1,158 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./WeeklyNews.css";
-import { Link } from "react-router-dom";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
-import { mockNews } from "../../../../utils/mockNews";
-import { mockNewsCategories } from "../../../../utils/mockNewsCategories";
+import { getNews, getNewsCategories, formatNewsForDisplay, CATEGORY_IDS } from "../../../../services/clientNewsService";
 
-// Dùng slug để xác định 3 danh mục con
-const childCategorySlugs = {
-  vi: ["dang-bo-cong-ty", "doan-thanh-nien-cong-ty", "cong-doan-cong-ty"],
-  en: ["company-party", "company-youth-union", "company-union"],
+// Dùng ID thực từ database cho các danh mục con
+const childCategoryIds = [
+  CATEGORY_IDS.COMPANY_PARTY,        // Đảng bộ công ty  
+  CATEGORY_IDS.COMPANY_YOUTH_UNION,  // Đoàn thanh niên công ty
+  CATEGORY_IDS.COMPANY_UNION         // Công đoàn công ty
+];
+
+// Helper functions for fallback data
+const getCategorySlugById = (id, lang) => {
+  const mapping = {
+    [CATEGORY_IDS.COMPANY_PARTY]: lang === 'vi' ? 'dang-bo-cong-ty' : 'company-party',
+    [CATEGORY_IDS.COMPANY_YOUTH_UNION]: lang === 'vi' ? 'doan-thanh-nien-cong-ty' : 'company-youth-union',
+    [CATEGORY_IDS.COMPANY_UNION]: lang === 'vi' ? 'cong-doan-cong-ty' : 'company-union'
+  };
+  return mapping[id] || '';
 };
 
-const getChildCategories = (currentLanguage) => {
-  const slugs = childCategorySlugs[currentLanguage];
-  return mockNewsCategories.filter((cat) =>
-    currentLanguage === "vi"
-      ? slugs.includes(cat.slugVi)
-      : slugs.includes(cat.slugEn)
-  );
-};
-
-// Group news by category slug for child categories
-const getGroupedNews = (currentLanguage) => {
-  const slugs = childCategorySlugs[currentLanguage];
-  return mockNews.reduce((acc, news) => {
-    const categorySlug =
-      currentLanguage === "vi"
-        ? news.postCategorySlugVi
-        : news.postCategorySlugEn;
-    if (slugs.includes(categorySlug)) {
-      if (!acc[categorySlug]) {
-        acc[categorySlug] = [];
-      }
-      acc[categorySlug].push(news);
-    }
-    return acc;
-  }, {});
-};
-
-const formatDate = (dateString, currentLanguage) => {
-  const date = new Date(dateString);
-  const locale = currentLanguage === "vi" ? "vi-VN" : "en-US";
-  return date.toLocaleDateString(locale);
+const getCategoryTitleById = (id, lang) => {
+  const mapping = {
+    [CATEGORY_IDS.COMPANY_PARTY]: lang === 'vi' ? 'Đảng bộ công ty' : 'Company Party',
+    [CATEGORY_IDS.COMPANY_YOUTH_UNION]: lang === 'vi' ? 'Đoàn thanh niên công ty' : 'Company Youth Union',
+    [CATEGORY_IDS.COMPANY_UNION]: lang === 'vi' ? 'Công đoàn công ty' : 'Company Union'
+  };
+  return mapping[id] || '';
 };
 
 const WeeklyNews = () => {
   const { currentLanguage } = useI18n();
-  const childCategories = getChildCategories(currentLanguage);
-  const groupedNews = getGroupedNews(currentLanguage);
+  const [groupedNews, setGroupedNews] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const getCategorySlug = (category) =>
-    currentLanguage === "vi" ? category.slugVi : category.slugEn;
-  const getCategoryName = (category) =>
-    currentLanguage === "vi" ? category.titleVi : category.titleEn;
-  const getNewsTitle = (news) =>
-    currentLanguage === "vi" ? news.titleVi : news.titleEn;
-  const getNewsSlug = (news) =>
-    currentLanguage === "vi" ? news.slugVi : news.slugEn;
-  const getNewsCategorySlug = (news) =>
-    currentLanguage === "vi"
-      ? news.postCategorySlugVi
-      : news.postCategorySlugEn;
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const categoriesData = await getNewsCategories();
+        
+        console.log("🔄 WeeklyNews: Loading all recent news to distribute by category...");
+        
+        // NEW STRATEGY: Load all news first, then distribute by category
+        const allNewsData = await getNews({
+          pageIndex: 1,
+          pageSize: 100, // Get more items to ensure coverage for all 3 categories
+          sortBy: "timePosted",
+          sortDirection: "desc"
+        });
+        
+        console.log(`📊 WeeklyNews: Total news loaded: ${allNewsData.items.length}`);
+        
+        // Group news by category
+        const newsByCategory = {};
+        allNewsData.items.forEach(item => {
+          const catId = item.newsCategoryId;
+          if (!newsByCategory[catId]) {
+            newsByCategory[catId] = [];
+          }
+          newsByCategory[catId].push(item);
+        });
+        
+        console.log("📈 WeeklyNews distribution by category:", 
+          Object.keys(newsByCategory).map(catId => 
+            `Category ${catId}: ${newsByCategory[catId].length} items`
+          ).join(", ")
+        );
+        
+        // Create grouped news for each target category
+        const grouped = {};
+        
+        childCategoryIds.forEach(categoryId => {
+          const categoryNews = newsByCategory[categoryId] || [];
+          const newsToShow = categoryNews.slice(0, 5); // Take first 5 news items
+          
+          console.log(`🎯 WeeklyNews Category ${categoryId}:`, {
+            totalInCategory: categoryNews.length,
+            showing: newsToShow.length,
+            titles: newsToShow.map(n => n.titleVi?.substring(0, 30) + "...").join(" | ")
+          });
+          
+          // Find category data from API or use fallback
+          const category = categoriesData.find(cat => cat.id === categoryId) || {
+            id: categoryId,
+            slugVi: getCategorySlugById(categoryId, 'vi'),
+            slugEn: getCategorySlugById(categoryId, 'en'),
+            titleVi: getCategoryTitleById(categoryId, 'vi'),
+            titleEn: getCategoryTitleById(categoryId, 'en')
+          };
+          
+          const categorySlug = currentLanguage === "vi" ? category.slugVi : category.slugEn;
+          
+          // Only add to grouped if we have news OR want to show placeholder
+          if (newsToShow.length > 0) {
+            grouped[categorySlug] = {
+              category: category,
+              news: newsToShow
+            };
+          } else {
+            console.log(`⚠️ No news found for WeeklyNews category ${categoryId}, skipping`);
+          }
+        });
+        
+        setGroupedNews(grouped);
+        
+        console.log("✅ WeeklyNews: Final grouped categories:", Object.keys(grouped).length);
+        console.log("🔍 WeeklyNews: Check category diversity:", 
+          Object.keys(grouped).map(slug => ({
+            slug,
+            newsCount: grouped[slug].news.length,
+            firstNewsId: grouped[slug].news[0]?.id,
+            title: grouped[slug].news[0]?.titleVi?.substring(0, 40) + "..."
+          }))
+        );
+        
+      } catch (error) {
+        console.error("Error loading weekly news:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [currentLanguage]);
+
+  if (loading) {
+    return (
+      <div className="weekly-news-area">
+        <div className="container">
+          <div>Loading weekly news...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="weekly-news-area">
       <div className="container">
         <div className="weekly-news-child-categories">
-          {childCategories.map((category) => {
-            const categorySlug = getCategorySlug(category);
-            const newsList = (groupedNews[categorySlug] || []).slice(0, 4);
+          {Object.keys(groupedNews).map((categorySlug) => {
+            const categoryData = groupedNews[categorySlug];
+            const newsList = categoryData.news.slice(0, 4);
             if (newsList.length === 0) return null;
+            
+            const categoryName = currentLanguage === "vi" ? categoryData.category.titleVi : categoryData.category.titleEn;
+            
             return (
               <div key={categorySlug} className="weekly-wrapper">
                 <div className="section-tittle">
                   <h4 className="title-category">
-                    {getCategoryName(category)}
+                    {categoryName}
                   </h4>
                   <ViewAllButton
                     to={
@@ -87,39 +163,41 @@ const WeeklyNews = () => {
                   />
                 </div>
                 <div className="weekly-news-active">
-                  {newsList.map((news) => (
-                    <div key={news.id} className="weekly-single">
-                      <div className="weekly-img">
-                        <img
-                          src={news.image}
-                          alt={getNewsTitle(news)}
-                          title={getNewsTitle(news)}
+                  {newsList.map((news) => {
+                    const formattedItem = formatNewsForDisplay(news, currentLanguage);
+                    return (
+                      <div key={news.id} className="weekly-single">
+                        <div className="weekly-img">
+                          <img
+                            src={formattedItem.imageUrl || '/images/default-news.jpg'}
+                            alt={formattedItem.title}
+                            title={formattedItem.title}
+                            onError={(e) => {
+                              e.target.src = '/images/default-news.jpg';
+                            }}
                         />
+                        </div>
+                        <div className="weekly-caption">
+                          <span className="time-news">
+                            {formattedItem.formattedDate}
+                          </span>
+                          <h4>
+                            <LocalizedLink
+                              to={
+                                currentLanguage === "vi"
+                                  ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+                                  : `/en/news/${categorySlug}/${formattedItem.slug}`
+                              }
+                              title={formattedItem.title}
+                              className="clamp-2-lines"
+                            >
+                              {formattedItem.title}
+                            </LocalizedLink>
+                          </h4>
+                        </div>
                       </div>
-                      <div className="weekly-caption">
-                        <span className="time-news">
-                          {formatDate(news.timePosted, currentLanguage)}
-                        </span>
-                        <h4>
-                          <LocalizedLink
-                            to={
-                              currentLanguage === "vi"
-                                ? `/tin-tuc/${getNewsCategorySlug(
-                                    news
-                                  )}/${getNewsSlug(news)}`
-                                : `/en/news/${getNewsCategorySlug(
-                                    news
-                                  )}/${getNewsSlug(news)}`
-                            }
-                            title={getNewsTitle(news)}
-                            className="clamp-2-lines"
-                          >
-                            {getNewsTitle(news)}
-                          </LocalizedLink>
-                        </h4>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             );

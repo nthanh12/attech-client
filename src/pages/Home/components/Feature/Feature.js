@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -7,25 +7,58 @@ import "./Feature.css";
 import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import { LocalizedTitle } from "../../../../components/Shared/LocalizedContent";
-import { mockNews } from "../../../../utils/mockNews";
+import {
+  getFeaturedNews,
+  getNewsCategories,
+  formatNewsForDisplay,
+} from "../../../../services/clientNewsService";
 
 const Feature = () => {
   const { t, currentLanguage } = useI18n();
-  
+  const [featuredNews, setFeaturedNews] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [categoriesData, newsData] = await Promise.all([
+          getNewsCategories(),
+          getFeaturedNews(10),
+        ]);
+
+        setCategories(categoriesData);
+        setFeaturedNews(newsData);
+      } catch (error) {
+        console.error("Error loading featured news:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
+
   return (
     <section className="feature-section">
       <div className="feature-container">
         {/* 3 dịch vụ chính */}
         <LocalizedLink
           routeKey="SERVICE_DETAIL"
-          params={{ slug: currentLanguage === 'vi' ? 'thong-tin-dan-duong-giam-sat' : 'cns-service' }}
+          params={{
+            slug:
+              currentLanguage === "vi"
+                ? "thong-tin-dan-duong-giam-sat"
+                : "cns-service",
+          }}
           className="feature-link"
         >
           <div
             className="feature-item"
             style={{
               backgroundImage:
-                "url(/assets/images/cns_atm/dvor_dme_van_don.webp)",
+                "url(/assets/images/cns_atm/anh-dai-dien-cns.jpg)",
             }}
           >
             <div className="feature-overlay"></div>
@@ -33,23 +66,36 @@ const Feature = () => {
               <i className="fas fa-satellite"></i>
             </div>
             <div className="feature-text">
-              <h3>{t('frontend.home.services.cns.title')}</h3>
-              <p className="feature-desc">{t('frontend.home.services.cns.description')}</p>
+              <h3>{t("frontend.home.services.cns.title")}</h3>
+              <p className="feature-desc">
+                {t("frontend.home.services.cns.description")}
+              </p>
             </div>
           </div>
         </LocalizedLink>
-        <LocalizedLink routeKey="SERVICE_DETAIL" params={{ slug: currentLanguage === 'vi' ? 'bay-kiem-tra-hieu-chuan' : 'calibration-service' }} className="feature-link">
+        <LocalizedLink
+          routeKey="SERVICE_DETAIL"
+          params={{
+            slug:
+              currentLanguage === "vi"
+                ? "bay-kiem-tra-hieu-chuan"
+                : "calibration-service",
+          }}
+          className="feature-link"
+        >
           <div
             className="feature-item"
-            style={{ backgroundImage: "url(/assets/images/bhc/bhc_1.webp)" }}
+            style={{ backgroundImage: "url(/assets/images/bhc/bhc_2.webp)" }}
           >
             <div className="feature-overlay"></div>
             <div className="feature-icon">
               <i className="fas fa-plane"></i>
             </div>
             <div className="feature-text">
-              <h3>{t('frontend.home.services.flight.title')}</h3>
-              <p className="feature-desc">{t('frontend.home.services.flight.description')}</p>
+              <h3>{t("frontend.home.services.flight.title")}</h3>
+              <p className="feature-desc">
+                {t("frontend.home.services.flight.description")}
+              </p>
             </div>
           </div>
         </LocalizedLink>
@@ -63,8 +109,10 @@ const Feature = () => {
               <i className="fas fa-globe"></i>
             </div>
             <div className="feature-text">
-              <h3>{t('frontend.home.services.industry.title')}</h3>
-              <p className="feature-desc">{t('frontend.home.services.industry.description')}</p>
+              <h3>{t("frontend.home.services.industry.title")}</h3>
+              <p className="feature-desc">
+                {t("frontend.home.services.industry.description")}
+              </p>
             </div>
           </div>
         </LocalizedLink>
@@ -89,24 +137,62 @@ const Feature = () => {
             }}
             style={{ width: "100%", height: "100%" }}
           >
-            {mockNews.filter(item => item.isOutstanding).map((item, index) => (
-              <SwiperSlide key={index}>
-                <LocalizedLink 
-                  to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${currentLanguage === 'vi' ? item.postCategorySlugVi : item.postCategorySlugEn}/${currentLanguage === 'vi' ? item.slugVi : item.slugEn}`}
-                  style={{ textDecoration: 'none', color: 'inherit' }}
-                >
-                  <div className="notify-item" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}>
-                    <div className="notify-img">
-                      <img src={item.image} alt={item.alt} loading="lazy" />
-                      <span className="news-badge">{t('frontend.home.featuredNews')}</span>
-                    </div>
-                    <p className="notify-title" title={currentLanguage === 'vi' ? item.titleVi : item.titleEn}>
-                      {currentLanguage === 'vi' ? item.titleVi : item.titleEn}
-                    </p>
-                  </div>
-                </LocalizedLink>
+            {loading ? (
+              <SwiperSlide>
+                <div className="notify-item">
+                  <div className="notify-loading">Loading featured news...</div>
+                </div>
               </SwiperSlide>
-            ))}
+            ) : (
+              featuredNews.map((item, index) => {
+                const formattedItem = formatNewsForDisplay(
+                  item,
+                  currentLanguage
+                );
+                const category = categories.find(
+                  (cat) => cat.id === item.newsCategoryId
+                );
+                const categorySlug =
+                  currentLanguage === "vi"
+                    ? category?.slugVi
+                    : category?.slugEn;
+
+                return (
+                  <SwiperSlide key={index}>
+                    <LocalizedLink
+                      to={
+                        currentLanguage === "vi"
+                          ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+                          : `/en/news/${categorySlug}/${formattedItem.slug}`
+                      }
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <div className="notify-item" title={formattedItem.title}>
+                        <div className="notify-img">
+                          <img
+                            src={
+                              formattedItem.imageUrl ||
+                              "/images/default-news.jpg"
+                            }
+                            alt={formattedItem.title}
+                            loading="lazy"
+                            onError={(e) => {
+                              e.target.src = "/images/default-news.jpg";
+                            }}
+                          />
+                          <span className="news-badge">
+                            {t("frontend.home.featuredNews")}
+                          </span>
+                        </div>
+                        <p className="notify-title" title={formattedItem.title}>
+                          {formattedItem.title}
+                        </p>
+                      </div>
+                    </LocalizedLink>
+                  </SwiperSlide>
+                );
+              })
+            )}
           </Swiper>
         </div>
       </div>

@@ -1,0 +1,63 @@
+/* Banner Manager Styles */
+.banner-manager {
+  padding: 24px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.banner-manager-header {
+  margin-bottom: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #3b82f6;
+}
+
+.banner-manager-header h2 {
+  margin: 0 0 8px 0;
+  color: #1f2937;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.banner-manager-description {
+  margin: 0;
+  color: #6b7280;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.banner-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .banner-manager {
+    padding: 16px;
+  }
+  
+  .banner-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .banner-manager-header {
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .banner-manager-header h2 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-grid {
+    grid-template-columns: 1fr;
+  }
+}

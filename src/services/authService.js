@@ -88,12 +88,13 @@ export const login = async (username, password) => {
   }
 };
 
-export const changePassword = async (currentPassword, newPassword) => {
+export const changePassword = async (passwordData) => {
   try {
     console.log("🔐 Attempting password change...");
     const response = await api.post("/api/auth/change-password", {
-      currentPassword,
-      newPassword
+      currentPassword: passwordData.currentPassword,
+      newPassword: passwordData.newPassword,
+      confirmPassword: passwordData.confirmPassword
     });
 
     console.log("📡 Change password response:", response.data);
@@ -103,22 +104,35 @@ export const changePassword = async (currentPassword, newPassword) => {
       
       return {
         success: true,
-        message: response.data.message || "Password changed successfully"
+        message: response.data.message || "Đổi mật khẩu thành công"
       };
     }
 
     return {
       success: false,
-      message: response.data.message || "Password change failed"
+      message: response.data.message || "Đổi mật khẩu thất bại"
     };
 
   } catch (error) {
     console.error("❌ Password change failed:", error.response?.data || error.message);
     
-    return {
-      success: false,
-      message: error.response?.data?.Message || error.message || "Password change failed"
-    };
+    // Handle different error cases
+    if (error.response?.status === 400) {
+      return {
+        success: false,
+        message: error.response.data?.message || "Thông tin không hợp lệ"
+      };
+    } else if (error.response?.status === 401) {
+      return {
+        success: false,
+        message: "Mật khẩu hiện tại không đúng"
+      };
+    } else {
+      return {
+        success: false,
+        message: error.response?.data?.message || error.message || "Có lỗi xảy ra khi đổi mật khẩu"
+      };
+    }
   }
 };
 

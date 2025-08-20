@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./TrendingArea.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -9,30 +9,53 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
-import { mockNews } from "../../../../utils/mockNews";
+import { getNewsByCategory, getNewsCategories, formatNewsForDisplay, CATEGORY_IDS } from "../../../../services/clientNewsService";
 
 const TrendingArea = () => {
   const { t, currentLanguage } = useI18n();
+  const [newsData, setNewsData] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   
-  const categorySlug = currentLanguage === 'vi' ? 'hoat-dong-cong-ty' : 'company-activities';
-  const filteredNews = mockNews.filter(
-    (item) => currentLanguage === 'vi' 
-      ? item.postCategorySlugVi === categorySlug
-      : item.postCategorySlugEn === categorySlug
-  );
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const categoriesData = await getNewsCategories();
+        setCategories(categoriesData);
+        
+        // Use Company Activities category ID directly
+        const newsResponse = await getNewsByCategory(CATEGORY_IDS.COMPANY_ACTIVITIES, {
+          pageIndex: 1,
+          pageSize: 15, // Get enough for all sections
+          sortBy: "timePosted",
+          sortDirection: "desc"
+        });
+        
+        setNewsData(newsResponse.items);
+      } catch (error) {
+        console.error("Error loading trending area data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Helper lấy trường theo ngôn ngữ
-  const getTitle = (item) => currentLanguage === 'vi' ? item.titleVi : item.titleEn;
-  const getCategorySlug = (item) => currentLanguage === 'vi' ? item.postCategorySlugVi : item.postCategorySlugEn;
-  const getSlug = (item) => currentLanguage === 'vi' ? item.slugVi : item.slugEn;
-  const getDateLocale = () => currentLanguage === 'vi' ? 'vi-VN' : 'en-US';
-  const getNewsLink = (item) => currentLanguage === 'vi'
-    ? `/tin-tuc/${getCategorySlug(item)}/${getSlug(item)}`
-    : `/en/news/${getCategorySlug(item)}/${getSlug(item)}`;
+    loadData();
+  }, [currentLanguage]);
 
-  const trendingTop = filteredNews.slice(0, 3);
-  const trendingBottom = filteredNews.slice(3, 6);
-  const trendingRight = filteredNews.slice(6);
+  const getNewsLink = (item) => {
+    const formattedItem = formatNewsForDisplay(item, currentLanguage);
+    const category = categories.find(cat => cat.id === item.newsCategoryId);
+    const categorySlug = currentLanguage === 'vi' ? category?.slugVi : category?.slugEn;
+    
+    return currentLanguage === 'vi'
+      ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+      : `/en/news/${categorySlug}/${formattedItem.slug}`;
+  };
+
+  const trendingTop = newsData.slice(0, 3);
+  const trendingBottom = newsData.slice(3, 6);
+  const trendingRight = newsData.slice(6);
   return (
     <div className="trending-area">
       <div className="container">
@@ -57,20 +80,26 @@ const TrendingArea = () => {
                   slidesPerView={1}
                   navigation={true}
                 >
-                  {trendingTop.map((item) => (
-                    <SwiperSlide key={item.id}>
-                      <div className="trend-top-img">
-                        <img
-                          src={item.image}
-                          alt={getTitle(item)}
-                          title={getTitle(item)}
-                        />
-                        <div className="trend-top-cap">
-                          <h2>{getTitle(item)}</h2>
+                  {trendingTop.map((item) => {
+                    const formattedItem = formatNewsForDisplay(item, currentLanguage);
+                    return (
+                      <SwiperSlide key={item.id}>
+                        <div className="trend-top-img">
+                          <img
+                            src={formattedItem.imageUrl || '/images/default-news.jpg'}
+                            alt={formattedItem.title}
+                            title={formattedItem.title}
+                            onError={(e) => {
+                              e.target.src = '/images/default-news.jpg';
+                            }}
+                          />
+                          <div className="trend-top-cap">
+                            <h2>{formattedItem.title}</h2>
+                          </div>
                         </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
+                      </SwiperSlide>
+                    );
+                  })}
                 </Swiper>
               </div>
               <div className="trending-bottom">
@@ -85,32 +114,38 @@ const TrendingArea = () => {
                   }}
                   className="trending-bottom-swiper"
                 >
-                  {trendingBottom.map((item) => (
-                    <SwiperSlide key={item.id}>
-                      <div className="single-bottom">
-                        <div className="trend-bottom-img">
-                          <img
-                            src={item.image}
-                            alt={getTitle(item)}
-                            title={getTitle(item)}
-                          />
+                  {trendingBottom.map((item) => {
+                    const formattedItem = formatNewsForDisplay(item, currentLanguage);
+                    return (
+                      <SwiperSlide key={item.id}>
+                        <div className="single-bottom">
+                          <div className="trend-bottom-img">
+                            <img
+                              src={formattedItem.imageUrl || '/images/default-news.jpg'}
+                              alt={formattedItem.title}
+                              title={formattedItem.title}
+                              onError={(e) => {
+                                e.target.src = '/images/default-news.jpg';
+                              }}
+                            />
+                          </div>
+                          <div className="trend-bottom-cap">
+                            <span className="color1">
+                              {formattedItem.formattedDate}
+                            </span>
+                            <h4>
+                              <LocalizedLink
+                                to={getNewsLink(item)}
+                                title={formattedItem.title}
+                              >
+                                {formattedItem.title}
+                              </LocalizedLink>
+                            </h4>
+                          </div>
                         </div>
-                        <div className="trend-bottom-cap">
-                          <span className="color1">
-                            {new Date(item.timePosted).toLocaleDateString(getDateLocale())}
-                          </span>
-                          <h4>
-                            <LocalizedLink
-                              to={getNewsLink(item)}
-                              title={getTitle(item)}
-                            >
-                              {getTitle(item)}
-                            </LocalizedLink>
-                          </h4>
-                        </div>
-                      </div>
-                    </SwiperSlide>
-                  ))}
+                      </SwiperSlide>
+                    );
+                  })}
                 </Swiper>
               </div>
             </div>
@@ -141,32 +176,38 @@ const TrendingArea = () => {
                   },
                 }}
               >
-                {trendingRight.map((item) => (
-                  <SwiperSlide key={item.id}>
-                    <div className="trand-right-single d-flex">
-                      <div className="trand-right-img">
-                        <img
-                          src={item.image}
-                          alt={getTitle(item)}
-                          title={getTitle(item)}
-                        />
+                {trendingRight.map((item) => {
+                  const formattedItem = formatNewsForDisplay(item, currentLanguage);
+                  return (
+                    <SwiperSlide key={item.id}>
+                      <div className="trand-right-single d-flex">
+                        <div className="trand-right-img">
+                          <img
+                            src={formattedItem.imageUrl || '/images/default-news.jpg'}
+                            alt={formattedItem.title}
+                            title={formattedItem.title}
+                            onError={(e) => {
+                              e.target.src = '/images/default-news.jpg';
+                            }}
+                          />
+                        </div>
+                        <div className="trand-right-cap">
+                          <span className="color3">
+                            {formattedItem.formattedDate}
+                          </span>
+                          <h4>
+                            <LocalizedLink
+                              to={getNewsLink(item)}
+                              title={formattedItem.title}
+                            >
+                              {formattedItem.title}
+                            </LocalizedLink>
+                          </h4>
+                        </div>
                       </div>
-                      <div className="trand-right-cap">
-                        <span className="color3">
-                          {new Date(item.timePosted).toLocaleDateString(getDateLocale())}
-                        </span>
-                        <h4>
-                          <LocalizedLink
-                            to={getNewsLink(item)}
-                            title={getTitle(item)}
-                          >
-                            {getTitle(item)}
-                          </LocalizedLink>
-                        </h4>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
+                    </SwiperSlide>
+                  );
+                })}
               </Swiper>
             </div>
           </div>

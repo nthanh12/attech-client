@@ -8,7 +8,6 @@ import ToastMessage from "../components/ToastMessage";
 import "./AlbumList.css";
 
 import albumService from "../../services/albumService";
-import { uploadAlbumImages, getAttachmentUrl } from "../../services/newsService";
 
 const AlbumList = () => {
   const { t } = useTranslation();
@@ -76,13 +75,13 @@ const AlbumList = () => {
         images: { uploading: true, uploadedItems: [] }
       }));
 
-      const response = await uploadAlbumImages(Array.from(files));
+      const response = await albumService.uploadImages(Array.from(files));
       console.log('Upload response:', response);
       
-      if (response.successUploads && response.successUploads.length > 0) {
-        const uploadedItems = response.successUploads.map(item => ({
+      if (response.success && response.data && response.data.length > 0) {
+        const uploadedItems = response.data.map(item => ({
           id: item.id,
-          previewUrl: getAttachmentUrl(item.id),
+          previewUrl: albumService.getAttachmentUrl(item.id),
           fileName: item.originalFileName || item.fileName,
           fileSize: item.fileSize
         }));
@@ -93,10 +92,10 @@ const AlbumList = () => {
         }));
 
         // Update attachmentIds in form
-        const attachmentIds = response.successUploads.map(item => item.id);
+        const attachmentIds = response.data.map(item => item.id);
         handleInputChange("attachmentIds", attachmentIds);
         
-        showToast(`Đã upload ${response.successUploads.length} ảnh thành công`, "success");
+        showToast(`Đã upload ${response.data.length} ảnh thành công`, "success");
         
         // Show failed uploads if any
         if (response.failedCount > 0) {

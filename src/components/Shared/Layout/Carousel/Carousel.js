@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Carousel.css";
 
-import useIsMobile from '../Header/Navbar/useIsMobile';
+import useIsMobile from "../Header/Navbar/useIsMobile";
 
 const Carousel = () => {
   const isMobile = useIsMobile(1025);
@@ -9,8 +9,8 @@ const Carousel = () => {
 
   useEffect(() => {
     const handleResize = () => setIsSmallMobile(window.innerWidth < 600);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const slides = [
@@ -19,11 +19,11 @@ const Carousel = () => {
       className: "carousel-img-1",
     },
     {
-      img: "/assets/images/banner/banner_attech_2.webp",
+      img: "/assets/images/banner/banner_attech_2.jpg",
       className: "carousel-img-2",
     },
     {
-      img: "https://attech.com.vn/wp-content/uploads/2015/05/mnuSanPham.png",
+      img: "/assets/images/banner/banner_attech_3.jpg",
       className: "carousel-img-3",
     },
   ];

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { mockNews } from "../../../../utils/mockNews";
-import { mockNewsCategories } from "../../../../utils/mockNewsCategories";
+import { getNewsByCategorySlug, getNewsCategories, formatNewsForDisplay, CATEGORY_IDS } from "../../../../services/clientNewsService";
 import { Link } from "react-router-dom";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 import { useI18n } from "../../../../hooks/useI18n";
@@ -8,28 +7,14 @@ import "./WhatsNews.css";
 
 const WhatsNews = () => {
   const { currentLanguage, t } = useI18n();
-  // Lấy category ngành hàng không từ mockNewsCategories
-  const aviationCategory = mockNewsCategories.find((cat) =>
-    currentLanguage === "vi"
-      ? cat.slugVi === "tin-nganh-hang-khong"
-      : cat.slugEn === "aviation-news"
-  );
-  const aviationSlug =
-    currentLanguage === "vi"
-      ? aviationCategory?.slugVi
-      : aviationCategory?.slugEn;
-  const aviationNews = mockNews
-    .filter(
-      (n) =>
-        n.status === 1 &&
-        (currentLanguage === "vi"
-          ? n.postCategorySlugVi === aviationSlug
-          : n.postCategorySlugEn === aviationSlug)
-    )
-    .sort((a, b) => new Date(b.timePosted) - new Date(a.timePosted));
-
+  const [aviationNews, setAviationNews] = useState([]);
+  const [aviationCategory, setAviationCategory] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  
   // Responsive: mobile chỉ hiển thị 2 bài, desktop 5 bài
   const [newsCount, setNewsCount] = useState(5);
+  
   useEffect(() => {
     const handleResize = () => {
       setNewsCount(window.innerWidth <= 768 ? 2 : 5);
@@ -39,21 +24,56 @@ const WhatsNews = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const categoriesData = await getNewsCategories();
+        setCategories(categoriesData);
+        
+        // Get Aviation News using slug (better approach)
+        const aviationSlug = "tin-nganh-hang-khong"; // Vietnamese slug for Aviation News
+        const newsResponse = await getNewsByCategorySlug(aviationSlug, {
+          pageIndex: 1,
+          pageSize: 10,
+          sortBy: "timePosted",
+          sortDirection: "desc"
+        });
+        
+        console.log("🔍 Aviation news response:", newsResponse);
+        
+        // Find aviation category for display purposes
+        const aviationCat = categoriesData.find(cat => cat.slugVi === aviationSlug) || {
+          id: CATEGORY_IDS.AVIATION_NEWS,
+          slugVi: "tin-nganh-hang-khong",
+          slugEn: "aviation-news",
+          titleVi: "Tin ngành hàng không",
+          titleEn: "Aviation News"
+        };
+        
+        // Always use aviation category, even if no news found
+        setAviationCategory(aviationCat);
+        setAviationNews(newsResponse.items || []);
+      } catch (error) {
+        console.error("Error loading aviation news:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [currentLanguage]);
+
   const newsToShow = aviationNews.slice(0, newsCount);
 
-  const getTitle = (news) =>
-    currentLanguage === "vi" ? news.titleVi : news.titleEn;
-  const getSlug = (news) =>
-    currentLanguage === "vi" ? news.slugVi : news.slugEn;
-  const getCategorySlug = (news) =>
-    currentLanguage === "vi"
-      ? news.postCategorySlugVi
-      : news.postCategorySlugEn;
-  const getDateLocale = () => (currentLanguage === "vi" ? "vi-VN" : "en-US");
-  const getNewsLink = (news) =>
-    currentLanguage === "vi"
-      ? `/tin-tuc/${getCategorySlug(news)}/${getSlug(news)}`
-      : `/en/news/${getCategorySlug(news)}/${getSlug(news)}`;
+  const getNewsLink = (news) => {
+    const formattedItem = formatNewsForDisplay(news, currentLanguage);
+    const categorySlug = currentLanguage === "vi" ? aviationCategory?.slugVi : aviationCategory?.slugEn;
+    
+    return currentLanguage === "vi"
+      ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+      : `/en/news/${categorySlug}/${formattedItem.slug}`;
+  };
 
   // Lấy tên category ngành hàng không (ưu tiên i18n, fallback sang titleVi/titleEn nếu chưa có key i18n)
   const aviationCategoryName =
@@ -62,6 +82,8 @@ const WhatsNews = () => {
       ? aviationCategory?.titleVi
       : aviationCategory?.titleEn) ||
     "Tin ngành hàng không";
+
+  const aviationSlug = currentLanguage === "vi" ? aviationCategory?.slugVi : aviationCategory?.slugEn;
 
   return (
     <section className="whats-news-area pt-50 pb-20">
@@ -88,23 +110,38 @@ const WhatsNews = () => {
               <div className="col-12 pd_0">
                 <div className="whats-news-caption">
                   <div className="whats-news-grid">
-                    {newsToShow.map((news, idx) => (
-                      <div className="whats-news-card" key={news.id}>
-                        <div className="what-img">
-                          <img src={news.image} alt={getTitle(news)} />
-                        </div>
-                        <div className="what-cap">
-                          <span className="title-news">
-                            {new Date(news.timePosted).toLocaleDateString(
-                              getDateLocale()
-                            )}
-                          </span>
-                          <h4>
-                            <Link to={getNewsLink(news)}>{getTitle(news)}</Link>
-                          </h4>
-                        </div>
+                    {loading ? (
+                      <div>Loading aviation news...</div>
+                    ) : newsToShow.length === 0 ? (
+                      <div className="no-news-message">
+                        <p>Hiện tại chưa có tin tức trong mục này.</p>
                       </div>
-                    ))}
+                    ) : (
+                      newsToShow.map((news, idx) => {
+                        const formattedItem = formatNewsForDisplay(news, currentLanguage);
+                        return (
+                          <div className="whats-news-card" key={news.id}>
+                            <div className="what-img">
+                              <img 
+                                src={formattedItem.imageUrl || '/images/default-news.jpg'} 
+                                alt={formattedItem.title}
+                                onError={(e) => {
+                                  e.target.src = '/images/default-news.jpg';
+                                }}
+                              />
+                            </div>
+                            <div className="what-cap">
+                              <span className="title-news">
+                                {formattedItem.formattedDate}
+                              </span>
+                              <h4>
+                                <Link to={getNewsLink(news)}>{formattedItem.title}</Link>
+                              </h4>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
                   {/* Nút xem tất cả cho mobile */}
                   <div className="d-block d-md-none mt-3 text-center">

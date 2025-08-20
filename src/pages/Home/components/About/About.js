@@ -4,20 +4,20 @@ import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, A11y } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, A11y } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const ArrowIcon = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
     strokeLinejoin="round"
   >
     <line x1="5" y1="12" x2="19" y2="12" />
@@ -37,20 +37,23 @@ const getProducts = (t, currentLanguage) => [
       "/assets/images/cns_atm/dvor_dme_van_don.webp",
     ],
     routeKey: "SERVICE_DETAIL",
-    slug: currentLanguage === 'vi' ? 'thong-tin-dan-duong-giam-sat' : 'cns-service'
+    slug:
+      currentLanguage === "vi" ? "thong-tin-dan-duong-giam-sat" : "cns-service",
   },
   {
     titleKey: "frontend.home.services.flight.title",
     images: [
-      "/assets/images/bhc/bhc_1.webp",
-      "/assets/images/bhc/bhc_2.webp",
-      "/assets/images/bhc/bhc_3.webp",
-      "/assets/images/bhc/bhc_4.webp",
-      "/assets/images/bhc/bhc_5.webp",
-      "/assets/images/bhc/bhc_6.webp",
+      "/assets/images/bhc/bkthc_1.jpg",
+      "/assets/images/bhc/bkthc_2.jpg",
+      "/assets/images/bhc/bkthc_3.jpg",
+      "/assets/images/bhc/bkthc_4.jpg",
+      "/assets/images/bhc/bkthc_5.jpg",
     ],
     routeKey: "SERVICE_DETAIL",
-    slug: currentLanguage === 'vi' ? 'bay-kiem-tra-hieu-chuan' : 'calibration-service'
+    slug:
+      currentLanguage === "vi"
+        ? "bay-kiem-tra-hieu-chuan"
+        : "calibration-service",
   },
   {
     titleKey: "frontend.home.services.industry.title",
@@ -65,7 +68,10 @@ const getProducts = (t, currentLanguage) => [
       "/assets/images/cnhk/cnhk_8.webp",
     ],
     routeKey: "SERVICE_DETAIL",
-    slug: currentLanguage === 'vi' ? 'thu-nghiem-hieu-chuan' : 'testing-calibration-service'
+    slug:
+      currentLanguage === "vi"
+        ? "thu-nghiem-hieu-chuan"
+        : "testing-calibration-service",
   },
 ];
 
@@ -102,7 +108,9 @@ export default function About() {
   return (
     <section className="about-hero">
       <div className="about-hero-content">
-        <h1 className="about-main-title">{t('frontend.home.featuredServices')}</h1>
+        <h1 className="about-main-title">
+          {t("frontend.home.featuredServices")}
+        </h1>
       </div>
       <Swiper
         modules={[Navigation, Pagination, A11y]}
@@ -112,7 +120,7 @@ export default function About() {
         breakpoints={{
           0: { slidesPerView: 1 },
           769: { slidesPerView: 2 },
-          1200: { slidesPerView: 3 }
+          1200: { slidesPerView: 3 },
         }}
         className="about-hero-container"
       >
@@ -140,8 +148,12 @@ export default function About() {
                 <div className="about-hero-content">
                   <h2 className="about-content-title">{t(product.titleKey)}</h2>
                   <div className="custom-btn-group">
-                    <LocalizedLink routeKey={product.routeKey} params={{ slug: product.slug }} className="custom-btn-more">
-                      {t('common.viewMore')}
+                    <LocalizedLink
+                      routeKey={product.routeKey}
+                      params={{ slug: product.slug }}
+                      className="custom-btn-more"
+                    >
+                      {t("common.viewMore")}
                       <ArrowIcon />
                     </LocalizedLink>
                   </div>

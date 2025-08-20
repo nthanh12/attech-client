@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, XIcon } from "lucide-react";
-import { mockNews } from "../../../../utils/mockNews";
+import { getNewsById, formatNewsForDisplay } from "../../../../services/clientNewsService";
 import { useI18n } from '../../../../hooks/useI18n';
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import "./GalleryDetail.css";
@@ -36,18 +36,35 @@ const GalleryDetail = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [news, setNews] = useState(null);
+  const [images, setImages] = useState([]);
 
-  // Tìm bài viết mockNews theo id
-  const news = mockNews.find(n => String(n.id) === String(albumId));
-  // Lấy danh sách ảnh: chỉ các ảnh trong contentVi (không lấy cover)
-  const images = news ? extractImagesFromContent(news.contentVi) : [];
-
-  // Hiệu ứng loading khi albumId thay đổi
+  // Load news data and extract images
   useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 600);
-    return () => clearTimeout(timer);
-  }, [albumId]);
+    const loadNewsData = async () => {
+      if (!albumId) return;
+      
+      try {
+        setLoading(true);
+        const newsData = await getNewsById(albumId);
+        setNews(newsData);
+        
+        // Extract images from content
+        const contentImages = extractImagesFromContent(
+          currentLanguage === 'vi' ? newsData.contentVi : newsData.contentEn
+        );
+        setImages(contentImages);
+      } catch (error) {
+        console.error("Error loading gallery detail:", error);
+        setNews(null);
+        setImages([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadNewsData();
+  }, [albumId, currentLanguage]);
 
   const handlePrevious = useCallback((e) => {
     if (e) {

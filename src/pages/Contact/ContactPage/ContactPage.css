@@ -75,7 +75,7 @@
 }
 
 .contact .content .info h4 span {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 300;
     color: #999999;
 }
@@ -156,4 +156,8 @@
     .contact {
         /* Không cần margin-top nữa vì đã được quản lý bởi MainLayout */
     }    
+    .contact .heading p
+    {
+      margin-bottom: 20px;
+    }
 }

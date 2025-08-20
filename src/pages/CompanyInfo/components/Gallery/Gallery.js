@@ -1,19 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { mockNews } from "../../../../utils/mockNews";
+import { getLatestNews, formatNewsForDisplay } from "../../../../services/clientNewsService";
 import "./Gallery.css";
 import { useI18n } from '../../../../hooks/useI18n';
 import SEO from "../../../../components/SEO/SEO";
-
-// Move this inside component to access currentLanguage
-const getAlbums = (currentLanguage) => mockNews.filter(n => n.status === 1).map(news => ({
-  id: news.id,
-  title: currentLanguage === 'vi' ? news.titleVi : news.titleEn,
-  description: currentLanguage === 'vi' ? news.descriptionVi : news.descriptionEn,
-  date: news.timePosted,
-  coverImage: news.image,
-}));
 
 const Gallery = () => {
   const { t } = useTranslation();
@@ -21,7 +12,37 @@ const Gallery = () => {
   const navigate = useNavigate();
   const { state } = location;
   const { currentLanguage } = useI18n();
-  const albums = getAlbums(currentLanguage);
+  const [albums, setAlbums] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAlbums = async () => {
+      try {
+        setLoading(true);
+        // Use news as gallery albums for now
+        const newsData = await getLatestNews(50); // Get more for gallery
+        
+        const formattedAlbums = newsData.map(news => {
+          const formattedItem = formatNewsForDisplay(news, currentLanguage);
+          return {
+            id: news.id,
+            title: formattedItem.title,
+            description: formattedItem.description,
+            date: news.timePosted,
+            coverImage: formattedItem.imageUrl,
+          };
+        });
+        
+        setAlbums(formattedAlbums);
+      } catch (error) {
+        console.error("Error loading gallery albums:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAlbums();
+  }, [currentLanguage]);
 
   useEffect(() => {
     if (state?.fromGalleryDetail || state?.fromError) {

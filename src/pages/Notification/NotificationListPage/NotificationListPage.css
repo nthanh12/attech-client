@@ -68,7 +68,7 @@
 /* ===== Đổi các class từ NewsListPage cho notificationlist ===== */
 .notificationlist-minimal {
   background: #f8f9fa;
-  padding: 32px 0 0 0;
+  padding: 32px 40px;
 }
 .page-title-minimal {
   font-size: 1.6rem;
@@ -204,6 +204,60 @@
     height: 190px;
   }
 }
+/* Notification Sections */
+.notification-sections {
+  margin-bottom: 32px;
+}
+
+.notification-section {
+  margin-bottom: 48px;
+}
+
+.notification-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.notification-section-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1a237e;
+  margin: 0;
+}
+
+.notification-section-view-all {
+  color: #f59e0b;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.18s;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #f59e0b;
+  background: transparent;
+}
+
+.notification-section-view-all:hover {
+  color: #fff;
+  background: #f59e0b;
+}
+
+@media (max-width: 1024px) {
+  .notification-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .notification-section-title {
+    font-size: 1.2rem;
+  }
+}
+
 @media (max-width: 768px) {
   .notificationlist-minimal {
     padding: 16px 0 0 0;
@@ -214,9 +268,6 @@
   }
   .notificationlist-card-minimal {
     height: 290px;
-  }
-  .notificationlist-img-link-minimal {
-    height: 130px;
   }
   .notificationlist-content-minimal {
     padding: 10px 8px 8px 8px;
@@ -233,5 +284,18 @@
   .pagination-notificationlist-minimal {
     gap: 4px;
     margin-top: 14px;
+  }
+  
+  .notification-section {
+    margin-bottom: 32px;
+  }
+  
+  .notification-section-title {
+    font-size: 1.1rem;
+  }
+  
+  .notification-section-view-all {
+    font-size: 13px;
+    padding: 6px 12px;
   }
 }

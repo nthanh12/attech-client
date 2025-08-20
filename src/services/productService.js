@@ -1,11 +1,15 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
 
-// Get all product with pagination - matches BE format exactly
-export async function fetchProduct(pageIndex = 1, pageSize = 10) {
+// Get all product with pagination - FIXED parameters
+export async function fetchProduct(pageNumber = 1, pageSize = 10, keyword = "") {
   try {
     const response = await api.get("/api/product/find-all", {
-      params: { pageIndex, pageSize },
+      params: {
+        pageNumber,  // Changed from pageIndex
+        pageSize,
+        keyword      // Added keyword support
+      },
     });
 
     // Handle BE response format: camelCase
@@ -13,9 +17,9 @@ export async function fetchProduct(pageIndex = 1, pageSize = 10) {
       const dataObj = response.data.data;
       const result = {
         items: dataObj.items || [],
-        totalCount: dataObj.totalItems || 0,
+        totalItems: dataObj.totalItems || 0,  // Match backend property
         totalPages: Math.ceil((dataObj.totalItems || 0) / pageSize),
-        currentPage: pageIndex,
+        currentPage: dataObj.page || pageNumber,  // Backend returns 'page'
         pageSize,
       };
       return result;
@@ -51,7 +55,7 @@ export async function fetchProductCategories() {
 // Get product by ID - for editing (returns DetailProductDto)
 export const getProductById = async (id) => {
   try {
-    const response = await api.get(`/api/product/find-by-id/${id}`);
+    const response = await api.get(`/api/product/detail/${id}`);
 
     // Handle API format
     if (response.data && response.data.status === 1 && response.data.data) {
@@ -64,68 +68,58 @@ export const getProductById = async (id) => {
   }
 };
 
-// Create product - UPDATED to use new attachment system
+// Get product by slug - for admin preview (returns DetailProductDto)  
+export const getProductBySlug = async (slug) => {
+  try {
+    const response = await api.get(`/api/product/detail/slug/${slug}`);
+
+    // Handle API format
+    if (response.data && response.data.status === 1 && response.data.data) {
+      return response.data.data; // Return DetailProductDto directly
+    }
+
+    throw new Error("Invalid product detail response");
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Create product - FIXED to use JSON instead of FormData
 export const createProduct = async (productData) => {
   try {
-    // Step 1: Prepare data to match CreateProductDto exactly
-    const formData = new FormData();
+    // JSON payload - NOT FormData
+    const payload = {
+      titleVi: productData.titleVi || "",
+      titleEn: productData.titleEn || "",
+      productCategoryId: productData.productCategoryId || 0,
+      contentVi: productData.contentVi || "",
+      contentEn: productData.contentEn || "",
+      descriptionVi: productData.descriptionVi || "",
+      descriptionEn: productData.descriptionEn || "",
+      slugVi: productData.slugVi || "",  // Fixed casing
+      slugEn: productData.slugEn || "",  // Fixed casing
+      isOutstanding: productData.isOutstanding || false,
 
-    // Required fields
-    formData.append("titleVi", productData.titleVi || "");
-    formData.append("titleEn", productData.titleEn || "");
-    formData.append(
-      "productCategoryId",
-      String(productData.productCategoryId || "")
-    );
-    formData.append("contentVi", productData.contentVi || "");
-    formData.append("contentEn", productData.contentEn || "");
-    formData.append("descriptionVi", productData.descriptionVi || "");
-    formData.append("descriptionEn", productData.descriptionEn || "");
-    formData.append("slugVi", productData.SlugVi || "");
-    formData.append("slugEn", productData.SlugEn || "");
-    formData.append(
-      "isOutstanding",
-      productData.isOutstanding ? "true" : "false"
-    );
+      // Status - fixed casing
+      status: typeof productData.status === "number"
+        ? productData.status
+        : productData.status === "active" ? 1
+        : productData.status === "inactive" ? 0
+        : 1,
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof productData.Status === "number"
-        ? productData.Status
-        : productData.Status === "active"
-        ? 1
-        : productData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      timePosted: productData.timePosted || new Date().toISOString(),
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = productData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
+      // Attachments
+      featuredImageId: productData.featuredImageId ?? null,
+      attachmentIds: productData.attachmentIds || []
+    };
 
-    // Step 2: Handle attachments using new system
-    if (productData.FeaturedImageId) {
-      formData.append("FeaturedImageId", String(productData.FeaturedImageId));
-    }
-
-    const attachmentIds = productData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.post("/api/product/create", formData, {
+    const response = await api.post("/api/product/create", payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // Changed from multipart
       },
-      timeout: 300000, // 5 minutes
+      timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -133,70 +127,42 @@ export const createProduct = async (productData) => {
   }
 };
 
-// Update product - UPDATED to use new attachment system
+// Update product - FIXED to use JSON instead of FormData
 export const updateProduct = async (id, productData) => {
   try {
-    const formData = new FormData();
+    // JSON payload - ID only in URL, NOT in body
+    const payload = {
+      titleVi: productData.titleVi || "",
+      titleEn: productData.titleEn || "",
+      productCategoryId: productData.productCategoryId || 0,
+      contentVi: productData.contentVi || "",
+      contentEn: productData.contentEn || "",
+      descriptionVi: productData.descriptionVi || "",
+      descriptionEn: productData.descriptionEn || "",
+      slugVi: productData.slugVi || "",  // Fixed casing
+      slugEn: productData.slugEn || "",  // Fixed casing
+      isOutstanding: productData.isOutstanding || false,
 
-    // Required ID
-    formData.append("Id", String(id));
+      // Status - fixed casing
+      status: typeof productData.status === "number"
+        ? productData.status
+        : productData.status === "active" ? 1
+        : productData.status === "inactive" ? 0
+        : 1,
 
-    // All fields from UpdateProductDto
-    formData.append("titleVi", productData.titleVi || "");
-    formData.append("titleEn", productData.titleEn || "");
-    formData.append(
-      "productCategoryId",
-      String(productData.productCategoryId || "")
-    );
-    formData.append("contentVi", productData.contentVi || "");
-    formData.append("contentEn", productData.contentEn || "");
-    formData.append("descriptionVi", productData.descriptionVi || "");
-    formData.append("descriptionEn", productData.descriptionEn || "");
-    formData.append("slugVi", productData.SlugVi || "");
-    formData.append("slugEn", productData.SlugEn || "");
-    formData.append(
-      "isOutstanding",
-      productData.isOutstanding ? "true" : "false"
-    );
+      timePosted: productData.timePosted || new Date().toISOString(),
 
-    // Ensure Status is a valid integer (1 for active, 0 for inactive)
-    const statusValue =
-      typeof productData.Status === "number"
-        ? productData.Status
-        : productData.Status === "active"
-        ? 1
-        : productData.Status === "inactive"
-        ? 0
-        : 1;
-    formData.append("Status", String(statusValue));
+      // Attachments
+      featuredImageId: productData.featuredImageId ?? null,
+      attachmentIds: productData.attachmentIds || []
+    };
 
-    // Ensure timePosted is valid ISO string
-    const timePosted = productData.timePosted || new Date().toISOString();
-    formData.append("timePosted", timePosted);
-
-    // Handle attachments
-    if (productData.FeaturedImageId) {
-      formData.append("FeaturedImageId", String(productData.FeaturedImageId));
-    }
-
-    const attachmentIds = productData.attachmentIds;
-    if (attachmentIds && attachmentIds.length > 0) {
-      attachmentIds.forEach((id) => {
-        formData.append("attachmentIds", String(id));
-      });
-    }
-
-    const response = await api.put("/api/product/update", formData, {
+    const response = await api.put(`/api/product/update/${id}`, payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": "application/json",  // JSON not FormData
       },
       timeout: 300000,
     });
-
-    // Handle BE response format
-    if (response.data && response.data.status === 1) {
-      return response.data;
-    }
 
     return response.data;
   } catch (error) {
@@ -367,18 +333,6 @@ export const bulkUploadFiles = async (files, relationType = "album") => {
   }
 };
 
-// Get file URL by attachment ID
-export const getAttachmentUrl = (attachmentId) => {
-  if (!attachmentId) return null;
-
-  // Backend runs on configured API URL, not frontend localhost:3000
-  const baseUrl = getApiBaseUrl();
-
-  // Use the original endpoint that was working
-  const url = `${baseUrl}/api/attachments/${attachmentId}`;
-
-  return url;
-};
 
 // Get attachments by entity
 export const getAttachmentsByEntity = async (objectType, objectId) => {
@@ -410,7 +364,7 @@ export const deleteAttachment = async (attachmentId) => {
 };
 
 // ============================================================
-// NEWS CATEGORY API
+// PRODUCT CATEGORY API
 // ============================================================
 
 export const getProductCategories = async () => {

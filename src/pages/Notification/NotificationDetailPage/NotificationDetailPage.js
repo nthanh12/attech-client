@@ -1,209 +1,163 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useParams, Link } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import sanitizeHtml from "sanitize-html";
 import "./NotificationDetailPage.css";
-import { mockNotifications } from "../../../utils/mockNotifications";
+import { getNotificationBySlug, getNotificationCategories, getRelatedNotifications, formatNotificationForDisplay } from "../../../services/clientNotificationService";
 import SEO from "../../../components/SEO/SEO";
 import { useI18n } from "../../../hooks/useI18n";
+import { getLanguageFromPath } from "../../../utils/routeHelpers";
+import LocalizedLink from "../../../components/Shared/LocalizedLink";
+import SearchBox from "../../../components/Shared/SearchBox";
+import ErrorPage from "../../../components/Shared/ErrorPage";
+import { useLocation } from "react-router-dom";
 
 const NotificationDetailPage = () => {
-  const { category, slug } = useParams();
-  const { t } = useTranslation();
   const { currentLanguage } = useI18n();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [tableOfContents, setTableOfContents] = useState([]);
+  const { t: tNotifications } = useTranslation();
+  const location = useLocation();
+  const { category: categorySlug, slug: notificationSlug } = useParams();
+  const isEnglish = getLanguageFromPath(location.pathname) === "en";
+  const navigate = useNavigate();
+  const [notificationItem, setNotificationItem] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [relatedNotifications, setRelatedNotifications] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  // Lấy thông báo từ mockNotifications theo category và slug
-  const notificationItem = useMemo(() => {
-    if (currentLanguage === "vi") {
-      return mockNotifications.find(
-        (item) =>
-          item.notificationCategorySlugVi === category && item.slugVi === slug
-      );
-    } else {
-      return mockNotifications.find(
-        (item) =>
-          item.notificationCategorySlugEn === category && item.slugEn === slug
-      );
+  // Handle search
+  const handleSearchChange = useCallback((value) => {
+    setSearchTerm(value);
+  }, []);
+
+  const handleSearch = useCallback((term) => {
+    if (term.trim()) {
+      // Navigate to notification list page with search
+      const url = currentLanguage === "vi" ? `/thong-bao?search=${encodeURIComponent(term)}` : `/en/notifications?search=${encodeURIComponent(term)}`;
+      navigate(url);
     }
-  }, [category, slug, currentLanguage]);
+  }, [navigate, currentLanguage]);
 
-  // Lọc thông báo cùng chuyên mục cho sidebar
-  const filteredNotifications = useMemo(() => {
-    if (!notificationItem) return [];
-    const categorySlug =
-      currentLanguage === "vi"
-        ? notificationItem.notificationCategorySlugVi
-        : notificationItem.notificationCategorySlugEn;
-    const titleField = currentLanguage === "vi" ? "titleVi" : "titleEn";
-    const contentField = currentLanguage === "vi" ? "contentVi" : "contentEn";
-
-    let filtered = mockNotifications.filter((item) => {
-      const itemCategorySlug =
-        currentLanguage === "vi"
-          ? item.notificationCategorySlugVi
-          : item.notificationCategorySlugEn;
-      return (
-        itemCategorySlug === categorySlug &&
-        (item[titleField].toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item[contentField].toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    });
-    filtered = filtered.sort(
-      (a, b) => new Date(b.timePosted) - new Date(a.timePosted)
-    );
-    let top10 = filtered.slice(0, 10);
-    if (
-      notificationItem &&
-      !top10.some((item) => item.id === notificationItem.id)
-    ) {
-      top10 = [notificationItem, ...top10];
+  const handleSelectSuggestion = useCallback((suggestion) => {
+    // Navigate directly to the selected notification
+    const category = categories.find(cat => cat.id === suggestion.notificationCategoryId);
+    const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+    
+    if (categorySlug && suggestion.slug) {
+      const url = currentLanguage === "vi" 
+        ? `/thong-bao/${categorySlug}/${suggestion.slug}`
+        : `/en/notifications/${categorySlug}/${suggestion.slug}`;
+      navigate(url);
     }
-    // Loại trùng
-    const unique = [];
-    const ids = new Set();
-    for (const item of top10) {
-      if (!ids.has(item.id)) {
-        unique.push(item);
-        ids.add(item.id);
-      }
-    }
-    return unique;
-  }, [searchTerm, notificationItem]);
-
-  // Lọc thông báo liên quan
-  const relatedNotifications = useMemo(() => {
-    if (!notificationItem) return [];
-    return mockNotifications
-      .filter((item) => {
-        const itemCategorySlug =
-          currentLanguage === "vi"
-            ? item.notificationCategorySlugVi
-            : item.notificationCategorySlugEn;
-        return item.id !== notificationItem.id && itemCategorySlug === category;
-      })
-      .slice(0, 3);
-  }, [notificationItem, category, currentLanguage]);
+  }, [navigate, currentLanguage, categories]);
 
   useEffect(() => {
-    if (!notificationItem) {
-      setIsInitialized(true);
-      return;
-    }
-
-    const generateTableOfContents = () => {
+    const loadData = async () => {
       try {
-        const parser = new DOMParser();
-        const content =
-          currentLanguage === "vi"
-            ? notificationItem.contentVi
-            : notificationItem.contentEn;
-        const doc = parser.parseFromString(content, "text/html");
-        const headings = Array.from(doc.querySelectorAll("h2, h3, h4"));
-        return headings.map((heading, index) => ({
-          id: `section-${index}`,
-          text: heading.textContent,
-          level: parseInt(heading.tagName.charAt(1)),
-        }));
-      } catch (error) {
-        console.error("Error parsing content:", error);
-        return [];
+        setLoading(true);
+        
+        // Load categories first
+        const categoriesData = await getNotificationCategories();
+        setCategories(categoriesData);
+        
+        // Find category by slug
+        const category = categoriesData.find(cat => 
+          isEnglish ? cat.slugEn === categorySlug : cat.slugVi === categorySlug
+        );
+        
+        if (!category) {
+          setError("Category not found");
+          return;
+        }
+
+        // Try to get notification by slug
+        try {
+          const notificationData = await getNotificationBySlug(notificationSlug, isEnglish ? "en" : "vi");
+          setNotificationItem(notificationData);
+          
+          // Load related notifications
+          const related = await getRelatedNotifications(notificationData.id, notificationData.notificationCategoryId, 5);
+          setRelatedNotifications(related);
+          
+          setError(null);
+        } catch (slugError) {
+          setError("Notification not found");
+        }
+
+      } catch (err) {
+        console.error("Error loading notification detail:", err);
+        setError("Error loading notification");
+      } finally {
+        setLoading(false);
+        setIsInitialized(true);
       }
     };
 
-    setTableOfContents(generateTableOfContents());
-    setIsInitialized(true);
-  }, [notificationItem, currentLanguage]);
+    loadData();
+  }, [categorySlug, notificationSlug, isEnglish]);
 
-  // Lazy loading for images
-  useEffect(() => {
-    const images = document.querySelectorAll(
-      '.notification-detail-page .article-content img[loading="lazy"]'
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString(
+      currentLanguage === "vi" ? "vi-VN" : "en-GB",
+      {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }
     );
-
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          img.classList.add("loaded");
-          observer.unobserve(img);
-        }
-      });
-    });
-
-    images.forEach((img) => imageObserver.observe(img));
-
-    return () => {
-      images.forEach((img) => imageObserver.unobserve(img));
-    };
-  }, [notificationItem]);
+  };
 
   // Helper functions to get localized content
-  const getTitle = () =>
-    currentLanguage === "vi"
-      ? notificationItem?.titleVi
-      : notificationItem?.titleEn;
+  const getTitle = () => (isEnglish ? notificationItem?.titleEn : notificationItem?.titleVi);
   const getDescription = () =>
-    currentLanguage === "vi"
-      ? notificationItem?.descriptionVi
-      : notificationItem?.descriptionEn;
+    isEnglish ? notificationItem?.descriptionEn : notificationItem?.descriptionVi;
   const getContent = () =>
-    currentLanguage === "vi"
-      ? notificationItem?.contentVi
-      : notificationItem?.contentEn;
-  const getCategoryName = () =>
-    currentLanguage === "vi"
-      ? notificationItem?.notificationCategorytitleVi
-      : notificationItem?.notificationCategorytitleEn;
-  const getCategorySlug = () =>
-    currentLanguage === "vi"
-      ? notificationItem?.notificationCategorySlugVi
-      : notificationItem?.notificationCategorySlugEn;
-  const getSlug = () =>
-    currentLanguage === "vi"
-      ? notificationItem?.slugVi
-      : notificationItem?.slugEn;
-  const getItemTitle = (item) =>
-    currentLanguage === "vi" ? item.titleVi : item.titleEn;
-  const getItemSlug = (item) =>
-    currentLanguage === "vi" ? item.slugVi : item.slugEn;
-  const getItemCategorySlug = (item) =>
-    currentLanguage === "vi"
-      ? item.notificationCategorySlugVi
-      : item.notificationCategorySlugEn;
+    isEnglish ? notificationItem?.contentEn : notificationItem?.contentVi;
+  const getCategoryName = () => {
+    if (!notificationItem?.notificationCategoryId) return "";
+    const category = categories.find(cat => cat.id === notificationItem.notificationCategoryId);
+    return isEnglish ? category?.titleEn : category?.titleVi;
+  };
+  
+  const getCategorySlug = () => {
+    if (!notificationItem?.notificationCategoryId) return "";
+    const category = categories.find(cat => cat.id === notificationItem.notificationCategoryId);
+    return isEnglish ? category?.slugEn : category?.slugVi;
+  };
 
-  if (!isInitialized) {
+  if (!isInitialized || loading) {
     return (
       <div className="notification-detail-page">
-        <div className="loading">
-          <div className="loading-spinner" />
-          <p>{t("frontend.notifications.loading")}</p>
+        <div className="container">
+          <div className="loading">
+            <div className="loading-spinner"></div>
+            <p>Đang tải...</p>
+          </div>
         </div>
       </div>
     );
   }
 
-  if (!notificationItem) {
+  if (error || !notificationItem) {
     return (
-      <div className="notification-detail-page">
-        <div className="not-found">
-          <h2>{t("frontend.notifications.notificationNotFound")}</h2>
-          <p>{t("frontend.notifications.notificationNotExist")}</p>
-          <Link
-            to={currentLanguage === "vi" ? "/thong-bao" : "/en/notifications"}
-            className="back-to-notifications"
-          >
-            {t("frontend.notifications.backToNotifications")}
-          </Link>
-        </div>
-      </div>
+      <ErrorPage
+        title="Thông báo không tồn tại"
+        message="Xin lỗi, thông báo bạn đang tìm kiếm không tồn tại hoặc đã bị xóa."
+        suggestions={[
+          "Kiểm tra lại đường link",
+          "Tìm kiếm thông báo khác",
+          "Quay lại trang danh sách thông báo"
+        ]}
+        type="notification"
+        backRoute="HOME"
+        backText="Về trang chủ"
+        listRoute="NOTIFICATIONS"
+        listText="Xem tất cả thông báo"
+      />
     );
   }
-
-  // Extract author info from content (nếu có)
-  const author = "Ban Giám đốc";
 
   return (
     <>
@@ -212,225 +166,219 @@ const NotificationDetailPage = () => {
         description={getDescription() || getTitle()}
         url={
           currentLanguage === "vi"
-            ? `/thong-bao/${category}/${slug}`
-            : `/en/notifications/${category}/${slug}`
+            ? `/thong-bao/${categorySlug}/${notificationSlug}`
+            : `/en/notifications/${categorySlug}/${notificationSlug}`
         }
       />
       <div className="notification-detail-page">
-        {/* Sidebar */}
-        <aside className="notification-sidebar">
-          <h3>{t("frontend.notifications.sameCategory")}</h3>
-          <input
-            type="text"
-            placeholder={t("frontend.notifications.searchPlaceholder")}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="notification-sidebar-search"
-            aria-label={t("frontend.notifications.searchNotifications")}
-          />
-          <ul>
-            {filteredNotifications.length > 0 ? (
-              filteredNotifications.map((item) => (
-                <li key={item.id}>
-                  <Link
-                    to={
-                      currentLanguage === "vi"
-                        ? `/thong-bao/${getItemCategorySlug(
-                            item
-                          )}/${getItemSlug(item)}`
-                        : `/en/notifications/${getItemCategorySlug(
-                            item
-                          )}/${getItemSlug(item)}`
-                    }
-                    className={item.id === notificationItem.id ? "active" : ""}
-                  >
-                    {getItemTitle(item)}
-                  </Link>
+        <div className="notification-detail-layout">
+          {/* Sidebar */}
+          <aside className="notification-sidebar">
+            {/* Search Box */}
+            <div className="sidebar-search">
+              <h3>Tìm kiếm thông báo</h3>
+              <SearchBox
+                value={searchTerm}
+                onChange={handleSearchChange}
+                onSearch={handleSearch}
+                onSelectSuggestion={handleSelectSuggestion}
+                placeholder="Tìm kiếm thông báo..."
+                style={{ minWidth: "100%", fontSize: 14 }}
+              />
+            </div>
+            
+            <h3>Thông báo liên quan</h3>
+            <ul>
+              {relatedNotifications.length > 0 ? (
+                relatedNotifications.map((n) => {
+                  const formattedItem = formatNotificationForDisplay(n, currentLanguage);
+                  const category = categories.find(cat => cat.id === n.notificationCategoryId);
+                  const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+                  
+                  return (
+                    <li key={n.id}>
+                      <Link
+                        to={
+                          currentLanguage === "vi"
+                            ? `/thong-bao/${categorySlug}/${formattedItem.slug}`
+                            : `/en/notifications/${categorySlug}/${formattedItem.slug}`
+                        }
+                        className={n.id === notificationItem?.id ? "active" : ""}
+                      >
+                        {formattedItem.title}
+                      </Link>
+                    </li>
+                  );
+                })
+              ) : (
+                <li className="no-results">
+                  Không có thông báo liên quan
                 </li>
-              ))
-            ) : (
-              <li className="no-results">
-                {t("frontend.notifications.noNotificationsFound")}
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm("")}
-                    className="clear-search"
-                  >
-                    {t("frontend.notifications.clearSearch")}
-                  </button>
-                )}
-              </li>
-            )}
-          </ul>
-        </aside>
+              )}
+            </ul>
+          </aside>
 
-        {/* Main content */}
-        <div className="notification-detail-container">
-          {/* Breadcrumb */}
-          <nav className="breadcrumb-nav">
-            <Link to={currentLanguage === "vi" ? "/" : "/en"}>
-              {t("navigation.home")}
-            </Link>{" "}
-            &gt;{" "}
-            <Link
-              to={currentLanguage === "vi" ? "/thong-bao" : "/en/notifications"}
-            >
-              {t("frontend.notifications.title")}
-            </Link>{" "}
-            &gt;{" "}
-            <Link
-              to={
-                currentLanguage === "vi"
-                  ? `/thong-bao/${getCategorySlug()}`
-                  : `/en/notifications/${getCategorySlug()}`
-              }
-            >
-              {getCategoryName()}
-            </Link>{" "}
-            &gt; <span>{getTitle()}</span>
-          </nav>
+          {/* Main content */}
+          <div className="notification-detail-container">
+            {/* Breadcrumb */}
+            <nav className="breadcrumb-nav">
+              <LocalizedLink routeKey="HOME">
+                Trang chủ
+              </LocalizedLink>{" "}
+              &gt;{" "}
+              <LocalizedLink routeKey="NOTIFICATIONS">
+                Thông báo
+              </LocalizedLink>{" "}
+              &gt;{" "}
+              <LocalizedLink
+                to={
+                  currentLanguage === "vi"
+                    ? `/thong-bao/${getCategorySlug()}`
+                    : `/en/notifications/${getCategorySlug()}`
+                }
+              >
+                {getCategoryName()}
+              </LocalizedLink>{" "}
+              &gt; <span>{getTitle()}</span>
+            </nav>
 
-          {/* Article Header */}
-          <article className="notification-article">
-            <header className="article-header">
-              <h1 className="article-title">{getTitle()}</h1>
-              <div className="article-meta">
-                <span className="article-date">
-                  <i className="bi bi-calendar"></i>
-                  {notificationItem.timePosted
-                    ? new Date(notificationItem.timePosted).toLocaleDateString(
-                        currentLanguage === "vi" ? "vi-VN" : "en-US",
-                        { year: "numeric", month: "long", day: "numeric" }
-                      )
-                    : ""}
-                </span>
-                <span className="article-category">
-                  <i className="bi bi-tag"></i>
-                  <Link
+            {/* Article Header */}
+            <article className="notification-article">
+              <header className="article-header">
+                <h1 className="article-title">{getTitle()}</h1>
+                <div className="article-meta">
+                  <span className="article-date">
+                    <i className="bi bi-calendar"></i>
+                    {formatDate(notificationItem.timePosted)}
+                  </span>
+                  <span className="article-category">
+                    <i className="bi bi-tag"></i>
+                    <LocalizedLink
+                      to={
+                        currentLanguage === "vi"
+                          ? `/thong-bao/${getCategorySlug()}`
+                          : `/en/notifications/${getCategorySlug()}`
+                      }
+                    >
+                      {getCategoryName()}
+                    </LocalizedLink>
+                  </span>
+                </div>
+              </header>
+
+              {/* Article Image */}
+              {(() => {
+                const formattedItem = formatNotificationForDisplay(notificationItem, currentLanguage);
+                return formattedItem?.imageUrl && (
+                  <div className="article-image">
+                    <img
+                      src={formattedItem.imageUrl}
+                      alt={getTitle()}
+                      title={getTitle()}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                );
+              })()}
+
+              {/* Article Description */}
+              {getDescription() && (
+                <div className="article-description">
+                  <p>{getDescription()}</p>
+                </div>
+              )}
+
+              {/* Article Content */}
+              <div className="article-content">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(getContent(), {
+                      allowedTags: sanitizeHtml.defaults.allowedTags.concat([
+                        "img",
+                        "figure",
+                        "figcaption",
+                      ]),
+                      allowedAttributes: {
+                        ...sanitizeHtml.defaults.allowedAttributes,
+                        img: [
+                          "src",
+                          "alt",
+                          "title",
+                          "class",
+                          "width",
+                          "height",
+                          "loading",
+                        ],
+                        figure: ["class"],
+                        figcaption: ["class"],
+                        div: ["style", "class"],
+                        p: ["style", "class"],
+                        span: ["style", "class"],
+                        table: ["style", "class", "border", "width"],
+                        tr: ["style", "class"],
+                        td: ["style", "class"],
+                        th: ["style", "class"],
+                        a: ["href", "target", "rel"],
+                      },
+                      allowedStyles: {
+                        "*": {
+                          color: [
+                            /^\#(0x)?[0-9a-f]+$/i,
+                            /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/,
+                          ],
+                          "text-align": [
+                            /^left$/,
+                            /^right$/,
+                            /^center$/,
+                            /^justify$/,
+                          ],
+                          "font-size": [/^\d+(?:px|em|%)$/],
+                          "font-weight": [
+                            /^(?:normal|bold|bolder|lighter|[1-9]00)$/,
+                          ],
+                          "background-color": [
+                            /^\#(0x)?[0-9a-f]+$/i,
+                            /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/,
+                          ],
+                          margin: [/^\d+(?:px|em|%)$/],
+                          padding: [/^\d+(?:px|em|%)$/],
+                          width: [/^\d+(?:px|em|%)$/],
+                          height: [/^\d+(?:px|em|%)$/],
+                        },
+                      },
+                    }),
+                  }}
+                />
+              </div>
+
+              {/* Article Footer */}
+              <footer className="article-footer">
+                <div className="article-tags">
+                  <span className="tag-label">
+                    Danh mục:
+                  </span>
+                  <LocalizedLink
                     to={
                       currentLanguage === "vi"
                         ? `/thong-bao/${getCategorySlug()}`
                         : `/en/notifications/${getCategorySlug()}`
                     }
+                    className="tag"
                   >
                     {getCategoryName()}
-                  </Link>
-                </span>
-              </div>
-            </header>
-
-            {/* Article Image */}
-            {notificationItem.image && (
-              <div className="article-image">
-                <img
-                  src={notificationItem.image}
-                  alt={getTitle()}
-                  title={getTitle()}
-                />
-              </div>
-            )}
-
-            {/* Article Description */}
-            {getDescription() && (
-              <div className="article-description">
-                <p>{getDescription()}</p>
-              </div>
-            )}
-
-            {/* Article Content */}
-            <div className="article-content">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: sanitizeHtml(getContent(), {
-                    allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-                      "img",
-                    ]),
-                    allowedAttributes: {
-                      ...sanitizeHtml.defaults.allowedAttributes,
-                      img: ["src", "alt", "title", "class", "loading"],
-                      a: ["href", "target", "rel"],
-                    },
-                  }),
-                }}
-              />
-            </div>
-
-            {/* Article Footer */}
-            <footer className="article-footer">
-              <div className="article-tags">
-                <span className="tag-label">
-                  {t("frontend.notifications.category")}:
-                </span>
-                <Link
-                  to={
-                    currentLanguage === "vi"
-                      ? `/thong-bao/${getCategorySlug()}`
-                      : `/en/notifications/${getCategorySlug()}`
-                  }
-                  className="tag"
-                >
-                  {getCategoryName()}
-                </Link>
-              </div>
-              <div className="article-navigation">
-                <Link
-                  to={
-                    currentLanguage === "vi"
-                      ? "/thong-bao"
-                      : "/en/notifications"
-                  }
-                  className="back-link"
-                >
-                  <i className="bi bi-arrow-left"></i>
-                  {t("frontend.notifications.backToNotificationsList")}
-                </Link>
-              </div>
-            </footer>
-          </article>
-
-          {/* Related Notifications */}
-          {relatedNotifications.length > 0 && (
-            <section className="related-notifications">
-              <h2>{t("frontend.notifications.relatedNotifications")}</h2>
-              <div className="related-notifications-list">
-                {relatedNotifications.map((item) => (
-                  <div className="related-notifications-item" key={item.id}>
-                    <Link
-                      to={
-                        currentLanguage === "vi"
-                          ? `/thong-bao/${getItemCategorySlug(
-                              item
-                            )}/${getItemSlug(item)}`
-                          : `/en/notifications/${getItemCategorySlug(
-                              item
-                            )}/${getItemSlug(item)}`
-                      }
-                      className="related-notifications-link"
-                    >
-                      <div className="related-notifications-thumb">
-                        <img src={item.image} alt={getItemTitle(item)} />
-                      </div>
-                      <div className="related-notifications-info">
-                        <h4>{getItemTitle(item)}</h4>
-                        <span className="related-notifications-date">
-                          {item.timePosted
-                            ? new Date(item.timePosted).toLocaleDateString(
-                                currentLanguage === "vi" ? "vi-VN" : "en-US",
-                                {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                }
-                              )
-                            : ""}
-                        </span>
-                      </div>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+                  </LocalizedLink>
+                </div>
+                <div className="article-navigation">
+                  <LocalizedLink routeKey="NOTIFICATIONS" className="back-link">
+                    <i className="bi bi-arrow-left"></i>
+                    Quay lại danh sách thông báo
+                  </LocalizedLink>
+                </div>
+              </footer>
+            </article>
+          </div>
         </div>
       </div>
     </>

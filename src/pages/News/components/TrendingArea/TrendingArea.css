@@ -88,7 +88,6 @@
 }
 
 .trending-area .single-bottom:hover {
-    transform: translateY(-3px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -152,7 +151,6 @@
 }
 
 .trending-area .trand-right-single:hover {
-    transform: translateX(3px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -181,8 +179,10 @@
 .trending-area .trand-right-cap span {
     display: inline-block;
     font-size: 13px;
-    color: #6b7280;
+    padding: 2px 12px;
+    color: #3e7eff;
     margin-bottom: 5px;
+    border-radius: 4px;
 }
 
 .trending-area .trand-right-cap h4 {
@@ -306,7 +306,7 @@
 }
 
 .trending-area .trending-main .trending-bottom .single-bottom .trend-bottom-cap h4 a:hover {
-    color: #e23838;
+    color: #2563eb;
 }
 
 /* Swiper container adjustments */
@@ -610,7 +610,6 @@
     border: none;
 }
 .trending-bottom-swiper .single-bottom:hover {
-    transform: translateY(-3px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .trending-bottom-swiper .trend-bottom-img {
@@ -644,16 +643,13 @@
 .trending-bottom-swiper .trend-bottom-cap span,
 .trending-bottom-swiper .trend-bottom-cap .color1 {
     display: inline-block;
-    padding: 2px 10px;
+    padding: 2px 5px 2px 5px;
     font-size: 13px;
-    background: #f8fafc;
-    color: #888;
+    background: #e1fcff;
+    color: #3e7eff;
     border-radius: 4px;
     margin-bottom: 4px;
-    max-width: 100px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 72px;
 }
 
 .trending-bottom-swiper .trend-bottom-cap h4 {

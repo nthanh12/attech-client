@@ -1,73 +1,166 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { mockNewsCategories } from "../../../utils/mockNewsCategories";
-import { mockNews } from "../../../utils/mockNews";
+import { getNews, getNewsCategories, getNewsByCategory, getNewsByCategorySlug, getActivityNews, searchNews, formatNewsForDisplay } from "../../../services/clientNewsService";
 import { useI18n } from "../../../hooks/useI18n";
 import LocalizedLink from "../../../components/Shared/LocalizedLink";
+import SearchBox from "../../../components/Shared/SearchBox";
 import "./NewsListPage.css";
 
 const NewsListPage = () => {
   const { currentLanguage } = useI18n();
   const { t } = useTranslation();
   const { category } = useParams();
+  const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [newsData, setNewsData] = useState({ items: [], totalPages: 0, totalCount: 0 });
+  const [categories, setCategories] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [categoriesLoaded, setCategoriesLoaded] = useState(false);
+  const searchInputRef = useRef(null);
   const itemsPerPage = 9;
 
-  // Tìm category hiện tại
-  const currentCategory = mockNewsCategories.find(
-    (cat) => (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
-  );
+  // Callbacks - must be at top level
+  const handlePageChange = useCallback((pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
-  // Lọc tin tức theo category
-  const childSlugs = [
-    "hoat-dong-cong-ty",
-    "dang-bo-cong-ty",
-    "doan-thanh-nien-cong-ty",
-    "cong-doan-cong-ty",
-  ];
-  let filteredItems = category
-    ? category === "tin-hoat-dong"
-      ? mockNews.filter((news) => childSlugs.includes(news.postCategorySlugVi))
-      : mockNews.filter(
-          (news) =>
-            (currentLanguage === "vi"
-              ? news.postCategorySlugVi
-              : news.postCategorySlugEn) === category
-        )
-    : mockNews;
-  // Lọc theo searchTerm
-  if (searchTerm.trim() !== "") {
-    const lower = searchTerm.toLowerCase();
-    filteredItems = filteredItems.filter((item) => {
-      const title = currentLanguage === "vi" ? item.titleVi : item.titleEn;
-      const desc =
-        currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn;
-      return (
-        title.toLowerCase().includes(lower) ||
-        desc.toLowerCase().includes(lower)
-      );
-    });
-  }
+  const handleSearchChange = useCallback((value) => {
+    setSearchTerm(value);
+  }, []);
 
-  // Tính toán phân trang
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-
+  // Initialize search term from URL query parameter
   useEffect(() => {
-    setLoading(true);
-    setCurrentPage(1); // Reset về trang 1 khi đổi category hoặc currentLanguage
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 400);
-    return () => clearTimeout(timer);
+    const params = new URLSearchParams(location.search);
+    const searchQuery = params.get('search');
+    if (searchQuery) {
+      setSearchTerm(searchQuery);
+    }
+  }, [location.search]);
+
+  // Load categories on mount
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        setCategoriesLoaded(false);
+        const categoriesData = await getNewsCategories();
+        setCategories(categoriesData);
+        
+        // Find current category
+        if (category) {
+          const foundCategory = categoriesData.find(
+            (cat) => (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
+          );
+          setCurrentCategory(foundCategory);
+        } else {
+          setCurrentCategory(null);
+        }
+      } catch (error) {
+        console.error("Error loading categories:", error);
+      } finally {
+        setCategoriesLoaded(true);
+      }
+    };
+    
+    loadCategories();
   }, [category, currentLanguage]);
 
-  if (category && !currentCategory) {
+  // Load news data when category, page, or search changes
+  useEffect(() => {
+    const loadNews = async () => {
+      setLoading(true);
+      try {
+        let response;
+        
+        if (searchTerm.trim()) {
+          // Search mode
+          console.log("🔍 Searching for:", searchTerm);
+          
+          // Check if we're on the special activity news page
+          if (category === 'tin-hoat-dong' || category === 'activity-news') {
+            // Search within activity categories
+            response = await getActivityNews({
+              pageIndex: currentPage,
+              pageSize: itemsPerPage,
+              search: searchTerm
+            });
+          } else {
+            // Regular search
+            response = await searchNews(searchTerm, {
+              pageIndex: currentPage,
+              pageSize: itemsPerPage,
+              categoryId: currentCategory?.id
+            });
+          }
+          console.log("🔍 Search response:", response);
+        } else if (category) {
+          // Check if this is the special activity news page
+          if (category === 'tin-hoat-dong' || category === 'activity-news') {
+            // Special page: Get news from 4 activity categories
+            response = await getActivityNews({
+              pageIndex: currentPage,
+              pageSize: itemsPerPage
+            });
+          } else {
+            // Regular category mode - try using the new slug endpoint first
+            try {
+              response = await getNewsByCategorySlug(category, {
+                pageIndex: currentPage,
+                pageSize: itemsPerPage
+              });
+            } catch (error) {
+              // Fallback to old method if new endpoint fails
+              if (currentCategory) {
+                response = await getNewsByCategory(currentCategory.id, {
+                  pageIndex: currentPage,
+                  pageSize: itemsPerPage
+                });
+              } else {
+                response = await getNews({
+                  pageIndex: currentPage,
+                  pageSize: itemsPerPage
+                });
+              }
+            }
+          }
+        } else {
+          // All news mode
+          response = await getNews({
+            pageIndex: currentPage,
+            pageSize: itemsPerPage
+          });
+        }
+        
+        setNewsData(response);
+      } catch (error) {
+        console.error("❌ Error loading news:", error);
+        setNewsData({ items: [], totalPages: 0, totalCount: 0 });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Use timeout only for search to avoid too many requests
+    if (searchTerm.trim()) {
+      const timer = setTimeout(loadNews, 500);
+      return () => clearTimeout(timer);
+    } else {
+      loadNews();
+    }
+  }, [category, currentCategory, currentPage, searchTerm, currentLanguage]);
+
+  // Reset page when category or search changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [category, searchTerm, currentLanguage]);
+
+  // Show category not found only after categories are loaded and category not found
+  // Exception: special activity page doesn't need a category
+  if (category && categoriesLoaded && !currentCategory && 
+      category !== 'tin-hoat-dong' && category !== 'activity-news') {
     return (
       <div className="news-list-page newslist-minimal">
         <div className="container">
@@ -85,16 +178,17 @@ const NewsListPage = () => {
 
   const getCategoryTitle = () => {
     if (!category) return t("frontend.news.allNews");
+    
+    // Special activity page
+    if (category === 'tin-hoat-dong' || category === 'activity-news') {
+      return currentLanguage === "vi" ? "Tin hoạt động" : "Activity News";
+    }
+    
     return currentCategory
       ? currentLanguage === "vi"
         ? currentCategory.titleVi
         : currentCategory.titleEn
       : t("frontend.news.title");
-  };
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const formatDate = (dateString) => {
@@ -117,83 +211,92 @@ const NewsListPage = () => {
     );
   }
 
+  const getCategoryDescription = () => {
+    if (category === 'tin-hoat-dong' || category === 'activity-news') {
+      return currentLanguage === "vi" 
+        ? "Tổng hợp các tin tức về hoạt động công ty, đảng bộ, đoàn thanh niên và công đoàn"
+        : "News about company activities, party committee, youth union and labor union";
+    }
+    return null;
+  };
+
   return (
     <div className="news-list-root news-list-page newslist-minimal">
       <div className="container">
         <h1 className="page-title-minimal">{getCategoryTitle()}</h1>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            marginBottom: 18,
-          }}
-        >
-          <input
-            type="text"
-            placeholder={t("frontend.news.searchPlaceholder")}
+        {getCategoryDescription() && (
+          <p className="category-description" style={{
+            fontSize: '16px',
+            color: '#666',
+            marginBottom: '24px',
+            textAlign: 'center',
+            fontStyle: 'italic'
+          }}>
+            {getCategoryDescription()}
+          </p>
+        )}
+        <div className="search-container">
+          <SearchBox
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: "7px 14px",
-              borderRadius: 20,
-              border: "1.5px solid #e0e7ef",
-              fontSize: 15,
-              minWidth: 220,
-              outline: "none",
-              boxShadow: "0 1px 4px rgba(37,99,235,0.04)",
-              transition: "border 0.18s",
-              color: "#1a237e",
-            }}
+            onChange={handleSearchChange}
+            onSearch={handleSearchChange}
+            placeholder={t("frontend.news.searchPlaceholder")}
           />
         </div>
         <div className="newslist-grid-minimal">
-          {currentItems.length > 0 ? (
-            currentItems.map((item) => (
-              <div className="newslist-card-minimal" key={item.id}>
-                <LocalizedLink
-                  to={
-                    currentLanguage === "vi"
-                      ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`
-                      : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`
-                  }
-                  className="newslist-img-link-minimal"
-                >
-                  <img
-                    src={item.image}
-                    alt={currentLanguage === "vi" ? item.titleVi : item.titleEn}
-                    className="newslist-img-minimal"
-                    title={
-                      currentLanguage === "vi" ? item.titleVi : item.titleEn
-                    }
-                  />
-                </LocalizedLink>
-                <div className="newslist-content-minimal">
-                  <span className="newslist-date-minimal">
-                    {formatDate(item.timePosted)}
-                  </span>
+          {newsData.items.length > 0 ? (
+            newsData.items.map((item) => {
+              const formattedItem = formatNewsForDisplay(item, currentLanguage);
+              const categorySlug = currentLanguage === "vi" 
+                ? categories.find(cat => cat.id === item.newsCategoryId)?.slugVi 
+                : categories.find(cat => cat.id === item.newsCategoryId)?.slugEn;
+              
+              return (
+                <div className="newslist-card-minimal" key={item.id}>
                   <LocalizedLink
                     to={
                       currentLanguage === "vi"
-                        ? `/tin-tuc/${item.postCategorySlugVi}/${item.slugVi}`
-                        : `/en/news/${item.postCategorySlugEn}/${item.slugEn}`
+                        ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+                        : `/en/news/${categorySlug}/${formattedItem.slug}`
                     }
-                    className="newslist-title-minimal clamp-2-lines"
-                    title={
-                      currentLanguage === "vi" ? item.titleVi : item.titleEn
-                    }
+                    className="newslist-img-link-minimal"
                   >
-                    {currentLanguage === "vi" ? item.titleVi : item.titleEn}
+                    <img
+                      src={formattedItem.imageUrl || ''}
+                      alt={formattedItem.title}
+                      className="newslist-img-minimal"
+                      title={formattedItem.title}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
                   </LocalizedLink>
+                  <div className="newslist-content-minimal">
+                    <span className="newslist-date-minimal">
+                      {formattedItem.formattedDate}
+                    </span>
+                    <LocalizedLink
+                      to={
+                        currentLanguage === "vi"
+                          ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+                          : `/en/news/${categorySlug}/${formattedItem.slug}`
+                      }
+                      className="newslist-title-minimal clamp-2-lines"
+                      title={formattedItem.title}
+                    >
+                      {formattedItem.title}
+                    </LocalizedLink>
+                  </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <div className="newslist-empty">
-              <p>{t("frontend.news.noNewsInCategory")}</p>
+              <p>{searchTerm ? t("frontend.news.noSearchResults") : t("frontend.news.noNewsInCategory")}</p>
             </div>
           )}
         </div>
-        {totalPages > 1 && (
+        {newsData.totalPages > 1 && (
           <div className="pagination-newslist-minimal">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
@@ -202,7 +305,7 @@ const NewsListPage = () => {
             >
               ←
             </button>
-            {[...Array(totalPages).keys()].map((page) => (
+            {[...Array(newsData.totalPages).keys()].map((page) => (
               <button
                 key={page + 1}
                 onClick={() => handlePageChange(page + 1)}
@@ -215,7 +318,7 @@ const NewsListPage = () => {
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
+              disabled={currentPage === newsData.totalPages}
               className="pagination-btn-minimal"
             >
               →
