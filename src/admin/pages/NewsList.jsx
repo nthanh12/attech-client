@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
   fetchNews,
@@ -34,9 +34,12 @@ const NewsList = () => {
     type: "info",
   });
 
-  // Pagination & filters
+  // Server-side pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchDebounce, setSearchDebounce] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "id",
     direction: "desc",
@@ -49,20 +52,31 @@ const NewsList = () => {
     dateTo: "",
   });
 
-  // Load data on mount
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchDebounce(filters.search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [filters.search]);
+
+  // Load data on mount and when pagination/filters change
   useEffect(() => {
     loadData();
-  }, []);
+  }, [currentPage, itemsPerPage, searchDebounce]);
 
   const loadData = async () => {
     setIsLoading(true);
     try {
       const [newsData, categoriesData] = await Promise.all([
-        fetchNews(),
+        fetchNews(currentPage, itemsPerPage, searchDebounce),
         fetchNewsCategories(),
       ]);
 
       setNews(newsData?.items || []);
+      setTotalItems(newsData?.totalItems || 0);
+      setTotalPages(newsData?.totalPages || 0);
       setCategories(categoriesData || []);
     } catch (error) {
       console.error("Load data failed:", error);
@@ -181,17 +195,8 @@ const NewsList = () => {
     setEditingNews(null);
   };
 
-  // Filtering and sorting logic
+  // Client-side filtering (except search - handled by server)
   const filteredNews = news.filter((item) => {
-    // Search filter
-    if (filters.search) {
-      const searchTerm = filters.search.toLowerCase();
-      const matchesTitle =
-        item.titleVi?.toLowerCase().includes(searchTerm) ||
-        item.titleEn?.toLowerCase().includes(searchTerm);
-      if (!matchesTitle) return false;
-    }
-
     // Category filter
     if (filters.category) {
       if (item.newsCategoryId !== parseInt(filters.category)) return false;
@@ -238,10 +243,8 @@ const NewsList = () => {
     }
   });
 
-  const paginatedNews = sortedNews.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // Server-side pagination - use data as-is
+  const paginatedNews = sortedNews;
 
   // Table columns
   const columns = [
@@ -403,9 +406,11 @@ const NewsList = () => {
               className="form-control"
               placeholder="Tìm kiếm theo tiêu đề..."
               value={filters.search}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, search: e.target.value }))
-              }
+              onChange={(e) => {
+                const newSearch = e.target.value;
+                setFilters((prev) => ({ ...prev, search: newSearch }));
+                setCurrentPage(1); // Reset về trang 1 khi search
+              }}
             />
           </div>
           <div className="filter-group">
@@ -492,9 +497,11 @@ const NewsList = () => {
             }));
           }}
           currentPage={currentPage}
-          totalPages={Math.ceil(filteredNews.length / itemsPerPage)}
-          onPageChange={setCurrentPage}
-          totalItems={filteredNews.length}
+          totalPages={totalPages}
+          onPageChange={(page) => {
+            setCurrentPage(page);
+          }}
+          totalItems={totalItems}
           itemsPerPage={itemsPerPage}
         />
 
