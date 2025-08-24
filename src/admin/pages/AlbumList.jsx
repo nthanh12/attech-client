@@ -1,168 +1,188 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { useFormWithConfirm } from "../../hooks/useFormWithConfirm";
-import ImageWithAuth from "../../components/UI/ImageWithAuth";
-import DataTable from "../components/DataTable";
+import { useAuth } from "../../contexts/AuthContext";
+import PageWrapper from "../components/PageWrapper";
 import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
+import AccessDenied from "../../components/AccessDenied";
+// Use consistent styling with other admin pages
+import "../styles/adminTable.css";
+import "../styles/adminCommon.css";
 import "./AlbumList.css";
+import "./ContactList.css";
 
 import albumService from "../../services/albumService";
+import AlbumCreationForm from "../components/AlbumCreationForm";
 
 const AlbumList = () => {
-  const { t } = useTranslation();
+  const { user: currentUser, ROLES } = useAuth();
+
+  // Data state
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // Server-side pagination state
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+  // UI state
   const [showModal, setShowModal] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const [toast, setToast] = useState({ show: false, message: "", type: "" });
-  const [uploadStates, setUploadStates] = useState({
-    images: { uploading: false, uploadedItems: [] }
+  const [toast, setToast] = useState({
+    show: false,
+    message: "",
+    type: "info",
   });
 
-  const {
-    currentData,
-    setFormData,
-    errors,
-    setErrors,
-    handleInputChange,
-    resetForm,
-  } = useFormWithConfirm({
-    titleVi: "",
-    titleEn: "",
-    status: 1,
-    attachmentIds: []
+  // Album detail modal
+  const [showAlbumDetail, setShowAlbumDetail] = useState(false);
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+  const [albumImages, setAlbumImages] = useState([]);
+
+  // Pagination & filters
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [filters, setFilters] = useState({
+    search: "",
+    status: "",
   });
+  const [searchDebounce, setSearchDebounce] = useState("");
 
   // Load albums
-  const loadAlbums = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await albumService.fetchAlbums();
-      console.log('Albums response:', response);
-      
-      if (response.success) {
-        const albumsData = Array.isArray(response.data) ? response.data : [];
-        setAlbums(albumsData);
-      } else {
+  const loadAlbums = useCallback(
+    async (searchFilters = {}) => {
+      try {
+        setLoading(true);
+        const params = {
+          page: currentPage,
+          limit: itemsPerPage,
+          search: searchFilters.search !== undefined ? searchFilters.search : searchDebounce || "",
+          status: searchFilters.status !== undefined ? searchFilters.status : filters.status,
+        };
+
+        console.log("🔍 Loading albums with params:", params);
+        const response = await albumService.fetchAlbums(params);
+        console.log("📋 Albums response:", response);
+
+        if (response.success) {
+          let albumsData = Array.isArray(response.data) ? response.data : [];
+
+          // Update pagination info from server response
+          setTotalItems(response.total || 0);
+          setTotalPages(Math.ceil((response.total || 0) / itemsPerPage));
+
+          // Use server-side data directly (no client-side filtering)
+          console.log("📋 Final albums data:", albumsData);
+          setAlbums(albumsData);
+        } else {
+          console.log("❌ Albums response not successful:", response);
+          setAlbums([]);
+          setTotalItems(0);
+          setTotalPages(0);
+          showToast("Lỗi tải danh sách album", "error");
+        }
+      } catch (error) {
+        console.error("Error loading albums:", error);
         setAlbums([]);
-        showToast("Lỗi tải danh sách album", "error");
+        setTotalItems(0);
+        setTotalPages(0);
+        showToast("Lỗi kết nối server", "error");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error loading albums:", error);
-      setAlbums([]);
-      showToast("Lỗi kết nối server", "error");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [searchDebounce, filters.status, currentPage, itemsPerPage]
+  );
 
   useEffect(() => {
     loadAlbums();
   }, [loadAlbums]);
 
-  // Toast helper
-  const showToast = (message, type = "success") => {
+  // Debounce search - đợi user gõ xong
+  useEffect(() => {
+    if (filters.search !== searchDebounce) {
+      setIsSearching(true);
+    }
+    
+    const timer = setTimeout(() => {
+      setSearchDebounce(filters.search);
+      setIsSearching(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [filters.search]);
+
+  // Effect to handle search and status filter changes
+  useEffect(() => {
+    // Reset to page 1 when search or status filters change
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    } else {
+      loadAlbums();
+    }
+  }, [searchDebounce, filters.status]);
+
+  // Load albums when page changes
+  useEffect(() => {
+    if (currentPage !== 1) {
+      loadAlbums();
+    }
+  }, [currentPage]);
+
+  const showToast = (message, type = "info") => {
     setToast({ show: true, message, type });
-    setTimeout(() => setToast({ show: false, message: "", type: "" }), 3000);
   };
 
-  // Handle image upload
-  const handleImageUpload = async (files) => {
-    try {
-      setUploadStates(prev => ({
-        ...prev,
-        images: { uploading: true, uploadedItems: [] }
-      }));
-
-      const response = await albumService.uploadImages(Array.from(files));
-      console.log('Upload response:', response);
-      
-      if (response.success && response.data && response.data.length > 0) {
-        const uploadedItems = response.data.map(item => ({
-          id: item.id,
-          previewUrl: albumService.getAttachmentUrl(item.id),
-          fileName: item.originalFileName || item.fileName,
-          fileSize: item.fileSize
-        }));
-
-        setUploadStates(prev => ({
-          ...prev,
-          images: { uploading: false, uploadedItems }
-        }));
-
-        // Update attachmentIds in form
-        const attachmentIds = response.data.map(item => item.id);
-        handleInputChange("attachmentIds", attachmentIds);
-        
-        showToast(`Đã upload ${response.data.length} ảnh thành công`, "success");
-        
-        // Show failed uploads if any
-        if (response.failedCount > 0) {
-          showToast(`Một số file upload thất bại: ${response.failedUploads.map(f => f.fileName).join(", ")}`, "error");
-        }
-      } else {
-        throw new Error("No files uploaded successfully");
-      }
-    } catch (error) {
-      console.error("Error uploading images:", error);
-      showToast("Lỗi upload ảnh", "error");
-      setUploadStates(prev => ({
-        ...prev,
-        images: { uploading: false, uploadedItems: [] }
-      }));
-    }
+  const hideToast = () => {
+    setToast({ ...toast, show: false });
   };
 
-  // Handle create/update
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({});
-
-    try {
-      const albumData = {
-        titleVi: currentData?.titleVi || "",
-        titleEn: currentData?.titleEn || "",
-        status: parseInt(currentData?.status || 1),
-        attachmentIds: currentData?.attachmentIds || []
-      };
-
-      let response;
-      if (editingItem) {
-        response = await albumService.updateAlbum(editingItem.id, albumData);
-      } else {
-        response = await albumService.createAlbum(albumData);
-      }
-
-      if (response.success) {
-        showToast(
-          editingItem ? "Cập nhật album thành công" : "Tạo album thành công",
-          "success"
-        );
-        setShowModal(false);
-        resetForm();
-        setEditingItem(null);
-        setUploadStates({ images: { uploading: false, uploadedItems: [] } });
-        loadAlbums();
-      } else {
-        throw new Error(response.message || "Operation failed");
-      }
-    } catch (error) {
-      console.error("Error saving album:", error);
-      showToast("Lỗi lưu album", "error");
-    }
-  };
-
-  // Handle edit
-  const handleEdit = (item) => {
-    setEditingItem(item);
-    setFormData({
-      titleVi: item.titleVi || "",
-      titleEn: item.titleEn || "",
-      status: item.status || 1,
-      attachmentIds: []
-    });
+  const handleCreate = () => {
+    setEditMode(false);
+    setEditingItem(null);
     setShowModal(true);
+  };
+
+  const handleEdit = async (item) => {
+    console.log("✏️ Editing album:", item.id);
+    setEditMode(true);
+    setShowModal(true);
+
+    try {
+      // Load full album details with attachments
+      const response = await albumService.getAlbumById(item.id);
+      if (response.success) {
+        console.log("📝 Loaded album details for editing:", response.data);
+        setEditingItem(response.data);
+      } else {
+        console.error("❌ Failed to load album details:", response.message);
+        setEditingItem(item); // Fallback to basic item data
+        showToast("Lỗi tải chi tiết album để chỉnh sửa", "error");
+      }
+    } catch (error) {
+      console.error("❌ Error loading album for edit:", error);
+      setEditingItem(item); // Fallback to basic item data
+      showToast("Lỗi tải album để chỉnh sửa", "error");
+    }
+  };
+
+  // Handle view album details
+  const handleViewAlbum = async (album) => {
+    console.log("👁️ Viewing album details:", album.id);
+    setSelectedAlbum(album);
+    setShowAlbumDetail(true);
+
+    try {
+      // Load album images from API
+      const response = await albumService.getAlbumById(album.id);
+      if (response.success && response.data.attachments) {
+        setAlbumImages(response.data.attachments.images || []);
+      }
+    } catch (error) {
+      console.error("Error loading album images:", error);
+      showToast("Lỗi tải ảnh album", "error");
+    }
   };
 
   // Handle delete
@@ -185,225 +205,441 @@ const AlbumList = () => {
     }
   };
 
-  // Table columns
-  const columns = [
-    {
-      key: "titleVi",
-      label: "Tiêu đề",
-      sortable: true,
-      render: (value, item) => (
-        <div>
-          <div style={{ fontWeight: "bold", color: "#2c3e50" }}>
-            {value || "Chưa có tiêu đề"}
+  // Page Actions matching NewsList style
+  const pageActions = (
+    <div style={{ display: "flex", gap: "0.5rem" }}>
+      <button
+        className="btn btn-outline-secondary"
+        onClick={loadAlbums}
+        disabled={loading}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.75rem 1rem",
+          backgroundColor: "#f8f9fa",
+          color: "#6c757d",
+          border: "1px solid #dee2e6",
+          borderRadius: "6px",
+          fontSize: "0.875rem",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+        title="Làm mới danh sách album"
+      >
+        <i className="fas fa-refresh"></i>
+        Làm mới
+      </button>
+      <button
+        className="btn btn-primary"
+        onClick={handleCreate}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.75rem 1rem",
+          backgroundColor: "#3b82f6",
+          color: "white",
+          border: "none",
+          borderRadius: "6px",
+          fontSize: "0.875rem",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+      >
+        <i className="fas fa-plus"></i>
+        Tạo Album Mới
+      </button>
+    </div>
+  );
+
+  // Check permission - Editor and above can manage albums
+  console.log("🔍 Album permission check:", {
+    currentUser: currentUser,
+    roleId: currentUser?.roleId,
+    ROLES_EDITOR: ROLES.EDITOR,
+    hasPermission: currentUser && currentUser.roleId <= ROLES.EDITOR,
+  });
+
+  if (!currentUser || currentUser.roleId > ROLES.EDITOR) {
+    return (
+      <PageWrapper>
+        <AccessDenied
+          message="Bạn không có quyền truy cập trang này. Chỉ Editor, Admin và SuperAdmin mới có thể quản lý thư viện ảnh."
+          user={currentUser}
+        />
+      </PageWrapper>
+    );
+  }
+
+  if (loading) {
+    return (
+      <PageWrapper actions={pageActions}>
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
-          {item.titleEn && (
-            <div style={{ fontSize: "12px", color: "#7f8c8d", fontStyle: "italic" }}>
-              {item.titleEn}
-            </div>
-          )}
         </div>
-      ),
-    },
-    {
-      key: "imageCount",
-      label: "Số ảnh",
-      width: "100px",
-      render: (value, item) => (
-        <span style={{ 
-          backgroundColor: "#e8f4f8", 
-          padding: "4px 8px", 
-          borderRadius: "12px",
-          fontSize: "12px",
-          fontWeight: "bold"
-        }}>
-          {item.attachments?.length || 0} ảnh
-        </span>
-      ),
-    },
-    {
-      key: "status",
-      label: "Trạng thái",
-      width: "120px",
-      render: (value) => (
-        <span
-          className={`status-badge ${value === 1 ? "active" : "inactive"}`}
-        >
-          {value === 1 ? "Hiển thị" : "Ẩn"}
-        </span>
-      ),
-    },
-    {
-      key: "createdAt",
-      label: "Ngày tạo",
-      width: "150px",
-      sortable: true,
-      render: (value) =>
-        value ? new Date(value).toLocaleDateString("vi-VN") : "N/A",
-    },
-  ];
+      </PageWrapper>
+    );
+  }
 
   return (
-    <div className="album-list-container">
-      <div className="page-header">
-        <div className="page-title">
-          <h2>📸 Quản lý Album</h2>
-          <p>Quản lý thư viện ảnh theo album</p>
+    <PageWrapper actions={pageActions}>
+      <div className="admin-contact-list">
+        {/* Header Section */}
+        <div className="contact-header">
+          <h1>
+            <i className="fas fa-images"></i>
+            Quản lý Album
+          </h1>
+          <p>Quản lý và tổ chức thư viện ảnh album của website</p>
         </div>
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            setEditingItem(null);
-            resetForm();
-            setUploadStates({ images: { uploading: false, uploadedItems: [] } });
-            setShowModal(true);
-          }}
-        >
-          + Tạo Album Mới
-        </button>
-      </div>
 
-      <DataTable
-        data={Array.isArray(albums) ? albums : []}
-        columns={columns}
-        loading={loading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        emptyMessage="Chưa có album nào"
-      />
-
-      <FormModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        title={editingItem ? "Chỉnh sửa Album" : "Tạo Album Mới"}
-        size="large"
-      >
-        <div className="album-form">
-          <div className="form-row">
-            <div className="form-group">
-              <label>Tiêu đề tiếng Việt *</label>
-              <input
-                type="text"
-                name="titleVi"
-                value={currentData?.titleVi || ""}
-                onChange={(e) => handleInputChange("titleVi", e.target.value)}
-                className={`form-control ${errors.titleVi ? "is-invalid" : ""}`}
-                placeholder="Nhập tiêu đề tiếng Việt"
-                required
-              />
-              {errors.titleVi && <div className="invalid-feedback">{errors.titleVi}</div>}
-            </div>
+        {/* Filters Section */}
+        <div className="filters-section">
+          <div className="filters-title">
+            <i className="fas fa-filter"></i>
+            Bộ lọc & Tìm kiếm
           </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>Tiêu đề tiếng Anh</label>
+          <div className="filters-grid">
+            <div className="filter-group">
+              <label>
+                {isSearching ? (
+                  <i className="fas fa-spinner fa-spin"></i>
+                ) : (
+                  <i className="fas fa-search"></i>
+                )} Tìm kiếm
+              </label>
               <input
                 type="text"
-                name="titleEn"
-                value={currentData?.titleEn || ""}
-                onChange={(e) => handleInputChange("titleEn", e.target.value)}
                 className="form-control"
-                placeholder="Nhập tiêu đề tiếng Anh"
+                placeholder="Nhập tiêu đề album..."
+                value={filters.search}
+                onChange={(e) => {
+                  const newSearch = e.target.value;
+                  setFilters((prev) => ({ ...prev, search: newSearch }));
+                  setCurrentPage(1);
+                }}
               />
             </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>Trạng thái *</label>
+            <div className="filter-group">
+              <label><i className="fas fa-flag"></i> Trạng thái</label>
               <select
-                name="status"
-                value={currentData?.status || 1}
-                onChange={(e) => handleInputChange("status", parseInt(e.target.value))}
                 className="form-control"
+                value={filters.status}
+                onChange={(e) => {
+                  setFilters((prev) => ({ ...prev, status: e.target.value }));
+                  setCurrentPage(1);
+                }}
               >
-                <option value={1}>Hiển thị</option>
-                <option value={0}>Ẩn</option>
+                <option key="all-status" value="">Tất cả trạng thái</option>
+                <option key="visible" value="1">Hiển thị</option>
+                <option key="hidden" value="0">Ẩn</option>
               </select>
             </div>
-          </div>
-
-          <div className="form-row">
-            <div className="form-group">
-              <label>Upload ảnh *</label>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={(e) => {
-                  const files = Array.from(e.target.files);
-                  if (files.length > 0) {
-                    handleImageUpload(files);
-                  }
+            <div className="filter-actions">
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  setFilters({
+                    search: "",
+                    status: "",
+                  });
+                  setCurrentPage(1);
                 }}
-                className="form-control"
-                disabled={uploadStates.images.uploading}
-              />
-              <small className="form-text text-muted">
-                Chọn nhiều ảnh để tạo album. Hỗ trợ JPG, PNG, GIF.
-              </small>
+                title="Xóa tất cả bộ lọc"
+              >
+                <i className="fas fa-eraser"></i>
+                Xóa lọc
+              </button>
             </div>
           </div>
+        </div>
 
-          {uploadStates.images.uploading && (
-            <div className="upload-progress">
-              <small className="text-info">Đang upload ảnh...</small>
+        {/* Results Summary */}
+        {!loading && totalItems > 0 && (
+          <div className="results-summary">
+            <span>
+              Hiển thị {albums.length} trong tổng số {totalItems} album{totalItems > 1 ? 's' : ''}
+              {filters.search && ` - Tìm kiếm: "${filters.search}"`}
+              {filters.status !== "" && ` - Trạng thái: ${filters.status === "1" ? "Hiển thị" : "Ẩn"}`}
+            </span>
+          </div>
+        )}
+
+        {/* Table Container */}
+        <div className="table-container">
+          {/* Album Gallery */}
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="spinner-border" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
             </div>
-          )}
-
-          {uploadStates.images.uploadedItems.length > 0 && (
-            <div className="uploaded-images">
-              <h6 style={{ color: "#28a745", fontWeight: "bold" }}>
-                Ảnh đã upload: ({uploadStates.images.uploadedItems.length} ảnh)
-              </h6>
-              <div className="images-grid">
-                {uploadStates.images.uploadedItems.map((img, index) => (
-                  <div key={index} className="image-preview-card">
-                    <ImageWithAuth
-                      src={img.previewUrl}
-                      alt={img.fileName}
-                      style={{
-                        width: "100%",
-                        height: "100px",
-                        objectFit: "cover",
-                        borderRadius: "4px"
-                      }}
-                    />
-                    <div className="image-info">
-                      <small>{img.fileName}</small>
+          ) : albums.length === 0 ? (
+            <div className="text-center py-5">
+              <i className="fas fa-images fa-3x text-muted mb-3"></i>
+              <h5 className="text-muted">Chưa có album nào</h5>
+              <p className="text-muted">
+                Nhấn "Tạo Album Mới" để thêm album đầu tiên
+              </p>
+            </div>
+          ) : (
+            <div className="album-gallery">
+            <div className="gallery-grid">
+              {albums.map((album) => (
+                <div key={album.id} className="album-card">
+                  <div
+                    className="album-thumbnail clickable"
+                    onClick={() => handleViewAlbum(album)}
+                    title={`Xem tất cả ảnh trong album "${album.titleVi}"`}
+                  >
+                    {album.imageUrl ? (
+                      <div className="featured-image-wrapper">
+                        <img
+                          src={
+                            album.imageUrl.startsWith("http")
+                              ? album.imageUrl
+                              : `${process.env.REACT_APP_API_URL}${album.imageUrl}`
+                          }
+                          alt={album.titleVi}
+                          className="thumbnail-image"
+                        />
+                        <div className="album-overlay">
+                          <div className="album-badge">
+                            <i className="fas fa-images"></i>
+                            <span>ALBUM</span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="no-image">
+                        <i className="fas fa-images"></i>
+                        <span>Chưa có ảnh</span>
+                      </div>
+                    )}
+                    <div className="album-status">
+                      <span
+                        className={`status-badge ${
+                          album.status === 1 ? "active" : "inactive"
+                        }`}
+                      >
+                        {album.status === 1 ? "Hiển thị" : "Ẩn"}
+                      </span>
                     </div>
                   </div>
-                ))}
+                  <div className="album-info">
+                    <h6 className="album-title">
+                      {album.titleVi || "Chưa có tiêu đề"}
+                    </h6>
+                    {album.titleEn && (
+                      <p className="album-title-en">{album.titleEn}</p>
+                    )}
+                    {album.descriptionVi && (
+                      <p className="album-description">
+                        {album.descriptionVi.length > 80
+                          ? album.descriptionVi.substring(0, 80) + "..."
+                          : album.descriptionVi}
+                      </p>
+                    )}
+                  </div>
+                  <div className="album-actions">
+                    <button
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={() => handleEdit(album)}
+                      title="Chỉnh sửa"
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDelete(album)}
+                      title="Xóa"
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="pagination-wrapper">
+                <nav>
+                  <ul className="pagination justify-content-center">
+                    <li
+                      className={`page-item ${
+                        currentPage === 1 ? "disabled" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        disabled={currentPage === 1}
+                      >
+                        Trước
+                      </button>
+                    </li>
+                    {[...Array(totalPages)].map(
+                      (_, index) => (
+                        <li
+                          key={index}
+                          className={`page-item ${
+                            currentPage === index + 1 ? "active" : ""
+                          }`}
+                        >
+                          <button
+                            className="page-link"
+                            onClick={() => setCurrentPage(index + 1)}
+                          >
+                            {index + 1}
+                          </button>
+                        </li>
+                      )
+                    )}
+                    <li
+                      className={`page-item ${
+                        currentPage === totalPages ? "disabled" : ""
+                      }`}
+                    >
+                      <button
+                        className="page-link"
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                      >
+                        Sau
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            )}
+            </div>
+          )}
+        </div>
+
+        {/* Form Modal */}
+        <FormModal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          title={editMode ? "Chỉnh sửa Album" : "Tạo Album Mới"}
+          size="xl"
+          showActions={false}
+        >
+          <AlbumCreationForm
+            editingAlbum={editMode ? editingItem : null}
+            onSuccess={() => {
+              showToast(
+                editMode ? "Cập nhật album thành công" : "Tạo album thành công",
+                "success"
+              );
+              setShowModal(false);
+              setEditingItem(null);
+              setEditMode(false);
+              loadAlbums();
+            }}
+            onCancel={() => setShowModal(false)}
+          />
+        </FormModal>
+
+        {/* Album Detail Modal */}
+        <FormModal
+          show={showAlbumDetail}
+          onClose={() => setShowAlbumDetail(false)}
+          title={
+            selectedAlbum ? `Album: ${selectedAlbum.titleVi}` : "Chi tiết Album"
+          }
+          size="xl"
+          showActions={false}
+        >
+          {selectedAlbum && (
+            <div className="album-detail-content">
+              <div className="album-info-header">
+                <h4>{selectedAlbum.titleVi}</h4>
+                {selectedAlbum.titleEn && (
+                  <p className="title-en">{selectedAlbum.titleEn}</p>
+                )}
+                <div className="album-meta">
+                  <span
+                    className={`status ${
+                      selectedAlbum.status === 1 ? "active" : "inactive"
+                    }`}
+                  >
+                    {selectedAlbum.status === 1 ? "Hiển thị" : "Ẩn"}
+                  </span>
+                </div>
+              </div>
+
+              {albumImages.length > 0 ? (
+                <div className="album-images-grid">
+                  {albumImages.map((image, index) => (
+                    <div key={image.id || index} className="album-image-item">
+                      <img
+                        src={
+                          image.url?.startsWith("http")
+                            ? image.url
+                            : `${process.env.REACT_APP_API_URL}${
+                                image.url || `/api/attachments/${image.id}`
+                              }`
+                        }
+                        alt={`Album image ${index + 1}`}
+                        className="album-detail-image"
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="no-images-message">
+                  <i className="fas fa-images fa-3x"></i>
+                  <p>Album chưa có ảnh nào</p>
+                </div>
+              )}
+
+              {/* Custom Actions */}
+              <div
+                style={{
+                  marginTop: "2rem",
+                  paddingTop: "1rem",
+                  borderTop: "1px solid #e9ecef",
+                  display: "flex",
+                  gap: "0.5rem",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => setShowAlbumDetail(false)}
+                >
+                  <i className="fas fa-times"></i>
+                  Đóng
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => {
+                    setShowAlbumDetail(false);
+                    handleEdit(selectedAlbum);
+                  }}
+                  disabled={!selectedAlbum}
+                >
+                  <i className="fas fa-edit"></i>
+                  Chỉnh sửa Album
+                </button>
               </div>
             </div>
           )}
+        </FormModal>
 
-          <div className="modal-actions">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => setShowModal(false)}
-            >
-              Hủy
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={uploadStates.images.uploading}
-            >
-              {editingItem ? "Cập nhật" : "Tạo Album"}
-            </button>
-          </div>
-        </div>
-      </FormModal>
-
-      <ToastMessage
-        show={toast.show}
-        message={toast.message}
-        type={toast.type}
-        onClose={() => setToast({ show: false, message: "", type: "" })}
-      />
-    </div>
+        <ToastMessage
+          show={toast.show}
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+        />
+      </div>
+    </PageWrapper>
   );
 };
 
