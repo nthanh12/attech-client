@@ -8,7 +8,6 @@ const AccountManagement = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ show: false, type: '', text: '' });
-  const [showPermissions, setShowPermissions] = useState(false);
 
   // Debug removed to prevent React rendering issues
 
@@ -187,35 +186,14 @@ const AccountManagement = () => {
                 </div>
                 <div className="detail-item">
                   <label>Vai trò:</label>
-                  <span>{user?.roleNames?.join(', ') || user?.userLevel || user?.userType || 'N/A'}</span>
+                  <span>{user?.roleName || 'editor'}</span>
                 </div>
                 <div className="detail-item">
-                  <label>Quyền hạn:</label>
+                  <label>ID vai trò:</label>
                   <span>
-                    {user?.permissions?.length || 0} quyền
-                    {user?.permissions?.length > 0 && (
-                      <button 
-                        className="btn btn-link btn-sm p-0 ml-2"
-                        onClick={() => setShowPermissions(!showPermissions)}
-                        style={{ fontSize: '12px', color: '#667eea' }}
-                      >
-                        {showPermissions ? 'Ẩn chi tiết' : 'Xem chi tiết'}
-                      </button>
-                    )}
+                    {user?.roleId || 3}
                   </span>
                 </div>
-                {showPermissions && user?.permissions && (
-                  <div className="detail-item">
-                    <label></label>
-                    <div className="permissions-list">
-                      {user.permissions.map((permission, index) => (
-                        <span key={index} className="permission-tag">
-                          {permission}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 <div className="detail-item">
                   <label>Đăng nhập lần cuối:</label>
                   <span>{user?.lastLogin ? new Date(user.lastLogin).toLocaleString('vi-VN') : 'N/A'}</span>

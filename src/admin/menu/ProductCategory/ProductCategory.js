@@ -18,6 +18,8 @@ import FormModal from "../../components/FormModal";
 import ToastMessage from "../../components/ToastMessage";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import PageWrapper from "../../components/PageWrapper";
+import AdminFilter from "../../components/AdminFilter";
+import AdminPageActions from "../../components/AdminPageActions";
 import "../../styles/adminCategory.css";
 import "../../styles/adminTable.css";
 import "../../styles/adminCommon.css";
@@ -102,6 +104,32 @@ const ProductCategory = () => {
     search: "",
     status: "",
   });
+
+  // Filter configuration for AdminFilter component
+  const filterConfig = [
+    {
+      key: "search",
+      type: "search",
+      label: "Tìm kiếm",
+      placeholder: "Tìm kiếm danh mục sản phẩm...",
+      icon: "fas fa-search"
+    },
+    {
+      key: "status",
+      type: "select",
+      label: "Trạng thái",
+      icon: "fas fa-flag",
+      options: [
+        { value: "active", label: "Hoạt động" },
+        { value: "inactive", label: "Không hoạt động" }
+      ]
+    }
+  ];
+
+  // Handle filter changes
+  const handleFiltersChange = (newFilters) => {
+    setFilters(newFilters);
+  };
 
   // Custom handleInputChange với auto-generate slug
   const handleInputChangeWithSlug = (field, value) => {
@@ -462,96 +490,26 @@ const ProductCategory = () => {
     );
   }
 
+  // Page actions using AdminPageActions
   const pageActions = (
-    <div style={{ display: "flex", gap: "0.5rem" }}>
-      <button
-        className="btn btn-outline-secondary"
-        onClick={() => window.location.reload()}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.75rem 1rem",
-          backgroundColor: "#f8f9fa",
-          color: "#6c757d",
-          border: "1px solid #dee2e6",
-          borderRadius: "6px",
-          fontSize: "0.875rem",
-          fontWeight: "500",
-          cursor: "pointer",
-        }}
-        title="Làm mới danh sách danh mục"
-      >
-        <i className="fas fa-refresh"></i>
-        Làm mới
-      </button>
-      <button
-        className="btn btn-primary"
-        onClick={handleAddNew}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.75rem 1rem",
-          backgroundColor: "#3b82f6",
-          color: "white",
-          border: "none",
-          borderRadius: "6px",
-          fontSize: "0.875rem",
-          fontWeight: "500",
-          cursor: "pointer",
-        }}
-      >
-        <i className="fas fa-plus"></i>
-        Thêm danh mục
-      </button>
-    </div>
+    <AdminPageActions
+      loading={isLoading}
+      actions={[
+        AdminPageActions.createRefreshAction(() => window.location.reload(), isLoading),
+        AdminPageActions.createAddAction(handleAddNew, "Thêm danh mục")
+      ]}
+    />
   );
 
   return (
     <PageWrapper actions={pageActions}>
       <div className="admin-category-page">
-        {/* Filters Section */}
-        <div className="filters-section">
-          <div className="filter-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Tìm kiếm danh mục..."
-              value={filters.search}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, search: e.target.value }))
-              }
-            />
-          </div>
-          <div className="filter-group">
-            <select
-              className="form-control"
-              value={filters.status}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, status: e.target.value }))
-              }
-            >
-              <option value="">Tất cả trạng thái</option>
-              <option value="active">Hoạt động</option>
-              <option value="inactive">Không hoạt động</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <button
-              className="btn btn-secondary"
-              onClick={() =>
-                setFilters({
-                  search: "",
-                  status: "",
-                })
-              }
-            >
-              <i className="fas fa-times"></i>
-              <span>Reset</span>
-            </button>
-          </div>
-        </div>
+        {/* Filters Section - Using AdminFilter Component */}
+        <AdminFilter
+          filters={filters}
+          onFiltersChange={handleFiltersChange}
+          filterConfig={filterConfig}
+        />
 
         {/* Data Table */}
         <DataTable

@@ -5,38 +5,8 @@ import { useLocalizedRouting } from "../../../../hooks/useLocalizedRouting";
 import ProductItem from "../ProductItem/ProductItem";
 import Sidebar from "../Sidebar/Sidebar";
 import "../ProductList/ProductList.css";
-import {
-  mockProducts,
-  mockProductCategories,
-} from "../../../../utils/mockData";
+import { getProducts, getProductCategories } from "../../../../services/clientProductService";
 
-// Map mockProducts sang format cho ProductItem với i18n
-const getProducts = (currentLanguage) =>
-  mockProducts.map((item) => ({
-    id: item.id,
-    slug: currentLanguage === "vi" ? item.slugVi : item.slugEn,
-    title: currentLanguage === "vi" ? item.titleVi : item.titleEn,
-    fullTitle: currentLanguage === "vi" ? item.titleVi : item.titleEn,
-    category:
-      currentLanguage === "vi"
-        ? item.productCategorytitleVi
-        : item.productCategorytitleEn,
-    description:
-      currentLanguage === "vi" ? item.descriptionVi : item.descriptionEn,
-    image: item.image,
-    categorySlug:
-      currentLanguage === "vi"
-        ? item.productCategorySlugVi
-        : item.productCategorySlugEn,
-    originalItem: item, // Keep original for reference
-  }));
-
-// Tạo mảng categories từ mockProductCategories với i18n
-const getCategories = (currentLanguage) =>
-  mockProductCategories.map((cat) => ({
-    name: currentLanguage === "vi" ? cat.titleVi : cat.titleEn,
-    slug: currentLanguage === "vi" ? cat.slugVi : cat.slugEn,
-  }));
 
 // CategoryNav component with i18n
 const CategoryNav = ({ categories, selectedCategory, onSelectCategory, t }) => {
@@ -74,8 +44,9 @@ const ProductList = () => {
   const { t, currentLanguage } = useI18n();
   const { navigateToRoute } = useLocalizedRouting();
 
-  const products = getProducts(currentLanguage);
-  const categories = getCategories(currentLanguage);
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("name");
@@ -92,27 +63,89 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
+  // Load products and categories from API
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        
+        // Load products - use category slug if selected
+        const productsParams = { limit: 50 };
+        if (category) {
+          productsParams.categorySlug = category;
+        }
+        const productsResponse = await getProducts(productsParams);
+        console.log("🔍 Products response:", productsResponse);
+        if (productsResponse.status === 1 && productsResponse.data?.items?.length > 0) {
+          const formattedProducts = productsResponse.data.items.map(product => ({
+            id: product.id,
+            slug: currentLanguage === "vi" ? product.slugVi : product.slugEn,
+            title: currentLanguage === "vi" ? product.titleVi : product.titleEn,
+            fullTitle: currentLanguage === "vi" ? product.titleVi : product.titleEn,
+            category: currentLanguage === "vi" ? product.productCategoryTitleVi : product.productCategoryTitleEn,
+            description: currentLanguage === "vi" ? product.descriptionVi : product.descriptionEn,
+            image: product.imageUrl || '/images/default-product.jpg',
+            categorySlug: currentLanguage === "vi" ? product.productCategorySlugVi : product.productCategorySlugEn,
+            status: product.status
+          }));
+          const finalProducts = formattedProducts.filter(p => p.status === 1);
+          console.log("🔍 Final products:", finalProducts);
+          setProducts(finalProducts);
+        } else {
+          console.log("❌ No products or invalid response");
+          setProducts([]);
+        }
+
+        // Load categories
+        const categoriesResponse = await getProductCategories();
+        if (categoriesResponse.success && categoriesResponse.data?.length > 0) {
+          const formattedCategories = categoriesResponse.data.map(cat => ({
+            name: currentLanguage === "vi" ? cat.titleVi : cat.titleEn,
+            slug: currentLanguage === "vi" ? cat.slugVi : cat.slugEn,
+          }));
+          setCategories(formattedCategories);
+        } else {
+          setCategories([]);
+        }
+      } catch (error) {
+        console.error("❌ Error loading products/categories:", error);
+        setProducts([]);
+        setCategories([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [currentLanguage, category]);
+
   // Đồng bộ selectedCategory với route
   useEffect(() => {
     setSelectedCategory(category || "");
   }, [category]);
 
   useEffect(() => {
+    console.log("🔍 Filtering products:", { products: products.length, selectedCategory, searchTerm });
     let result = [...products];
 
     if (selectedCategory) {
+      console.log("🔍 Filtering by category:", selectedCategory);
+      const beforeFilter = result.length;
       result = result.filter(
         (product) => product.categorySlug === selectedCategory
       );
+      console.log("🔍 After category filter:", beforeFilter, "->", result.length);
     }
 
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
+      const beforeFilter = result.length;
       result = result.filter(
         (product) =>
           product.title.toLowerCase().includes(searchLower) ||
           product.description.toLowerCase().includes(searchLower)
       );
+      console.log("🔍 After search filter:", beforeFilter, "->", result.length);
     }
 
     result.sort((a, b) => {
@@ -125,9 +158,11 @@ const ProductList = () => {
           return 0;
       }
     });
+    
+    console.log("🔍 Final filtered result:", result.length);
     setFilteredProducts(result);
     setCurrentPage(1);
-  }, [selectedCategory, searchTerm, sortBy]);
+  }, [products, selectedCategory, searchTerm, sortBy]);
 
   // Khôi phục lại phân trang như ban đầu
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -248,8 +283,28 @@ const ProductList = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  console.log("🔍 Render state:", { 
+    products: products.length, 
+    filteredProducts: filteredProducts.length, 
+    currentProducts: currentProducts.length,
+    loading 
+  });
+
+
+  if (loading) {
+    return (
+      <div className="text-center" style={{ padding: "50px" }}>
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+        <p>Đang tải sản phẩm...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="attech-product-list-container">
+    <div className="attech-product-list-container" style={{ paddingTop: "20px" }}>
+      
       <div className="attech-controls-wrapper">
         <div className="attech-controls-inner">
           <div className="attech-controls-top">
@@ -319,7 +374,9 @@ const ProductList = () => {
       </div>
 
       <div className={`attech-product-grid ${viewMode}`}>
-        {currentProducts.length > 0 ? (
+        {loading ? (
+          <div>Loading products...</div>
+        ) : currentProducts.length > 0 ? (
           currentProducts.map((product, index) => (
             <div
               key={product.id}
@@ -337,7 +394,7 @@ const ProductList = () => {
             </div>
           ))
         ) : (
-          <div className="attech-no-products">
+          <div className="attech-no-products" style={{ padding: "40px", textAlign: "center" }}>
             <i className="fas fa-box-open"></i>
             <p>{t("frontend.products.noProductsFound")}</p>
           </div>

@@ -12,11 +12,13 @@ import ServicesList from "../admin/pages/ServicesList";
 import NotificationsList from "../admin/pages/NotificationsList";
 import UserManagement from "../admin/pages/UserManagement";
 import RoleManagement from "../admin/pages/RoleManagement";
-import PermissionManagement from "../admin/pages/PermissionManagement";
+// PermissionManagement removed - using UserLevel system only
 import SEOManagement from "../admin/pages/SEOManagement";
 import ConfigBanner from "../admin/pages/ConfigBanner";
 import SystemSettings from "../admin/pages/SystemSettings";
 import AlbumList from "../admin/pages/AlbumList";
+import DocumentsList from "../admin/pages/DocumentsList";
+import ContactList from "../admin/pages/ContactList";
 import AccountManagement from "../admin/pages/AccountManagement";
 
 // Import category pages
@@ -42,7 +44,7 @@ const Admin = () => {
         <Route
           path="dashboard"
           element={
-            <ProtectedRoute requiredPermissions={["menu_view"]}>
+            <ProtectedRoute requiredLevel={2}>
               <Dashboard />
             </ProtectedRoute>
           }
@@ -58,7 +60,7 @@ const Admin = () => {
         <Route
           path="notifications"
           element={
-            <ProtectedRoute requiredPermissions={["view_notifications"]}>
+            <ProtectedRoute requiredLevel={3}>
               <NotificationsList />
             </ProtectedRoute>
           }
@@ -77,11 +79,15 @@ const Admin = () => {
 
         <Route path="albums" element={<AlbumList />} />
 
+        <Route path="documents" element={<DocumentsList />} />
+
+        <Route path="contacts" element={<ContactList />} />
+
         {/* User Management */}
         <Route
           path="users"
           element={
-            <ProtectedRoute requiredPermissions={["view_users"]}>
+            <ProtectedRoute requiredLevel={2}>
               <UserManagement />
             </ProtectedRoute>
           }
@@ -91,7 +97,7 @@ const Admin = () => {
           path="roles"
           element={
             <ProtectedRoute
-              requiredPermissions={["menu_view"]}
+              requiredLevel={2}
               showMessage={true}
             >
               <RoleManagement />
@@ -99,56 +105,23 @@ const Admin = () => {
           }
         />
 
-        <Route
-          path="permissions"
-          element={
-            <ProtectedRoute requiredPermissions={["view_roles"]}>
-              <PermissionManagement />
-            </ProtectedRoute>
-          }
-        />
+        {/* PermissionManagement removed - UserLevel system doesn't need permission management UI */}
 
         {/* System Management */}
         <Route
           path="seo"
           element={
-            <ProtectedRoute requiredPermissions={["menu_view"]}>
+            <ProtectedRoute requiredLevel={3}>
               <SEOManagement />
             </ProtectedRoute>
           }
         />
 
-        {/* <Route
-          path="media"
-          element={
-            <ProtectedRoute requiredPermissions={["menu_view"]}>
-              <NewMediaManagement />
-            </ProtectedRoute>
-          }
-        /> */}
-
-        {/* <Route
-          path="documents"
-          element={
-            <ProtectedRoute requiredPermissions={["view_documents"]}>
-              <NewDocumentManagement />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="files"
-          element={
-            <ProtectedRoute requiredPermissions={["menu_view"]}>
-              <NewFileManagement />
-            </ProtectedRoute>
-          }
-        /> */}
 
         <Route
           path="config"
           element={
-            <ProtectedRoute requiredPermissions={["menu_config"]}>
+            <ProtectedRoute requiredLevel={2}>
               <ConfigBanner />
             </ProtectedRoute>
           }
@@ -157,7 +130,7 @@ const Admin = () => {
         <Route
           path="banners"
           element={
-            <ProtectedRoute requiredPermissions={["menu_view"]}>
+            <ProtectedRoute requiredLevel={3}>
               <ConfigBanner />
             </ProtectedRoute>
           }
@@ -166,7 +139,7 @@ const Admin = () => {
         <Route
           path="settings"
           element={
-            <ProtectedRoute requiredPermissions={["menu_view"]}>
+            <ProtectedRoute requiredLevel={3}>
               <SystemSettings />
             </ProtectedRoute>
           }
@@ -175,7 +148,7 @@ const Admin = () => {
         <Route
           path="system-settings"
           element={
-            <ProtectedRoute requiredPermissions={["menu_config"]}>
+            <ProtectedRoute requiredLevel={2}>
               <SystemSettings />
             </ProtectedRoute>
           }
@@ -185,7 +158,7 @@ const Admin = () => {
         <Route
           path="account"
           element={
-            <ProtectedRoute requiredPermissions={["menu_view"]}>
+            <ProtectedRoute requiredLevel={3}>
               <AccountManagement />
             </ProtectedRoute>
           }

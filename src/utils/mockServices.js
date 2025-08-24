@@ -5,9 +5,8 @@ export const mockServices = [
     titleEn: "CNS Service",
     slugVi: "thong-tin-dan-duong-giam-sat",
     slugEn: "cns-service",
-    descriptionVi:
-      "Dịch vụ CNS phục vụ điều hành bay, kỹ thuật và huấn luyện chuyên ngành.",
-    descriptionEn: "CNS services for flight operation, technical and training.",
+    descriptionVi: "",
+    descriptionEn: "",
     contentVi: `<p style="text-align: center;" align="center"><strong>C&Ocirc;NG TY TNHH KỸ THUẬT QUẢN L&Yacute; BAY (ATTECH) L&Agrave; NH&Agrave; CUNG CẤP DỊCH VỤ TH&Ocirc;NG TIN, DẪN ĐƯỜNG, GI&Aacute;M S&Aacute;T (CNS) CHO NG&Agrave;NH H&Agrave;NG KH&Ocirc;NG VIỆT NAM</strong></p>
 <p style="text-align: justify;">C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay (ATTECH) tự h&agrave;o l&agrave; nh&agrave; cung cấp dịch vụ chuy&ecirc;n ng&agrave;nh Th&ocirc;ng tin (Communication - C), dẫn đường (Navigation - N), Gi&aacute;m s&aacute;t (Surveilance- S) h&agrave;ng kh&ocirc;ng h&agrave;ng đầu tại Việt Nam. Đ&acirc;y l&agrave; dịch vụ thiết yếu trong hệ thống quản l&yacute; kh&ocirc;ng lưu (Air Traffic Management - ATM), đảm bảo cho c&aacute;c hoạt động bay diễn ra an to&agrave;n, hiệu quả v&agrave; li&ecirc;n tục.</p>
 <p style="text-align: justify;"><strong>I. C&Aacute;C DỊCH VỤ DO C&Ocirc;NG TY CUNG CẤP:</strong></p>
@@ -80,10 +79,8 @@ export const mockServices = [
     titleEn: "Calibration Service",
     slugVi: "bay-kiem-tra-hieu-chuan",
     slugEn: "calibration-service",
-    descriptionVi:
-      "Dịch vụ bay kiểm tra hiệu chuẩn các thiết bị dẫn đường giám sát hàng không.",
-    descriptionEn:
-      "Calibration flight service for navigation and surveillance equipment.",
+    descriptionVi: "",
+    descriptionEn: "",
     contentVi: `<p>Đội Bay kiểm tra hiệu chuẩn được th&agrave;nh lập theo Quyết định số 115/QĐ-KTQLB ng&agrave;y 19 th&aacute;ng 08 năm 2010 với nhiệm vụ Tổ chức cung cấp dịch vụ bay kiểm tra hiệu chuẩn c&aacute;c thiết bị dẫn đường gi&aacute;m s&aacute;t h&agrave;ng kh&ocirc;ng v&agrave; bay đ&aacute;nh gi&aacute; phương thức bay.</p>
 <p>Năm 2010 Cục H&agrave;ng kh&ocirc;ng Việt Nam đ&atilde; cấp giấy ph&eacute;p c&ocirc;ng nhận ATTECH l&agrave; nh&agrave; cung cấp dịch vụ bay kiểm tra hiệu chuẩn v&agrave; bay đ&aacute;nh gi&aacute; phương thức bay duy nhất tại Việt Nam tu&acirc;n thủ v&agrave; đ&aacute;p ứng đầy đủ c&aacute;c ti&ecirc;u chuẩn khuyến c&aacute;o của tổ chức h&agrave;ng kh&ocirc;ng d&acirc;n dụng quốc tế ICAO, quy định ph&aacute;p luật hiện h&agrave;nh của Nh&agrave; nước.</p>
 <p><strong>HỆ THỐNG THIẾT BỊ</strong></p>
@@ -121,11 +118,6 @@ export const mockServices = [
     contentEn: `<div class='service-header'><h1>Calibration Service</h1><p>Calibration service details in English...</p></div>`,
     timePosted: "2024-01-15T00:00:00Z",
     status: 1,
-    serviceCategoryId: 6,
-    serviceCategorytitleVi: "Dịch vụ bay kiểm tra",
-    serviceCategorytitleEn: "Flight Inspection Service",
-    serviceCategorySlugVi: "dich-vu-bay-kiem-tra",
-    serviceCategorySlugEn: "flight-inspection-service",
     image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-BHC1.jpg",
   },
   {
@@ -134,10 +126,8 @@ export const mockServices = [
     titleEn: "Testing - Calibration Service",
     slugVi: "thu-nghiem-hieu-chuan",
     slugEn: "testing-calibration-service",
-    descriptionVi:
-      "Dịch vụ thử nghiệm, hiệu chuẩn thiết bị đo lường, môi trường, quang học.",
-    descriptionEn:
-      "Testing and calibration services for measuring, environmental, and optical equipment.",
+    descriptionVi: "",
+    descriptionEn: "",
     contentVi: `<p>Với mục ti&ecirc;u cung cấp c&aacute;c&nbsp;<a title="sản phẩm" href="https://attech.com.vn/san-pham/">sản phẩm</a>, dịch vụ c&oacute; chất lượng cao nhất, đ&aacute;p ứng c&aacute;c ti&ecirc;u chuẩn quốc gia v&agrave; quốc tế, ATTECH x&aacute;c định phải kh&ocirc;ng ngừng n&acirc;ng cao năng lực hiệu chuẩn, thử nghiệm của m&igrave;nh. V&igrave; vậy, ATTECH đ&atilde; tập trung đầu tư về cơ sở vật chất v&agrave; con người cho hệ thống ph&ograve;ng th&iacute; nghiệm, &aacute;p dụng hệ thống quản l&yacute; chất lượng ISO/IEC 17025:2017. Đến nay, ph&ograve;ng th&iacute; nghiệm của ATTECH đ&atilde; được Văn ph&ograve;ng c&ocirc;ng nhận chất lượng thuộc Bộ Khoa học c&ocirc;ng nghệ Việt Nam cấp chứng chỉ VILAS. Với hệ thống ph&ograve;ng th&iacute; nghiệm đạt ti&ecirc;u chuẩn c&ugrave;ng với đội ngũ kỹ sư c&oacute; chuy&ecirc;n m&ocirc;n cao, gi&agrave;u kinh nghiệm, ATTECH cam kết cung cấp đến Qu&yacute; kh&aacute;ch h&agrave;ng c&aacute;c dịch vụ hiệu chuẩn, thử nghiệm tốt nhất v&agrave; tin cậy nhất.</p>
 <p><strong>NĂNG LỰC KINH NGHIỆM</strong></p>
 <p>Với gần 30 năm kinh nghiệm cung cấp dịch vụ, c&ugrave;ng với việc nhanh ch&oacute;ng &aacute;p dụng c&aacute;c hệ thống quản l&yacute; chất lượng ti&ecirc;n tiến như ISO 9001:2015, ISO/IEC 17025:2017, ATTECH đảm bảo đủ năng lực cung cấp dịch vụ thử nghiệm hiệu chuẩn, đ&aacute;p ứng ti&ecirc;u chuẩn của quốc gia v&agrave; quốc tế cho tất cả c&aacute;c kh&aacute;ch h&agrave;ng.</p>
@@ -159,13 +149,7 @@ export const mockServices = [
     contentEn: `<div class='service-header'><h1>Testing - Calibration Service</h1><p>Testing - calibration service details in English...</p></div>`,
     timePosted: "2024-01-20T00:00:00Z",
     status: 1,
-    serviceCategoryId: 3,
-    serviceCategorytitleVi: "Dịch vụ thử nghiệm",
-    serviceCategorytitleEn: "Testing Service",
-    serviceCategorySlugVi: "dich-vu-thu-nghiem",
-    serviceCategorySlugEn: "testing-service",
-    image:
-      "https://attech.com.vn/wp-content/uploads/2015/02/anh-thu-nghiem-hieu-chuan-2019.jpg",
+    image: "/assets/images/thu-nghiem-hieu-chuan/thu-nghiem-hieu-chuan.jpg",
   },
   {
     id: 4,
@@ -173,8 +157,8 @@ export const mockServices = [
     titleEn: "Aviation Service",
     slugVi: "ky-thuat-hang-khong",
     slugEn: "aviation-service",
-    descriptionVi: "Dịch vụ kỹ thuật chuyên ngành hàng không.",
-    descriptionEn: "Technical services for aviation sector.",
+    descriptionVi: "",
+    descriptionEn: "",
     contentVi: `<p>Cung cấp dịch vụ kỹ thuật chuy&ecirc;n ng&agrave;nh CNS: Khảo s&aacute;t vị tr&iacute; lắp đặt, đ&aacute;nh gi&aacute; th&ocirc;ng qua phần mềm m&ocirc; ph&ocirc;ng cho c&aacute;c hệ thống DVOR/DME, ILS/DME, VHF, ADS-B.</p>
 <p>- Thi c&ocirc;ng lắp đặt, th&ocirc;ng điện hiệu chỉnh, huấn luyện vận h&agrave;nh khai th&aacute;c hệ thống thiết bị dẫn đường DVOR/DME; ILS/DME.</p>
 <p>- Thi c&ocirc;ng lắp đặt, th&ocirc;ng điện hiệu chinh, huấn luyện vận h&agrave;nh khai th&aacute;c hệ thống thiết bị gi&aacute;m s&aacute;t ADS-B Thi c&ocirc;ng lắp đặt, th&ocirc;ng điện hiệu chỉnh, huấn luyện vận h&agrave;nh khai th&aacute;c hệ thống thiết bị th&ocirc;ng tin VHF</p>
@@ -185,11 +169,6 @@ export const mockServices = [
     contentEn: `<div class='service-header'><h1>Aviation Service</h1><p>Aviation service details in English...</p></div>`,
     timePosted: "2024-02-01T00:00:00Z",
     status: 1,
-    serviceCategoryId: 2,
-    serviceCategorytitleVi: "Dịch vụ kỹ thuật",
-    serviceCategorytitleEn: "Technical Service",
-    serviceCategorySlugVi: "dich-vu-ky-thuat",
-    serviceCategorySlugEn: "technical-service",
     image: "https://attech.com.vn/wp-content/uploads/2015/02/DV-HK.jpg",
   },
   {
@@ -198,8 +177,8 @@ export const mockServices = [
     titleEn: "Training - Education Service",
     slugVi: "huan-luyen-dao-tao",
     slugEn: "training-education-service",
-    descriptionVi: "Dịch vụ huấn luyện, đào tạo chuyên ngành CNS.",
-    descriptionEn: "Training and education services for CNS sector.",
+    descriptionVi: "",
+    descriptionEn: "",
     contentVi: `<p><strong>GIỚI THIỆU</strong></p>
 <p>Với bề dầy hơn 30 năm kinh nghiệm trong lĩnh vực cung cấp c&aacute;c sản phẩm&nbsp;v&agrave; dịch vụ trong ng&agrave;nh H&agrave;ng kh&ocirc;ng, C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay tự h&agrave;o l&agrave; nh&agrave; cung cấp dịch vụ kỹ thuật ng&agrave;nh Th&ocirc;ng tin (Communication &ndash; C), Dẫn đường (Navigation &ndash; N), Gi&aacute;m s&aacute;t (Surveillance &ndash; S) h&agrave;ng đầu Việt Nam.</p>
 <p>Để đ&aacute;p ứng nhu cầu n&acirc;ng cao chất lượng nguồn nh&acirc;n lực v&agrave; với chiến lược ph&aacute;t triển ATTECH th&agrave;nh một thương hiệu mạnh trong lĩnh vực kỹ thuật h&agrave;ng kh&ocirc;ng tại thị trường Việt Nam v&agrave; từng bước vươn ra thị trường khu vực v&agrave; thế giới. Trung t&acirc;m Huấn luyện CNS được th&agrave;nh lập theo Quyết định số 2436/QĐ-QLB v&agrave;o ng&agrave;y 27/11/2008. Ng&agrave;y 29/12/2022, Cục H&agrave;ng kh&ocirc;ng Việt Nam đ&atilde; cấp lại Giấy chứng nhận số 6665/GCN-CHK v&agrave; Quyết định số 3086/QĐ-CHK chứng nhận C&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay l&agrave; cơ sở đủ điều kiện huấn luyện nghiệp vụ nh&acirc;n vi&ecirc;n h&agrave;ng kh&ocirc;ng chuy&ecirc;n ng&agrave;nh th&ocirc;ng tin, dẫn đường, gi&aacute;m s&aacute;t (CNS).</p>
@@ -216,11 +195,6 @@ export const mockServices = [
     contentEn: `<div class='service-header'><h1>Training - Education Service</h1><p>Training - education service details in English...</p></div>`,
     timePosted: "2024-02-15T00:00:00Z",
     status: 1,
-    serviceCategoryId: 4,
-    serviceCategorytitleVi: "Dịch vụ đào tạo",
-    serviceCategorytitleEn: "Training Service",
-    serviceCategorySlugVi: "dich-vu-dao-tao",
-    serviceCategorySlugEn: "training-service",
     image: "/assets/images/hldt/dich-vu-hldt-1.jpg",
   },
   {
@@ -229,8 +203,8 @@ export const mockServices = [
     titleEn: "Consulting - QLDA Service",
     slugVi: "tu-van-dau-tu-xay-dung-qlda",
     slugEn: "consulting-qlda-service",
-    descriptionVi: "Dịch vụ tư vấn đầu tư xây dựng và quản lý dự án.",
-    descriptionEn: "Consulting and project management services.",
+    descriptionVi: "",
+    descriptionEn: "",
     contentVi: `<p>Dịch vụ Tư vấn đầu tư x&acirc;y dựng v&agrave; QLDA l&agrave; một trong c&aacute;c dịch vụ của c&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay do Ban Quản l&yacute; dự &aacute;n Đầu tư v&agrave; X&acirc;y dựng chuy&ecirc;n ng&agrave;nh &ndash; Chi nh&aacute;nh của c&ocirc;ng ty TNHH Kỹ thuật Quản l&yacute; bay thực hiện, cung cấp. Với tr&ecirc;n 10 năm kinh nghiệm v&agrave; đội ngũ kỹ sư, kiến tr&uacute;c sư v&agrave; c&aacute;n bộ chuy&ecirc;n m&ocirc;n c&oacute; tr&igrave;nh độ, Ban Quản l&yacute; dự &aacute;n Đầu tư v&agrave; X&acirc;y dựng chuy&ecirc;n ng&agrave;nh đ&atilde; tổ chức v&agrave; thực hiện c&aacute;c dịch vụ tư vấn đầu tư x&acirc;y dựng v&agrave; quản l&yacute; dự &aacute;n bao gồm: Khảo s&aacute;t, lập dự &aacute;n đầu tư x&acirc;y dựng, thiết kế x&acirc;y dựng, tổ chức lựa chọn nh&agrave; thầu, gi&aacute;m s&aacute;t thi c&ocirc;ng x&acirc;y dựng v&agrave; lắp đặt thiết bị, quản l&yacute; chi ph&iacute; đầu tư x&acirc;y dựng v&agrave; quản l&yacute; dự &aacute;n theo nhiệm vụ sản xuất kinh doanh của C&ocirc;ng ty.</p>
 <p><strong>NĂNG LỰC KINH NGHIỆM</strong></p>
 <p>&ndash; Tư vấn đầu tư x&acirc;y dựng bao gồm:</p>
@@ -256,11 +230,6 @@ export const mockServices = [
     contentEn: `<div class='service-header'><h1>Consulting - QLDA Service</h1><p>Consulting - QLDA service details in English...</p></div>`,
     timePosted: "2024-03-01T00:00:00Z",
     status: 1,
-    serviceCategoryId: 5,
-    serviceCategorytitleVi: "Dịch vụ tư vấn",
-    serviceCategorytitleEn: "Consulting Service",
-    serviceCategorySlugVi: "dich-vu-tu-van",
-    serviceCategorySlugEn: "consulting-service",
     image: "https://attech.com.vn/wp-content/uploads/2015/02/TVTK-anhs.jpg",
   },
 ];

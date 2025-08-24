@@ -32,11 +32,12 @@ export async function getProducts(params = {}) {
   try {
     const {
       pageIndex = 1,
-      pageSize = 10,
+      pageSize = 50,
       search = "",
       categoryId = "",
       sortBy = "timePosted",
-      sortDirection = "desc"
+      sortDirection = "desc",
+      limit = 50
     } = params;
 
     const queryParams = {
@@ -49,9 +50,22 @@ export async function getProducts(params = {}) {
     // Add optional filters
     if (search) queryParams.search = search;
     if (categoryId) queryParams.categoryId = categoryId;
-    // Status = 1 is automatically handled by client endpoint
+    
+    // Handle limit parameter for backward compatibility
+    if (limit && limit !== pageSize) {
+      queryParams.pageSize = limit;
+      queryParams.limit = limit;
+    }
 
-    const response = await api.get("/api/product/client/find-all", {
+    // Use category endpoint if categorySlug provided
+    let endpoint = "/api/product/client/find-all";
+    if (params.categorySlug) {
+      endpoint = `/api/product/client/category/${params.categorySlug}`;
+      // Remove categoryId from params since we're using slug in URL
+      delete queryParams.categoryId;
+    }
+
+    const response = await api.get(endpoint, {
       params: queryParams,
     });
 
@@ -62,29 +76,38 @@ export async function getProducts(params = {}) {
     ) {
       const dataObj = response.data.data;
       return {
-        items: dataObj.items || [],
-        totalCount: dataObj.totalItems || dataObj.total || 0,
-        totalPages: Math.ceil((dataObj.totalItems || dataObj.total || 0) / pageSize),
-        currentPage: pageIndex,
-        pageSize,
+        status: 1,
+        data: {
+          items: dataObj.items || [],
+          totalItems: dataObj.totalItems || dataObj.total || 0,
+          totalPages: Math.ceil((dataObj.totalItems || dataObj.total || 0) / (limit || pageSize)),
+          currentPage: pageIndex,
+          pageSize: limit || pageSize,
+        }
       };
     }
 
     return {
-      items: [],
-      totalCount: 0,
-      totalPages: 0,
-      currentPage: pageIndex,
-      pageSize,
+      status: 0,
+      data: {
+        items: [],
+        totalItems: 0,
+        totalPages: 0,
+        currentPage: params.pageIndex || 1,
+        pageSize: params.limit || params.pageSize || 50,
+      }
     };
   } catch (error) {
     console.error("❌ getProducts error:", error);
     return {
-      items: [],
-      totalCount: 0,
-      totalPages: 0,
-      currentPage: pageIndex,
-      pageSize,
+      status: 0,
+      data: {
+        items: [],
+        totalItems: 0,
+        totalPages: 0,
+        currentPage: params.pageIndex || 1,
+        pageSize: params.limit || params.pageSize || 50,
+      }
     };
   }
 }
@@ -388,20 +411,30 @@ export async function searchProducts(searchTerm, params = {}) {
 // Get product categories
 export async function getProductCategories() {
   try {
-    const response = await api.get("/api/product/client/categories");
+    const response = await api.get("/api/product-category/client/find-all");
 
     if (
       response.data &&
       response.data.status === 1 &&
-      response.data.data
+      response.data.data &&
+      response.data.data.items
     ) {
-      return response.data.data;
+      return {
+        success: true,
+        data: response.data.data.items
+      };
     }
 
-    return [];
+    return {
+      success: false,
+      data: []
+    };
   } catch (error) {
     console.error("❌ getProductCategories error:", error);
-    return [];
+    return {
+      success: false,
+      data: []
+    };
   }
 }
 

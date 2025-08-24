@@ -103,7 +103,6 @@ export const tinymceConfig = {
   
   // Disable problematic DOM processing
   urlconverter_callback: false,
-  convert_urls: false,
   cleanup: false,
   cleanup_on_startup: false,
   trim_span_elements: false,
@@ -112,6 +111,10 @@ export const tinymceConfig = {
   // Fullscreen settings để fix vấn đề trong modal
   fullscreen_native: false,
   fullscreen_new_window: false,
+  
+  // Fix z-index để TinyMCE dialogs và dropdowns hiển thị đúng
+  skin: false,
+  theme: 'silver',
   
   // Content styling
   content_style: `

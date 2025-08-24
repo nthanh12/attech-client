@@ -48,6 +48,44 @@ a {
   text-decoration: none;
 }
 
+/* TinyMCE Global Z-index Fix - đảm bảo editor elements hiển thị đúng */
+.tox-tinymce {
+  z-index: 1001 !important;
+}
+
+.tox-dialog-wrap {
+  z-index: 2100 !important;
+}
+
+.tox-dialog {
+  z-index: 2101 !important;
+}
+
+.tox-menu {
+  z-index: 2200 !important;
+}
+
+.tox-floatpanel {
+  z-index: 2200 !important;
+}
+
+.tox-collection {
+  z-index: 2150 !important;
+}
+
+.tox-pop {
+  z-index: 2250 !important;
+}
+
+/* TinyMCE Table properties border dropdown fix */
+.tox-collection--list .tox-collection__item {
+  z-index: 2200 !important;
+}
+
+.tox-menu .tox-menu__group {
+  z-index: 2200 !important;
+}
+
 a:hover,
 a:active,
 a:focus {

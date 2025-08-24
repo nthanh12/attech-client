@@ -1,4 +1,5 @@
 import React from "react";
+import SimplePagination from "./SimplePagination";
 
 const DataTable = ({ 
   columns, 
@@ -14,6 +15,7 @@ const DataTable = ({
   totalPages,
   onPageChange,
   itemsPerPage,
+  onItemsPerPageChange,
   totalItems,
   tableClassName = "admin-table"
 }) => {
@@ -139,172 +141,14 @@ const DataTable = ({
           )}
         </tbody>
       </table>
-      {/* Modern Pagination */}
-      {totalPages && totalPages > 1 && (
-        <div className="pagination-container" style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: '1rem',
-          padding: '1rem',
-          backgroundColor: '#f8f9fa',
-          borderRadius: '8px',
-          border: '1px solid #e9ecef'
-        }}>
-          <div className="pagination-info" style={{
-            color: '#6c757d',
-            fontSize: '0.875rem'
-          }}>
-            Hiển thị <strong>{((currentPage - 1) * itemsPerPage) + 1}</strong> - <strong>{Math.min(currentPage * itemsPerPage, totalItems)}</strong> của <strong>{totalItems}</strong> kết quả
-          </div>
-          <div className="pagination" style={{
-            display: 'flex',
-            gap: '0.25rem',
-            alignItems: 'center'
-          }}>
-            <button
-              className="page-btn"
-              onClick={() => onPageChange && onPageChange(1)}
-              disabled={!currentPage || currentPage === 1}
-              style={{
-                padding: '0.5rem 0.75rem',
-                border: '1px solid #dee2e6',
-                backgroundColor: !currentPage || currentPage === 1 ? '#f8f9fa' : 'white',
-                color: !currentPage || currentPage === 1 ? '#6c757d' : '#495057',
-                borderRadius: '6px',
-                cursor: !currentPage || currentPage === 1 ? 'not-allowed' : 'pointer',
-                fontSize: '0.875rem',
-                transition: 'all 0.2s'
-              }}
-              title="Trang đầu"
-            >
-              <i className="bi bi-chevron-double-left"></i>
-            </button>
-            <button
-              className="page-btn"
-              onClick={() => onPageChange && onPageChange(currentPage - 1)}
-              disabled={!currentPage || currentPage === 1}
-              style={{
-                padding: '0.5rem 0.75rem',
-                border: '1px solid #dee2e6',
-                backgroundColor: !currentPage || currentPage === 1 ? '#f8f9fa' : 'white',
-                color: !currentPage || currentPage === 1 ? '#6c757d' : '#495057',
-                borderRadius: '6px',
-                cursor: !currentPage || currentPage === 1 ? 'not-allowed' : 'pointer',
-                fontSize: '0.875rem',
-                transition: 'all 0.2s'
-              }}
-              title="Trang trước"
-            >
-              <i className="bi bi-chevron-left"></i>
-            </button>
-            {/* Smart page number display */}
-            {(() => {
-              const maxVisible = 5;
-              let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-              let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-              if (endPage - startPage + 1 < maxVisible) {
-                startPage = Math.max(1, endPage - maxVisible + 1);
-              }
-              const pages = [];
-              if (startPage > 1) {
-                pages.push(
-                  <button key={1} className="page-btn" onClick={() => onPageChange && onPageChange(1)} style={{
-                    padding: '0.5rem 0.75rem',
-                    border: '1px solid #dee2e6',
-                    backgroundColor: 'white',
-                    color: '#495057',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '0.875rem',
-                    minWidth: '2.5rem'
-                  }}>1</button>
-                );
-                if (startPage > 2) {
-                  pages.push(<span key="ellipsis1" style={{ padding: '0 0.5rem', color: '#6c757d' }}>...</span>);
-                }
-              }
-              for (let i = startPage; i <= endPage; i++) {
-                pages.push(
-                  <button
-                    key={i}
-                    className="page-btn"
-                    onClick={() => onPageChange && onPageChange(i)}
-                    style={{
-                      padding: '0.5rem 0.75rem',
-                      border: '1px solid #dee2e6',
-                      backgroundColor: currentPage === i ? '#007bff' : 'white',
-                      color: currentPage === i ? 'white' : '#495057',
-                      borderRadius: '6px',
-                      cursor: 'pointer',
-                      fontSize: '0.875rem',
-                      fontWeight: currentPage === i ? '600' : '400',
-                      minWidth: '2.5rem',
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    {i}
-                  </button>
-                );
-              }
-              if (endPage < totalPages) {
-                if (endPage < totalPages - 1) {
-                  pages.push(<span key="ellipsis2" style={{ padding: '0 0.5rem', color: '#6c757d' }}>...</span>);
-                }
-                pages.push(
-                  <button key={totalPages} className="page-btn" onClick={() => onPageChange && onPageChange(totalPages)} style={{
-                    padding: '0.5rem 0.75rem',
-                    border: '1px solid #dee2e6',
-                    backgroundColor: 'white',
-                    color: '#495057',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontSize: '0.875rem',
-                    minWidth: '2.5rem'
-                  }}>{totalPages}</button>
-                );
-              }
-              return pages;
-            })()}
-            <button
-              className="page-btn"
-              onClick={() => onPageChange && onPageChange(currentPage + 1)}
-              disabled={!currentPage || currentPage === totalPages}
-              style={{
-                padding: '0.5rem 0.75rem',
-                border: '1px solid #dee2e6',
-                backgroundColor: !currentPage || currentPage === totalPages ? '#f8f9fa' : 'white',
-                color: !currentPage || currentPage === totalPages ? '#6c757d' : '#495057',
-                borderRadius: '6px',
-                cursor: !currentPage || currentPage === totalPages ? 'not-allowed' : 'pointer',
-                fontSize: '0.875rem',
-                transition: 'all 0.2s'
-              }}
-              title="Trang sau"
-            >
-              <i className="bi bi-chevron-right"></i>
-            </button>
-            <button
-              className="page-btn"
-              onClick={() => onPageChange && onPageChange(totalPages)}
-              disabled={!currentPage || currentPage === totalPages}
-              style={{
-                padding: '0.5rem 0.75rem',
-                border: '1px solid #dee2e6',
-                backgroundColor: !currentPage || currentPage === totalPages ? '#f8f9fa' : 'white',
-                color: !currentPage || currentPage === totalPages ? '#6c757d' : '#495057',
-                borderRadius: '6px',
-                cursor: !currentPage || currentPage === totalPages ? 'not-allowed' : 'pointer',
-                fontSize: '0.875rem',
-                transition: 'all 0.2s'
-              }}
-              title="Trang cuối"
-            >
-              <i className="bi bi-chevron-double-right"></i>
-            </button>
-          </div>
-        </div>
-      )}
+      <SimplePagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={onPageChange}
+        totalItems={totalItems}
+        itemsPerPage={itemsPerPage}
+        onItemsPerPageChange={onItemsPerPageChange}
+      />
     </div>
   );
 };

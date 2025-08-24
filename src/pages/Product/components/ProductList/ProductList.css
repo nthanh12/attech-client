@@ -5,17 +5,14 @@
 .page-product .product-content .attech-product-list-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding-top: 80px;
+    padding-top: 20px;
     min-height: 100vh;
     position: relative;
 }
 
 .page-product .product-content .attech-controls-wrapper {
-    position: fixed;
-    top: 120px;
-    left: 0;
-    right: 0;
-    z-index: 100;
+    position: relative;
+    margin-bottom: 20px;
     background: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -158,16 +155,24 @@
 
 .page-product .product-content .attech-product-grid {
     padding: 20px;
-    margin-top: 50px;
+    margin-top: 0;
 }
 
 .page-product .product-content .attech-product-grid.grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
-    justify-content: start;
+    justify-content: center;
     max-width: 100%;
-    margin-top: 50px;
+    margin-top: 0;
+    align-items: start;
+    justify-items: center;
+  }
+
+  /* Prevent items from getting too wide when few products */
+  .page-product .product-content .attech-product-grid.grid .attech-product-item-wrapper {
+    max-width: 400px;
+    width: 100%;
   }
   
 
@@ -412,11 +417,30 @@
 
 .attech-product-item-wrapper {
     opacity: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 1024px) {
     .page-product .product-content .attech-controls-wrapper {
         top: 60px;
+    }
+}
+
+/* Grid responsive breakpoints */
+@media (max-width: 1200px) {
+    .page-product .product-content .attech-product-grid.grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 992px) {
+    .page-product .product-content .attech-product-grid.grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 18px;
+        padding: 15px;
     }
 }
 
@@ -429,7 +453,13 @@
         top: 160px;
         padding: 12px;
     }
-
+    
+    .page-product .product-content .attech-product-grid.grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+        padding: 10px;
+    }
+    
     .attech-product-grid {
         margin-top: 140px;
     }

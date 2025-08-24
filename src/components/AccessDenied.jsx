@@ -1,10 +1,9 @@
 import React from 'react';
-import { getUserLevelColor, getUserLevelText, getUserLevelIcon } from '../utils/userLevelUtils';
-import { getDefaultRouteForUser } from '../utils/routeUtils';
+import { getRoleColor, getRoleText, getRoleIcon } from '../utils/roleUtils';
 
 /**
  * Access Denied Component
- * Shows when user doesn't have permission to access a feature
+ * Shows when user doesn't have UserLevel to access a feature
  */
 const AccessDenied = ({ 
   message, 
@@ -17,8 +16,8 @@ const AccessDenied = ({
     if (window.history.length > 1) {
       window.history.back();
     } else {
-      // Use intelligent redirect based on user permissions
-      const defaultRoute = user ? getDefaultRouteForUser(user) : '/dang-nhap';
+      // Simple default redirect based on UserLevel
+      const defaultRoute = user && user.userLevel <= 2 ? '/admin/dashboard' : '/admin/news';
       window.location.href = defaultRoute;
     }
   };
@@ -72,14 +71,14 @@ const AccessDenied = ({
       {user && (
         <div style={{ marginBottom: '1.5rem' }}>
           <span 
-            className={`badge bg-${getUserLevelColor(user.userLevel)}`}
+            className={`badge bg-${getRoleColor(user.roleId)}`}
             style={{
               fontSize: '0.9rem',
               padding: '0.5rem 1rem',
               borderRadius: '20px'
             }}
           >
-            {getUserLevelIcon(user.userLevel)} {getUserLevelText(user.userLevel)}
+            {getRoleIcon(user.roleId)} {getRoleText(user.roleId)}
           </span>
         </div>
       )}

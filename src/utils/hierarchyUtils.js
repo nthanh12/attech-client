@@ -1,13 +1,19 @@
 /**
- * Hierarchy Utilities for User Management
- * Based on FRONTEND_PERMISSION_GUIDE.md
+ * Hierarchy Utilities for User Management - Simple roleId system
  */
+
+// Role constants
+const ROLES = {
+  SUPERADMIN: 1,  // SuperAdmin - Full access
+  ADMIN: 2,       // Admin - Most features
+  EDITOR: 3       // Editor - Limited access
+};
 
 /**
  * Check what actions current user can perform on target user
  * @param {Object} currentUser - Current logged in user
  * @param {Object} targetUser - User being acted upon
- * @returns {Object} Object with permission flags
+ * @returns {Object} Object with roleId-based flags
  */
 export const canModifyUser = (currentUser, targetUser) => {
   if (!currentUser || !targetUser) {
@@ -20,198 +26,71 @@ export const canModifyUser = (currentUser, targetUser) => {
     };
   }
 
-  // Map userType to userLevel if userLevel is missing
-  const getCurrentUserLevel = (user) => {
-    if (user.userLevel) return user.userLevel;
-    // Check various userType formats
-    if (user.userType === 'system' || user.userType === 1 || user.userType === 'superadmin') return 'system';
-    if (user.userType === 'manager' || user.userType === 2 || user.userType === 'admin') return 'manager';
-    if (user.userType === 'staff' || user.userType === 3 || user.userType === 'editor') return 'staff';
-    
-    return 'staff';
-  };
+  const currentRoleId = currentUser.roleId || ROLES.EDITOR;
+  const targetRoleId = targetUser.roleId || ROLES.EDITOR;
 
-  const getTargetUserLevel = (user) => {
-    if (user.userLevel) return user.userLevel;
-    // Check various userType formats
-    if (user.userType === 'system' || user.userType === 1 || user.userType === 'superadmin') return 'system';
-    if (user.userType === 'manager' || user.userType === 2 || user.userType === 'admin') return 'manager';
-    if (user.userType === 'staff' || user.userType === 3 || user.userType === 'editor') return 'staff';
-    
-    return 'staff';
-  };
-
-  const currentUserLevel = getCurrentUserLevel(currentUser);
-  const targetUserLevel = getTargetUserLevel(targetUser);
-
-  // SuperAdmin có thể làm tất cả
-  if (currentUserLevel === 'system') {
-    return {
-      canEdit: true,
-      canDelete: targetUser.id !== currentUser.id, // Không tự xóa mình
-      canChangeRoles: true,
-      canPromote: true,
-      canViewDetails: true
-    };
-  }
+  // Can only modify users at higher roleId (lower permission)
+  const canModify = currentRoleId < targetRoleId;
   
-  // Admin chỉ quản lý STAFF
-  if (currentUserLevel === 'manager') {
-    const isTargetStaff = targetUserLevel === 'staff';
-    const isSelf = targetUser.id === currentUser.id;
-    
-    return {
-      canEdit: isTargetStaff || isSelf, // Admin có thể edit chính mình
-      canDelete: isTargetStaff && !isSelf, // Không thể xóa chính mình
-      canChangeRoles: isTargetStaff,
-      canPromote: false, // Admin không thể promote lên Admin/SuperAdmin
-      canViewDetails: isTargetStaff || isSelf
-    };
-  }
-  
-  // STAFF không quản lý ai, chỉ có thể xem và edit thông tin của chính mình
-  const isSelf = targetUser.id === currentUser.id;
+  // Admin level can manage Editor and below
+  const canManage = currentRoleId <= ROLES.ADMIN;
+
   return {
-    canEdit: isSelf, // STAFF chỉ edit được chính mình
-    canDelete: false,
-    canChangeRoles: false,
-    canPromote: false,
-    canViewDetails: isSelf
+    canEdit: canModify && canManage,
+    canDelete: canModify && currentRoleId <= ROLES.ADMIN,
+    canChangeRoles: canModify && currentRoleId <= ROLES.ADMIN,
+    canPromote: canModify && currentRoleId <= ROLES.SUPERADMIN, // Only SuperAdmin can promote
+    canViewDetails: currentRoleId <= ROLES.ADMIN
   };
 };
 
 /**
- * Get available user levels that current user can assign
- * @param {Object} currentUser - Current logged in user
- * @returns {Array} Array of available user levels
+ * Get role name for display
+ * @param {number} roleId - Role ID (1-3)
+ * @returns {string} Display name
  */
-export const getAvailableUserLevels = (currentUser) => {
-  if (!currentUser) return [];
-
-  // Map userType to userLevel if userLevel is missing
-  const getCurrentUserLevel = (user) => {
-    if (user.userLevel) return user.userLevel;
-    if (user.userType === 'system' || user.userType === 1 || user.userType === 'superadmin') return 'system';
-    if (user.userType === 'manager' || user.userType === 2 || user.userType === 'admin') return 'manager';
-    if (user.userType === 'staff' || user.userType === 3 || user.userType === 'editor') return 'staff';
-    return 'staff';
-  };
-
-  const currentUserLevel = getCurrentUserLevel(currentUser);
-
-  if (currentUserLevel === 'system') {
-    return [
-      { value: 1, label: 'SuperAdmin', key: 'system', icon: '👑' },
-      { value: 2, label: 'Admin', key: 'manager', icon: '⚡' },
-      { value: 3, label: 'Staff', key: 'staff', icon: '👤' }
-    ];
+export const getRoleName = (roleId) => {
+  switch (roleId) {
+    case ROLES.SUPERADMIN:
+      return 'Super Admin';
+    case ROLES.ADMIN:
+      return 'Admin';
+    case ROLES.EDITOR:
+      return 'Editor';
+    default:
+      return 'Unknown';
   }
-  
-  if (currentUserLevel === 'manager') {
-    return [
-      { value: 3, label: 'Staff', key: 'staff', icon: '👤' }
-    ];
-  }
-  
-  return []; // STAFF không tạo được user
 };
 
 /**
- * Check if current user can create users with specific level
- * @param {Object} currentUser - Current logged in user
- * @param {string} targetUserLevel - Target user level to create
+ * Check if user can access admin features
+ * @param {Object} user - User object
  * @returns {boolean}
  */
-export const canCreateUserWithLevel = (currentUser, targetUserLevel) => {
-  if (!currentUser) return false;
-
-  // SuperAdmin có thể tạo tất cả
-  if (currentUser.userLevel === 'system') {
-    return true;
-  }
-  
-  // Admin chỉ tạo được STAFF
-  if (currentUser.userLevel === 'manager') {
-    return targetUserLevel === 'staff' || targetUserLevel === 3;
-  }
-  
-  // STAFF không tạo được user nào
-  return false;
+export const canAccessAdmin = (user) => {
+  return user && user.roleId <= ROLES.EDITOR;
 };
 
 /**
- * Check if current user can assign specific role to target user
- * @param {Object} currentUser - Current logged in user
- * @param {Object} targetUser - User being assigned role
- * @param {Object} role - Role to be assigned
- * @returns {boolean}
- */
-export const canAssignRole = (currentUser, targetUser, role) => {
-  if (!currentUser || !targetUser || !role) return false;
-
-  // SuperAdmin có thể assign tất cả roles
-  if (currentUser.userLevel === 'system') {
-    return true;
-  }
-  
-  // Admin chỉ assign roles cho STAFF và không thể assign admin roles
-  if (currentUser.userLevel === 'manager') {
-    const isTargetStaff = targetUser.userLevel === 'staff';
-    const isAdminRole = ['SuperAdmin', 'Admin'].includes(role.name);
-    
-    return isTargetStaff && !isAdminRole;
-  }
-  
-  // STAFF không assign được role
-  return false;
-};
-
-/**
- * Get hierarchy level number for comparison
- * @param {string} userLevel - User level string
- * @returns {number} Hierarchy level (lower number = higher authority)
- */
-export const getHierarchyLevel = (userLevel) => {
-  switch (userLevel) {
-    case 'system': return 1;
-    case 'manager': return 2;
-    case 'staff': return 3;
-    default: return 999;
-  }
-};
-
-/**
- * Check if user A has higher authority than user B
- * @param {Object} userA - First user
- * @param {Object} userB - Second user
- * @returns {boolean}
- */
-export const hasHigherAuthority = (userA, userB) => {
-  if (!userA || !userB) return false;
-  
-  const levelA = getHierarchyLevel(userA.userLevel);
-  const levelB = getHierarchyLevel(userB.userLevel);
-  
-  return levelA < levelB; // Lower number = higher authority
-};
-
-/**
- * Get error message for unauthorized action
+ * Get available roles for assignment
  * @param {Object} currentUser - Current user
- * @param {Object} targetUser - Target user
- * @param {string} action - Action being attempted
- * @returns {string} Error message
+ * @returns {Array} Array of assignable roles
  */
-export const getUnauthorizedMessage = (currentUser, targetUser, action) => {
-  if (!currentUser) return 'Bạn chưa đăng nhập';
+export const getAssignableRoles = (currentUser) => {
+  if (!currentUser) return [];
   
-  if (currentUser.userLevel === 'staff') {
-    return 'Staff không có quyền quản lý người dùng khác';
+  const roles = [];
+  const currentRoleId = currentUser.roleId || ROLES.EDITOR;
+  
+  // Can only assign roles with higher roleId (lower permission)
+  if (currentRoleId <= ROLES.SUPERADMIN) {
+    roles.push({ value: ROLES.ADMIN, label: 'Admin' });
+  }
+  if (currentRoleId <= ROLES.ADMIN) {
+    roles.push({ value: ROLES.EDITOR, label: 'Editor' });
   }
   
-  if (currentUser.userLevel === 'manager' && targetUser?.userLevel !== 'staff') {
-    return 'Admin chỉ được quản lý STAFF, không thể thay đổi Admin/SuperAdmin khác';
-  }
-  
-  return `Bạn không có quyền ${action} người dùng này`;
+  return roles;
 };
+
+export { ROLES };

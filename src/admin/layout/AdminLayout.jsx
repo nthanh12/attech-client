@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { PermissionProvider } from "../hooks/usePermissions";
 import "./AdminLayout.css";
 import "../admin-common.css";
 
@@ -14,8 +13,7 @@ const AdminLayout = () => {
     user,
     logout,
     hasPermission,
-    getUserPermissions,
-    PERMISSIONS,
+    ROLES,
     loading,
     isAuthenticated,
   } = useAuth();
@@ -29,9 +27,9 @@ const AdminLayout = () => {
 
   // Memoize navItems để tránh infinite loop
   const navItems = useMemo(() => {
-    const items = getNavItemsByPermissions();
-    return items;
-  }, [user?.permissions]); // Chỉ re-calculate khi permissions thay đổi
+    return getNavItemsByPermissions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.roleId]); // Re-calculate khi roleId thay đổi
 
   useEffect(() => {
     const activeParent = navItems.find(
@@ -91,14 +89,14 @@ const AdminLayout = () => {
   }
 
   function getNavItemsByPermissions() {
-    const userPermissions = getUserPermissions();
-
-    // Define all possible navigation items with their required permissions
+    
+    // Define all possible navigation items with their required roleId
     const allNavItems = [
       {
         path: "/admin/dashboard",
         label: "Dashboard",
         icon: "bi bi-speedometer2",
+        requiredRoleId: ROLES.EDITOR, // All roles can see dashboard
       },
 
       // News Management
@@ -106,19 +104,19 @@ const AdminLayout = () => {
         path: "/admin/news",
         label: "Quản lý tin tức",
         icon: "bi bi-newspaper",
-        permission: "menu_news_manager",
+        requiredRoleId: ROLES.EDITOR,
         subItems: [
           {
             path: "/admin/news",
             label: "Danh sách tin tức",
             icon: "bi bi-newspaper",
-            permission: "view_news",
+            requiredRoleId: ROLES.EDITOR,
           },
           {
             path: "/admin/news-category",
             label: "Danh mục tin tức",
             icon: "bi bi-collection",
-            permission: "view_news_category",
+            requiredRoleId: ROLES.EDITOR,
           },
         ],
       },
@@ -128,19 +126,19 @@ const AdminLayout = () => {
         path: "/admin/notifications",
         label: "Quản lý thông báo",
         icon: "bi bi-bell",
-        permission: "menu_notification_manager",
+        requiredRoleId: ROLES.EDITOR,
         subItems: [
           {
             path: "/admin/notifications",
             label: "Danh sách thông báo",
             icon: "bi bi-bell",
-            permission: "view_notifications",
+            requiredRoleId: ROLES.EDITOR,
           },
           {
             path: "/admin/notification-category",
             label: "Danh mục thông báo",
             icon: "bi bi-collection",
-            permission: "view_notification_category",
+            requiredRoleId: ROLES.EDITOR,
           },
         ],
       },
@@ -150,19 +148,19 @@ const AdminLayout = () => {
         path: "/admin/products",
         label: "Quản lý sản phẩm",
         icon: "bi bi-box",
-        permission: "menu_product_manager",
+        requiredRoleId: ROLES.EDITOR,
         subItems: [
           {
             path: "/admin/products",
             label: "Danh sách sản phẩm",
             icon: "bi bi-box",
-            permission: "view_products",
+            requiredRoleId: ROLES.EDITOR,
           },
           {
             path: "/admin/product-category",
             label: "Danh mục sản phẩm",
             icon: "bi bi-collection",
-            permission: "view_product_category",
+            requiredRoleId: ROLES.EDITOR,
           },
         ],
       },
@@ -172,13 +170,13 @@ const AdminLayout = () => {
         path: "/admin/services",
         label: "Quản lý dịch vụ",
         icon: "bi bi-gear",
-        permission: "menu_service_manager",
+        requiredRoleId: ROLES.EDITOR,
         subItems: [
           {
             path: "/admin/services",
             label: "Danh sách dịch vụ",
             icon: "bi bi-gear",
-            permission: "view_services",
+            requiredRoleId: ROLES.EDITOR,
           },
         ],
       },
@@ -188,26 +186,21 @@ const AdminLayout = () => {
         path: "/admin/users",
         label: "Quản lý người dùng",
         icon: "bi bi-people-fill",
-        permission: "menu_user_manager",
+        requiredRoleId: ROLES.ADMIN, // Admin level required
         subItems: [
           {
             path: "/admin/users",
             label: "Danh sách người dùng",
             icon: "bi bi-person-lines-fill",
-            permission: "view_users",
+            requiredRoleId: ROLES.ADMIN,
           },
           {
             path: "/admin/roles",
             label: "Quản lý vai trò",
             icon: "bi bi-person-badge",
-            permission: "menu_role_manager",
+            requiredRoleId: ROLES.ADMIN,
           },
-          {
-            path: "/admin/permissions",
-            label: "Quản lý quyền",
-            icon: "bi bi-shield-lock",
-            permission: "menu_permission_manager",
-          },
+          // Permission Management removed - UserLevel system doesn't need permission UI
         ],
       },
 
@@ -216,7 +209,22 @@ const AdminLayout = () => {
         path: "/admin/albums",
         label: "Quản lý thư viện",
         icon: "bi bi-images",
-        permission: "file_upload",
+        requiredRoleId: ROLES.EDITOR,
+      },
+
+      // Document Management
+      {
+        path: "/admin/documents",
+        label: "Quản lý tài liệu",
+        icon: "bi bi-file-earmark-text",
+        requiredRoleId: ROLES.EDITOR,
+      },
+      // Contact Management
+      {
+        path: "/admin/contacts",
+        label: "Quản lý liên hệ",
+        icon: "bi bi-envelope",
+        requiredRoleId: ROLES.EDITOR, // Allow editors to view contacts
       },
 
       // System Management
@@ -224,63 +232,59 @@ const AdminLayout = () => {
         path: "/admin/system",
         label: "Cài đặt hệ thống",
         icon: "bi bi-gear-fill",
-        permission: "menu_config",
+        requiredRoleId: ROLES.ADMIN,
         subItems: [
           {
             path: "/admin/config",
             label: "Cấu hình Banner",
             icon: "bi bi-sliders",
-            permission: "menu_config",
+            requiredRoleId: ROLES.ADMIN,
           },
           {
             path: "/admin/system-settings",
             label: "Cài đặt hệ thống",
             icon: "bi bi-gear",
-            permission: "menu_config",
+            requiredRoleId: ROLES.ADMIN,
           },
           {
             path: "/admin/routes",
             label: "Quản lý Route",
             icon: "bi bi-signpost",
-            permission: "menu_config",
+            requiredRoleId: ROLES.SUPERADMIN,
           },
           {
             path: "/admin/api-endpoints",
             label: "Quản lý API Endpoint",
             icon: "bi bi-plug",
-            permission: "menu_api_endpoint_manager",
+            requiredRoleId: ROLES.SUPERADMIN,
           },
         ],
       },
     ];
 
-    // Filter navigation items based on user permissions
+    // Filter navigation items based on roleId
     const filterItems = (items) => {
-      if (!userPermissions || userPermissions.length === 0) {
-        return []; // Hide all items if no permissions
+      if (!user || !user.roleId) {
+        return []; // Hide all items if no user or roleId
       }
 
       return items.filter((item) => {
-        // If no permission required, show the item (like Dashboard)
-        if (!item.permission) return true;
-
-        // Check if user has the required permission
-        const hasRequiredPermission = hasPermission(item.permission);
+        // Check if user has the required role
+        const hasRequiredRole = !item.requiredRoleId || hasPermission(item.requiredRoleId);
 
         // If item has subitems, filter them too
         if (item.subItems) {
           const filteredSubItems = filterItems(item.subItems);
           item.subItems = filteredSubItems;
           // Show parent item if it has permission OR if any subitem is visible
-          return hasRequiredPermission || filteredSubItems.length > 0;
+          return hasRequiredRole || filteredSubItems.length > 0;
         }
 
-        return hasRequiredPermission;
+        return hasRequiredRole;
       });
     };
 
     const filteredItems = filterItems(allNavItems);
-    // console.log('Filtered nav items:', filteredItems); // Debug log - commented out to reduce spam
     return filteredItems;
   }
 
@@ -320,10 +324,9 @@ const AdminLayout = () => {
       "/admin/product-category": "Danh mục sản phẩm",
       "/admin/notification-category": "Danh mục thông báo",
       "/admin/users": "Quản lý người dùng",
-      "/admin/permissions": "Phân quyền",
-      "/admin/seo": "SEO Management",
-      "/admin/internal-docs": "Tài liệu nội bộ",
-      "/admin/library": "Thư viện",
+      "/admin/albums": "Quản lý thư viện",
+      "/admin/documents": "Quản lý tài liệu",
+      "/admin/contacts": "Quản lý liên hệ",
     };
 
     return titleMap[path] || "Admin Dashboard";
@@ -381,8 +384,8 @@ const AdminLayout = () => {
             }}
           >
             {item.subItems.map((subItem) => {
-              // Check permission for submenu item
-              if (subItem.permission && !hasPermission(subItem.permission)) {
+              // Check roleId for submenu item
+              if (subItem.requiredRoleId && !hasPermission(subItem.requiredRoleId)) {
                 return null;
               }
 
@@ -743,7 +746,7 @@ const AdminLayout = () => {
                       {user?.email || ""}
                     </div>
                     <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
-                      {user?.permissions?.length || 0} quyền
+                      {user?.roleName || 'editor'}
                     </div>
                   </div>
                   <button

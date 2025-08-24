@@ -2,7 +2,7 @@
 .alert-box {
     max-width: 1320px;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 10px 0px;
     overflow: hidden;
 }
 
@@ -54,14 +54,13 @@
     flex-direction: column;
     background-color: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: solid 1px #c3c9d7;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
     overflow: hidden;
 }
 
 .wrap-item:hover {
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
     background-color: #f8faff;
 }
 
@@ -218,7 +217,11 @@
         display: block;
     }
 }
-
+@media (max-width: 1200px) {
+    .alert-box {
+    padding: 10px 20px;
+}
+}
 @media (max-width: 640px) {
   .alert-box {
     width: 100vw !important;

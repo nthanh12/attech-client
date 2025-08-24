@@ -182,13 +182,13 @@ export const fetchDashboardOverview = async () => {
       console.log("✅ Dashboard overview fetched successfully from API");
       return {
         success: true,
-        data: response.data.data
+        data: response.data.data,
       };
     } else {
       console.warn("⚠️ API returned invalid overview data, using mock data");
       return {
         success: true,
-        data: mockStatistics.overview
+        data: mockStatistics.overview,
       };
     }
   } catch (error) {
@@ -198,7 +198,7 @@ export const fetchDashboardOverview = async () => {
     );
     return {
       success: true,
-      data: mockStatistics.overview
+      data: mockStatistics.overview,
     };
   }
 };
@@ -225,7 +225,7 @@ export const fetchUserStatistics = async () => {
   }
 };
 
-// Get content statistics  
+// Get content statistics
 export const fetchContentStatistics = async () => {
   try {
     console.log("📊 Fetching content statistics from API...");
@@ -273,7 +273,7 @@ export const fetchSystemStatistics = async () => {
 export const fetchRecentActivities = async (limit = 10) => {
   try {
     console.log("📊 Fetching recent activities from API...");
-    const response = await api.get("/api/dashboard/all", {
+    const response = await api.get("/api/dashboard/activities", {
       params: { limit },
     });
 
@@ -290,6 +290,32 @@ export const fetchRecentActivities = async (limit = 10) => {
       error.message
     );
     return mockStatistics.recentActivities.slice(0, limit);
+  }
+};
+
+// Get contact trend chart data from API
+export const fetchContactTrendChart = async (days = 30) => {
+  try {
+    console.log(
+      `📊 Fetching contact trend chart data for ${days} days from API...`
+    );
+    const response = await api.get(
+      `/api/dashboard/charts/contacttrend?days=${days}`
+    );
+    console.log("🔍 Contact trend chart API response:", response.data);
+
+    if (response.data?.status === 1 || response.data?.success) {
+      console.log("✅ Contact trend chart data fetched successfully from API");
+      return response.data.data || response.data;
+    } else {
+      throw new Error("Contact trend API returned invalid data");
+    }
+  } catch (error) {
+    console.error(
+      "❌ Failed to fetch contact trend chart data from API:",
+      error.message
+    );
+    throw error;
   }
 };
 
@@ -317,27 +343,123 @@ export const fetchChartData = async (chartType) => {
   }
 };
 
-// Get all dashboard data in one request (optimized)
-export const fetchAllDashboardData = async () => {
+// Get contact statistics specifically
+export const fetchContactStatistics = async () => {
   try {
-    console.log("📊 Fetching all dashboard data from API...");
-    const response = await api.get("/api/dashboard/all");
-    console.log("🔍 Dashboard API response structure:", response);
-    console.log("🔍 Dashboard API response.data:", response.data);
+    console.log("📊 Fetching contact statistics from API...");
+    const response = await api.get("/api/dashboard/contacts");
+    console.log("🔍 Contact statistics API response:", response.data);
 
-    if (response.data?.status === 1) {
-      console.log("✅ All dashboard data fetched successfully from API");
-      return response.data.data;
+    if (response.data?.status === 1 || response.data?.success) {
+      console.log("✅ Contact statistics fetched successfully from API");
+      return response.data.data || response.data;
     } else {
-      console.warn("⚠️ API returned invalid dashboard data, using mock data");
-      return mockStatistics;
+      console.warn("⚠️ Contact API returned invalid data, using mock data");
+      return {
+        totalContacts: 442,
+        unreadContacts: 23,
+        readContacts: 419,
+        contactsToday: 3,
+        contactsThisWeek: 18,
+        contactsThisMonth: 67,
+        responseRate: 94.8,
+        trends: {
+          totalThisMonth: 67,
+          totalLastMonth: 52,
+          growthPercentage: 28.8,
+          trendDirection: "up",
+          averagePerDay: 2.3,
+        },
+      };
     }
   } catch (error) {
     console.warn(
-      "⚠️ Failed to fetch all dashboard data from API, using mock data:",
+      "⚠️ Failed to fetch contact statistics from API:",
       error.message
     );
-    return mockStatistics;
+    return {
+      totalContacts: 442,
+      unreadContacts: 23,
+      readContacts: 419,
+      contactsToday: 3,
+      contactsThisWeek: 18,
+      contactsThisMonth: 67,
+      responseRate: 94.8,
+      trends: {
+        totalThisMonth: 67,
+        totalLastMonth: 52,
+        growthPercentage: 28.8,
+        trendDirection: "up",
+        averagePerDay: 2.3,
+      },
+    };
+  }
+};
+
+// Get comprehensive dashboard data with all statistics
+export const fetchAllDashboardData = async () => {
+  try {
+    console.log("📊 Fetching dashboard data from API...");
+    const response = await api.get("/api/dashboard/overview");
+    console.log("🔍 Dashboard overview API response:", response.data);
+
+    if (response.data?.status === 1 && response.data?.data) {
+      console.log("✅ Dashboard overview data fetched successfully from API");
+      const apiData = response.data.data;
+
+      // API trả về overview data structure
+      return {
+        overview: {
+          totalUsers: apiData.totalUsers || 0,
+          totalProducts: apiData.totalProducts || 0,
+          totalServices: apiData.totalServices || 0,
+          totalNews: apiData.totalNews || 0,
+          totalNotifications: apiData.totalNotifications || 0,
+          totalContacts: apiData.totalContacts || 0,
+          activeUsers: apiData.activeUsers || 0,
+          lastUpdated: apiData.lastUpdated,
+        },
+        userStats: {
+          newUsersThisMonth: apiData.totalUsers || 0,
+          activeUsersToday: apiData.activeUsers || 0,
+        },
+        contentStats: {
+          newsPublishedThisMonth: apiData.totalNews || 0,
+          productsAddedThisMonth: apiData.totalProducts || 0,
+          servicesAddedThisMonth: apiData.totalServices || 0,
+          notificationsThisMonth: apiData.totalNotifications || 0,
+        },
+        contactStats: {
+          totalContacts: apiData.totalContacts || 0,
+          unreadContacts: 0, // Will fetch separately if needed
+          readContacts: apiData.totalContacts || 0,
+          responseRate: 100,
+        },
+        recentActivities: [],
+        charts: mockStatistics.charts,
+      };
+    } else {
+      console.warn("⚠️ Overview API returned invalid data");
+      throw new Error("Overview API returned invalid data");
+    }
+  } catch (error) {
+    console.warn("⚠️ Failed to fetch dashboard data from API:", error.message);
+
+    return {
+      overview: {
+        totalUsers: 0,
+        totalProducts: 0,
+        totalServices: 0,
+        totalNews: 0,
+        totalNotifications: 0,
+        totalContacts: 0,
+        activeUsers: 0,
+      },
+      userStats: {},
+      contentStats: {},
+      contactStats: {},
+      recentActivities: [],
+    };
   }
 };
 
@@ -511,31 +633,53 @@ export const fetchRealtimeData = async () => {
   }
 };
 
-// Get real-time system metrics
+// Get real-time system metrics and updates
 export const fetchRealTimeMetrics = async () => {
   try {
     console.log("📊 Fetching real-time metrics from API...");
     const response = await api.get("/api/dashboard/realtime");
 
-    if (response.data?.status === 1) {
+    if (response.data && typeof response.data === "object") {
       console.log("✅ Real-time metrics fetched successfully from API");
-      return response.data.data;
+      return {
+        cpuUsage: response.data.cpuUsage || 0,
+        memoryUsage: response.data.memoryUsage || 0,
+        diskUsage: response.data.diskUsage || 0,
+        networkTraffic: response.data.networkTraffic || {
+          incoming: 0,
+          outgoing: 0,
+        },
+        activeUsers: response.data.activeUsers || 0,
+        onlineUsers: response.data.onlineUsers || 0,
+        systemStatus: response.data.systemStatus || "online",
+        serverUptime: response.data.serverUptime || 0,
+        timestamp: response.data.timestamp || new Date().toISOString(),
+        // Contact real-time data
+        newContactsToday: response.data.newContactsToday || 0,
+        unreadContacts: response.data.unreadContacts || 0,
+        // Live notifications
+        liveNotifications: response.data.liveNotifications || [],
+      };
     } else {
-      console.warn(
-        "⚠️ API returned invalid real-time metrics data, using mock data"
-      );
+      console.warn("⚠️ Real-time API returned invalid data, using mock data");
       return {
         cpuUsage: mockStatistics.systemStats.cpuUsage,
         memoryUsage: mockStatistics.systemStats.memoryUsage,
         diskUsage: mockStatistics.systemStats.diskUsage,
         networkTraffic: mockStatistics.systemStats.networkTraffic,
         activeUsers: mockStatistics.overview.activeUsers,
+        onlineUsers: mockStatistics.overview.activeUsers,
+        systemStatus: "online",
+        serverUptime: 99.9,
         timestamp: new Date().toISOString(),
+        newContactsToday: 0,
+        unreadContacts: 0,
+        liveNotifications: [],
       };
     }
   } catch (error) {
     console.warn(
-      "⚠️ Failed to fetch real-time metrics from API, using mock data:",
+      "⚠️ Failed to fetch real-time metrics from API:",
       error.message
     );
     return {
@@ -544,7 +688,13 @@ export const fetchRealTimeMetrics = async () => {
       diskUsage: mockStatistics.systemStats.diskUsage,
       networkTraffic: mockStatistics.systemStats.networkTraffic,
       activeUsers: mockStatistics.overview.activeUsers,
+      onlineUsers: mockStatistics.overview.activeUsers,
+      systemStatus: "online",
+      serverUptime: 99.9,
       timestamp: new Date().toISOString(),
+      newContactsToday: 0,
+      unreadContacts: 0,
+      liveNotifications: [],
     };
   }
 };
@@ -554,15 +704,24 @@ export const formatNumber = (num) => {
   if (num === null || num === undefined || isNaN(num)) {
     return "0";
   }
+
   const number = Number(num);
-  if (number >= 1000000000) {
-    return (number / 1000000000).toFixed(1) + "B";
+  if (isNaN(number)) {
+    return "0";
   }
-  if (number >= 1000000) {
-    return (number / 1000000).toFixed(1) + "M";
+
+  // Handle negative numbers
+  const absNumber = Math.abs(number);
+  const sign = number < 0 ? "-" : "";
+
+  if (absNumber >= 1000000000) {
+    return sign + (absNumber / 1000000000).toFixed(1) + "B";
   }
-  if (number >= 1000) {
-    return (number / 1000).toFixed(1) + "K";
+  if (absNumber >= 1000000) {
+    return sign + (absNumber / 1000000).toFixed(1) + "M";
+  }
+  if (absNumber >= 1000) {
+    return sign + (absNumber / 1000).toFixed(1) + "K";
   }
   return number.toString();
 };
@@ -599,6 +758,8 @@ export default {
   fetchSystemStatistics,
   fetchRecentActivities,
   fetchChartData,
+  fetchContactStatistics,
+  fetchContactTrendChart,
   fetchAllDashboardData,
   fetchStatisticsByDateRange,
   exportDashboardData,

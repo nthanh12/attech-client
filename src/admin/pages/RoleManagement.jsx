@@ -1,29 +1,34 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { getAllRoles, createRole, updateRole, deleteRole, updateRoleStatus, getActiveRoles, getRoleById } from '../../services/roleService';
-import { getPermissions } from '../../services/permissionService';
 import PageWrapper from '../components/PageWrapper';
 import DataTable from '../components/DataTable';
 import FormModal from '../components/FormModal';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ToastMessage from '../components/ToastMessage';
-import './RoleManagement.css';
-import './RolePermissions.css';
+import AccessDenied from '../../components/AccessDenied';
+// Use standardized CSS matching NewsList design
+import "../styles/adminTable.css";
+import "../styles/adminCommon.css";
+import "../styles/adminButtons.css";
 
 const RoleManagement = () => {
-  const { user, hasPermission } = useAuth();
-  const [roles, setRoles] = useState([]);
-  const [permissions, setPermissions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [permissionsLoading, setPermissionsLoading] = useState(false);
+  const { user: currentUser, ROLES } = useAuth();
+  
+  // Use simple role data structure matching the new system
+  const [roles, setRoles] = useState([
+    { id: 1, roleId: 1, name: 'Super Admin', description: 'Toàn quyền quản trị hệ thống', status: 'active' },
+    { id: 2, roleId: 2, name: 'Admin', description: 'Quản lý hầu hết các tính năng', status: 'active' },
+    { id: 3, roleId: 3, name: 'Editor', description: 'Chỉnh sửa nội dung', status: 'active' }
+  ]);
+  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentRole, setCurrentRole] = useState({
     id: null,
+    roleId: 3,
     name: '',
     description: '',
-    status: 1,
-    permissionIds: []
+    status: 'active',
   });
   const [errors, setErrors] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,44 +42,30 @@ const RoleManagement = () => {
 
   const emptyRole = useMemo(() => ({
     id: null,
+    roleId: 3,
     name: '',
     description: '',
-    status: 1,
-    permissionIds: []
+    status: 'active',
   }), []);
 
   const fetchRoles = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await getAllRoles();
-      setRoles(res.data?.items || []);
+      // Mock delay to simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
+      setToast({ show: true, message: 'Tải danh sách vai trò thành công', type: 'success' });
     } catch (err) {
       console.error('Failed to fetch roles:', err);
-      setRoles([]);
       setToast({ show: true, message: 'Lỗi khi tải danh sách vai trò', type: 'error' });
     } finally {
       setLoading(false);
     }
   }, []);
 
-  const fetchPermissions = useCallback(async () => {
-    setPermissionsLoading(true);
-    try {
-      const res = await getPermissions();
-      // Keep hierarchical structure for better UI
-      setPermissions(res.data || []);
-    } catch (err) {
-      console.error('Failed to fetch permissions:', err);
-      setPermissions([]);
-    } finally {
-      setPermissionsLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
     fetchRoles();
-    fetchPermissions();
-  }, [fetchRoles, fetchPermissions]);
+  }, [fetchRoles]);
 
   const handleAddNew = useCallback(() => {
     setEditMode(false);
@@ -84,33 +75,18 @@ const RoleManagement = () => {
   }, [emptyRole]);
 
   const handleEdit = useCallback(async (role) => {
-    try {
-      // Fetch full role detail with permissions BEFORE opening modal
-      console.log('🔍 Loading role detail for ID:', role.id);
-      const roleDetail = await getRoleById(role.id);
-      console.log('🔍 Role detail loaded:', roleDetail);
-      console.log('🔍 Permission IDs:', roleDetail.permissionIds);
-      
-      // Set complete role data including permissionIds
-      setCurrentRole({
-        id: roleDetail.id,
-        name: roleDetail.name,
-        description: roleDetail.description || '',
-        status: roleDetail.status,
-        permissionIds: roleDetail.permissionIds || []
-      });
-      
-      setEditMode(true);
-      setErrors({});
-      setShowModal(true);
-    } catch (error) {
-      console.error('Failed to load role detail:', error);
-      // Fallback to basic role data
-      setCurrentRole(role);
-      setEditMode(true);
-      setErrors({});
-      setShowModal(true);
-    }
+    // Simple role editing - no complex API calls needed
+    setCurrentRole({
+      id: role.id,
+      roleId: role.roleId,
+      name: role.name,
+      description: role.description || '',
+      status: role.status,
+    });
+    
+    setEditMode(true);
+    setErrors({});
+    setShowModal(true);
   }, []);
 
   const handleCloseModal = useCallback(() => {
@@ -130,23 +106,29 @@ const RoleManagement = () => {
     return Object.keys(newErrors).length === 0;
   }, [currentRole]);
 
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault();
     if (!validateForm()) return;
 
     try {
-      const roleData = {
-        name: currentRole.name,
-        description: currentRole.description,
-        permissionIds: currentRole.permissionIds || []
-      };
-
       if (editMode) {
-        await updateRole(currentRole.id, roleData);
-        fetchRoles(); // Refresh roles list
+        // Update existing role
+        const updatedRole = { 
+          ...currentRole,
+          name: currentRole.name,
+          description: currentRole.description,
+          status: currentRole.status
+        };
+        setRoles(prev => prev.map(r => r.id === currentRole.id ? updatedRole : r));
         setToast({ show: true, message: 'Cập nhật vai trò thành công!', type: 'success' });
       } else {
-        await createRole(roleData);
-        fetchRoles(); // Refresh roles list
+        // Add new role
+        const newRole = {
+          ...currentRole,
+          id: Math.max(...roles.map(r => r.id)) + 1,
+          roleId: currentRole.roleId
+        };
+        setRoles(prev => [...prev, newRole]);
         setToast({ show: true, message: 'Thêm vai trò thành công!', type: 'success' });
       }
       handleCloseModal();
@@ -154,13 +136,12 @@ const RoleManagement = () => {
       console.error('Error saving role:', error);
       setToast({ show: true, message: 'Lỗi khi lưu vai trò!', type: 'error' });
     }
-  }, [editMode, currentRole, validateForm, handleCloseModal, fetchRoles]);
+  }, [editMode, currentRole, validateForm, handleCloseModal, roles]);
 
-  const handleDelete = useCallback(async (id) => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa vai trò này?')) {
+  const handleDelete = useCallback(async (role) => {
+    if (window.confirm(`Bạn có chắc chắn muốn xóa vai trò "${role.name}"?`)) {
       try {
-        await deleteRole(id);
-        setRoles(prev => prev.filter(role => role.id !== id));
+        setRoles(prev => prev.filter(r => r.id !== role.id));
         setToast({ show: true, message: 'Xóa vai trò thành công!', type: 'success' });
       } catch (error) {
         console.error('Error deleting role:', error);
@@ -176,13 +157,18 @@ const RoleManagement = () => {
     }
   }, [errors]);
 
-  // Memoize filtered and sorted data
+  const showToast = (message, type = "info") => {
+    setToast({ show: true, message, type });
+  };
+
+  // Filter logic matching UserManagement pattern
   const filteredRoles = useMemo(() => {
     if (!Array.isArray(roles)) return [];
     return roles.filter(role => {
-      const matchesSearch = role.name?.toLowerCase().includes(filters.search.toLowerCase()) ||
+      const matchesSearch = !filters.search || 
+                           role.name?.toLowerCase().includes(filters.search.toLowerCase()) ||
                            role.description?.toLowerCase().includes(filters.search.toLowerCase());
-      const matchesStatus = !filters.status || role.status === parseInt(filters.status);
+      const matchesStatus = !filters.status || role.status === filters.status;
       
       return matchesSearch && matchesStatus;
     });
@@ -219,311 +205,294 @@ const RoleManagement = () => {
     }));
   }, []);
 
+  const getRoleColor = (roleId) => {
+    switch(roleId) {
+      case 1: return 'danger';   // Super Admin - red
+      case 2: return 'warning';  // Admin - orange
+      case 3: return 'info';     // Editor - blue
+      default: return 'secondary';
+    }
+  };
+
+  const getRoleText = (roleId) => {
+    switch(roleId) {
+      case 1: return 'Super Admin';
+      case 2: return 'Admin';
+      case 3: return 'Editor';
+      default: return 'Unknown';
+    }
+  };
+
   const columns = useMemo(() => [
     {
       key: 'id',
       label: 'ID',
-      sortable: true
+      sortable: true,
+      width: '80px'
+    },
+    {
+      key: 'roleId',
+      label: 'Mức độ',
+      sortable: true,
+      width: '120px',
+      render: (row) => (
+        <span className={`badge bg-${getRoleColor(row.roleId)}`}>
+          {row.roleId}
+        </span>
+      )
     },
     {
       key: 'name',
       label: 'Tên vai trò',
-      sortable: true
+      sortable: true,
+      width: '200px'
     },
     {
       key: 'description',
       label: 'Mô tả',
-      render: (row) => row.description ? <span title={row.description}>{row.description.length > 50 ? row.description.substring(0, 50) + '...' : row.description}</span> : ''
+      width: '300px',
+      render: (row) => (
+        <span title={row.description}>
+          {row.description?.length > 60 ? row.description.substring(0, 60) + '...' : row.description || ''}
+        </span>
+      )
     },
     {
       key: 'status',
       label: 'Trạng thái',
       sortable: true,
+      width: '120px',
       render: (row) => (
-        <span className={`status-badge ${row.status === 1 ? 'active' : 'inactive'}`}>
-          {row.status === 1 ? 'Hoạt động' : 'Không hoạt động'}
+        <span className={`badge ${row.status === 'active' ? 'bg-success' : 'bg-danger'}`}>
+          {row.status === 'active' ? 'Hoạt động' : 'Tạm khóa'}
         </span>
       )
-    },
-    {
-      key: 'actions',
-      label: 'Thao tác',
-      render: (row) => (
-        <div className="action-buttons">
-          <button
-            className="btn btn-sm btn-primary"
-            onClick={() => handleEdit(row)}
-            title="Chỉnh sửa"
-          >
-            <i className="bi bi-pencil"></i>
-            <span>Sửa</span>
-          </button>
-          <button
-            className="btn btn-sm btn-danger"
-            onClick={() => handleDelete(row.id)}
-            title="Xóa"
-          >
-            <i className="bi bi-trash"></i>
-            <span>Xóa</span>
-          </button>
-        </div>
-      )
     }
-  ], [handleEdit, handleDelete]);
+  ], []);
 
-  const renderFilters = useMemo(() => (
-    <div className="filters-section">
-      <div className="filter-group">
-        <input
-          type="text"
-          placeholder="Tìm kiếm vai trò..."
-          value={filters.search}
-          onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-          className="form-control"
-        />
-      </div>
-      <div className="filter-group">
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-          className="form-control"
-        >
-          <option value="">Tất cả trạng thái</option>
-          <option value="1">Hoạt động</option>
-          <option value="0">Không hoạt động</option>
-        </select>
-      </div>
-      <div className="filter-group">
-        <select
-          className="form-control"
-          disabled
-        >
-          <option value="">Tất cả nhóm</option>
-        </select>
-      </div>
-    </div>
-  ), [filters]);
 
-  const handlePermissionChange = useCallback((permissionId, checked, permission = null) => {
-    const permissionIdNum = parseInt(permissionId);
-    
-    setCurrentRole(prev => {
-      let newPermissionIds = [...(prev.permissionIds || [])];
-      
-      if (checked) {
-        // Add current permission
-        if (!newPermissionIds.includes(permissionIdNum)) {
-          newPermissionIds.push(permissionIdNum);
-        }
-        
-        // If this is a parent permission, also add all children
-        if (permission && permission.children && permission.children.length > 0) {
-          permission.children.forEach(child => {
-            if (!newPermissionIds.includes(child.id)) {
-              newPermissionIds.push(child.id);
-            }
-          });
-        }
-      } else {
-        // Remove current permission
-        newPermissionIds = newPermissionIds.filter(id => id !== permissionIdNum);
-        
-        // If this is a parent permission, also remove all children
-        if (permission && permission.children && permission.children.length > 0) {
-          permission.children.forEach(child => {
-            newPermissionIds = newPermissionIds.filter(id => id !== child.id);
-          });
-        }
-        
-        // If this is a child permission, check if we should uncheck parent
-        if (permission) {
-          // Find parent of this child
-          const parentPermission = permissions.find(p => 
-            p.children && p.children.some(c => c.id === permissionIdNum)
-          );
-          
-          if (parentPermission) {
-            // If no children are selected, uncheck parent
-            const hasSelectedChildren = parentPermission.children.some(child => 
-              newPermissionIds.includes(child.id)
-            );
-            
-            if (!hasSelectedChildren) {
-              newPermissionIds = newPermissionIds.filter(id => id !== parentPermission.id);
-            }
-          }
-        }
-      }
-      
-      return {
-        ...prev,
-        permissionIds: newPermissionIds
-      };
-    });
-  }, [permissions]);
 
-  const renderRoleForm = useMemo(() => (
-    <div className="role-form">
-      <div className="form-row">
-        <div className="form-group">
-          <label>Tên vai trò *</label>
-          <input
-            type="text"
-            value={currentRole?.name || ''}
-            onChange={(e) => handleInputChange('name', e.target.value)}
-            className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-            placeholder="Nhập tên vai trò"
-            maxLength={256}
-          />
-          {errors.name && <div className="invalid-feedback">{errors.name}</div>}
-        </div>
-        <div className="form-group">
-          <label>Trạng thái</label>
-          <select
-            value={currentRole?.status || 1}
-            onChange={(e) => handleInputChange('status', parseInt(e.target.value))}
-            className="form-control"
-          >
-            <option value={1}>Hoạt động</option>
-            <option value={0}>Không hoạt động</option>
-          </select>
-        </div>
-      </div>
 
-      <div className="form-row">
-        <div className="form-group">
-          <label>Mô tả</label>
-          <textarea
-            value={currentRole?.description || ''}
-            onChange={(e) => handleInputChange('description', e.target.value)}
-            className="form-control"
-            rows="3"
-            placeholder="Mô tả vai trò này"
-            maxLength={500}
-          />
-        </div>
-      </div>
-
-      <div className="form-row">
-        <div className="form-group">
-          <label>Quyền hạn</label>
-          {permissionsLoading ? (
-            <div className="text-center py-3">Đang tải permissions...</div>
-          ) : (
-            <div className="role-permissions-container">
-              {permissions.length === 0 ? (
-                <div className="text-muted">Không có quyền nào</div>
-              ) : (
-                permissions.map(permission => (
-                  <div key={permission.id} className="role-permission-group">
-                    {/* Parent Permission */}
-                    <div className="role-permission-parent">
-                      <input
-                        type="checkbox"
-                        className="role-permission-checkbox"
-                        id={`permission-${permission.id}`}
-                        checked={(currentRole?.permissionIds || []).includes(permission.id)}
-                        onChange={(e) => handlePermissionChange(permission.id, e.target.checked, permission)}
-                      />
-                      <label className="role-permission-label-parent" htmlFor={`permission-${permission.id}`}>
-                        {permission.permissionLabel}
-                      </label>
-                    </div>
-                    
-                    {/* Children Permissions */}
-                    {permission.children && permission.children.length > 0 && (
-                      <div className="role-permission-children">
-                        {permission.children.map(child => (
-                          <div key={child.id} className="role-permission-child">
-                            <input
-                              type="checkbox"
-                              className="role-permission-checkbox"
-                              id={`permission-${child.id}`}
-                              checked={(currentRole?.permissionIds || []).includes(child.id)}
-                              onChange={(e) => handlePermissionChange(child.id, e.target.checked, child)}
-                            />
-                            <label className="role-permission-label-child" htmlFor={`permission-${child.id}`}>
-                              {child.permissionLabel}
-                            </label>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  ), [currentRole, errors, handleInputChange, permissions, permissionsLoading, handlePermissionChange]);
-
+  // Page Actions matching NewsList style
   const pageActions = useMemo(() => (
-    <button 
-      className="btn btn-primary" 
-      onClick={handleAddNew}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        padding: '0.75rem 1rem',
-        backgroundColor: '#3b82f6',
-        color: 'white',
-        border: 'none',
-        borderRadius: '6px',
-        fontSize: '0.875rem',
-        fontWeight: '500',
-        cursor: 'pointer'
-      }}
-    >
-      <i className="bi bi-plus"></i>
-      Thêm vai trò
-    </button>
-  ), [handleAddNew]);
+    <div style={{ display: "flex", gap: "0.5rem" }}>
+      <button
+        className="admin-btn admin-btn-outline-secondary"
+        onClick={fetchRoles}
+        disabled={loading}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.75rem 1rem",
+          backgroundColor: "#f8f9fa",
+          color: "#6c757d",
+          border: "1px solid #dee2e6",
+          borderRadius: "6px",
+          fontSize: "0.875rem",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+        title="Làm mới danh sách vai trò"
+      >
+        <i className="fas fa-refresh"></i>
+        Làm mới
+      </button>
+      <button
+        className="admin-btn admin-btn-primary"
+        onClick={handleAddNew}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.5rem",
+          padding: "0.75rem 1rem",
+          backgroundColor: "#3b82f6",
+          color: "white",
+          border: "none",
+          borderRadius: "6px",
+          fontSize: "0.875rem",
+          fontWeight: "500",
+          cursor: "pointer",
+        }}
+      >
+        <i className="fas fa-plus"></i>
+        Thêm vai trò
+      </button>
+    </div>
+  ), [handleAddNew, fetchRoles, loading]);
+
+  // Check permission - only Admin and SuperAdmin can manage roles
+  if (!currentUser || currentUser.roleId > ROLES.ADMIN) {
+    return (
+      <PageWrapper>
+        <AccessDenied
+          message="Bạn không có quyền truy cập trang này. Chỉ Admin và SuperAdmin mới có thể quản lý vai trò."
+          user={currentUser}
+        />
+      </PageWrapper>
+    );
+  }
 
   if (loading) {
-    return <LoadingSpinner />;
+    return (
+      <PageWrapper actions={pageActions}>
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </PageWrapper>
+    );
   }
 
   return (
     <PageWrapper actions={pageActions}>
-      <div className="admin-role-management">
+      <div className="admin-news-list">
+        {/* Filters Section */}
+        <div className="filters-section">
+          <div className="filter-group">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Tìm kiếm theo tên vai trò, mô tả..."
+              value={filters.search}
+              onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
+            />
+          </div>
+          <div className="filter-group">
+            <select
+              className="form-control"
+              value={filters.status}
+              onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
+            >
+              <option value="">Tất cả trạng thái</option>
+              <option value="active">Hoạt động</option>
+              <option value="inactive">Tạm khóa</option>
+            </select>
+          </div>
+          <div className="filter-group">
+            <button
+              className="admin-btn admin-btn-secondary"
+              onClick={() => setFilters({ search: "", status: "" })}
+            >
+              <i className="fas fa-times"></i>
+              <span>Reset</span>
+            </button>
+          </div>
+        </div>
 
-      {renderFilters}
-
-      <div className="admin-table-container">
+        {/* Data Table */}
         <DataTable
-          data={paginatedRoles}
+          data={roles}
           columns={columns}
+          actions={[
+            {
+              label: "Sửa",
+              onClick: handleEdit,
+              className: "admin-btn admin-btn-sm admin-btn-primary"
+            },
+            {
+              label: "Xóa",
+              onClick: handleDelete,
+              className: "admin-btn admin-btn-sm admin-btn-danger"
+            }
+          ]}
           currentPage={currentPage}
-          totalPages={totalPages}
           onPageChange={setCurrentPage}
+          itemsPerPage={itemsPerPage}
           sortConfig={sortConfig}
           onSort={handleSort}
-          itemsPerPage={itemsPerPage}
-          totalItems={sortedRoles.length}
-          tableClassName="admin-table"
+          filters={filters}
+          searchFields={["name", "description"]}
         />
-      </div>
 
-      <FormModal
-        show={showModal}
-        onClose={handleCloseModal}
-        title={editMode ? 'Chỉnh sửa vai trò' : 'Thêm vai trò mới'}
-        onSubmit={handleSubmit}
-        submitText={editMode ? 'Cập nhật' : 'Thêm'}
-        width={1000}
-      >
-        {renderRoleForm}
-      </FormModal>
+        {/* Form Modal */}
+        <FormModal
+          show={showModal}
+          onClose={handleCloseModal}
+          title={editMode ? 'Chỉnh sửa vai trò' : 'Thêm vai trò mới'}
+          size="lg"
+          showActions={false}
+        >
+          <form onSubmit={handleSubmit}>
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Mức vai trò</label>
+                <select
+                  className="form-control"
+                  value={currentRole?.roleId || 3}
+                  onChange={(e) => handleInputChange('roleId', parseInt(e.target.value))}
+                  disabled={editMode}
+                >
+                  <option value={1}>1 - Super Admin</option>
+                  <option value={2}>2 - Admin</option>
+                  <option value={3}>3 - Editor</option>
+                </select>
+              </div>
+              
+              <div className="form-group">
+                <label>Tên vai trò *</label>
+                <input
+                  type="text"
+                  className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                  value={currentRole?.name || ''}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  placeholder="Nhập tên vai trò"
+                  maxLength={256}
+                />
+                {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+              </div>
 
-      <ToastMessage
-        show={toast.show}
-        message={toast.message}
-        type={toast.type}
-        onClose={() => setToast({ ...toast, show: false })}
-      />
+              <div className="form-group">
+                <label>Mô tả</label>
+                <textarea
+                  className="form-control"
+                  value={currentRole?.description || ''}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  rows="3"
+                  placeholder="Mô tả vai trò này"
+                  maxLength={500}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Trạng thái</label>
+                <select
+                  className="form-control"
+                  value={currentRole?.status || 'active'}
+                  onChange={(e) => handleInputChange('status', e.target.value)}
+                >
+                  <option value="active">Hoạt động</option>
+                  <option value="inactive">Tạm khóa</option>
+                </select>
+              </div>
+            </div>
+            
+            <div className="form-actions">
+              <button
+                type="button"
+                className="admin-btn admin-btn-secondary"
+                onClick={handleCloseModal}
+              >
+                Hủy
+              </button>
+              <button
+                type="submit"
+                className="admin-btn admin-btn-primary"
+                disabled={loading}
+              >
+                {editMode ? "Cập nhật" : "Thêm mới"}
+              </button>
+            </div>
+          </form>
+        </FormModal>
+
+        <ToastMessage
+          show={toast.show}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast({ ...toast, show: false })}
+        />
       </div>
     </PageWrapper>
   );

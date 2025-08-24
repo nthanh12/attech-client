@@ -179,43 +179,5 @@ export const refreshToken = async () => {
   }
 };
 
-// Mock user data for development
-export const getMockUser = () => {
-  return {
-    id: 1,
-    username: 'admin',
-    name: 'Administrator',
-    email: 'admin@attech.com',
-    role: 'admin',
-    permissions: [
-      'menu_view',
-      'view_news',
-      'create_news',
-      'edit_news',
-      'delete_news',
-      'view_products',
-      'create_products',
-      'edit_products',
-      'delete_products',
-      'view_services',
-      'create_services',
-      'edit_services',
-      'delete_services',
-      'view_notifications',
-      'create_notifications',
-      'edit_notifications',
-      'delete_notifications',
-      'manage_users',
-      'manage_roles',
-      'manage_permissions',
-      'system_settings',
-      'file_upload',
-      'seo_management',
-      'language_management'
-    ],
-    lastLogin: '2024-01-15T10:30:00Z',
-    status: 'active'
-  };
-};
 
  

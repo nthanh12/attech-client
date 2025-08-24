@@ -7,32 +7,22 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { getNews, getNewsByCategory, getNewsCategories, formatNewsForDisplay, CATEGORY_IDS } from "../../../../services/clientNewsService";
 
-const getGroups = (t, currentLanguage) => [
-  { 
-    id: CATEGORY_IDS.COMPANY_ACTIVITIES,
-    slugVi: "hoat-dong-cong-ty", 
-    slugEn: "company-activities",
-    titleKey: "frontend.home.newsCategories.companyActivities" 
-  },
-  { 
-    id: CATEGORY_IDS.COMPANY_PARTY,
-    slugVi: "dang-bo-cong-ty", 
-    slugEn: "company-party",
-    titleKey: "frontend.home.newsCategories.partyCommittee" 
-  },
-  { 
-    id: CATEGORY_IDS.COMPANY_YOUTH_UNION,
-    slugVi: "doan-thanh-nien-cong-ty", 
-    slugEn: "company-youth-union",
-    titleKey: "frontend.home.newsCategories.youthUnion" 
-  },
-  { 
-    id: CATEGORY_IDS.COMPANY_UNION,
-    slugVi: "cong-doan-cong-ty", 
-    slugEn: "company-union",
-    titleKey: "frontend.home.newsCategories.tradeUnion" 
-  },
-];
+// Dynamic category mapping based on slug
+const getCategoryTitleKey = (slug) => {
+  const mapping = {
+    "hoat-dong-cong-ty": "frontend.home.newsCategories.companyActivities",
+    "company-activities": "frontend.home.newsCategories.companyActivities",
+    "dang-bo-cong-ty": "frontend.home.newsCategories.partyCommittee",
+    "company-party": "frontend.home.newsCategories.partyCommittee",
+    "doan-thanh-nien-cong-ty": "frontend.home.newsCategories.youthUnion", 
+    "company-youth-union": "frontend.home.newsCategories.youthUnion",
+    "cong-doan-cong-ty": "frontend.home.newsCategories.tradeUnion",
+    "company-union": "frontend.home.newsCategories.tradeUnion",
+    "tin-nganh-hang-khong": "frontend.home.newsCategories.aviationNews",
+    "aviation-news": "frontend.home.newsCategories.aviationNews"
+  };
+  return mapping[slug] || `category.${slug}`;
+};
 
 function formatDate(isoString, locale) {
   const d = new Date(isoString);
@@ -48,6 +38,8 @@ const PartNews = () => {
     const loadNewsData = async () => {
       try {
         setLoading(true);
+        
+        // Step 1: Load all available categories from API
         const categories = await getNewsCategories();
         console.log("📋 Available categories:", categories.map(cat => ({
           id: cat.id,
@@ -55,22 +47,25 @@ const PartNews = () => {
           slugVi: cat.slugVi
         })));
         
-        const groups = getGroups(t, currentLanguage);
-        console.log("🎯 Target groups:", groups.map(g => ({ id: g.id, title: g.titleKey })));
+        if (categories.length === 0) {
+          console.warn("⚠️ No categories found from API");
+          setNewsGroups([]);
+          return;
+        }
         
-        // NEW STRATEGY: Load more news from all categories, then distribute
+        // Step 2: Load all recent news to distribute by category
         console.log("🔄 Loading all recent news to distribute by category...");
         
         const allNewsData = await getNews({
           pageIndex: 1,
-          pageSize: 50, // Get more items to ensure we have news for each category
+          pageSize: 8, // Chỉ cần 8 tin cho 4 categories (dự phòng)
           sortBy: "timePosted",
           sortDirection: "desc"
         });
         
         console.log(`📊 Total news loaded: ${allNewsData.items.length}`);
         
-        // Group news by category
+        // Step 3: Group news by category
         const newsByCategory = {};
         allNewsData.items.forEach(item => {
           const catId = item.newsCategoryId;
@@ -86,40 +81,40 @@ const PartNews = () => {
           ).join(", ")
         );
         
-        // Create groups with the most recent news from each category
-        const newsGroupsWithData = groups.map(group => {
-          const categoryNews = newsByCategory[group.id] || [];
-          const featuredNews = categoryNews.length > 0 ? categoryNews[0] : null;
-          
-          console.log(`🎯 Category ${group.id} (${group.titleKey}):`, {
-            totalInCategory: categoryNews.length,
-            hasNews: !!featuredNews,
-            featuredTitle: featuredNews?.titleVi?.substring(0, 50) + "..." || "No news"
+        // Step 4: Lấy 4 categories đầu tiên và tin đầu tiên của mỗi category
+        const newsGroupsWithData = categories
+          .slice(0, 4) // Chỉ lấy 4 categories đầu tiên
+          .map(category => {
+            const categoryNews = newsByCategory[category.id] || [];
+            const featuredNews = categoryNews.length > 0 ? categoryNews[0] : null;
+            
+            console.log(`🎯 Category ${category.id} (${category.titleVi}):`, {
+              totalInCategory: categoryNews.length,
+              hasNews: !!featuredNews,
+              featuredTitle: featuredNews?.titleVi?.substring(0, 50) + "..." || "No news"
+            });
+            
+            // Get title key for translation
+            const titleKey = getCategoryTitleKey(category.slugVi) || getCategoryTitleKey(category.slugEn);
+            
+            return {
+              id: category.id,
+              slugVi: category.slugVi,
+              slugEn: category.slugEn,
+              titleKey,
+              featuredNews,
+              categoryData: category,
+              hasNews: !!featuredNews
+            };
           });
-          
-          // Find category data for display
-          const category = categories.find(cat => cat.id === group.id);
-          
-          return {
-            ...group,
-            featuredNews,
-            categoryData: category || { 
-              id: group.id,
-              slugVi: group.slugVi,
-              slugEn: group.slugEn,
-              titleVi: group.titleKey, // fallback
-              titleEn: group.titleKey  // fallback
-            },
-            hasNews: !!featuredNews
-          };
-        });
         
         setNewsGroups(newsGroupsWithData);
         
         console.log("✅ Final news groups:", newsGroupsWithData.length, "cards");
-        console.log("🔍 Check if each category shows different news:", 
+        console.log("🔍 Categories with news:", 
           newsGroupsWithData.map(g => ({
-            category: g.titleKey,
+            categoryId: g.id,
+            categoryTitle: g.categoryData.titleVi,
             newsId: g.featuredNews?.id || "none",
             title: g.featuredNews?.titleVi?.substring(0, 30) + "..." || "No news"
           }))
@@ -170,7 +165,7 @@ const PartNews = () => {
             if (!group.hasNews || !group.featuredNews) {
               return (
                 <article 
-                  key={group.slugVi} 
+                  key={group.id} 
                   className="news__card news__card--no-content"
                   data-aos="fade-up"
                   data-aos-delay={index * 100}
@@ -183,12 +178,9 @@ const PartNews = () => {
 
                   <div className="news__image-container">
                     <LocalizedLink to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${categorySlug}`}>
-                      <img
-                        src="/images/default-news.jpg"
-                        alt={t(group.titleKey)}
-                        className="news__image"
-                        loading="lazy"
-                      />
+                      <div className="news__image news__image--placeholder">
+                        <i className="fas fa-newspaper" style={{fontSize: '3rem', color: '#cbd5e1'}}></i>
+                      </div>
                     </LocalizedLink>
                     <div className="news__date-badge">
                       <i className="far fa-clock"></i>
@@ -228,15 +220,22 @@ const PartNews = () => {
 
                 <div className="news__image-container">
                   <LocalizedLink to={`${currentLanguage === 'vi' ? '/tin-tuc' : '/en/news'}/${categorySlug}/${formattedNews.slug}`}>
-                    <img
-                      src={formattedNews.imageUrl || '/images/default-news.jpg'}
-                      alt={formattedNews.title}
-                      className="news__image"
-                      loading="lazy"
-                      onError={(e) => {
-                        e.target.src = '/images/default-news.jpg';
-                      }}
-                    />
+                    {formattedNews.imageUrl ? (
+                      <img
+                        src={formattedNews.imageUrl}
+                        alt={formattedNews.title}
+                        className="news__image"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.parentNode.innerHTML = '<div class="news__image news__image--placeholder" style="display: flex; align-items: center; justify-content: center; background: #f8fafc;"><i class="fas fa-newspaper" style="font-size: 3rem; color: #cbd5e1;"></i></div>';
+                        }}
+                      />
+                    ) : (
+                      <div className="news__image news__image--placeholder">
+                        <i className="fas fa-newspaper" style={{fontSize: '3rem', color: '#cbd5e1'}}></i>
+                      </div>
+                    )}
                   </LocalizedLink>
                   <div className="news__date-badge">
                     <i className="far fa-clock"></i>

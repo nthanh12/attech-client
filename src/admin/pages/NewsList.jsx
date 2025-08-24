@@ -12,9 +12,14 @@ import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
 import PageWrapper from "../components/PageWrapper";
+import AdminFilter from "../components/AdminFilter";
+import AdminPageActions from "../components/AdminPageActions";
+import AdminTable from "../components/AdminTable";
 import "./NewsList.css";
 import "../styles/adminTable.css";
 import "../styles/adminCommon.css";
+import "../styles/adminButtons.css";
+import "../styles/adminPageStyles.css";
 
 const NewsList = () => {
   const { t } = useTranslation();
@@ -28,6 +33,7 @@ const NewsList = () => {
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editingNews, setEditingNews] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
   const [toast, setToast] = useState({
     show: false,
     message: "",
@@ -36,7 +42,7 @@ const NewsList = () => {
 
   // Server-side pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [searchDebounce, setSearchDebounce] = useState("");
@@ -52,25 +58,43 @@ const NewsList = () => {
     dateTo: "",
   });
 
-  // Debounce search
+  // Debounce search - đợi user gõ xong
   useEffect(() => {
+    if (filters.search !== searchDebounce) {
+      setIsSearching(true);
+    }
+    
     const timer = setTimeout(() => {
       setSearchDebounce(filters.search);
-    }, 500);
+      setIsSearching(false);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, [filters.search]);
 
-  // Load data on mount and when pagination/filters change
+  // Load data on mount
   useEffect(() => {
     loadData();
-  }, [currentPage, itemsPerPage, searchDebounce]);
+  }, []);
 
-  const loadData = async () => {
-    setIsLoading(true);
+  // Load data when pagination/filters/sorting change (without showing loading for search)
+  useEffect(() => {
+    if (searchDebounce !== filters.search) {
+      // Search is still being debounced, don't show loading
+      loadData(false);
+    } else {
+      // Other filters or pagination changed, show loading
+      loadData(true);
+    }
+  }, [currentPage, itemsPerPage, searchDebounce, filters.category, filters.status, filters.dateFrom, filters.dateTo, sortConfig]);
+
+  const loadData = async (showLoadingIndicator = true) => {
+    if (showLoadingIndicator) {
+      setIsLoading(true);
+    }
     try {
       const [newsData, categoriesData] = await Promise.all([
-        fetchNews(currentPage, itemsPerPage, searchDebounce),
+        fetchNews(currentPage, itemsPerPage, searchDebounce, filters, sortConfig),
         fetchNewsCategories(),
       ]);
 
@@ -86,7 +110,9 @@ const NewsList = () => {
         type: "error",
       });
     } finally {
-      setIsLoading(false);
+      if (showLoadingIndicator) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -195,56 +221,50 @@ const NewsList = () => {
     setEditingNews(null);
   };
 
-  // Client-side filtering (except search - handled by server)
-  const filteredNews = news.filter((item) => {
-    // Category filter
-    if (filters.category) {
-      if (item.newsCategoryId !== parseInt(filters.category)) return false;
+  // Filter configuration for AdminFilter component
+  const filterConfig = [
+    {
+      key: "search",
+      type: "search",
+      label: "Tìm kiếm",
+      placeholder: "Tìm kiếm theo tiêu đề, nội dung hoặc tác giả...",
+      icon: "fas fa-search"
+    },
+    {
+      key: "category",
+      type: "select",
+      label: "Danh mục",
+      icon: "fas fa-tags",
+      options: categories.map(cat => ({
+        value: cat.id,
+        label: cat.titleVi
+      }))
+    },
+    {
+      key: "status",
+      type: "select",
+      label: "Trạng thái",
+      icon: "fas fa-flag",
+      options: [
+        { value: "active", label: "Hoạt động" },
+        { value: "inactive", label: "Không hoạt động" }
+      ]
+    },
+    {
+      type: "daterange",
+      fromKey: "dateFrom",
+      toKey: "dateTo",
+      icon: "fas fa-calendar"
     }
+  ];
 
-    // Status filter
-    if (filters.status) {
-      const itemStatus = parseInt(item.status);
-      if (filters.status === "active" && itemStatus !== 1) return false;
-      if (filters.status === "inactive" && itemStatus !== 0) return false;
-    }
+  // Handle filter changes
+  const handleFiltersChange = (newFilters) => {
+    setFilters(newFilters);
+  };
 
-    // Date filter
-    if (filters.dateFrom || filters.dateTo) {
-      const itemDate = new Date(item.timePosted);
-      const fromDate = filters.dateFrom ? new Date(filters.dateFrom) : null;
-      const toDate = filters.dateTo ? new Date(filters.dateTo) : null;
-
-      if (fromDate && toDate) {
-        if (itemDate < fromDate || itemDate > toDate) return false;
-      } else if (fromDate) {
-        if (itemDate < fromDate) return false;
-      } else if (toDate) {
-        if (itemDate > toDate) return false;
-      }
-    }
-
-    return true;
-  });
-
-  const sortedNews = filteredNews.sort((a, b) => {
-    let aValue = a[sortConfig.key];
-    let bValue = b[sortConfig.key];
-
-    if (sortConfig.key === "timePosted") {
-      aValue = new Date(aValue);
-      bValue = new Date(bValue);
-    }
-
-    if (sortConfig.direction === "asc") {
-      return aValue > bValue ? 1 : -1;
-    } else {
-      return aValue < bValue ? 1 : -1;
-    }
-  });
-
-  // Server-side pagination - use data as-is
-  const paginatedNews = sortedNews;
+  // Use server-side data directly (no client-side filtering/sorting)
+  const paginatedNews = news;
 
   // Table columns
   const columns = [
@@ -326,69 +346,34 @@ const NewsList = () => {
     {
       label: "Sửa",
       onClick: handleEdit,
-      className: "btn btn-sm btn-primary",
+      className: "admin-btn admin-btn-xs admin-btn-primary",
     },
     {
       label: "Xóa",
       onClick: handleDelete,
-      className: "btn btn-sm btn-danger",
+      className: "admin-btn admin-btn-xs admin-btn-danger",
     },
   ];
 
-  // Page Actions for the sticky action bar
+  // Page Actions using AdminPageActions
   const pageActions = (
-    <div style={{ display: "flex", gap: "0.5rem" }}>
-      <button
-        className="btn btn-outline-secondary"
-        onClick={loadData}
-        disabled={isLoading}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.75rem 1rem",
-          backgroundColor: "#f8f9fa",
-          color: "#6c757d",
-          border: "1px solid #dee2e6",
-          borderRadius: "6px",
-          fontSize: "0.875rem",
-          fontWeight: "500",
-          cursor: "pointer",
-        }}
-        title="Làm mới danh sách tin tức"
-      >
-        <i className="fas fa-refresh"></i>
-        Làm mới
-      </button>
-      <button
-        className="btn btn-primary"
-        onClick={handleAdd}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.75rem 1rem",
-          backgroundColor: "#3b82f6",
-          color: "white",
-          border: "none",
-          borderRadius: "6px",
-          fontSize: "0.875rem",
-          fontWeight: "500",
-          cursor: "pointer",
-        }}
-      >
-        <i className="fas fa-plus"></i>
-        Thêm tin tức
-      </button>
-    </div>
+    <AdminPageActions
+      loading={isLoading}
+      actions={[
+        AdminPageActions.createRefreshAction(loadData, isLoading),
+        AdminPageActions.createAddAction(handleAdd, "Thêm tin tức")
+      ]}
+    />
   );
 
   if (isLoading) {
     return (
       <PageWrapper actions={pageActions}>
-        <div className="text-center">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
+        <div className="admin-page-container">
+          <div className="text-center">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
           </div>
         </div>
       </PageWrapper>
@@ -398,111 +383,41 @@ const NewsList = () => {
   return (
     <PageWrapper actions={pageActions}>
       <div className="admin-news-list">
-        {/* Filters Section */}
-        <div className="filters-section">
-          <div className="filter-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Tìm kiếm theo tiêu đề..."
-              value={filters.search}
-              onChange={(e) => {
-                const newSearch = e.target.value;
-                setFilters((prev) => ({ ...prev, search: newSearch }));
-                setCurrentPage(1); // Reset về trang 1 khi search
-              }}
-            />
-          </div>
-          <div className="filter-group">
-            <select
-              className="form-control"
-              value={filters.category}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, category: e.target.value }))
-              }
-            >
-              <option key="all" value="">Tất cả danh mục</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.titleVi}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="filter-group">
-            <select
-              className="form-control"
-              value={filters.status}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, status: e.target.value }))
-              }
-            >
-              <option key="all-status" value="">Tất cả trạng thái</option>
-              <option key="active" value="active">Hoạt động</option>
-              <option key="inactive" value="inactive">Không hoạt động</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Từ ngày"
-              value={filters.dateFrom}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, dateFrom: e.target.value }))
-              }
-            />
-          </div>
-          <div className="filter-group">
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Đến ngày"
-              value={filters.dateTo}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, dateTo: e.target.value }))
-              }
-            />
-          </div>
-          <div className="filter-group">
-            <button
-              className="btn btn-secondary"
-              onClick={() =>
-                setFilters({
-                  search: "",
-                  category: "",
-                  status: "",
-                  dateFrom: "",
-                  dateTo: "",
-                })
-              }
-            >
-              <i className="fas fa-times"></i>
-              <span>Reset</span>
-            </button>
-          </div>
-        </div>
+        {/* Filters Section - Using AdminFilter Component */}
+        <AdminFilter
+          filters={filters}
+          onFiltersChange={handleFiltersChange}
+          onPageChange={setCurrentPage}
+          filterConfig={filterConfig}
+          isSearching={isSearching}
+        />
 
-        {/* Data Table */}
-        <DataTable
-          data={paginatedNews}
-          columns={columns}
-          actions={actions}
-          sortConfig={sortConfig}
-          onSort={(key) => {
-            setSortConfig((prev) => ({
-              key,
-              direction:
-                prev.key === key && prev.direction === "desc" ? "asc" : "desc",
-            }));
-          }}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={(page) => {
-            setCurrentPage(page);
-          }}
-          totalItems={totalItems}
-          itemsPerPage={itemsPerPage}
+        {/* Table Container */}
+        <AdminTable
+            data={paginatedNews}
+            columns={columns}
+            actions={actions}
+            sortConfig={sortConfig}
+            onSort={(key) => {
+              setSortConfig((prev) => ({
+                key,
+                direction:
+                  prev.key === key && prev.direction === "desc" ? "asc" : "desc",
+              }));
+            }}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+            }}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onItemsPerPageChange={(newSize) => {
+              setItemsPerPage(newSize);
+              setCurrentPage(1); // Reset về trang 1
+            }}
+            loading={isLoading}
+            emptyText="Chưa có tin tức nào"
         />
 
         {/* Modal with NewsCreationForm */}

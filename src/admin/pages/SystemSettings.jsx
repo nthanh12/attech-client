@@ -15,6 +15,7 @@ import {
   getCurrencies
 } from '../../services/systemSettingsService';
 import './SystemSettings.css';
+import "../styles/adminButtons.css";
 
 const SystemSettings = () => {
   const [loading, setLoading] = useState(false);
@@ -481,7 +482,7 @@ const SystemSettings = () => {
 
       <div className="form-group">
         <button 
-          className="btn btn-secondary"
+          className="admin-btn admin-btn-secondary"
           onClick={handleTestEmail}
           disabled={testingEmail}
         >
@@ -868,7 +869,7 @@ const SystemSettings = () => {
   const pageActions = (
     <div className="page-actions">
       <button 
-        className="btn btn-secondary"
+        className="admin-btn admin-btn-secondary"
         onClick={handleClearCache}
         disabled={clearingCache}
         style={{ marginRight: '8px' }}
@@ -876,7 +877,7 @@ const SystemSettings = () => {
         {clearingCache ? 'Đang xóa...' : 'Xóa Cache'}
       </button>
       <button 
-        className="btn btn-secondary"
+        className="admin-btn admin-btn-secondary"
         onClick={handleExport}
         style={{ marginRight: '8px' }}
       >
@@ -892,7 +893,7 @@ const SystemSettings = () => {
         />
       </label>
       <button 
-        className="btn btn-warning"
+        className="admin-btn admin-btn-warning"
         onClick={() => handleReset(activeTab)}
         disabled={saving}
         style={{ marginRight: '8px' }}
@@ -900,7 +901,7 @@ const SystemSettings = () => {
         Khôi phục
       </button>
       <button 
-        className="btn btn-primary"
+        className="admin-btn admin-btn-primary"
         onClick={() => handleSave(activeTab)}
         disabled={saving}
       >

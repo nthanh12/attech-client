@@ -4,12 +4,12 @@ import { useAuth } from "../../contexts/AuthContext";
 
 const ProtectedRoute = ({
   children,
-  requiredPermissions = [],
+  requiredRoleId = null, // roleId required (1-3)
   fallbackPath = "/dang-nhap",
   showMessage = true,
-  hideContentOnNoPermission = false, // New prop to hide content instead of showing error
+  hideContentOnNoPermission = false,
 }) => {
-  const { isAuthenticated, hasPermission, hasAnyPermission, loading, user } =
+  const { isAuthenticated, hasPermission, loading, user, ROLES } =
     useAuth();
 
   // Show loading spinner while checking auth
@@ -39,19 +39,25 @@ const ProtectedRoute = ({
     return <Navigate to={fallbackPath} replace />;
   }
 
-  // Check permissions if required
-  if (requiredPermissions.length > 0) {
-    const hasRequiredPermission = Array.isArray(requiredPermissions[0])
-      ? hasAnyPermission(requiredPermissions.flat())
-      : requiredPermissions.every((permission) => hasPermission(permission));
+  // Check roleId permission if required
+  if (requiredRoleId !== null) {
+    const hasRequiredPermission = hasPermission(requiredRoleId);
 
     if (!hasRequiredPermission) {
-      // If hideContentOnNoPermission is true, just return null (hide content)
       if (hideContentOnNoPermission) {
         return null;
       }
 
       if (showMessage) {
+        const getRoleName = (roleId) => {
+          switch (roleId) {
+            case ROLES.SUPERADMIN: return 'Super Admin';
+            case ROLES.ADMIN: return 'Admin';
+            case ROLES.EDITOR: return 'Editor';
+            default: return 'Unknown';
+          }
+        };
+
         return (
           <div
             className="attech-admin-access-denied"
@@ -72,8 +78,8 @@ const ProtectedRoute = ({
                     </p>
                     <p>
                       <small>
-                        Người dùng: {user?.name} (
-                        {user?.permissions?.length || 0} quyền)
+                        Người dùng: {user?.name} - Role: {getRoleName(user?.roleId)} ({user?.roleId})<br/>
+                        Yêu cầu: {getRoleName(requiredRoleId)} ({requiredRoleId}) trở lên
                       </small>
                     </p>
                     <button

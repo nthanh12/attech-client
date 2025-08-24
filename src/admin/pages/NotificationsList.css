@@ -70,16 +70,45 @@
   color: #1f2937;
 }
 
-/* Filter Section */
+/* Filter Section - Override ContactList pattern for notification specific layout */
 .admin-notification-list .filters-section {
+  /* Inherits from ContactList.css but with notification-specific overrides */
+}
+
+/* Custom grid layout for notification filters (6 columns: search, category, status, dateFrom, dateTo, actions) */
+.admin-notification-list .filters-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  grid-template-columns: 2fr 1.2fr 1.2fr 1fr 1fr auto;
+  gap: 1.5rem;
+  align-items: end;
+}
+
+@media (max-width: 1400px) {
+  .admin-notification-list .filters-grid {
+    grid-template-columns: 2fr 1.2fr 1.2fr;
+    grid-template-rows: auto auto;
+  }
+  
+  .admin-notification-list .filters-grid .filter-group:nth-child(4),
+  .admin-notification-list .filters-grid .filter-group:nth-child(5) {
+    grid-column: span 1;
+  }
+  
+  .admin-notification-list .filter-actions {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 992px) {
+  .admin-notification-list .filters-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  
+  .admin-notification-list .filters-grid .filter-group:first-child {
+    grid-column: 1 / -1;
+  }
 }
 
 .admin-notification-list .filter-group {

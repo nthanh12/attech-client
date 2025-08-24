@@ -1,17 +1,23 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { getDefaultRouteForUser } from '../../utils/routeUtils';
 
 const DefaultRoute = () => {
-  const { user } = useAuth();
+  const { user, ROLES } = useAuth();
   
   if (!user) {
     return <Navigate to="/dang-nhap" replace />;
   }
 
-  const defaultRoute = getDefaultRouteForUser(user);
+  // Role-based default route - simple and flexible
+  const getDefaultRoute = () => {
+    if (user.roleId <= ROLES.ADMIN) {
+      return '/admin/dashboard'; // SuperAdmin & Admin go to dashboard
+    } else {
+      return '/admin/news'; // Editor goes to content management
+    }
+  };
   
-  return <Navigate to={defaultRoute} replace />;
+  return <Navigate to={getDefaultRoute()} replace />;
 };
 
 export default DefaultRoute;

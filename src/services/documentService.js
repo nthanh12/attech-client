@@ -386,3 +386,174 @@ export const EntityType = {
   Document: 6,    // Document library
   Temp: 999       // Upload tạm, chưa gán entity
 };
+
+// Document service object for easy importing
+export const documentService = {
+  // Document CRUD
+  getDocuments: async (params = {}) => {
+    try {
+      const queryParams = {
+        page: params.page || 1,
+        pageSize: params.pageSize || 10,
+        keyword: params.keyword || undefined,
+        category: params.category || undefined,
+        author: params.author || undefined,
+        status: params.status || undefined,
+        fileType: params.fileType || undefined,
+        dateFrom: params.dateFrom || undefined,
+        dateTo: params.dateTo || undefined,
+        sortBy: params.sortBy || undefined,
+        sortDirection: params.sortDirection || undefined,
+      };
+      
+      console.log('📡 Fetching documents:', queryParams);
+      const response = await api.get('/api/documents', { params: queryParams });
+      
+      console.log('📨 Documents response:', response.data);
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('❌ Get documents error:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to fetch documents'
+      };
+    }
+  },
+
+  createDocument: async (documentData) => {
+    try {
+      console.log('📡 Creating document:', documentData);
+      const response = await api.post('/api/documents', documentData);
+      
+      console.log('✅ Document created successfully');
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('❌ Create document error:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to create document'
+      };
+    }
+  },
+
+  updateDocument: async (documentId, documentData) => {
+    try {
+      console.log('📡 Updating document:', documentId, documentData);
+      const response = await api.put(`/api/documents/${documentId}`, documentData);
+      
+      console.log('✅ Document updated successfully');
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('❌ Update document error:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to update document'
+      };
+    }
+  },
+
+  deleteDocument: async (documentId) => {
+    try {
+      console.log('📡 Deleting document:', documentId);
+      const response = await api.delete(`/api/documents/${documentId}`);
+      
+      console.log('✅ Document deleted successfully');
+      return {
+        success: true,
+        data: response.data
+      };
+    } catch (error) {
+      console.error('❌ Delete document error:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to delete document'
+      };
+    }
+  },
+
+  uploadDocument: async (file, options = {}) => {
+    try {
+      console.log('📄 Document upload started for:', file.name);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      // Add metadata if provided
+      if (options.title) formData.append('title', options.title);
+      if (options.description) formData.append('description', options.description);
+      if (options.category) formData.append('category', options.category);
+      if (options.tags) formData.append('tags', options.tags);
+      
+      const response = await api.post('/api/documents/upload', formData, {
+        headers: { 
+          'Content-Type': 'multipart/form-data'
+        },
+        timeout: 120000, // 2 minutes
+        onUploadProgress: options.onUploadProgress
+      });
+      
+      console.log('✅ Document upload successful');
+      
+      // Handle AttechServer response format
+      const responseData = response.data;
+      if (responseData && responseData.status === 1 && responseData.data) {
+        return {
+          success: true,
+          fileUrl: responseData.data.location || responseData.data.fileUrl,
+          originalFileName: file.name,
+          fileType: file.name.split('.').pop().toLowerCase(),
+          fileSize: file.size,
+          ...responseData.data
+        };
+      }
+      
+      return {
+        success: true,
+        fileUrl: responseData.location || responseData.fileUrl,
+        originalFileName: file.name,
+        fileType: file.name.split('.').pop().toLowerCase(),
+        fileSize: file.size,
+        ...responseData
+      };
+    } catch (error) {
+      console.error('❌ Document upload error:', error);
+      throw new Error(error.response?.data?.message || 'Document upload failed');
+    }
+  },
+
+  downloadDocument: async (documentId, filename) => {
+    try {
+      console.log('📡 Downloading document:', documentId, filename);
+      
+      const response = await api.get(`/api/documents/${documentId}/download`, {
+        responseType: 'blob'
+      });
+      
+      // Create download link
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      
+      console.log('✅ Document downloaded successfully');
+      return { success: true };
+    } catch (error) {
+      console.error('❌ Download document error:', error);
+      throw new Error(error.response?.data?.message || 'Failed to download document');
+    }
+  }
+};

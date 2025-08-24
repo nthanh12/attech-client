@@ -123,7 +123,7 @@ export async function getNewsBySlug(slug, language = "vi") {
 // Get news categories for client-side
 export async function getNewsCategories() {
   try {
-    const response = await api.get("/api/news-category/find-all");
+    const response = await api.get("/api/news-category/client/find-all");
     
     if (
       response.data &&

@@ -142,7 +142,7 @@ const LocalizedRoutes = () => {
           <Route path="/thong-tin-cong-ty/nganh-nghe-kinh-doanh" element={<Business />} />
           <Route path="/thong-tin-cong-ty/he-thong-chung-chi-iso" element={<Iso />} />
           <Route path="/thong-tin-cong-ty/thu-vien-cong-ty" element={<Gallery />} />
-          <Route path="/thong-tin-cong-ty/thu-vien-cong-ty/:albumId" element={<GalleryDetail />} />
+          <Route path="/thong-tin-cong-ty/thu-vien-cong-ty/:slug" element={<GalleryDetail />} />
           {/* English */}
           <Route path="/en/company" element={<Financial />} />
           <Route path="/en/company/finance" element={<Financial />} />
@@ -152,7 +152,7 @@ const LocalizedRoutes = () => {
           <Route path="/en/company/business" element={<Business />} />
           <Route path="/en/company/iso" element={<Iso />} />
           <Route path="/en/company/gallery" element={<Gallery />} />
-          <Route path="/en/company/gallery/:albumId" element={<GalleryDetail />} />
+          <Route path="/en/company/gallery/:slug" element={<GalleryDetail />} />
 
           {/* Contact Routes */}
           <Route path="/lien-he" element={<ContactPage />} />

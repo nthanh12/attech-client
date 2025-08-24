@@ -26,38 +26,13 @@ const isTokenExpired = (token) => {
   return Date.now() >= decoded.exp * 1000;
 };
 
-// Available permissions in the system - map API permissions to frontend constants
-const PERMISSIONS = {
-  // Public permissions
-  VIEW_PUBLIC_NEWS: 'view_news',
-  
-  // Employee permissions  
-  VIEW_NEWS_TABLE: 'view_news',
-  ACCESS_INTERNAL_DOCS: 'menu_view', // For any authenticated user with menu access
-  ACCESS_LIBRARY: 'menu_view', // For any authenticated user with menu access
-  
-  // Content management - need any of the related permissions
-  MANAGE_ARTICLES: 'edit_news', // Can manage if can edit
-  EDIT_ARTICLES: 'edit_news', 
-  CREATE_ARTICLES: 'create_news',
-  DELETE_ARTICLES: 'delete_news',
-  
-  // Admin permissions
-  MANAGE_USERS: 'menu_user_manager', // More specific permission
-  MANAGE_ROLES: 'menu_role_manager', // Role management permission
-  MANAGE_PERMISSIONS: 'menu_permission_manager', // Permission management  
-  MANAGE_SYSTEM: 'menu_view',
-  SEO_MANAGEMENT: 'menu_view', // Admin with menu access can manage SEO
-  LANGUAGE_MANAGEMENT: 'menu_view', // Admin with menu access can manage language
-  FILE_MANAGEMENT: 'file_upload',
-  
-  // Other system permissions
-  MANAGE_CATEGORIES: 'menu_view', // Admin with menu access can manage categories
-  MANAGE_SERVICES: 'view_services',
-  MANAGE_PRODUCTS: 'view_products', 
-  MANAGE_NOTIFICATIONS: 'view_notifications',
-  VIEW_ANALYTICS: 'menu_view'
+// Role-based system with roleId
+const ROLES = {
+  SUPERADMIN: 1,  // Super Admin - Full access
+  ADMIN: 2,       // Admin - Most features
+  EDITOR: 3       // Editor - Limited access
 };
+
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -93,15 +68,9 @@ export const AuthProvider = ({ children }) => {
             email: user.email,
             username: user.username,
             phone: user.phone,
-            permissions: user.permissions || [],
-            userType: user.userType,
-            userLevel: user.userLevel || 
-              (user.userType === 'superadmin' ? 'system' : 
-               user.userType === 'admin' ? 'manager' : 
-               user.userType === 'editor' ? 'staff' : 'staff'), // Map all userType variations to userLevel
-            roleNames: user.roleNames || [],
-            roles: user.roles || [],
-            status: user.status,
+            roleId: user.roleId || 3,  // Default to editor
+            roleName: user.roleName || 'editor',
+            status: user.status || 'active',
             lastLogin: user.lastLogin
           };
           setUser(userData);
@@ -121,10 +90,9 @@ export const AuthProvider = ({ children }) => {
                 name: user.fullName || user.username,
                 email: user.email,
                 username: user.username,
-                permissions: user.permissions || [],
-                userType: user.userType,
-                userLevel: user.userLevel || (user.userType === 'editor' ? 'staff' : 'staff'),
-                status: user.status
+                roleId: user.roleId || 3,
+                roleName: user.roleName || 'editor',
+                status: user.status || 'active'
               };
               setUser(userData);
               return;
@@ -142,9 +110,8 @@ export const AuthProvider = ({ children }) => {
               name: decoded.name || decoded.username,
               email: decoded.email,
               username: decoded.username || decoded.name,
-              permissions: decoded.permissions || [],
-              userType: decoded.user_type || 'editor',
-              userLevel: decoded.user_level || (decoded.user_type === 'editor' ? 'staff' : 'staff'),
+              roleId: decoded.roleId || 3,
+              roleName: decoded.roleName || 'editor',
               status: 'active'
             };
             setUser(userData);
@@ -163,9 +130,8 @@ export const AuthProvider = ({ children }) => {
               name: decoded.name || decoded.username,
               email: decoded.email,
               username: decoded.username || decoded.name,
-              permissions: decoded.permissions || [],
-              userType: decoded.user_type || 'admin',
-              userLevel: decoded.user_level || 'manager',
+              roleId: decoded.roleId || 2,
+              roleName: decoded.roleName || 'admin',
               status: 'active'
             };
             setUser(userData);
@@ -201,22 +167,16 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem('auth_token', token);
           localStorage.setItem('user_data', JSON.stringify(user));
           
-          // Use user data from API response instead of decoding JWT
+          // Use user data from API response
           const userData = {
             id: user.id,
             name: user.fullName || user.username,
             email: user.email,
             username: user.username,
             phone: user.phone,
-            permissions: user.permissions || [],
-            userType: user.userType,
-            userLevel: user.userLevel || 
-              (user.userType === 'superadmin' ? 'system' : 
-               user.userType === 'admin' ? 'manager' : 
-               user.userType === 'editor' ? 'staff' : 'staff'), // Map all userType variations to userLevel
-            roleNames: user.roleNames || [],
-            roles: user.roles || [],
-            status: user.status,
+            roleId: user.roleId || 3,
+            roleName: user.roleName || 'editor',
+            status: user.status || 'active',
             lastLogin: user.lastLogin
           };
           
@@ -247,8 +207,8 @@ export const AuthProvider = ({ children }) => {
           throw new Error(errorMsg);
         }
         
-        // No fallback - just throw the error
-        throw apiError;
+        // No fallback - only use real API
+        throw new Error('Tài khoản không tồn tại hoặc sai mật khẩu');
       }
       
     } catch (error) {
@@ -264,77 +224,12 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const hasPermission = (permission) => {
-    if (!user || !user.permissions) {
+  // Role-based permission checking
+  const hasPermission = (requiredRoleId) => {
+    if (!user || typeof requiredRoleId !== 'number') {
       return false;
     }
-    
-    const userPerms = user.permissions;
-    
-    // Basic permission check
-    if (userPerms.includes(permission)) {
-      return true;
-    }
-    
-    // Enhanced permission logic for flexible access
-    switch (permission) {
-      // Content management permissions
-      case 'edit_news':
-        return userPerms.includes('edit_news') || userPerms.includes('create_news') || userPerms.includes('delete_news') || userPerms.includes('menu_news_manager');
-      
-      case 'view_news':
-        return userPerms.includes('view_news') || userPerms.includes('edit_news') || userPerms.includes('menu_news_manager');
-      
-      // Notification management permissions
-      case 'view_notifications':
-        return userPerms.includes('view_notifications') || userPerms.includes('edit_notification') || userPerms.includes('menu_notification_manager');
-      
-      case 'menu_notification_manager':
-        return userPerms.includes('menu_notification_manager') || userPerms.includes('view_notifications') || userPerms.includes('edit_notification') || userPerms.includes('create_notification');
-      
-      // User management permissions  
-      case 'menu_user_manager':
-        return userPerms.includes('menu_user_manager') || userPerms.includes('view_users') || userPerms.includes('edit_user') || userPerms.includes('create_user');
-      
-      case 'view_users':
-        return userPerms.includes('view_users') || userPerms.includes('menu_user_manager') || userPerms.includes('edit_user');
-      
-      // Role management permissions
-      case 'menu_role_manager':
-        return userPerms.includes('menu_role_manager') || userPerms.includes('view_roles') || userPerms.includes('edit_role') || userPerms.includes('create_role') || userPerms.includes('menu_view');
-      
-      case 'view_roles':
-        return userPerms.includes('view_roles') || userPerms.includes('menu_role_manager') || userPerms.includes('edit_role') || userPerms.includes('menu_view');
-      
-      // Permission management permissions  
-      case 'menu_permission_manager':
-        return userPerms.includes('menu_permission_manager') || userPerms.includes('menu_role_manager') || userPerms.includes('view_permissions') || userPerms.includes('edit_permission') || userPerms.includes('create_permission') || userPerms.includes('menu_view');
-      
-      case 'view_permissions':
-        return userPerms.includes('view_permissions') || userPerms.includes('menu_permission_manager') || userPerms.includes('edit_permission') || userPerms.includes('menu_view');
-      
-      // Album management permissions
-      case 'view_albums':
-        return userPerms.includes('view_albums') || userPerms.includes('edit_albums') || userPerms.includes('menu_album_manager') || userPerms.includes('menu_view');
-      
-      case 'edit_albums':
-        return userPerms.includes('edit_albums') || userPerms.includes('create_albums') || userPerms.includes('delete_albums') || userPerms.includes('menu_album_manager');
-      
-      // Menu access - admin với menu_view có thể truy cập hầu hết
-      case 'menu_view':
-        return userPerms.includes('menu_view') || userPerms.includes('menu_user_manager') || userPerms.includes('menu_role_manager') || userPerms.includes('menu_news_manager');
-      
-      default:
-        return false;
-    }
-  };
-
-  const hasAnyPermission = (permissions) => {
-    return permissions.some(permission => hasPermission(permission));
-  };
-
-  const getUserPermissions = () => {
-    return user?.permissions || [];
+    return user.roleId <= requiredRoleId;
   };
 
   const isAuthenticated = () => {
@@ -348,10 +243,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     hasPermission,
-    hasAnyPermission,
-    getUserPermissions,
     isAuthenticated,
-    PERMISSIONS,
+    ROLES,
     decodeJWT,
     isTokenExpired
   };
@@ -371,4 +264,4 @@ export const useAuth = () => {
   return context;
 };
 
-export { PERMISSIONS };
+export { ROLES };

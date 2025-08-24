@@ -15,6 +15,26 @@ import { useLocation } from "react-router-dom";
 const NotificationDetailPage = () => {
   const { currentLanguage } = useI18n();
   const { t: tNotifications } = useTranslation();
+
+  // Helper functions for attachments
+  const formatFileSize = (bytes) => {
+    if (!bytes || bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const getFileTypeDisplay = (contentType) => {
+    if (!contentType) return 'Unknown';
+    if (contentType.includes('pdf')) return 'PDF';
+    if (contentType.includes('word')) return 'Word';
+    if (contentType.includes('excel') || contentType.includes('spreadsheet')) return 'Excel';
+    if (contentType.includes('powerpoint') || contentType.includes('presentation')) return 'PowerPoint';
+    if (contentType.includes('image')) return 'Image';
+    if (contentType.includes('text')) return 'Text';
+    return contentType.split('/')[1]?.toUpperCase() || 'File';
+  };
   const location = useLocation();
   const { category: categorySlug, slug: notificationSlug } = useParams();
   const isEnglish = getLanguageFromPath(location.pathname) === "en";
@@ -26,6 +46,7 @@ const NotificationDetailPage = () => {
   const [relatedNotifications, setRelatedNotifications] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showAllImages, setShowAllImages] = useState(false);
 
   // Handle search
   const handleSearchChange = useCallback((value) => {
@@ -352,6 +373,100 @@ const NotificationDetailPage = () => {
                   }}
                 />
               </div>
+
+              {/* Attachments Section */}
+              {notificationItem?.attachments && (
+                <div className="article-attachments">
+                  {/* Image Attachments */}
+                  {notificationItem.attachments.images && notificationItem.attachments.images.length > 0 && (
+                    <div className="attachments-section">
+                      <h3 className="attachments-title">
+                        <i className="bi bi-images"></i>
+                        Hình ảnh đính kèm
+                      </h3>
+                      <div className="attachments-gallery">
+                        {(showAllImages ? notificationItem.attachments.images : notificationItem.attachments.images.slice(0, 6))
+                          .map((img, index) => (
+                          <div key={img.id || index} className="attachment-item image-item">
+                            <img
+                              src={img.url?.startsWith('http') 
+                                ? img.url 
+                                : `${process.env.REACT_APP_API_URL}${img.url || `/api/attachments/${img.id}`}`
+                              }
+                              alt={img.originalFileName || `Image ${index + 1}`}
+                              className="attachment-image"
+                              loading="lazy"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      {notificationItem.attachments.images.length > 6 && (
+                        <div className="show-more-images">
+                          <button
+                            className="btn btn-outline-primary btn-sm"
+                            onClick={() => setShowAllImages(!showAllImages)}
+                          >
+                            <i className={`bi bi-${showAllImages ? 'chevron-up' : 'images'}`}></i>
+                            {showAllImages 
+                              ? 'Ẩn bớt ảnh' 
+                              : `Xem thêm ${notificationItem.attachments.images.length - 6} ảnh`
+                            }
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Document Attachments */}
+                  {notificationItem.attachments.documents && notificationItem.attachments.documents.length > 0 && (
+                    <div className="attachments-section">
+                      <h3 className="attachments-title">
+                        <i className="bi bi-paperclip"></i>
+                        Tài liệu đính kèm
+                      </h3>
+                      <div className="attachments-list">
+                        {notificationItem.attachments.documents.map((doc, index) => (
+                          <div 
+                            key={doc.id || index} 
+                            className="attachment-item document-item clickable"
+                            onClick={() => {
+                              const url = doc.url?.startsWith('http') 
+                                ? doc.url 
+                                : `${process.env.REACT_APP_API_URL}${doc.url}`;
+                              window.open(url, '_blank', 'noopener,noreferrer');
+                            }}
+                            style={{ cursor: 'pointer' }}
+                            title="Click để xem tài liệu"
+                          >
+                            <div className="attachment-icon">
+                              {doc.contentType?.includes('pdf') ? (
+                                <i className="bi bi-file-pdf text-danger"></i>
+                              ) : doc.contentType?.includes('word') ? (
+                                <i className="bi bi-file-word text-primary"></i>
+                              ) : doc.contentType?.includes('excel') ? (
+                                <i className="bi bi-file-excel text-success"></i>
+                              ) : (
+                                <i className="bi bi-file-text"></i>
+                              )}
+                            </div>
+                            <div className="attachment-info">
+                              <h4 className="attachment-name">{doc.originalFileName || doc.fileName || 'Document'}</h4>
+                              <div className="attachment-meta">
+                                <span className="attachment-size">
+                                  {doc.fileSize ? formatFileSize(doc.fileSize) : 'N/A'}
+                                </span>
+                                <span className="attachment-type">
+                                  {getFileTypeDisplay(doc.contentType)}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Article Footer */}
               <footer className="article-footer">

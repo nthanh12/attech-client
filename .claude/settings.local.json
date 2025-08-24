@@ -21,7 +21,8 @@
       "Bash(npm run:*)",
       "Bash(npx serve:*)",
       "Bash(rg:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(set PORT=3001)"
     ],
     "deny": []
   }

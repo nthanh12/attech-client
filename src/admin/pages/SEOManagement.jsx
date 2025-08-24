@@ -5,6 +5,7 @@ import FormModal from '../components/FormModal';
 import ToastMessage from '../components/ToastMessage';
 import LoadingSpinner from '../components/LoadingSpinner';
 import './SEOManagement.css';
+import "../styles/adminButtons.css";
 
 const SEOManagement = () => {
   const [seoPages, setSeoPages] = useState([]);
@@ -221,7 +222,7 @@ const SEOManagement = () => {
       render: (value, page) => (
         <div className="action-buttons">
           <button
-            className="btn btn-sm btn-primary"
+            className="admin-btn admin-btn-sm admin-btn-primary"
             onClick={() => handleEdit(page)}
             title="Chỉnh sửa"
           >
@@ -229,7 +230,7 @@ const SEOManagement = () => {
             <span>Sửa</span>
           </button>
           <button
-            className="btn btn-sm btn-danger"
+            className="admin-btn admin-btn-sm admin-btn-danger"
             onClick={() => handleDelete(page.id)}
             title="Xóa"
           >
@@ -429,7 +430,7 @@ const SEOManagement = () => {
 
   const pageActions = (
     <button 
-      className="btn btn-primary" 
+      className="admin-btn admin-btn-primary" 
       onClick={handleAddNew}
       style={{
         display: 'flex',

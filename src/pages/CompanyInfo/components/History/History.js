@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 import "./History.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
 const History = () => {
   const { t } = useTranslation();
-  
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -18,28 +18,28 @@ const History = () => {
   const timelineData = [
     {
       year: "1986",
-      title: t('frontend.companyInfo.history.timeline.1986.title'),
-      description: t('frontend.companyInfo.history.timeline.1986.description'),
+      title: t("frontend.companyInfo.history.timeline.1986.title"),
+      description: t("frontend.companyInfo.history.timeline.1986.description"),
     },
     {
       year: "1989",
-      title: t('frontend.companyInfo.history.timeline.1989.title'),
-      description: t('frontend.companyInfo.history.timeline.1989.description'),
+      title: t("frontend.companyInfo.history.timeline.1989.title"),
+      description: t("frontend.companyInfo.history.timeline.1989.description"),
     },
     {
       year: "1998",
-      title: t('frontend.companyInfo.history.timeline.1998.title'),
-      description: t('frontend.companyInfo.history.timeline.1998.description'),
+      title: t("frontend.companyInfo.history.timeline.1998.title"),
+      description: t("frontend.companyInfo.history.timeline.1998.description"),
     },
     {
       year: "2008-2009",
-      title: t('frontend.companyInfo.history.timeline.2008.title'),
-      description: t('frontend.companyInfo.history.timeline.2008.description'),
+      title: t("frontend.companyInfo.history.timeline.2008.title"),
+      description: t("frontend.companyInfo.history.timeline.2008.description"),
     },
     {
       year: "2010",
-      title: t('frontend.companyInfo.history.timeline.2010.title'),
-      description: t('frontend.companyInfo.history.timeline.2010.description'),
+      title: t("frontend.companyInfo.history.timeline.2010.title"),
+      description: t("frontend.companyInfo.history.timeline.2010.description"),
     },
   ];
 
@@ -50,8 +50,7 @@ const History = () => {
       short: "ATTECH CO.,LTD",
     },
     headquarters: {
-      address:
-        "Số 5/200 Đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội",
+      address: "Số 5/200 Đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội",
       phone: "024.38721514",
       fax: "024.38730398",
       email: "attech@attech.com.vn",
@@ -61,20 +60,19 @@ const History = () => {
     branches: [
       {
         name: "Xí nghiệp chế tạo thiết bị Hàng không",
-        address: "Tổ 15, Phường Phúc Đồng, Quận Long Biên, Thành phố Hà Nội",
+        address: "Tổ 6, Phường Long Biên, Thành phố Hà Nội",
         phone: "024.38759625",
         fax: "024.38759625",
       },
       {
         name: "Chi nhánh tại thành phố Hồ Chí Minh",
-        address: "58 Trường Sơn – Quận Tân Bình – Thành phố Hồ Chí Minh",
+        address: "58 Trường Sơn –Phường Tân Sơn Hòa – Thành phố Hồ Chí Minh",
         phone: "(84.28) 8456081",
         fax: "(84.28) 8456081",
       },
       {
         name: "Ban Quản lý dự án đầu tư và xây dựng chuyên ngành",
-        address:
-          "Số 5/200 Đường Nguyễn Sơn, phường Bồ Đề, Quận Long Biên, Thành phố Hà Nội",
+        address: "Số 5/200 Đường Nguyễn Sơn, phường Bồ Đề, Thành phố Hà Nội",
         phone: "024.38723747",
         fax: "024.38759625",
         email: "attech-pmu@attech.com.vn",
@@ -86,7 +84,7 @@ const History = () => {
     <div className="history-timeline">
       <section className="timeline-section">
         <div className="section-title" data-aos="fade-up">
-          <h2>{t('frontend.companyInfo.history.title')}</h2>
+          <h2>{t("frontend.companyInfo.history.title")}</h2>
         </div>
         <div className="timeline">
           {timelineData.map((event, index) => (
@@ -108,37 +106,46 @@ const History = () => {
 
       <section className="company-info-section">
         <div className="section-title" data-aos="fade-up">
-          <h2>{t('frontend.companyInfo.history.companyInfoTitle')}</h2>
+          <h2>{t("frontend.companyInfo.history.companyInfoTitle")}</h2>
         </div>
         <div className="company-info-grid">
           <div className="info-card" data-aos="fade-up">
-            <h3>{t('frontend.companyInfo.history.companyName')}</h3>
+            <h3>{t("frontend.companyInfo.history.companyName")}</h3>
             <p>
-              <strong>{t('frontend.companyInfo.history.vietnamese')}:</strong> {companyInfo.name.vietnamese}
+              <strong>{t("frontend.companyInfo.history.vietnamese")}:</strong>{" "}
+              {companyInfo.name.vietnamese}
             </p>
             <p>
-              <strong>{t('frontend.companyInfo.history.international')}:</strong> {companyInfo.name.international}
+              <strong>
+                {t("frontend.companyInfo.history.international")}:
+              </strong>{" "}
+              {companyInfo.name.international}
             </p>
             <p>
-              <strong>{t('frontend.companyInfo.history.abbreviation')}:</strong> {companyInfo.name.short}
+              <strong>{t("frontend.companyInfo.history.abbreviation")}:</strong>{" "}
+              {companyInfo.name.short}
             </p>
           </div>
           <div className="info-card" data-aos="fade-up" data-aos-delay="100">
-            <h3>{t('frontend.companyInfo.history.headquarters')}</h3>
+            <h3>{t("frontend.companyInfo.history.headquarters")}</h3>
             <p>
-              <strong>{t('frontend.companyInfo.history.address')}:</strong> {companyInfo.headquarters.address}
+              <strong>{t("frontend.companyInfo.history.address")}:</strong>{" "}
+              {companyInfo.headquarters.address}
             </p>
             <p>
-              <strong>{t('frontend.companyInfo.history.phone')}:</strong> {companyInfo.headquarters.phone}
+              <strong>{t("frontend.companyInfo.history.phone")}:</strong>{" "}
+              {companyInfo.headquarters.phone}
             </p>
             <p>
-              <strong>{t('frontend.companyInfo.history.fax')}:</strong> {companyInfo.headquarters.fax}
+              <strong>{t("frontend.companyInfo.history.fax")}:</strong>{" "}
+              {companyInfo.headquarters.fax}
             </p>
             <p>
-              <strong>{t('frontend.companyInfo.history.email')}:</strong> {companyInfo.headquarters.email}
+              <strong>{t("frontend.companyInfo.history.email")}:</strong>{" "}
+              {companyInfo.headquarters.email}
             </p>
             <p>
-              <strong>{t('frontend.companyInfo.history.website')}:</strong>{" "}
+              <strong>{t("frontend.companyInfo.history.website")}:</strong>{" "}
               <a
                 href={`https://${companyInfo.headquarters.website}`}
                 target="_blank"
@@ -149,28 +156,32 @@ const History = () => {
             </p>
           </div>
           <div className="info-card" data-aos="fade-up" data-aos-delay="200">
-            <h3>{t('frontend.companyInfo.history.capital')}</h3>
+            <h3>{t("frontend.companyInfo.history.capital")}</h3>
             <p>{companyInfo.capital}</p>
           </div>
         </div>
         <div className="branches-section" data-aos="fade-up">
-          <h3>{t('frontend.companyInfo.history.otherFacilities')}</h3>
+          <h3>{t("frontend.companyInfo.history.otherFacilities")}</h3>
           <div className="branches-grid">
             {companyInfo.branches.map((branch, index) => (
               <div key={index} className="branch-card">
                 <h4>{branch.name}</h4>
                 <p>
-                  <strong>{t('frontend.companyInfo.history.address')}:</strong> {branch.address}
+                  <strong>{t("frontend.companyInfo.history.address")}:</strong>{" "}
+                  {branch.address}
                 </p>
                 <p>
-                  <strong>{t('frontend.companyInfo.history.phone')}:</strong> {branch.phone}
+                  <strong>{t("frontend.companyInfo.history.phone")}:</strong>{" "}
+                  {branch.phone}
                 </p>
                 <p>
-                  <strong>{t('frontend.companyInfo.history.fax')}:</strong> {branch.fax}
+                  <strong>{t("frontend.companyInfo.history.fax")}:</strong>{" "}
+                  {branch.fax}
                 </p>
                 {branch.email && (
                   <p>
-                    <strong>{t('frontend.companyInfo.history.email')}:</strong> {branch.email}
+                    <strong>{t("frontend.companyInfo.history.email")}:</strong>{" "}
+                    {branch.email}
                   </p>
                 )}
               </div>

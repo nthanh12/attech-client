@@ -1,16 +1,36 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
 
-// Get all product with pagination - FIXED parameters
-export async function fetchProduct(pageNumber = 1, pageSize = 10, keyword = "") {
+// Get all product with pagination and filters
+export async function fetchProduct(pageNumber = 1, pageSize = 10, keyword = "", filters = {}, sortConfig = null) {
   try {
-    const response = await api.get("/api/product/find-all", {
-      params: {
-        pageNumber,  // Changed from pageIndex
-        pageSize,
-        keyword      // Added keyword support
-      },
-    });
+    const params = {
+      pageNumber,  // Changed from pageIndex
+      pageSize,
+      keyword      // Added keyword support
+    };
+
+    // Add filters if provided
+    if (filters.category) {
+      params.categoryId = filters.category;
+    }
+    if (filters.status) {
+      params.status = filters.status === "active" ? 1 : 0;
+    }
+    if (filters.dateFrom) {
+      params.dateFrom = filters.dateFrom;
+    }
+    if (filters.dateTo) {
+      params.dateTo = filters.dateTo;
+    }
+
+    // Add sorting if provided
+    if (sortConfig?.key) {
+      params.sortBy = sortConfig.key;
+      params.sortDirection = sortConfig.direction || 'desc';
+    }
+
+    const response = await api.get("/api/product/find-all", { params });
 
     // Handle BE response format: camelCase
     if (response.data && response.data.status === 1 && response.data.data) {

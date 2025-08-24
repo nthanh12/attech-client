@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
-import { getLatestNews, formatNewsForDisplay } from "../../../../services/clientNewsService";
+import clientAlbumService from "../../../../services/clientAlbumService";
 import "./Gallery.css";
 import { useI18n } from '../../../../hooks/useI18n';
 import SEO from "../../../../components/SEO/SEO";
@@ -19,23 +19,43 @@ const Gallery = () => {
     const loadAlbums = async () => {
       try {
         setLoading(true);
-        // Use news as gallery albums for now
-        const newsData = await getLatestNews(50); // Get more for gallery
+        console.log('📸 Loading gallery albums...');
         
-        const formattedAlbums = newsData.map(news => {
-          const formattedItem = formatNewsForDisplay(news, currentLanguage);
-          return {
-            id: news.id,
-            title: formattedItem.title,
-            description: formattedItem.description,
-            date: news.timePosted,
-            coverImage: formattedItem.imageUrl,
-          };
-        });
+        // Use clientAlbumService for album data
+        const albumsResponse = await clientAlbumService.getAlbums({ limit: 50 });
+        console.log('📸 Albums response:', albumsResponse);
         
-        setAlbums(formattedAlbums);
+        if (albumsResponse.success && albumsResponse.data.length > 0) {
+          const formattedAlbums = albumsResponse.data.map(album => {
+            const formattedItem = clientAlbumService.formatAlbumForDisplay(album, currentLanguage);
+            
+            // Debug log để kiểm tra imageUrl
+            console.log('🖼️ Album image debug:', {
+              id: album.id,
+              title: album.titleVi,
+              imageUrl: album.imageUrl,
+              featuredImage: formattedItem.featuredImage,
+              finalImage: formattedItem.featuredImage || clientAlbumService.getImageUrl(album.imageUrl)
+            });
+            
+            return {
+              id: album.id,
+              slug: formattedItem.slug,
+              title: formattedItem.title,
+              description: formattedItem.description,
+              date: formattedItem.createdAt,
+              coverImage: formattedItem.featuredImage || clientAlbumService.getImageUrl(album.imageUrl) || 'https://via.placeholder.com/400x300/cccccc/ffffff?text=No+Image',
+            };
+          });
+          console.log('✅ Formatted albums with images:', formattedAlbums);
+          setAlbums(formattedAlbums);
+        } else {
+          console.warn('⚠️ No albums from API');
+          setAlbums([]);
+        }
       } catch (error) {
-        console.error("Error loading gallery albums:", error);
+        console.error("❌ Error loading gallery albums:", error);
+        setAlbums([]);
       } finally {
         setLoading(false);
       }
@@ -50,10 +70,10 @@ const Gallery = () => {
     }
   }, [state]);
 
-  const handleAlbumClick = (e, albumId) => {
+  const handleAlbumClick = (e, albumSlug) => {
     e.preventDefault();
     const prefix = currentLanguage === 'vi' ? '/thong-tin-cong-ty/thu-vien-cong-ty' : '/en/company/gallery';
-    navigate(`${prefix}/${albumId}`, {
+    navigate(`${prefix}/${albumSlug}`, {
       state: { fromGalleryList: true }
     });
   };
@@ -98,12 +118,12 @@ const Gallery = () => {
                 className="gallery-item"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
-                onClick={(e) => handleAlbumClick(e, album.id)}
+                onClick={(e) => handleAlbumClick(e, album.slug)}
                 role="link"
                 tabIndex={0}
                 onKeyPress={(e) => {
                   if (e.key === 'Enter') {
-                    handleAlbumClick(e, album.id);
+                    handleAlbumClick(e, album.slug);
                   }
                 }}
               >

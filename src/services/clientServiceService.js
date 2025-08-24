@@ -36,7 +36,8 @@ export async function getServices(params = {}) {
     ) {
       const dataObj = response.data.data;
       return {
-        items: dataObj.items || [],
+        success: true,
+        data: dataObj.items || [],
         totalCount: dataObj.totalItems || dataObj.total || 0,
         totalPages: Math.ceil((dataObj.totalItems || dataObj.total || 0) / pageSize),
         currentPage: pageIndex,
@@ -45,7 +46,8 @@ export async function getServices(params = {}) {
     }
 
     return {
-      items: [],
+      success: false,
+      data: [],
       totalCount: 0,
       totalPages: 0,
       currentPage: pageIndex,
@@ -54,11 +56,12 @@ export async function getServices(params = {}) {
   } catch (error) {
     console.error("❌ getServices error:", error);
     return {
-      items: [],
+      success: false,
+      data: [],
       totalCount: 0,
       totalPages: 0,
-      currentPage: pageIndex,
-      pageSize,
+      currentPage: params.pageIndex || 1,
+      pageSize: params.pageSize || 10,
     };
   }
 }
@@ -455,14 +458,26 @@ export function getServiceImageUrl(serviceItem) {
   // Try different possible image fields
   const imageUrl = serviceItem.ImageUrl || serviceItem.imageUrl || serviceItem.image;
   
-  if (!imageUrl) return null;
+  // Check for empty string or null/undefined
+  if (!imageUrl || imageUrl.trim() === '') return null;
   
   // If it's already a full URL, return as is
   if (imageUrl.startsWith('http')) {
     return imageUrl;
   }
   
-  // If it's a relative path, add base URL
+  // Handle frontend assets (hiện tại)
+  if (imageUrl.startsWith('/assets/')) {
+    return imageUrl; // Frontend sẽ serve từ public/assets
+  }
+  
+  // Handle backend uploads (tương lai - like news)
+  if (imageUrl.startsWith('/uploads/')) {
+    const baseUrl = getApiBaseUrl();
+    return `${baseUrl}${imageUrl}`;
+  }
+  
+  // Fallback: treat as backend path
   const baseUrl = getApiBaseUrl();
   return `${baseUrl}${imageUrl}`;
 }

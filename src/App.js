@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
+import "./styles/content-formatting.css";
 import LocalizedRoutes from "./routes/LocalizedRoutes";
 import Admin from "./routes/Admin";
 import { useLocation } from "react-router-dom";

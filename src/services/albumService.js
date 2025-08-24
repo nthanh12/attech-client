@@ -17,18 +17,43 @@ const albumService = {
    */
   fetchAlbums: async (params = {}) => {
     try {
-      const queryParams = new URLSearchParams({
+      const queryParams = {
         pageNumber: params.page || 1,
         pageSize: params.limit || 20,
-        search: params.search || ''
-      }).toString();
+        keyword: params.search || ''
+      };
 
-      const response = await api.get(`/api/news/albums?${queryParams}`);
+      // Add filters if provided
+      if (params.status !== undefined && params.status !== '') {
+        queryParams.status = params.status === 'active' ? 1 : 0;
+      }
+      if (params.dateFrom) {
+        queryParams.dateFrom = params.dateFrom;
+      }
+      if (params.dateTo) {
+        queryParams.dateTo = params.dateTo;
+      }
+
+      // Add sorting if provided
+      if (params.sortBy) {
+        queryParams.sortBy = params.sortBy;
+        queryParams.sortDirection = params.sortDirection || 'desc';
+      }
+
+      const urlParams = new URLSearchParams(queryParams).toString();
+
+      const response = await api.get(`/api/news/albums?${urlParams}`);
+      console.log('🔍 Albums API response:', response.data);
+      
+      // Handle response structure: { status: 1, data: { items: [...], total: 1 } }
+      const responseData = response.data.data || response.data;
+      const items = responseData.items || responseData || [];
+      
       return {
         success: true,
-        data: response.data.items || response.data || [],
-        pagination: response.data.pagination || {},
-        total: response.data.total || response.data.length || 0
+        data: items,
+        pagination: responseData.pagination || {},
+        total: responseData.total || responseData.totalItems || items.length || 0
       };
     } catch (error) {
       console.error('Error fetching albums:', error);
@@ -46,10 +71,15 @@ const albumService = {
    */
   getAlbumById: async (id) => {
     try {
-      const response = await api.get(`/api/albums/${id}`);
+      const response = await api.get(`/api/news/albums/${id}`);
+      console.log('🔍 Album detail response:', response.data);
+      
+      // Handle response structure: { status: 1, data: { ... attachments: { images: [...] } } }
+      const albumData = response.data.data || response.data;
+      
       return {
         success: true,
-        data: response.data
+        data: albumData
       };
     } catch (error) {
       console.error('Error fetching album:', error);
@@ -62,7 +92,7 @@ const albumService = {
   },
 
   /**
-   * Get album by slug (✅ API có sẵn: GET /api/news/albums/slug/{slug})
+   * Get album by slug (supports both Vi and En slugs)
    */
   getAlbumBySlug: async (slug) => {
     try {
@@ -82,16 +112,41 @@ const albumService = {
   },
 
   /**
-   * Create new album (sử dụng news API với type đặc biệt)
+   * Create new album with slug support
    */
   createAlbum: async (albumData) => {
     try {
-      const response = await api.post('/api/news/create-album', {
+      console.log('🚀 AlbumService.createAlbum called with:', albumData);
+      
+      const payload = {
         titleVi: albumData.titleVi,
         titleEn: albumData.titleEn || '',
-        status: albumData.status || 1,
-        attachmentIds: albumData.attachmentIds || []
-      });
+        attachmentIds: albumData.attachmentIds || [],
+        featuredImageId: albumData.featuredImageId || null,
+        newsCategoryId: albumData.newsCategoryId || 1
+        // Remove descriptionVi, descriptionEn - not needed for albums
+      };
+      
+      console.log('📡 Making API call to /api/news/create-album with payload:', payload);
+      
+      // Try regular news endpoint first, if it fails try create-album
+      let response;
+      try {
+        console.log('📡 Trying regular /api/news endpoint...');
+        response = await api.post('/api/news', {
+          ...payload,
+          isAlbum: true,
+          contentVi: '', // Empty content for album
+          contentEn: '',
+          timePosted: new Date().toISOString(),
+          status: 1
+        });
+      } catch (newsError) {
+        console.log('📡 Regular /api/news failed, trying /api/news/create-album...');
+        response = await api.post('/api/news/create-album', payload);
+      }
+      
+      console.log('✅ API response received:', response);
       
       return {
         success: true,
@@ -99,28 +154,60 @@ const albumService = {
         message: 'Tạo album thành công'
       };
     } catch (error) {
-      console.error('Error creating album:', error);
+      console.error('❌ Error creating album:', error);
+      console.error('❌ Error details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message
+      });
+      const errorMessage = error.response?.data?.message || error.response?.data?.Message || error.message || 'Lỗi tạo album';
+      
       return {
         success: false,
-        message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi tạo album',
-        data: null
+        message: errorMessage,
+        data: null,
+        statusCode: error.response?.status,
+        errorDetails: error.response?.data
       };
     }
   },
 
   /**
-   * Update album
+   * Update album with slug support
    */
   updateAlbum: async (id, albumData) => {
     try {
-      const response = await api.put(`/api/albums/${id}`, {
+      console.log('🔧 AlbumService.updateAlbum called with:', { id, albumData });
+      
+      const payload = {
         titleVi: albumData.titleVi,
         titleEn: albumData.titleEn || '',
-        descriptionVi: albumData.descriptionVi || '',
-        descriptionEn: albumData.descriptionEn || '',
-        status: albumData.status || 1,
-        attachmentIds: albumData.attachmentIds || []
-      });
+        attachmentIds: albumData.attachmentIds || [],
+        featuredImageId: albumData.featuredImageId || null,
+        newsCategoryId: albumData.newsCategoryId || 1
+        // Remove descriptionVi, descriptionEn - not needed for albums
+      };
+      
+      console.log('📡 Making API call to /api/news/update-album/' + id + ' with payload:', payload);
+      
+      // Try update-album endpoint first, fallback to regular PUT
+      let response;
+      try {
+        console.log('📡 Trying /api/news/update-album/' + id + '...');
+        response = await api.put(`/api/news/update-album/${id}`, payload);
+      } catch (updateError) {
+        console.log('📡 Update-album endpoint failed, trying regular /api/news/' + id + '...');
+        response = await api.put(`/api/news/${id}`, {
+          ...payload,
+          isAlbum: true,
+          contentVi: '', // Empty content for album
+          contentEn: '',
+          status: albumData.status || 1
+        });
+      }
+      
+      console.log('✅ Update API response received:', response);
       
       return {
         success: true,
@@ -128,11 +215,20 @@ const albumService = {
         message: 'Cập nhật album thành công'
       };
     } catch (error) {
-      console.error('Error updating album:', error);
+      console.error('❌ Error updating album:', error);
+      console.error('❌ Error details:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message
+      });
+      
       return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi cập nhật album',
-        data: null
+        data: null,
+        statusCode: error.response?.status,
+        errorDetails: error.response?.data
       };
     }
   },
@@ -142,7 +238,7 @@ const albumService = {
    */
   deleteAlbum: async (id) => {
     try {
-      await api.delete(`/api/albums/${id}`);
+      await api.delete(`/api/news/${id}`);
       return {
         success: true,
         message: 'Xóa album thành công'
@@ -307,9 +403,10 @@ const albumService = {
   },
 
   /**
-   * Helper: Generate album slug
+   * Helper: Generate album slug from Vietnamese text
    */
   generateSlug: (title) => {
+    if (!title) return '';
     return title
       .toLowerCase()
       .replace(/[àáạảãâầấậẩẫăằắặẳẵ]/g, 'a')
@@ -319,7 +416,8 @@ const albumService = {
       .replace(/[ùúụủũưừứựửữ]/g, 'u')
       .replace(/[ỳýỵỷỹ]/g, 'y')
       .replace(/đ/g, 'd')
-      .replace(/[^a-z0-9]/g, '-')
+      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .replace(/^-|-$/g, '');
   },

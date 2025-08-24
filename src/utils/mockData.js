@@ -191,7 +191,8 @@ Tất cả mock data đều tuân theo cấu trúc bilingual nhất quán:
    - position: string (chức vụ)
    - lastLogin: string (ISO date string)
    - createdAt: string (ISO date string)
-   - permissions: array (danh sách quyền)
+   - userLevel: number (cấp độ 1-4)
+   - roles: array (danh sách vai trò)
 
 5. System Settings (mockSystemSettings):
    - general: object (cài đặt chung)
@@ -204,13 +205,11 @@ Tất cả mock data đều tuân theo cấu trúc bilingual nhất quán:
    - performance: object (hiệu suất)
    - notification: object (thông báo)
 
-6. Permissions (mockPermissions):
-   - id: number
-   - permissionKey: string (key của permission)
-   - permissionLabel: string (nhãn hiển thị)
-   - description: string (mô tả)
-   - parentId: number|null (ID permission cha)
-   - children: array (danh sách permission con)
+6. UserLevels (UserLevel system):
+   - SYSTEM: 1 (SuperAdmin - Full access)
+   - MANAGER: 2 (Manager - Most features)
+   - STAFF: 3 (Editor/Staff - Limited access)
+   - USER: 4 (Basic User - Read only)
 
 Lưu ý:
 - Tất cả mock data đều có cấu trúc bilingual (Vi/En)
@@ -219,7 +218,7 @@ Lưu ý:
 - Categories có description để mô tả chi tiết
 - Main data có timePosted để quản lý thời gian
 - Routes có order_index để sắp xếp thứ tự hiển thị
-- Users có permissions array để quản lý quyền
+- Users có userLevel (1-4) và roles array
 - System settings có cấu trúc nested object
-- Permissions có cấu trúc tree với parent-child relationship
+- UserLevel system dùng số (1-4) thay vì permissions phức tạp
 */

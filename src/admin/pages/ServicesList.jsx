@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import {
   fetchService,
@@ -11,9 +11,11 @@ import DataTable from "../components/DataTable";
 import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
 import PageWrapper from "../components/PageWrapper";
+import "./ContactList.css";
 import "./ServicesList.css";
 import "../styles/adminTable.css";
 import "../styles/adminCommon.css";
+import "../styles/adminButtons.css";
 
 const ServiceList = () => {
   const { t } = useTranslation();
@@ -26,15 +28,19 @@ const ServiceList = () => {
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editingService, setEditingService] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
   const [toast, setToast] = useState({
     show: false,
     message: "",
     type: "info",
   });
 
-  // Pagination & filters
+  // Server-side pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchDebounce, setSearchDebounce] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "id",
     direction: "desc",
@@ -46,17 +52,46 @@ const ServiceList = () => {
     dateTo: "",
   });
 
+  // Debounce search - đợi user gõ xong
+  useEffect(() => {
+    if (filters.search !== searchDebounce) {
+      setIsSearching(true);
+    }
+    
+    const timer = setTimeout(() => {
+      setSearchDebounce(filters.search);
+      setIsSearching(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [filters.search]);
+
   // Load data on mount
   useEffect(() => {
     loadData();
   }, []);
 
-  const loadData = async () => {
-    setIsLoading(true);
+  // Load data when pagination/filters/sorting change (without showing loading for search)
+  useEffect(() => {
+    if (searchDebounce !== filters.search) {
+      // Search is still being debounced, don't show loading
+      loadData(false);
+    } else {
+      // Other filters or pagination changed, show loading
+      loadData(true);
+    }
+  }, [currentPage, itemsPerPage, searchDebounce, filters.status, filters.dateFrom, filters.dateTo, sortConfig]);
+
+  const loadData = async (showLoadingIndicator = true) => {
+    if (showLoadingIndicator) {
+      setIsLoading(true);
+    }
     try {
-      const [serviceData] = await Promise.all([fetchService()]);
+      const [serviceData] = await Promise.all([fetchService(currentPage, itemsPerPage, searchDebounce, filters, sortConfig)]);
 
       setService(serviceData?.items || []);
+      setTotalItems(serviceData?.totalItems || 0);
+      setTotalPages(serviceData?.totalPages || 0);
     } catch (error) {
       console.error("Load data failed:", error);
       setToast({
@@ -65,7 +100,9 @@ const ServiceList = () => {
         type: "error",
       });
     } finally {
-      setIsLoading(false);
+      if (showLoadingIndicator) {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -174,62 +211,8 @@ const ServiceList = () => {
     setEditingService(null);
   };
 
-  // Filtering and sorting logic
-  const filteredService = service.filter((item) => {
-    // Search filter
-    if (filters.search) {
-      const searchTerm = filters.search.toLowerCase();
-      const matchesTitle =
-        item.titleVi?.toLowerCase().includes(searchTerm) ||
-        item.titleEn?.toLowerCase().includes(searchTerm);
-      if (!matchesTitle) return false;
-    }
-
-    // Status filter
-    if (filters.status) {
-      const itemStatus = parseInt(item.status);
-      if (filters.status === "active" && itemStatus !== 1) return false;
-      if (filters.status === "inactive" && itemStatus !== 0) return false;
-    }
-
-    // Date filter
-    if (filters.dateFrom || filters.dateTo) {
-      const itemDate = new Date(item.timePosted);
-      const fromDate = filters.dateFrom ? new Date(filters.dateFrom) : null;
-      const toDate = filters.dateTo ? new Date(filters.dateTo) : null;
-
-      if (fromDate && toDate) {
-        if (itemDate < fromDate || itemDate > toDate) return false;
-      } else if (fromDate) {
-        if (itemDate < fromDate) return false;
-      } else if (toDate) {
-        if (itemDate > toDate) return false;
-      }
-    }
-
-    return true;
-  });
-
-  const sortedService = filteredService.sort((a, b) => {
-    let aValue = a[sortConfig.key];
-    let bValue = b[sortConfig.key];
-
-    if (sortConfig.key === "timePosted") {
-      aValue = new Date(aValue);
-      bValue = new Date(bValue);
-    }
-
-    if (sortConfig.direction === "asc") {
-      return aValue > bValue ? 1 : -1;
-    } else {
-      return aValue < bValue ? 1 : -1;
-    }
-  });
-
-  const paginatedService = sortedService.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // Use server-side data directly (no client-side filtering/sorting)
+  const paginatedService = service;
 
   // Table columns
   const columns = [
@@ -300,12 +283,12 @@ const ServiceList = () => {
     {
       label: "Sửa",
       onClick: handleEdit,
-      className: "btn btn-sm btn-primary",
+      className: "admin-btn admin-btn-sm admin-btn-primary",
     },
     {
       label: "Xóa",
       onClick: handleDelete,
-      className: "btn btn-sm btn-danger",
+      className: "admin-btn admin-btn-sm admin-btn-danger",
     },
   ];
 
@@ -313,7 +296,7 @@ const ServiceList = () => {
   const pageActions = (
     <div style={{ display: "flex", gap: "0.5rem" }}>
       <button
-        className="btn btn-outline-secondary"
+        className="admin-btn admin-btn-outline-secondary"
         onClick={loadData}
         disabled={isLoading}
         style={{
@@ -335,7 +318,7 @@ const ServiceList = () => {
         Làm mới
       </button>
       <button
-        className="btn btn-primary"
+        className="admin-btn admin-btn-primary"
         onClick={handleAdd}
         style={{
           display: "flex",
@@ -374,78 +357,102 @@ const ServiceList = () => {
       <div className="admin-service-list">
         {/* Filters Section */}
         <div className="filters-section">
-          <div className="filter-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Tìm kiếm theo tiêu đề..."
-              value={filters.search}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, search: e.target.value }))
-              }
-            />
+          <div className="filters-title">
+            <i className="fas fa-filter"></i>
+            Bộ lọc & Tìm kiếm
           </div>
-          <div className="filter-group">
-            <select
-              className="form-control"
-              value={filters.status}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, status: e.target.value }))
-              }
-            >
-              <option key="all-status" value="">
-                Tất cả trạng thái
-              </option>
-              <option key="active" value="active">
-                Hoạt động
-              </option>
-              <option key="inactive" value="inactive">
-                Không hoạt động
-              </option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Từ ngày"
-              value={filters.dateFrom}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, dateFrom: e.target.value }))
-              }
-            />
-          </div>
-          <div className="filter-group">
-            <input
-              type="date"
-              className="form-control"
-              placeholder="Đến ngày"
-              value={filters.dateTo}
-              onChange={(e) =>
-                setFilters((prev) => ({ ...prev, dateTo: e.target.value }))
-              }
-            />
-          </div>
-          <div className="filter-group">
-            <button
-              className="btn btn-secondary"
-              onClick={() =>
-                setFilters({
-                  search: "",
-                  status: "",
-                  dateFrom: "",
-                  dateTo: "",
-                })
-              }
-            >
-              <i className="fas fa-times"></i>
-              <span>Reset</span>
-            </button>
+          <div className="filters-grid">
+            <div className="filter-group">
+              <label>
+                {isSearching ? (
+                  <i className="fas fa-spinner fa-spin"></i>
+                ) : (
+                  <i className="fas fa-search"></i>
+                )} Tìm kiếm
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Nhập tên dịch vụ, mô tả..."
+                value={filters.search}
+                onChange={(e) => {
+                  const newSearch = e.target.value;
+                  setFilters((prev) => ({ ...prev, search: newSearch }));
+                  setCurrentPage(1); // Reset về trang 1 khi search
+                }}
+              />
+            </div>
+            <div className="filter-group">
+              <label><i className="fas fa-flag"></i> Trạng thái</label>
+              <select
+                className="form-control"
+                value={filters.status}
+                onChange={(e) => {
+                  setFilters((prev) => ({ ...prev, status: e.target.value }));
+                  setCurrentPage(1); // Reset về trang 1 khi filter
+                }}
+              >
+                <option key="all-status" value="">
+                  Tất cả trạng thái
+                </option>
+                <option key="active" value="active">
+                  Hoạt động
+                </option>
+                <option key="inactive" value="inactive">
+                  Không hoạt động
+                </option>
+              </select>
+            </div>
+            <div className="filter-group">
+              <label><i className="fas fa-calendar"></i> Từ ngày</label>
+              <input
+                type="date"
+                className="form-control"
+                placeholder="Từ ngày"
+                value={filters.dateFrom}
+                onChange={(e) => {
+                  setFilters((prev) => ({ ...prev, dateFrom: e.target.value }));
+                  setCurrentPage(1); // Reset về trang 1 khi filter
+                }}
+              />
+            </div>
+            <div className="filter-group">
+              <label><i className="fas fa-calendar"></i> Đến ngày</label>
+              <input
+                type="date"
+                className="form-control"
+                placeholder="Đến ngày"
+                value={filters.dateTo}
+                onChange={(e) => {
+                  setFilters((prev) => ({ ...prev, dateTo: e.target.value }));
+                  setCurrentPage(1); // Reset về trang 1 khi filter
+                }}
+              />
+            </div>
+            <div className="filter-actions">
+              <button
+                className="admin-btn admin-btn-primary"
+                onClick={() => {
+                  setFilters({
+                    search: "",
+                    status: "",
+                    dateFrom: "",
+                    dateTo: "",
+                  });
+                  setCurrentPage(1); // Reset về trang 1 khi reset filters
+                }}
+                title="Xóa tất cả bộ lọc"
+              >
+                <i className="fas fa-eraser"></i>
+                Xóa lọc
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Data Table */}
-        <DataTable
+        {/* Table Container */}
+        <div className="table-container">
+          <DataTable
           data={paginatedService}
           columns={columns}
           actions={actions}
@@ -458,11 +465,18 @@ const ServiceList = () => {
             }));
           }}
           currentPage={currentPage}
-          totalPages={Math.ceil(filteredService.length / itemsPerPage)}
-          onPageChange={setCurrentPage}
-          totalItems={filteredService.length}
+          totalPages={totalPages}
+          onPageChange={(page) => {
+            setCurrentPage(page);
+          }}
+          totalItems={totalItems}
           itemsPerPage={itemsPerPage}
+          onItemsPerPageChange={(newSize) => {
+            setItemsPerPage(newSize);
+            setCurrentPage(1); // Reset về trang 1
+          }}
         />
+        </div>
 
         {/* Modal with ServiceCreationForm */}
         <FormModal

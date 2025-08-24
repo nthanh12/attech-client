@@ -1,7 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getNews, getNewsCategories, getNewsByCategory, getNewsByCategorySlug, getActivityNews, searchNews, formatNewsForDisplay } from "../../../services/clientNewsService";
+import {
+  getNews,
+  getNewsCategories,
+  getNewsByCategory,
+  getNewsByCategorySlug,
+  getActivityNews,
+  searchNews,
+  formatNewsForDisplay,
+} from "../../../services/clientNewsService";
 import { useI18n } from "../../../hooks/useI18n";
 import LocalizedLink from "../../../components/Shared/LocalizedLink";
 import SearchBox from "../../../components/Shared/SearchBox";
@@ -15,7 +23,11 @@ const NewsListPage = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [newsData, setNewsData] = useState({ items: [], totalPages: 0, totalCount: 0 });
+  const [newsData, setNewsData] = useState({
+    items: [],
+    totalPages: 0,
+    totalCount: 0,
+  });
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState(null);
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
@@ -35,7 +47,7 @@ const NewsListPage = () => {
   // Initialize search term from URL query parameter
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const searchQuery = params.get('search');
+    const searchQuery = params.get("search");
     if (searchQuery) {
       setSearchTerm(searchQuery);
     }
@@ -48,11 +60,12 @@ const NewsListPage = () => {
         setCategoriesLoaded(false);
         const categoriesData = await getNewsCategories();
         setCategories(categoriesData);
-        
+
         // Find current category
         if (category) {
           const foundCategory = categoriesData.find(
-            (cat) => (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
+            (cat) =>
+              (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
           );
           setCurrentCategory(foundCategory);
         } else {
@@ -64,7 +77,7 @@ const NewsListPage = () => {
         setCategoriesLoaded(true);
       }
     };
-    
+
     loadCategories();
   }, [category, currentLanguage]);
 
@@ -74,54 +87,54 @@ const NewsListPage = () => {
       setLoading(true);
       try {
         let response;
-        
+
         if (searchTerm.trim()) {
           // Search mode
           console.log("🔍 Searching for:", searchTerm);
-          
+
           // Check if we're on the special activity news page
-          if (category === 'tin-hoat-dong' || category === 'activity-news') {
+          if (category === "tin-hoat-dong" || category === "activity-news") {
             // Search within activity categories
             response = await getActivityNews({
               pageIndex: currentPage,
               pageSize: itemsPerPage,
-              search: searchTerm
+              search: searchTerm,
             });
           } else {
             // Regular search
             response = await searchNews(searchTerm, {
               pageIndex: currentPage,
               pageSize: itemsPerPage,
-              categoryId: currentCategory?.id
+              categoryId: currentCategory?.id,
             });
           }
           console.log("🔍 Search response:", response);
         } else if (category) {
           // Check if this is the special activity news page
-          if (category === 'tin-hoat-dong' || category === 'activity-news') {
+          if (category === "tin-hoat-dong" || category === "activity-news") {
             // Special page: Get news from 4 activity categories
             response = await getActivityNews({
               pageIndex: currentPage,
-              pageSize: itemsPerPage
+              pageSize: itemsPerPage,
             });
           } else {
             // Regular category mode - try using the new slug endpoint first
             try {
               response = await getNewsByCategorySlug(category, {
                 pageIndex: currentPage,
-                pageSize: itemsPerPage
+                pageSize: itemsPerPage,
               });
             } catch (error) {
               // Fallback to old method if new endpoint fails
               if (currentCategory) {
                 response = await getNewsByCategory(currentCategory.id, {
                   pageIndex: currentPage,
-                  pageSize: itemsPerPage
+                  pageSize: itemsPerPage,
                 });
               } else {
                 response = await getNews({
                   pageIndex: currentPage,
-                  pageSize: itemsPerPage
+                  pageSize: itemsPerPage,
                 });
               }
             }
@@ -130,10 +143,10 @@ const NewsListPage = () => {
           // All news mode
           response = await getNews({
             pageIndex: currentPage,
-            pageSize: itemsPerPage
+            pageSize: itemsPerPage,
           });
         }
-        
+
         setNewsData(response);
       } catch (error) {
         console.error("❌ Error loading news:", error);
@@ -159,8 +172,13 @@ const NewsListPage = () => {
 
   // Show category not found only after categories are loaded and category not found
   // Exception: special activity page doesn't need a category
-  if (category && categoriesLoaded && !currentCategory && 
-      category !== 'tin-hoat-dong' && category !== 'activity-news') {
+  if (
+    category &&
+    categoriesLoaded &&
+    !currentCategory &&
+    category !== "tin-hoat-dong" &&
+    category !== "activity-news"
+  ) {
     return (
       <div className="news-list-page newslist-minimal">
         <div className="container">
@@ -178,12 +196,12 @@ const NewsListPage = () => {
 
   const getCategoryTitle = () => {
     if (!category) return t("frontend.news.allNews");
-    
+
     // Special activity page
-    if (category === 'tin-hoat-dong' || category === 'activity-news') {
+    if (category === "tin-hoat-dong" || category === "activity-news") {
       return currentLanguage === "vi" ? "Tin hoạt động" : "Activity News";
     }
-    
+
     return currentCategory
       ? currentLanguage === "vi"
         ? currentCategory.titleVi
@@ -211,30 +229,10 @@ const NewsListPage = () => {
     );
   }
 
-  const getCategoryDescription = () => {
-    if (category === 'tin-hoat-dong' || category === 'activity-news') {
-      return currentLanguage === "vi" 
-        ? "Tổng hợp các tin tức về hoạt động công ty, đảng bộ, đoàn thanh niên và công đoàn"
-        : "News about company activities, party committee, youth union and labor union";
-    }
-    return null;
-  };
-
   return (
     <div className="news-list-root news-list-page newslist-minimal">
       <div className="container">
         <h1 className="page-title-minimal">{getCategoryTitle()}</h1>
-        {getCategoryDescription() && (
-          <p className="category-description" style={{
-            fontSize: '16px',
-            color: '#666',
-            marginBottom: '24px',
-            textAlign: 'center',
-            fontStyle: 'italic'
-          }}>
-            {getCategoryDescription()}
-          </p>
-        )}
         <div className="search-container">
           <SearchBox
             value={searchTerm}
@@ -247,10 +245,13 @@ const NewsListPage = () => {
           {newsData.items.length > 0 ? (
             newsData.items.map((item) => {
               const formattedItem = formatNewsForDisplay(item, currentLanguage);
-              const categorySlug = currentLanguage === "vi" 
-                ? categories.find(cat => cat.id === item.newsCategoryId)?.slugVi 
-                : categories.find(cat => cat.id === item.newsCategoryId)?.slugEn;
-              
+              const categorySlug =
+                currentLanguage === "vi"
+                  ? categories.find((cat) => cat.id === item.newsCategoryId)
+                      ?.slugVi
+                  : categories.find((cat) => cat.id === item.newsCategoryId)
+                      ?.slugEn;
+
               return (
                 <div className="newslist-card-minimal" key={item.id}>
                   <LocalizedLink
@@ -262,12 +263,12 @@ const NewsListPage = () => {
                     className="newslist-img-link-minimal"
                   >
                     <img
-                      src={formattedItem.imageUrl || ''}
+                      src={formattedItem.imageUrl || ""}
                       alt={formattedItem.title}
                       className="newslist-img-minimal"
                       title={formattedItem.title}
                       onError={(e) => {
-                        e.target.style.display = 'none';
+                        e.target.style.display = "none";
                       }}
                     />
                   </LocalizedLink>
@@ -292,7 +293,11 @@ const NewsListPage = () => {
             })
           ) : (
             <div className="newslist-empty">
-              <p>{searchTerm ? t("frontend.news.noSearchResults") : t("frontend.news.noNewsInCategory")}</p>
+              <p>
+                {searchTerm
+                  ? t("frontend.news.noSearchResults")
+                  : t("frontend.news.noNewsInCategory")}
+              </p>
             </div>
           )}
         </div>

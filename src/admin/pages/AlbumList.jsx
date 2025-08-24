@@ -7,6 +7,7 @@ import AccessDenied from "../../components/AccessDenied";
 // Use consistent styling with other admin pages
 import "../styles/adminTable.css";
 import "../styles/adminCommon.css";
+import "../styles/adminButtons.css";
 import "./AlbumList.css";
 import "./ContactList.css";
 
@@ -209,7 +210,7 @@ const AlbumList = () => {
   const pageActions = (
     <div style={{ display: "flex", gap: "0.5rem" }}>
       <button
-        className="btn btn-outline-secondary"
+        className="admin-btn admin-btn-outline-secondary"
         onClick={loadAlbums}
         disabled={loading}
         style={{
@@ -231,7 +232,7 @@ const AlbumList = () => {
         Làm mới
       </button>
       <button
-        className="btn btn-primary"
+        className="admin-btn admin-btn-primary"
         onClick={handleCreate}
         style={{
           display: "flex",
@@ -287,15 +288,6 @@ const AlbumList = () => {
   return (
     <PageWrapper actions={pageActions}>
       <div className="admin-contact-list">
-        {/* Header Section */}
-        <div className="contact-header">
-          <h1>
-            <i className="fas fa-images"></i>
-            Quản lý Album
-          </h1>
-          <p>Quản lý và tổ chức thư viện ảnh album của website</p>
-        </div>
-
         {/* Filters Section */}
         <div className="filters-section">
           <div className="filters-title">
@@ -340,7 +332,7 @@ const AlbumList = () => {
             </div>
             <div className="filter-actions">
               <button
-                className="btn btn-primary"
+                className="admin-btn admin-btn-primary"
                 onClick={() => {
                   setFilters({
                     search: "",
@@ -446,14 +438,14 @@ const AlbumList = () => {
                   </div>
                   <div className="album-actions">
                     <button
-                      className="btn btn-sm btn-outline-primary"
+                      className="admin-btn admin-btn-sm admin-btn-outline-primary"
                       onClick={() => handleEdit(album)}
                       title="Chỉnh sửa"
                     >
                       <i className="fas fa-edit"></i>
                     </button>
                     <button
-                      className="btn btn-sm btn-outline-danger"
+                      className="admin-btn admin-btn-sm admin-btn-outline-danger"
                       onClick={() => handleDelete(album)}
                       title="Xóa"
                     >
@@ -610,14 +602,14 @@ const AlbumList = () => {
                 }}
               >
                 <button
-                  className="btn btn-secondary"
+                  className="admin-btn admin-btn-secondary"
                   onClick={() => setShowAlbumDetail(false)}
                 >
                   <i className="fas fa-times"></i>
                   Đóng
                 </button>
                 <button
-                  className="btn btn-primary"
+                  className="admin-btn admin-btn-primary"
                   onClick={() => {
                     setShowAlbumDetail(false);
                     handleEdit(selectedAlbum);

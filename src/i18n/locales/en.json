@@ -259,6 +259,7 @@
       "articleNotExist": "Article does not exist or has been deleted",
       "backToNews": "Back to news",
       "relatedNews": "Related News",
+      "noRelatedNews": "No related news",
       "searchPlaceholder": "Search news...",
       "searchNews": "Search news",
       "noNewsFound": "No news found",
@@ -302,11 +303,14 @@
       "form": {
         "namePlaceholder": "Full Name",
         "emailPlaceholder": "Email",
+        "phonePlaceholder": "Phone Number",
         "subjectPlaceholder": "Subject",
         "messagePlaceholder": "Message Content",
         "submitButton": "Send Now!",
         "nameRequired": "Please enter your name",
         "emailRequired": "Please enter email",
+        "phoneRequired": "Please enter phone number",
+        "phoneInvalid": "Invalid phone number",
         "emailInvalid": "Invalid email",
         "subjectRequired": "Please enter subject",
         "messageRequired": "Please enter message",
@@ -444,31 +448,11 @@
       "gallery": {
         "title": "Company Gallery",
         "pageTitle": "Photo Gallery - ATTECH",
-        "pageDescription": "Photo gallery from ATTECH company articles",
+        "pageDescription": "Photo gallery from ATTECH company",
         "seoTitle": "ATTECH Image Gallery",
-        "seoDescription": "Collection of images from articles by Air Traffic Technical Company Limited (ATTECH)"
+        "seoDescription": "Collection of images by Air Traffic Technical Company Limited (ATTECH)"
       }
     }
-  },
-  "debug": {
-    "title": "Backend Debug Panel",
-    "backendUrl": "Backend URL",
-    "proxy": "Proxy",
-    "note": "Only /api/* requests are proxied to backend",
-    "testEndpoints": "Test Endpoints",
-    "testAuth": "Test Auth",
-    "testUpload": "Test Upload",
-    "status": "Backend Status",
-    "working": "working",
-    "notWorking": "not working",
-    "proxyStatus": "Proxy Status",
-    "noEndpointsResponding": "No endpoints responding",
-    "noTestsRun": "No tests run yet...",
-    "loginSuccessful": "Login successful - token received",
-    "responseOkNoToken": "Response OK but no token",
-    "loginFailed": "Login failed",
-    "responseData": "Response Data",
-    "errorDetails": "Error Details"
   },
   "validation": {
     "required": "This field is required",

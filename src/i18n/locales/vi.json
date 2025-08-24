@@ -260,6 +260,7 @@
       "articleNotExist": "Bài viết không tồn tại hoặc đã bị xóa",
       "backToNews": "Quay lại trang tin tức",
       "relatedNews": "Tin cùng chuyên mục",
+      "noRelatedNews": "Không có tin liên quan",
       "searchPlaceholder": "Tìm kiếm tin tức",
       "searchNews": "Tìm kiếm tin",
       "noNewsFound": "Không tìm thấy tin phù hợp",
@@ -311,7 +312,7 @@
     },
     "contact": {
       "title": "Trang thông tin liên hệ",
-      "description": "Đừng ngại đặt câu hỏi hay chia sẻ ý kiến thắc mắc! Mỗi sự đóng góp của bạn đều góp phần vào sự phát triển không ngừng của ATTECH!",
+      "description": "Mọi thông tin liên hệ hợp tác, đóng góp vui lòng liên hệ qua thông tin hoặc biểu mẫu dưới đây",
       "details": {
         "title": "Chi tiết liên hệ",
         "phone": "Điện thoại",
@@ -322,11 +323,14 @@
       "form": {
         "namePlaceholder": "Họ và tên",
         "emailPlaceholder": "Email",
+        "phonePlaceholder": "Số điện thoại",
         "subjectPlaceholder": "Tiêu đề",
         "messagePlaceholder": "Nội dung tin nhắn",
         "submitButton": "Gửi ngay!",
         "nameRequired": "Vui lòng nhập họ và tên",
         "emailRequired": "Vui lòng nhập email",
+        "phoneRequired": "Vui lòng nhập số điện thoại",
+        "phoneInvalid": "Số điện thoại không hợp lệ",
         "emailInvalid": "Email không hợp lệ",
         "subjectRequired": "Vui lòng nhập tiêu đề",
         "messageRequired": "Vui lòng nhập nội dung",
@@ -401,29 +405,6 @@
           "viceDirector": "Phó giám đốc công ty"
         }
       },
-      "business": {
-        "authority": "SỞ KẾ HOẠCH VÀ ĐẦU TƯ THÀNH PHỐ HÀ NỘI - PHÒNG ĐĂNG KÝ KINH DOANH",
-        "motto": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM\nĐộc lập – Tự do – Hạnh phúc",
-        "certificate": {
-          "title": "GIẤY CHỨNG NHẬN ĐĂNG KÝ DOANH NGHIỆP\nCÔNG TY TRÁCH NHIỆM HỮU HẠN MỘT THÀNH VIÊN",
-          "enterpriseCode": "Mã số doanh nghiệp",
-          "firstRegistration": "Đăng ký lần đầu",
-          "lastChange": "Đăng ký thay đổi lần thứ 9: ngày 28 tháng 12 năm 2021"
-        },
-        "companyName": "1. Tên Công Ty",
-        "vietnamese": "Tiếng Việt",
-        "international": "Quốc tế",
-        "abbreviation": "Viết tắt",
-        "headquarters": "2. Địa Chỉ Trụ Sở Chính",
-        "phone": "Điện thoại",
-        "fax": "Fax",
-        "email": "Email",
-        "website": "Website",
-        "businessFields": "3. Ngành, Nghề Kinh Doanh",
-        "details": "Chi tiết",
-        "note": "(Đối với các ngành nghề kinh doanh có điều kiện, Doanh nghiệp chỉ kinh doanh khi có đủ điều kiện theo quy định của pháp luật)",
-        "businessFieldsNote": ""
-      },
       "iso": {
         "introTitle": "Giới Thiệu Hệ Thống Quản Lý Chất Lượng ISO 9001:2015",
         "introDescription": "Công ty TNHH Kỹ thuật Quản lý bay (Air Traffic Technical Company Limited) xây dựng và thực hiện hệ thống quản lý chất lượng để khẳng định khả năng luôn cung cấp các sản phẩm đáp ứng yêu cầu của khách hàng và các yêu cầu pháp luật có liên quan. Công ty không ngừng thoả mãn khách hàng thông qua việc áp dụng hiệu quả hệ thống quản lý chất lượng, ngăn ngừa sự không phù hợp và không ngừng cải tiến.",
@@ -436,40 +417,20 @@
         "documentsTitle": "Tài Liệu Đính Kèm",
         "timeline": {
           "2005": "Công ty được tổ chức đánh giá BVQI của Anh cấp giấy chứng nhận đạt tiêu chuẩn Quốc tế ISO 9001:2000.",
-          "2008": "Ngày 29/01/2008, Hệ thống quản lý chất lượng của Công ty được tổ chức Quốc tế TUV NORD của CHLB Đức đánh giá tái chứng nhận và cấp Chứng chỉ Hệ thống quản lý chất lượng ISO 9001:2000 lần 2.",
+          "2008": "Ngày 29/01/2008, Hệ thống quản lý chất lượng của Công ty được tổ chức Quốc tế TUV NORD của CHLB Đức đánh giá tái chứng nhận và cấp Chứng chỉ Hệ thống quản lý chất lượng ISO 9001:2000.",
           "2011": "Ngày 15/01/2011, Công ty hoàn thành chuyển đổi từ tiêu chuẩn TCVN ISO 9001:2000 sang TCVN ISO 9001:2008 và được tổ chức Quốc tế BSi của Vương quốc Anh cấp chứng chỉ ISO 9001:2008.",
-          "2017": "Hệ thống quản lý chất lượng của Công ty được duy trì, định kỳ đánh giá giám sát 1 lần/năm và đánh giá tái chứng nhận 3 năm/lần. Lần cấp giấy chứng nhận gần nhất: ngày 15/01/2017.",
-          "2018": "Công ty chuyển đổi hệ thống từ ISO 9001:2008 sang ISO 9001:2015, áp dụng có hiệu lực từ ngày 01/01/2018."
+          "2018": "Chính sách  chất lượng được Lãnh đạo Công ty tuyên bố ngày 01/01/2018. Hiện đại, chất lượng, an toàn, tiện dụng và hiệu quả như một thuộc tính của sản phẩm và dịch vụ hàng không. Tầm nhìn của chúng tôi là trở thành tổ hợp công ty đa sở hữu hoạt động kinh doanh trên các lĩnh vực: Cung cấp dịch vụ thông tin, dẫn đường, giám sát hàng không; Cung cấp dịch vụ bay hiệu chuẩn hàng không; Sản xuất công nghiệp hàng không. Mong muốn của quý khách hàng là nguồn cảm hứng sáng tạo, động lực đầu tư, mục tiêu quản lý của chúng tôi. Chúng tôi thực hiện: Sáng tạo không ngừng, Đầu tư hiệu quả, Nhân viên chuyên nghiệp, Quản lý tinh thông. Để đảm bảo rằng Sản phẩm và dịch vụ của chúng tôi an toàn, chất lượng và tiện dụng theo tiêu chuẩn hàng không. Chi tiết nội dung chính sách chất lượng như file đính kèm.",
+          "2020": "Hệ thống quản lý chất lượng của Công ty được duy trì, định kỳ đánh giá giám sát 1 lần/năm và đánh giá tái chứng nhận 3 năm/lần."
         }
       },
       "gallery": {
         "title": "Thư Viện Công Ty",
         "pageTitle": "Thư Viện Ảnh - ATTECH",
-        "pageDescription": "Thư viện ảnh từ các bài viết của công ty ATTECH",
-        "seoTitle": "Thư viện hình ảnh ATTECH",
-        "seoDescription": "Bộ sưu tập hình ảnh từ các bài viết của Công ty TNHH Kỹ thuật Quản lý bay (ATTECH)"
+        "pageDescription": "Thư viện ảnh",
+        "seoTitle": "Thư viện hình ảnh của ATTECH",
+        "seoDescription": "Bộ sưu tập hình ảnh của Công ty TNHH Kỹ thuật Quản lý bay (ATTECH)"
       }
     }
-  },
-  "debug": {
-    "title": "Debug Panel Backend",
-    "backendUrl": "Backend URL",
-    "proxy": "Proxy",
-    "note": "Chỉ các request /api/* được proxy tới backend",
-    "testEndpoints": "Test Endpoints",
-    "testAuth": "Test Auth",
-    "testUpload": "Test Upload",
-    "status": "Trạng thái Backend",
-    "working": "hoạt động",
-    "notWorking": "không hoạt động",
-    "proxyStatus": "Trạng thái Proxy",
-    "noEndpointsResponding": "Không có endpoint nào phản hồi",
-    "noTestsRun": "Chưa chạy test nào...",
-    "loginSuccessful": "Đăng nhập thành công - đã nhận token",
-    "responseOkNoToken": "Response OK nhưng không có token",
-    "loginFailed": "Đăng nhập thất bại",
-    "responseData": "Dữ liệu Response",
-    "errorDetails": "Chi tiết lỗi"
   },
   "validation": {
     "required": "Trường này là bắt buộc",

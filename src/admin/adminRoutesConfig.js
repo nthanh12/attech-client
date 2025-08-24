@@ -6,6 +6,8 @@ import ServicesList from './pages/ServicesList.jsx';
 import NewsList from './pages/NewsList.jsx';
 import NotificationsList from './pages/NotificationsList.jsx';
 import AlbumList from './pages/AlbumList.jsx';
+import DocumentsList from './pages/DocumentsList.jsx';
+import ContactList from './pages/ContactList.jsx';
 
 import NotFound from './pages/NotFound/NotFound';
 import ProductCategory from './menu/ProductCategory/ProductCategory.js';
@@ -15,7 +17,7 @@ import ConfigBanner from './pages/ConfigBanner.jsx';
 import RouteManagement from './pages/RouteManagement/RouteManagement.js';
 import SystemSettings from './pages/SystemSettings.jsx';
 import UserManagement from './pages/UserManagement.jsx';
-import PermissionManagement from './pages/PermissionManagement.jsx';
+// PermissionManagement removed - using UserLevel system only
 import RoleManagement from './pages/RoleManagement.jsx';
 import AccountManagement from './pages/AccountManagement.jsx';
 
@@ -33,10 +35,12 @@ const adminRoutesConfig = [
       { path: 'news', element: NewsList },
       { path: 'notifications', element: NotificationsList },
       { path: 'albums', element: AlbumList },
+      { path: 'documents', element: DocumentsList },
+      { path: 'contacts', element: ContactList },
       { path: 'users', element: UserManagement },
       { path: 'roles', element: RoleManagement },
       { path: 'routes', element: RouteManagement },
-      { path: 'permissions', element: PermissionManagement },
+      // { path: 'permissions', element: PermissionManagement }, // Removed - UserLevel system only
       { path: 'product-category', element: ProductCategory },
       { path: 'news-category', element: NewsCategory },
       { path: 'notification-category', element: NotificationCategory },

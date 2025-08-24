@@ -10,9 +10,12 @@ const ServiceItem = ({ id, slug, title, description, image }) => {
     <article className="card service-item">
       <div className="service-img">
         <img
-          src={image.startsWith('http') ? image : `${process.env.PUBLIC_URL || ''}${image}`}
+          src={image && image.startsWith('http') ? image : `${process.env.PUBLIC_URL || ''}${image || '/images/default-service.jpg'}`}
           alt={currentLanguage === 'vi' ? `Hình ảnh minh họa cho dịch vụ ${title}` : `Image for ${title} service`}
           loading="lazy"
+          onError={(e) => {
+            e.target.src = `${process.env.PUBLIC_URL || ''}/images/default-service.jpg`;
+          }}
         />
         <div className="service-overlay">
           <p>{description}</p>

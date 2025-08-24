@@ -64,7 +64,7 @@ api.interceptors.response.use(
       console.warn('🔒 Received 401 on:', originalRequest.url);
       console.warn('🔍 Full request URL:', (originalRequest.baseURL || '') + (originalRequest.url || ''));
       
-      // Special handling for specific endpoints that may have permission restrictions
+      // Special handling for specific endpoints that may have UserLevel restrictions
       const fullUrl = (originalRequest.baseURL || '') + (originalRequest.url || '');
       
       if (fullUrl && (
@@ -75,7 +75,7 @@ api.interceptors.response.use(
         fullUrl.includes('/api/notification-category') ||
         fullUrl.includes('/api/dashboard')
       )) {
-        console.warn('⚠️ 401 on content endpoint - may be permission restricted, not authentication issue');
+        console.warn('⚠️ 401 on content endpoint - may be UserLevel restricted, not authentication issue');
         console.warn('⚠️ NOT redirecting to login, letting component handle the error');
         return Promise.reject(error);
       }

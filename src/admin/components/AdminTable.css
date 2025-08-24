@@ -1,0 +1,365 @@
+/* AdminTable Component - Unified Table Styling */
+/* Import standardized admin buttons */
+@import '../styles/adminButtons.css';
+
+.admin-table-wrapper {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+.admin-table-container {
+  overflow-x: auto;
+  position: relative;
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+  background: white;
+  table-layout: auto;
+}
+
+/* Header Styles */
+.admin-table-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 2px solid #dee2e6;
+  padding: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: background-color 0.2s ease;
+}
+
+.admin-table-header.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.admin-table-header.sortable:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+}
+
+.admin-table-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  min-height: 50px;
+}
+
+.admin-table-header-text {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sort-indicator {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #667eea;
+  transition: color 0.2s ease;
+}
+
+.sort-indicator.inactive {
+  color: #9ca3af;
+  opacity: 0.5;
+}
+
+.sort-indicator i {
+  font-size: 0.75rem;
+}
+
+/* Row Styles */
+.admin-table-row {
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+}
+
+.admin-table-row:hover {
+  background-color: #f8fafc;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin-table-row:last-child {
+  border-bottom: none;
+}
+
+/* Cell Styles */
+.admin-table-cell {
+  padding: 16px;
+  vertical-align: top;
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.4;
+  max-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Actions Column */
+.admin-table-actions-header {
+  text-align: center;
+}
+
+.admin-table-actions-cell {
+  text-align: center;
+  padding: 12px 16px;
+}
+
+.admin-table-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Legacy button class mappings - will be replaced with standardized classes */
+.admin-table-action-btn {
+  /* Use admin-btn admin-btn-sm instead */
+}
+
+.admin-table-action-default,
+.admin-table-action-edit {
+  /* Use admin-btn admin-btn-sm admin-btn-primary instead */
+}
+
+.admin-table-action-delete {
+  /* Use admin-btn admin-btn-sm admin-btn-danger instead */
+}
+
+/* Status Badges */
+.admin-table-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.admin-table-badge-success,
+.badge-success {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.admin-table-badge-secondary,
+.badge-secondary,
+.badge-warning {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.badge-info {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  color: white;
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+/* Image Column */
+.admin-table-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+  display: inline-block;
+}
+
+.admin-table-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Loading State */
+.admin-table-loading {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8fafc;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #6b7280;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Empty State */
+.admin-table-empty {
+  text-align: center;
+  padding: 40px 20px;
+  background: #fafbfc;
+}
+
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: #6b7280;
+}
+
+.empty-container i {
+  font-size: 2rem;
+  opacity: 0.5;
+}
+
+/* Error State */
+.admin-table-error {
+  padding: 20px;
+  text-align: center;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+.error-message {
+  color: #dc2626;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* Pagination */
+.admin-table-pagination {
+  padding: 16px 20px;
+  background: #f8f9fa;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Table Variants */
+.admin-table-compact .admin-table-cell {
+  padding: 12px 16px;
+}
+
+.admin-table-compact .admin-table-header-content {
+  padding: 12px 16px;
+  min-height: 44px;
+}
+
+.admin-table-bordered {
+  border: 1px solid #e5e7eb;
+}
+
+.admin-table-bordered .admin-table-cell {
+  border-right: 1px solid #f3f4f6;
+}
+
+.admin-table-bordered .admin-table-cell:last-child {
+  border-right: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-table {
+    min-width: 600px;
+  }
+  
+  .admin-table-cell {
+    padding: 12px;
+    font-size: 0.8rem;
+  }
+  
+  .admin-table-header-content {
+    padding: 12px;
+    min-height: 44px;
+  }
+  
+  .admin-table-actions {
+    gap: 4px;
+  }
+  
+  .admin-table-action-btn {
+    padding: 4px 6px;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-table {
+    min-width: 500px;
+  }
+  
+  .admin-table-wrapper {
+    margin: 0 0.5rem 1rem 0.5rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .admin-table-wrapper {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .admin-table {
+    background: #1f2937;
+  }
+  
+  .admin-table-header {
+    background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+    border-color: #4b5563;
+  }
+  
+  .admin-table-header-text {
+    color: #e5e7eb;
+  }
+  
+  .admin-table-row:hover {
+    background: #374151;
+  }
+  
+  .admin-table-cell {
+    color: #d1d5db;
+    border-color: #374151;
+  }
+  
+  .admin-table-loading,
+  .admin-table-empty {
+    background: #374151;
+    color: #9ca3af;
+  }
+  
+  .admin-table-pagination {
+    background: #374151;
+    border-color: #4b5563;
+  }
+}

@@ -1,0 +1,68 @@
+/*
+ * Global CSS for HTML content formatting
+ * Used across News, Notifications, Products, Services detail pages
+ */
+
+/* Preserve inline text-align styles */
+.article-content *[style*="text-align: justify"],
+.content *[style*="text-align: justify"] {
+  text-align: justify !important;
+}
+
+.article-content *[style*="text-align: center"],
+.content *[style*="text-align: center"] {
+  text-align: center !important;
+}
+
+.article-content *[style*="text-align: right"],
+.content *[style*="text-align: right"] {
+  text-align: right !important;
+}
+
+.article-content *[style*="text-align: left"],
+.content *[style*="text-align: left"] {
+  text-align: left !important;
+}
+
+/* Ensure all children inherit text-align */
+.article-content *[style*="text-align"] *,
+.content *[style*="text-align"] * {
+  text-align: inherit !important;
+}
+
+/* Target source citations - comprehensive patterns */
+
+/* With links (any domain) */
+.article-content p:has(em):has(strong):has(a[href]),
+.content p:has(em):has(strong):has(a[href]) {
+  text-align: right !important;
+}
+
+/* Without links but with em/strong pattern */
+.article-content p:has(em strong),
+.article-content p:has(strong em),
+.content p:has(em strong),
+.content p:has(strong em) {
+  text-align: right !important;
+}
+
+/* Paragraphs containing "Nguồn:" */
+.article-content p em:contains("Nguồn:"),
+.article-content p strong:contains("Nguồn:"),
+.content p em:contains("Nguồn:"),
+.content p strong:contains("Nguồn:") {
+  text-align: right !important;
+}
+
+/* Only align right if explicitly styled or contains source indicators */
+.article-content p:last-child[style*="text-align: right"],
+.content p:last-child[style*="text-align: right"] {
+  text-align: right !important;
+}
+
+
+/* Default justify text for better reading */
+.article-content p,
+.content p {
+  text-align: justify;
+}

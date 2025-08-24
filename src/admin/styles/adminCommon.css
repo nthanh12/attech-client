@@ -1,4 +1,6 @@
 /* Common Admin Styles */
+/* Import standardized admin buttons */
+@import './adminButtons.css';
 
 /* Table Headers - Ensure visibility */
 .admin-table th,
@@ -37,72 +39,13 @@
   opacity: 1 !important;
 }
 
+/* Legacy button overrides - These will be replaced with standardized admin-btn classes */
 .btn {
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex !important;
-  align-items: center;
-  gap: 6px;
-  text-decoration: none;
-  line-height: 1;
+  /* Keeping minimal overrides for backward compatibility */
   visibility: visible !important;
   opacity: 1 !important;
   position: relative;
   z-index: 1;
-}
-
-.btn-sm {
-  padding: 6px 12px;
-  font-size: 12px;
-}
-
-.btn-primary {
-  background: #3b82f6;
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
-}
-
-.btn-danger {
-  background: #ef4444;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #dc2626;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
-}
-
-.btn-edit {
-  background: #10b981;
-  color: white;
-}
-
-.btn-edit:hover {
-  background: #059669;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
-}
-
-.btn-delete {
-  background: #ef4444;
-  color: white;
-}
-
-.btn-delete:hover {
-  background: #dc2626;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
 }
 
 /* Status Badges - Global styles */
@@ -365,6 +308,45 @@
 
 .tox-dialog {
   z-index: 2100 !important;
+}
+
+/* TinyMCE Table Properties Dialog Fix - dropdowns phải hiển thị trên dialog */
+.tox-collection {
+  z-index: 2150 !important;
+}
+
+.tox-collection__group {
+  z-index: 2150 !important;
+}
+
+.tox-collection--toolbar {
+  z-index: 2150 !important;
+}
+
+.tox-collection--list {
+  z-index: 2150 !important;
+}
+
+/* Border style dropdown trong table properties */
+.tox-menu {
+  z-index: 2200 !important;
+}
+
+.tox-menu__group {
+  z-index: 2200 !important;
+}
+
+.tox-floatpanel {
+  z-index: 2200 !important;
+}
+
+/* Context menu và popup elements */
+.tox-pop {
+  z-index: 2200 !important;
+}
+
+.tox-pop__dialog {
+  z-index: 2200 !important;
 }
 
 /* TinyMCE Fullscreen Overlay */

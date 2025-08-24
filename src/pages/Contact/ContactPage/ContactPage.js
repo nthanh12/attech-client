@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { submitContactForm } from "../../../services/contactService";
 import "../ContactPage/ContactPage.css";
 import picture_mail from "../../../assets/img/img-01.png";
 
@@ -10,6 +11,7 @@ const ContactPage = () => {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    phone: "",
     subject: "",
     message: "",
   });
@@ -17,7 +19,9 @@ const ContactPage = () => {
   const [errors, setErrors] = useState({});
   // State cho thông báo
   const [notification, setNotification] = useState("");
-  const [notificationType, setNotificationType] = useState(""); // 'success'
+  const [notificationType, setNotificationType] = useState(""); // 'success' hoặc 'error'
+  // State cho loading
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Xử lý thay đổi input
   const handleChange = (e) => {
@@ -28,9 +32,13 @@ const ContactPage = () => {
   // Validate email
   const validateEmail = (email) =>
     /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
+    
+  // Validate phone
+  const validatePhone = (phone) =>
+    /^[\d\s\+\-\(\)]{8,15}$/.test(phone.replace(/\s/g, ''));
 
   // Xử lý submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {};
     if (!form.name.trim())
@@ -39,6 +47,10 @@ const ContactPage = () => {
       newErrors.email = t("frontend.contact.form.emailRequired");
     else if (!validateEmail(form.email))
       newErrors.email = t("frontend.contact.form.emailInvalid");
+    if (!form.phone.trim())
+      newErrors.phone = t("frontend.contact.form.phoneRequired");
+    else if (!validatePhone(form.phone))
+      newErrors.phone = t("frontend.contact.form.phoneInvalid");
     if (!form.subject.trim())
       newErrors.subject = t("frontend.contact.form.subjectRequired");
     if (!form.message.trim())
@@ -47,18 +59,39 @@ const ContactPage = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Gửi form ở đây (gọi API hoặc hiển thị thông báo thành công)
-      setNotification(t("frontend.contact.form.successMessage"));
-      setNotificationType("success");
-      // Reset form nếu muốn
-      setForm({ name: "", email: "", subject: "", message: "" });
-      // Ẩn thông báo sau 3s
-      setTimeout(() => {
-        setNotification("");
-        setNotificationType("");
-      }, 3000);
+      setIsSubmitting(true);
+      try {
+        // Gửi form đến server
+        const result = await submitContactForm(form);
+        
+        // Hiển thị thông báo thành công
+        setNotification(result.message || t("frontend.contact.form.successMessage"));
+        setNotificationType("success");
+        
+        // Reset form sau khi gửi thành công
+        setForm({ name: "", email: "", phone: "", subject: "", message: "" });
+        
+        // Ẩn thông báo sau 5s
+        setTimeout(() => {
+          setNotification("");
+          setNotificationType("");
+        }, 5000);
+        
+      } catch (error) {
+        // Hiển thị thông báo lỗi
+        setNotification(error.message || "Có lỗi xảy ra khi gửi liên hệ");
+        setNotificationType("error");
+        
+        // Ẩn thông báo lỗi sau 5s
+        setTimeout(() => {
+          setNotification("");
+          setNotificationType("");
+        }, 5000);
+      } finally {
+        setIsSubmitting(false);
+      }
     } else {
-      // Không hiển thị alert đỏ ở trên cùng khi có lỗi nhập liệu
+      // Không hiển thị alert ở trên cùng khi có lỗi nhập liệu
       setNotification("");
       setNotificationType("");
     }
@@ -72,9 +105,11 @@ const ContactPage = () => {
             <h2>{t("frontend.contact.title")}</h2>
             <p>{t("frontend.contact.description")}</p>
           </div>
-          {/* Thông báo thành công dạng toast nổi, không làm nhảy layout */}
-          {notification && notificationType === "success" && (
-            <div className="attech-toast">{notification}</div>
+          {/* Thông báo dạng toast nổi, không làm nhảy layout */}
+          {notification && (
+            <div className={`attech-toast ${notificationType === "error" ? "attech-toast-error" : ""}`}>
+              {notification}
+            </div>
           )}
           <div className="row">
             <div className="col-md-5">
@@ -152,7 +187,22 @@ const ContactPage = () => {
                       {errors.email || "\u00A0"}
                     </span>
                   </div>
-                  <div className="col-sm-12">
+                  <div className="col-sm-6">
+                    <input
+                      type="tel"
+                      className={`form-control${
+                        errors.phone ? " input-error" : ""
+                      }`}
+                      placeholder={t("frontend.contact.form.phonePlaceholder")}
+                      name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
+                    />
+                    <span className="form-error-google">
+                      {errors.phone || "\u00A0"}
+                    </span>
+                  </div>
+                  <div className="col-sm-6">
                     <input
                       type="text"
                       className={`form-control${
@@ -186,8 +236,19 @@ const ContactPage = () => {
                     {errors.message || "\u00A0"}
                   </span>
                 </div>
-                <button className="btn btn-block" type="submit">
-                  {t("frontend.contact.form.submitButton")}
+                <button 
+                  className="btn btn-block" 
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <i className="fas fa-spinner fa-spin"></i>{" "}
+                      {t("frontend.contact.form.submitting") || "Đang gửi..."}
+                    </>
+                  ) : (
+                    t("frontend.contact.form.submitButton")
+                  )}
                 </button>
               </form>
             </div>
