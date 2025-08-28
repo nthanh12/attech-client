@@ -10,26 +10,86 @@ import { useState, useEffect } from "react";
 // ==================== CRUD Operations ====================
 
 /**
+ * Fetch users with filters (similar to fetchNews pattern)
+ * @param {number} pageNumber - Current page number
+ * @param {number} pageSize - Items per page  
+ * @param {string} keyword - Search keyword
+ * @param {Object} filters - Filter object
+ * @param {Object} sortConfig - Sort configuration
+ * @returns {Promise<Object>} Users data with pagination
+ */
+export const fetchUsers = async (pageNumber = 1, pageSize = 10, keyword = "", filters = {}, sortConfig = null) => {
+  try {
+    const params = {
+      pageNumber,
+      pageSize,
+      keyword
+    };
+
+    // Add filters if provided (following NewsList pattern + roleId)
+    if (filters.role) {
+      params.roleId = parseInt(filters.role, 10);
+    }
+    if (filters.status) {
+      params.status = filters.status === "active" ? 1 : 0;
+    }
+
+    // Add sorting if provided
+    if (sortConfig?.key) {
+      params.sortBy = sortConfig.key;
+      params.sortDirection = sortConfig.direction;
+    }
+
+    const response = await api.get("/api/user", { params });
+    
+    if (response.data && response.data.status === 1 && response.data.data) {
+      return {
+        items: response.data.data.items || [],
+        totalItems: response.data.data.totalItems || 0,
+        totalPages: response.data.data.totalPages || 0
+      };
+    }
+    
+    throw new Error("Invalid users response");
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    throw error;
+  }
+};
+
+/**
  * Lấy danh sách Users với pagination và search
  * @param {Object} params - Query parameters
  * @param {number} params.page - Trang hiện tại (default: 1)
- * @param {number} params.pageSize - Số items per page (default: 10)
- * @param {string} params.search - Tìm kiếm theo username
+ * @param {number} params.size - Số items per page (default: 10)
+ * @param {string} params.keyword - Tìm kiếm theo username/fullname
  * @returns {Promise<Object>} Response data
  */
 export const getUsers = async (params = {}) => {
   try {
-    // Convert pageIndex to page if needed for backward compatibility
+    // Map parameters to match backend PagingRequestBaseDto
     const apiParams = {
-      page: params.page || params.pageIndex || 1,
-      pageSize: params.pageSize || 10,
-      search: params.search || params.searchTerm || ''
+      pageNumber: params.page || params.pageIndex || 1,
+      pageSize: params.size || params.pageSize || 10,
+      keyword: params.keyword || params.search || params.searchTerm || ''
     };
     
-    // Remove empty search parameter
-    if (!apiParams.search) {
-      delete apiParams.search;
+    // Add filters if provided
+    if (params.roleId) {
+      apiParams.roleId = parseInt(params.roleId);
     }
+    
+    if (params.status) {
+      // Convert string status to int: "active" -> 1, "inactive" -> 0
+      apiParams.status = params.status === 'active' ? 1 : 0;
+    }
+    
+    // Remove empty/undefined parameters
+    Object.keys(apiParams).forEach(key => {
+      if (apiParams[key] === '' || apiParams[key] === undefined || apiParams[key] === null) {
+        delete apiParams[key];
+      }
+    });
     
     const response = await api.get("/api/user", { params: apiParams });
     return response.data;
@@ -55,24 +115,31 @@ export const getUserById = async (id) => {
 };
 
 /**
- * Tạo User mới (Admin)
- * @param {Object} userData - User data
+ * Tạo User mới (Admin) - sử dụng /api/auth/register
+ * @param {Object} userData - User data theo CreateUserDto
  * @param {string} userData.username - Tên đăng nhập (max 50 chars)
  * @param {string} userData.password - Mật khẩu (min 6 chars)
  * @param {string} userData.fullName - Tên đầy đủ (max 100 chars)
- * @param {string} userData.email - Email (max 100 chars, optional)
- * @param {string} userData.phone - Số điện thoại (max 20 chars, optional)
- * @param {number} userData.userType - Loại user: 1=system, 2=manager, 3=staff
- * @param {number} userData.status - Trạng thái: 1=active, 0=inactive
- * @param {Array} userData.roleIds - Danh sách role IDs
+ * @param {string} userData.email - Email (required, email format, max 100 chars)
+ * @param {string} userData.phone - Số điện thoại (optional, max 20 chars)
+ * @param {number} userData.roleId - Role ID: 1=SuperAdmin, 2=Admin, 3=Editor (default: 3)
+ * @param {number} userData.status - Trạng thái: 1=active, 0=inactive (default: 1)
  * @returns {Promise<Object>} Response data
  */
 export const createUser = async (userData) => {
   try {
-    // Map user data to match backend DTO format for registration
-    const mappedData = mapUserDataForBackend(userData);
+    // Map user data to match backend CreateUserDto format
+    const createUserDto = {
+      username: userData.username,
+      password: userData.password,
+      fullName: userData.fullName,
+      email: userData.email,
+      phone: userData.phone || null,
+      roleId: userData.roleId || 3,
+      status: userData.status !== undefined ? userData.status : 1
+    };
     
-    const result = await register(mappedData);
+    const result = await register(createUserDto);
     
     if (result.success) {
       return {
@@ -118,21 +185,31 @@ const mapUserDataForBackend = (userData) => {
 };
 
 /**
- * Cập nhật User
- * @param {Object} userData - User data
+ * Cập nhật User - sử dụng PUT /api/user
+ * @param {Object} userData - User data theo UpdateUserDto
  * @param {number} userData.id - User ID
  * @param {string} userData.username - Tên đăng nhập (max 50 chars)
- * @param {string} userData.fullName - Tên đầy đủ (max 100 chars)
+ * @param {string} userData.fullName - Tên đầy đủ (max 100 chars, optional)
  * @param {string} userData.email - Email (max 100 chars, optional)
  * @param {string} userData.phone - Số điện thoại (max 20 chars, optional)
- * @param {number} userData.userType - Loại user: 1=system, 2=manager, 3=staff
+ * @param {number} userData.roleId - Role ID: 1=SuperAdmin, 2=Admin, 3=Editor
  * @param {number} userData.status - Trạng thái: 1=active, 0=inactive
  * @returns {Promise<Object>} Response data
  */
 export const updateUser = async (userData) => {
   try {
-    const mappedData = mapUserDataForBackend(userData);
-    const response = await api.put("/api/user", mappedData);
+    // Map user data to match backend UpdateUserDto format
+    const updateUserDto = {
+      id: userData.id,
+      username: userData.username,
+      fullName: userData.fullName,
+      email: userData.email || null,
+      phone: userData.phone || null,
+      roleId: userData.roleId,
+      status: userData.status
+    };
+    
+    const response = await api.put("/api/user", updateUserDto);
     return response.data;
   } catch (error) {
     console.error('Error updating user:', error);
@@ -247,17 +324,17 @@ export const validateUserData = (userData, isCreate = false) => {
 };
 
 /**
- * Map userType number to display text
- * @param {number} userType - User type number
+ * Map roleId number to display text
+ * @param {number} roleId - Role ID number
  * @returns {string} Display text
  */
-export const getUserTypeText = (userType) => {
-  const userTypes = {
-    1: 'System Administrator',
-    2: 'Manager/Admin',
-    3: 'Staff/Editor'
+export const getRoleText = (roleId) => {
+  const roles = {
+    1: 'SuperAdmin',
+    2: 'Admin',
+    3: 'Editor'
   };
-  return userTypes[userType] || 'Unknown';
+  return roles[roleId] || 'Unknown';
 };
 
 /**
@@ -402,7 +479,7 @@ export default {
   addRoleToUser,
   removeRoleFromUser,
   validateUserData,
-  getUserTypeText,
+  getRoleText,
   getStatusText,
   getUserLevelText,
   useUsers

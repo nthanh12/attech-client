@@ -30,7 +30,8 @@ const isTokenExpired = (token) => {
 const ROLES = {
   SUPERADMIN: 1,  // Super Admin - Full access
   ADMIN: 2,       // Admin - Most features
-  EDITOR: 3       // Editor - Limited access
+  EDITOR: 3,      // Editor - Limited access
+  USER: 4         // User - Basic access
 };
 
 

@@ -15,9 +15,10 @@ const childCategoryIds = [
 // Helper functions for fallback data
 const getCategorySlugById = (id, lang) => {
   const mapping = {
-    [CATEGORY_IDS.COMPANY_PARTY]: lang === 'vi' ? 'dang-bo-cong-ty' : 'company-party',
-    [CATEGORY_IDS.COMPANY_YOUTH_UNION]: lang === 'vi' ? 'doan-thanh-nien-cong-ty' : 'company-youth-union',
-    [CATEGORY_IDS.COMPANY_UNION]: lang === 'vi' ? 'cong-doan-cong-ty' : 'company-union'
+    [CATEGORY_IDS.COMPANY_ACTIVITIES]: lang === 'vi' ? 'hoat-dong-cong-ty' : 'company-activities',
+    [CATEGORY_IDS.COMPANY_PARTY]: lang === 'vi' ? 'dang-bo-cong-ty' : 'party-committee',
+    [CATEGORY_IDS.COMPANY_UNION]: lang === 'vi' ? 'cong-doan-cong-ty' : 'company-union',
+    [CATEGORY_IDS.COMPANY_YOUTH_UNION]: lang === 'vi' ? 'doan-thanh-nien-cong-ty' : 'company-youth-union'
   };
   return mapping[id] || '';
 };
@@ -53,6 +54,11 @@ const WeeklyNews = () => {
         });
         
         console.log(`📊 WeeklyNews: Total news loaded: ${allNewsData.items.length}`);
+        console.log('📋 WeeklyNews: All news items:', allNewsData.items.map(item => ({
+          id: item.id,
+          categoryId: item.newsCategoryId,
+          title: item.titleVi?.substring(0, 30) + '...'
+        })));
         
         // Group news by category
         const newsByCategory = {};

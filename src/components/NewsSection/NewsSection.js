@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getLatestNews, getNewsCategories, formatNewsForDisplay } from "../../services/clientNewsService";
+import {
+  getLatestNews,
+  getNewsCategories,
+  formatNewsForDisplay,
+} from "../../services/clientNewsService";
 import { useI18n } from "../../hooks/useI18n";
 import LocalizedLink from "../Shared/LocalizedLink";
-import "./NewsSection.css";
 
 const NewsSection = () => {
   const { currentLanguage, t } = useI18n();
@@ -15,13 +18,13 @@ const NewsSection = () => {
     const fetchNews = async () => {
       try {
         setLoading(true);
-        
+
         // Load categories and latest news in parallel
         const [categoriesData, latestNews] = await Promise.all([
           getNewsCategories(),
-          getLatestNews(6)
+          getLatestNews(6),
         ]);
-        
+
         setCategories(categoriesData);
         setNews(latestNews);
       } catch (error) {
@@ -35,7 +38,7 @@ const NewsSection = () => {
   }, []);
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('vi-VN');
+    return new Date(dateString).toLocaleDateString("vi-VN");
   };
 
   if (loading) {
@@ -61,58 +64,70 @@ const NewsSection = () => {
     <section className="news-section">
       <div className="container">
         <div className="section-header">
-          <h2>{t ? t('frontend.news.latestNews') : 'Tin tức mới nhất'}</h2>
+          <h2>{t ? t("frontend.news.latestNews") : "Tin tức mới nhất"}</h2>
           <LocalizedLink routeKey="NEWS" className="view-all-link">
-            {t ? t('common.viewAll') : 'Xem tất cả'}
+            {t ? t("common.viewAll") : "Xem tất cả"}
           </LocalizedLink>
         </div>
 
         <div className="news-grid">
           {news.map((item) => {
             const formattedItem = formatNewsForDisplay(item, currentLanguage);
-            const category = categories.find(cat => cat.id === item.newsCategoryId);
-            const categorySlug = currentLanguage === 'vi' ? category?.slugVi : category?.slugEn;
-            const categoryTitle = currentLanguage === 'vi' ? category?.titleVi : category?.titleEn;
-            
+            const category = categories.find(
+              (cat) => cat.id === item.newsCategoryId
+            );
+            const categorySlug =
+              currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+            const categoryTitle =
+              currentLanguage === "vi" ? category?.titleVi : category?.titleEn;
+
             return (
               <div className="news-item" key={item.id}>
                 <div className="news-image">
-                  <LocalizedLink to={
-                    currentLanguage === 'vi' 
-                      ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                      : `/en/news/${categorySlug}/${formattedItem.slug}`
-                  }>
-                    <img 
-                      src={formattedItem.imageUrl || '/images/default-news.jpg'} 
+                  <LocalizedLink
+                    to={
+                      currentLanguage === "vi"
+                        ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+                        : `/en/news/${categorySlug}/${formattedItem.slug}`
+                    }
+                  >
+                    <img
+                      src={formattedItem.imageUrl || "/images/default-news.jpg"}
                       alt={formattedItem.title}
                       title={formattedItem.title}
                       onError={(e) => {
-                        e.target.src = '/images/default-news.jpg';
+                        e.target.src = "/images/default-news.jpg";
                       }}
                     />
                   </LocalizedLink>
                 </div>
                 <div className="news-content">
                   <div className="news-meta">
-                    <span className="news-date">{formattedItem.formattedDate}</span>
+                    <span className="news-date">
+                      {formattedItem.formattedDate}
+                    </span>
                     {category && (
                       <span className="news-category">
-                        <LocalizedLink to={
-                          currentLanguage === 'vi' 
-                            ? `/tin-tuc/${categorySlug}`
-                            : `/en/news/${categorySlug}`
-                        }>
+                        <LocalizedLink
+                          to={
+                            currentLanguage === "vi"
+                              ? `/tin-tuc/${categorySlug}`
+                              : `/en/news/${categorySlug}`
+                          }
+                        >
                           {categoryTitle}
                         </LocalizedLink>
                       </span>
                     )}
                   </div>
                   <h3 className="news-title">
-                    <LocalizedLink to={
-                      currentLanguage === 'vi' 
-                        ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                        : `/en/news/${categorySlug}/${formattedItem.slug}`
-                    }>
+                    <LocalizedLink
+                      to={
+                        currentLanguage === "vi"
+                          ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
+                          : `/en/news/${categorySlug}/${formattedItem.slug}`
+                      }
+                    >
                       {formattedItem.title}
                     </LocalizedLink>
                   </h3>
@@ -127,4 +142,4 @@ const NewsSection = () => {
   );
 };
 
-export default NewsSection; 
+export default NewsSection;

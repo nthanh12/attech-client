@@ -122,17 +122,103 @@ export const tinymceConfig = {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
       font-size: 14px; 
       line-height: 1.6;
+      position: relative;
     }
     img { 
-      max-width: 100%; 
       height: auto; 
+      cursor: pointer;
+      max-width: none !important;
+      position: static !important;
+      display: inline-block;
+      vertical-align: top;
+    }
+    img:hover {
+      outline: 2px dashed #ccc !important;
+    }
+    img[data-mce-selected] {
+      outline: 2px solid #0066cc !important;
+    }
+    /* Fix resize handles positioning */
+    .mce-resizehandle {
+      position: absolute !important;
+      z-index: 1000 !important;
+      background: #0066cc !important;
+      border: 1px solid #fff !important;
+      width: 7px !important;
+      height: 7px !important;
+      box-sizing: border-box !important;
+    }
+    .mce-resizehandle:hover {
+      background: #0052cc !important;
     }
   `,
   
   // Upload config với luồng mới  
   images_upload_handler: handleImageUpload,
-  automatic_uploads: false, // Disable để tránh conflict
-  paste_data_images: false, // Disable paste images
+  automatic_uploads: true, // Enable để hỗ trợ drag & drop
+  paste_data_images: true, // Enable paste images từ clipboard
+  
+  // Image resize settings - cho phép kéo để thay đổi kích thước ảnh  
+  object_resizing: true,  // Enable resizing
+  resize_img_proportional: false,  // Cho phép resize tự do
+  images_upload_credentials: false,
+  
+  // Resize handles settings
+  resize: true,  // Bật resize editor  
+  statusbar: false,  // Tắt status bar
+  
+  // Setup callbacks để đảm bảo resize handles
+  setup: function(editor) {
+    editor.on('init', function() {
+      console.log('TinyMCE initialized');
+      
+      // Add CSS to fix handle positioning
+      try {
+        const doc = editor.getDoc();
+        const style = doc.createElement('style');
+        style.innerHTML = `
+          .mce-resizehandle {
+            position: absolute !important;
+            z-index: 1000 !important;
+            background: #0066cc !important;
+            border: 1px solid #fff !important;
+            width: 7px !important;
+            height: 7px !important;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+        `;
+        doc.head.appendChild(style);
+      } catch (error) {
+        console.log('Could not add CSS:', error);
+      }
+    });
+    
+    editor.on('ObjectSelected', function(e) {
+      console.log('Object selected:', e.target ? e.target.tagName : 'no target');
+      // Force show resize handles
+      setTimeout(() => {
+        try {
+          const selected = editor.selection.getNode();
+          if (selected && selected.tagName === 'IMG') {
+            console.log('Image selected, forcing resize handles');
+            editor.nodeChanged();
+          }
+        } catch (error) {
+          console.log('Error in ObjectSelected:', error);
+        }
+      }, 100);
+    });
+  },
+  
+  // Image settings
+  image_dimensions: false,  // Tắt dimension constraints
+  image_class_list: false,  // Tắt class list
+  image_advtab: true,      // Bật advanced tab trong image dialog
+  
+  // Tắt selection highlighting
+  visual: false,           // Tắt visual aids
   
   // Modal compatibility
   target_list: false,

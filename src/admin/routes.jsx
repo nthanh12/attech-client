@@ -1,13 +1,4 @@
 import { Routes, Route } from 'react-router-dom';
-import AdminLayout from './layout/AdminLayout';
-import Dashboard from './pages/Dashboard.jsx';
-import ProductsList from './pages/ProductsList.jsx';
-import ServicesList from './pages/ServicesList.jsx';
-import NewsList from './pages/NewsList.jsx';
-import NotificationsList from './pages/NotificationsList.jsx';
-import Login from './pages/Login.jsx';
-import NotFound from './pages/NotFound/NotFound';
-import RequireAdminAuth from './components/RequireAdminAuth';
 import adminRoutesConfig from './adminRoutesConfig';
 
 export default function AdminRoutes() {

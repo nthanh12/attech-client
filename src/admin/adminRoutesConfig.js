@@ -8,6 +8,7 @@ import NotificationsList from './pages/NotificationsList.jsx';
 import AlbumList from './pages/AlbumList.jsx';
 import DocumentsList from './pages/DocumentsList.jsx';
 import ContactList from './pages/ContactList.jsx';
+import LanguageContentManager from './pages/LanguageContentManager.jsx';
 
 import NotFound from './pages/NotFound/NotFound';
 import ProductCategory from './menu/ProductCategory/ProductCategory.js';
@@ -16,6 +17,7 @@ import NotificationCategory from './menu/NotificationCategory/NotificationCatego
 import ConfigBanner from './pages/ConfigBanner.jsx';
 import RouteManagement from './pages/RouteManagement/RouteManagement.js';
 import SystemSettings from './pages/SystemSettings.jsx';
+import SEOManagement from './pages/SEOManagement.jsx';
 import UserManagement from './pages/UserManagement.jsx';
 // PermissionManagement removed - using UserLevel system only
 import RoleManagement from './pages/RoleManagement.jsx';
@@ -37,6 +39,7 @@ const adminRoutesConfig = [
       { path: 'albums', element: AlbumList },
       { path: 'documents', element: DocumentsList },
       { path: 'contacts', element: ContactList },
+      { path: 'language-content', element: LanguageContentManager },
       { path: 'users', element: UserManagement },
       { path: 'roles', element: RoleManagement },
       { path: 'routes', element: RouteManagement },
@@ -46,6 +49,7 @@ const adminRoutesConfig = [
       { path: 'notification-category', element: NotificationCategory },
       { path: 'config', element: ConfigBanner },
       { path: 'system-settings', element: SystemSettings },
+      { path: 'seo', element: SEOManagement },
       { path: 'account', element: AccountManagement },
       { path: '*', element: NotFound },
     ],

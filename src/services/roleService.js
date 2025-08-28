@@ -1,7 +1,27 @@
 import api from "../api";
 
 export const getAllRoles = async (params = {}) => {
-  const response = await api.get("/api/role/find-all", { params });
+  // Map parameters to match backend PagingRequestBaseDto
+  const apiParams = {
+    pageNumber: params.page || params.pageIndex || 1,
+    pageSize: params.size || params.pageSize || 100,
+    keyword: params.search || params.keyword || ''
+  };
+  
+  // Add filters if provided
+  if (params.status) {
+    // Convert string status to int: "active" -> 1, "inactive" -> 0
+    apiParams.status = params.status === 'active' ? 1 : 0;
+  }
+  
+  // Remove empty/undefined parameters
+  Object.keys(apiParams).forEach(key => {
+    if (apiParams[key] === '' || apiParams[key] === undefined || apiParams[key] === null) {
+      delete apiParams[key];
+    }
+  });
+
+  const response = await api.get("/api/role/find-all", { params: apiParams });
   
   if (
     response.data &&

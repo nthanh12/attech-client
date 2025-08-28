@@ -9,14 +9,8 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const {
-    user,
-    logout,
-    hasPermission,
-    ROLES,
-    loading,
-    isAuthenticated,
-  } = useAuth();
+  const { user, logout, hasPermission, ROLES, loading, isAuthenticated } =
+    useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false); // Always starts closed for overlay mode
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [openSubMenus, setOpenSubMenus] = useState({});
@@ -50,15 +44,15 @@ const AdminLayout = () => {
   // Handle authentication state
   useEffect(() => {
     const authStatus = isAuthenticated();
-    console.log('🔍 AdminLayout auth check:', { 
-      pathname: location.pathname, 
-      loading, 
-      authStatus, 
-      user: user?.username 
+    console.log("🔍 AdminLayout auth check:", {
+      pathname: location.pathname,
+      loading,
+      authStatus,
+      user: user?.username,
     });
 
     if (!loading && !authStatus) {
-      console.log('❌ Not authenticated, redirecting to login');
+      console.log("❌ Not authenticated, redirecting to login");
       navigate("/dang-nhap", { replace: true });
     }
   }, [loading, isAuthenticated, navigate, location.pathname, user]);
@@ -89,7 +83,6 @@ const AdminLayout = () => {
   }
 
   function getNavItemsByPermissions() {
-    
     // Define all possible navigation items with their required roleId
     const allNavItems = [
       {
@@ -224,7 +217,15 @@ const AdminLayout = () => {
         path: "/admin/contacts",
         label: "Quản lý liên hệ",
         icon: "bi bi-envelope",
-        requiredRoleId: ROLES.EDITOR, // Allow editors to view contacts
+        requiredRoleId: ROLES.ADMIN, // Allow editors to view contacts
+      },
+
+      // Translation Management
+      {
+        path: "/admin/language-content",
+        label: "Quản lý Thông tin",
+        icon: "bi bi-translate",
+        requiredRoleId: ROLES.ADMIN,
       },
 
       // System Management
@@ -258,6 +259,12 @@ const AdminLayout = () => {
             icon: "bi bi-plug",
             requiredRoleId: ROLES.SUPERADMIN,
           },
+          {
+            path: "/admin/seo",
+            label: "Quản lý SEO",
+            icon: "bi bi-search",
+            requiredRoleId: ROLES.SUPERADMIN,
+          },
         ],
       },
     ];
@@ -270,7 +277,8 @@ const AdminLayout = () => {
 
       return items.filter((item) => {
         // Check if user has the required role
-        const hasRequiredRole = !item.requiredRoleId || hasPermission(item.requiredRoleId);
+        const hasRequiredRole =
+          !item.requiredRoleId || hasPermission(item.requiredRoleId);
 
         // If item has subitems, filter them too
         if (item.subItems) {
@@ -327,6 +335,8 @@ const AdminLayout = () => {
       "/admin/albums": "Quản lý thư viện",
       "/admin/documents": "Quản lý tài liệu",
       "/admin/contacts": "Quản lý liên hệ",
+      "/admin/language-content": "Quản lý Thông tin",
+      "/admin/seo": "Quản lý SEO",
     };
 
     return titleMap[path] || "Admin Dashboard";
@@ -385,7 +395,10 @@ const AdminLayout = () => {
           >
             {item.subItems.map((subItem) => {
               // Check roleId for submenu item
-              if (subItem.requiredRoleId && !hasPermission(subItem.requiredRoleId)) {
+              if (
+                subItem.requiredRoleId &&
+                !hasPermission(subItem.requiredRoleId)
+              ) {
                 return null;
               }
 
@@ -746,7 +759,7 @@ const AdminLayout = () => {
                       {user?.email || ""}
                     </div>
                     <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
-                      {user?.roleName || 'editor'}
+                      {user?.roleName || "editor"}
                     </div>
                   </div>
                   <button
@@ -825,7 +838,10 @@ const AdminLayout = () => {
             overflow: "auto",
           }}
         >
-          {console.log('🔍 AdminLayout rendering Outlet for path:', location.pathname)}
+          {console.log(
+            "🔍 AdminLayout rendering Outlet for path:",
+            location.pathname
+          )}
           <Outlet />
         </main>
       </div>

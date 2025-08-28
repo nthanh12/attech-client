@@ -2,12 +2,7 @@
  * Hierarchy Utilities for User Management - Simple roleId system
  */
 
-// Role constants
-const ROLES = {
-  SUPERADMIN: 1,  // SuperAdmin - Full access
-  ADMIN: 2,       // Admin - Most features
-  EDITOR: 3       // Editor - Limited access
-};
+import { ROLES } from '../contexts/AuthContext';
 
 /**
  * Check what actions current user can perform on target user
@@ -46,7 +41,7 @@ export const canModifyUser = (currentUser, targetUser) => {
 
 /**
  * Get role name for display
- * @param {number} roleId - Role ID (1-3)
+ * @param {number} roleId - Role ID (1-4)
  * @returns {string} Display name
  */
 export const getRoleName = (roleId) => {
@@ -57,6 +52,8 @@ export const getRoleName = (roleId) => {
       return 'Admin';
     case ROLES.EDITOR:
       return 'Editor';
+    case ROLES.USER:
+      return 'User';
     default:
       return 'Unknown';
   }
@@ -71,26 +68,5 @@ export const canAccessAdmin = (user) => {
   return user && user.roleId <= ROLES.EDITOR;
 };
 
-/**
- * Get available roles for assignment
- * @param {Object} currentUser - Current user
- * @returns {Array} Array of assignable roles
- */
-export const getAssignableRoles = (currentUser) => {
-  if (!currentUser) return [];
-  
-  const roles = [];
-  const currentRoleId = currentUser.roleId || ROLES.EDITOR;
-  
-  // Can only assign roles with higher roleId (lower permission)
-  if (currentRoleId <= ROLES.SUPERADMIN) {
-    roles.push({ value: ROLES.ADMIN, label: 'Admin' });
-  }
-  if (currentRoleId <= ROLES.ADMIN) {
-    roles.push({ value: ROLES.EDITOR, label: 'Editor' });
-  }
-  
-  return roles;
-};
 
 export { ROLES };

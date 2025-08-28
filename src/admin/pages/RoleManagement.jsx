@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { getRoles, createRole, updateRole, deleteRole } from '../../services/roleService';
 import PageWrapper from '../components/PageWrapper';
-import DataTable from '../components/DataTable';
+import AdminTable from '../components/AdminTable';
 import FormModal from '../components/FormModal';
-import LoadingSpinner from '../components/LoadingSpinner';
+import AdminPageActions from '../components/AdminPageActions';
 import ToastMessage from '../components/ToastMessage';
 import AccessDenied from '../../components/AccessDenied';
+import AdminFilter from '../components/AdminFilter';
 // Use standardized CSS matching NewsList design
 import "../styles/adminTable.css";
 import "../styles/adminCommon.css";
@@ -14,58 +16,149 @@ import "../styles/adminButtons.css";
 const RoleManagement = () => {
   const { user: currentUser, ROLES } = useAuth();
   
-  // Use simple role data structure matching the new system
-  const [roles, setRoles] = useState([
-    { id: 1, roleId: 1, name: 'Super Admin', description: 'Toàn quyền quản trị hệ thống', status: 'active' },
-    { id: 2, roleId: 2, name: 'Admin', description: 'Quản lý hầu hết các tính năng', status: 'active' },
-    { id: 3, roleId: 3, name: 'Editor', description: 'Chỉnh sửa nội dung', status: 'active' }
-  ]);
-  const [loading, setLoading] = useState(false);
+  // Role data from API
+  const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentRole, setCurrentRole] = useState({
     id: null,
-    roleId: 3,
     name: '',
     description: '',
     status: 'active',
   });
   const [errors, setErrors] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
-  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'asc' });
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchDebounce, setSearchDebounce] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'desc' });
   const [filters, setFilters] = useState({
     search: '',
     status: ''
   });
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
+  // Debounce search - đợi user gõ xong
+  useEffect(() => {
+    if (filters.search !== searchDebounce) {
+      setIsSearching(true);
+    }
+    
+    const timer = setTimeout(() => {
+      setSearchDebounce(filters.search);
+      setIsSearching(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [filters.search, searchDebounce]);
+
+  // Load data function (following NewsList pattern)
+  const loadData = useCallback(async (showLoadingIndicator = true) => {
+    if (showLoadingIndicator) {
+      setLoading(true);
+    }
+    try {
+      const params = {
+        page: currentPage,
+        size: itemsPerPage,
+        search: searchDebounce,
+        status: filters.status || undefined
+      };
+      
+      // Remove undefined params
+      Object.keys(params).forEach(key => 
+        params[key] === undefined && delete params[key]
+      );
+      
+      const response = await getRoles(params);
+      
+      if (response.data && response.data.items) {
+        // Map API response to component format
+        const mappedRoles = response.data.items.map(role => ({
+          id: role.id,
+          name: role.name,
+          description: role.description,
+          status: role.status === 1 ? 'active' : 'inactive',
+          userCount: role.userCount,
+          createdAt: role.createdAt,
+          updatedAt: role.updatedAt
+        }));
+        
+        setRoles(mappedRoles);
+        setTotalItems(response.data.totalItems || 0);
+        setTotalPages(response.data.totalPages || 0);
+      }
+    } catch (error) {
+      console.error("Error loading roles:", error);
+      setToast({
+        show: true,
+        message: "Tải dữ liệu thất bại: " + error.message,
+        type: "error",
+      });
+    } finally {
+      if (showLoadingIndicator) {
+        setLoading(false);
+      }
+    }
+  }, [currentPage, itemsPerPage, searchDebounce, filters.status]);
+
   const emptyRole = useMemo(() => ({
     id: null,
-    roleId: 3,
     name: '',
     description: '',
     status: 'active',
   }), []);
 
-  const fetchRoles = useCallback(async () => {
-    setLoading(true);
-    try {
-      // Mock delay to simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      setToast({ show: true, message: 'Tải danh sách vai trò thành công', type: 'success' });
-    } catch (err) {
-      console.error('Failed to fetch roles:', err);
-      setToast({ show: true, message: 'Lỗi khi tải danh sách vai trò', type: 'error' });
-    } finally {
-      setLoading(false);
+  // Toast helper
+  const showToast = (message, type = "success") => {
+    setToast({ show: true, message, type });
+  };
+
+  // Filter config for AdminFilter component
+  const filterConfig = [
+    {
+      key: "search",
+      type: "search",
+      label: "Tìm kiếm",
+      placeholder: "Nhập tên vai trò hoặc mô tả...",
+      icon: "fas fa-search"
+    },
+    {
+      key: "status",
+      type: "select", 
+      label: "Trạng thái",
+      icon: "fas fa-toggle-on",
+      options: [
+        { value: "active", label: "Hoạt động" },
+        { value: "inactive", label: "Tạm khóa" }
+      ]
     }
+  ];
+
+  // Handle filters change
+  const handleFiltersChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
+  // Load data on mount
+  useEffect(() => {
+    loadData();
   }, []);
 
-
+  // Load data when pagination/filters/sorting change (without showing loading for search)
   useEffect(() => {
-    fetchRoles();
-  }, [fetchRoles]);
+    if (searchDebounce !== filters.search) {
+      // Search is still being debounced, don't show loading
+      loadData(false);
+    } else {
+      // Other filters or pagination changed, show loading
+      loadData(true);
+    }
+  }, [currentPage, itemsPerPage, searchDebounce, filters.status, sortConfig]);
+
 
   const handleAddNew = useCallback(() => {
     setEditMode(false);
@@ -107,48 +200,59 @@ const RoleManagement = () => {
   }, [currentRole]);
 
   const handleSubmit = useCallback(async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     if (!validateForm()) return;
 
     try {
+      const roleData = {
+        name: currentRole.name,
+        description: currentRole.description,
+        status: currentRole.status === 'active' ? 1 : 0
+      };
+      
       if (editMode) {
         // Update existing role
-        const updatedRole = { 
-          ...currentRole,
-          name: currentRole.name,
-          description: currentRole.description,
-          status: currentRole.status
-        };
-        setRoles(prev => prev.map(r => r.id === currentRole.id ? updatedRole : r));
-        setToast({ show: true, message: 'Cập nhật vai trò thành công!', type: 'success' });
+        const response = await updateRole(currentRole.id, roleData);
+        if (response.status === 1) {
+          showToast('Cập nhật vai trò thành công', 'success');
+          await loadData(); // Reload data from server to ensure consistency
+        } else {
+          throw new Error(response.message || 'Cập nhật thất bại');
+        }
       } else {
-        // Add new role
-        const newRole = {
-          ...currentRole,
-          id: Math.max(...roles.map(r => r.id)) + 1,
-          roleId: currentRole.roleId
-        };
-        setRoles(prev => [...prev, newRole]);
-        setToast({ show: true, message: 'Thêm vai trò thành công!', type: 'success' });
+        // Create new role
+        const response = await createRole(roleData);
+        if (response.status === 1) {
+          showToast('Tạo vai trò thành công', 'success');
+          await loadData(); // Reload data from server to ensure consistency
+        } else {
+          throw new Error(response.message || 'Tạo thất bại');
+        }
       }
+      
       handleCloseModal();
     } catch (error) {
-      console.error('Error saving role:', error);
-      setToast({ show: true, message: 'Lỗi khi lưu vai trò!', type: 'error' });
+      console.error('Save role error:', error);
+      showToast(error.message || `Lỗi khi ${editMode ? 'cập nhật' : 'tạo'} vai trò`, 'error');
     }
-  }, [editMode, currentRole, validateForm, handleCloseModal, roles]);
+  }, [editMode, currentRole, validateForm, handleCloseModal, loadData]);
 
   const handleDelete = useCallback(async (role) => {
     if (window.confirm(`Bạn có chắc chắn muốn xóa vai trò "${role.name}"?`)) {
       try {
-        setRoles(prev => prev.filter(r => r.id !== role.id));
-        setToast({ show: true, message: 'Xóa vai trò thành công!', type: 'success' });
+        const response = await deleteRole(role.id);
+        if (response.status === 1) {
+          showToast('Xóa vai trò thành công', 'success');
+          await loadData(); // Reload data from server to ensure consistency
+        } else {
+          throw new Error(response.message || 'Xóa thất bại');
+        }
       } catch (error) {
-        console.error('Error deleting role:', error);
-        setToast({ show: true, message: 'Lỗi khi xóa vai trò!', type: 'error' });
+        console.error('Delete role error:', error);
+        showToast(error.message || 'Lỗi khi xóa vai trò', 'error');
       }
     }
-  }, []);
+  }, [loadData]);
 
   const handleInputChange = useCallback((field, value) => {
     setCurrentRole(prev => ({ ...prev, [field]: value }));
@@ -157,169 +261,56 @@ const RoleManagement = () => {
     }
   }, [errors]);
 
-  const showToast = (message, type = "info") => {
-    setToast({ show: true, message, type });
-  };
+  // Use server-side data directly (no client-side filtering/sorting)
+  const paginatedRoles = roles;
 
-  // Filter logic matching UserManagement pattern
-  const filteredRoles = useMemo(() => {
-    if (!Array.isArray(roles)) return [];
-    return roles.filter(role => {
-      const matchesSearch = !filters.search || 
-                           role.name?.toLowerCase().includes(filters.search.toLowerCase()) ||
-                           role.description?.toLowerCase().includes(filters.search.toLowerCase());
-      const matchesStatus = !filters.status || role.status === filters.status;
-      
-      return matchesSearch && matchesStatus;
-    });
-  }, [roles, filters]);
 
-  const sortedRoles = useMemo(() => {
-    return [...filteredRoles].sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
-      
-      if (sortConfig.direction === 'asc') {
-        return aValue > bValue ? 1 : -1;
-      } else {
-        return aValue < bValue ? 1 : -1;
-      }
-    });
-  }, [filteredRoles, sortConfig]);
 
-  const paginatedRoles = useMemo(() => {
-    return sortedRoles.slice(
-      (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
-    );
-  }, [sortedRoles, currentPage, itemsPerPage]);
-
-  const totalPages = useMemo(() => {
-    return Math.ceil(sortedRoles.length / itemsPerPage);
-  }, [sortedRoles.length, itemsPerPage]);
-
-  const handleSort = useCallback((key) => {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-    }));
-  }, []);
-
-  const getRoleColor = (roleId) => {
-    switch(roleId) {
-      case 1: return 'danger';   // Super Admin - red
-      case 2: return 'warning';  // Admin - orange
-      case 3: return 'info';     // Editor - blue
-      default: return 'secondary';
-    }
-  };
-
-  const getRoleText = (roleId) => {
-    switch(roleId) {
-      case 1: return 'Super Admin';
-      case 2: return 'Admin';
-      case 3: return 'Editor';
-      default: return 'Unknown';
-    }
-  };
-
-  const columns = useMemo(() => [
+  const columns = [
+    { key: "id", label: "ID", sortable: true, width: "80px" },
+    { key: "name", label: "Tên vai trò", sortable: true, width: "200px" },
     {
-      key: 'id',
-      label: 'ID',
-      sortable: true,
-      width: '80px'
-    },
-    {
-      key: 'roleId',
-      label: 'Mức độ',
-      sortable: true,
-      width: '120px',
-      render: (row) => (
-        <span className={`badge bg-${getRoleColor(row.roleId)}`}>
-          {row.roleId}
+      key: "description",
+      label: "Mô tả",
+      width: "300px",
+      render: (item) => (
+        <span title={item.description}>
+          {item.description?.length > 60 
+            ? item.description.substring(0, 60) + "..." 
+            : item.description || ""}
         </span>
-      )
+      ),
     },
     {
-      key: 'name',
-      label: 'Tên vai trò',
+      key: "status",
+      label: "Trạng thái",
       sortable: true,
-      width: '200px'
-    },
-    {
-      key: 'description',
-      label: 'Mô tả',
-      width: '300px',
-      render: (row) => (
-        <span title={row.description}>
-          {row.description?.length > 60 ? row.description.substring(0, 60) + '...' : row.description || ''}
+      width: "120px",
+      render: (item) => (
+        <span
+          className={`badge ${
+            item.status === 'active' ? "badge-success" : "badge-secondary"
+          }`}
+        >
+          {item.status === 'active' ? "Hoạt động" : "Không hoạt động"}
         </span>
-      )
+      ),
     },
-    {
-      key: 'status',
-      label: 'Trạng thái',
-      sortable: true,
-      width: '120px',
-      render: (row) => (
-        <span className={`badge ${row.status === 'active' ? 'bg-success' : 'bg-danger'}`}>
-          {row.status === 'active' ? 'Hoạt động' : 'Tạm khóa'}
-        </span>
-      )
-    }
-  ], []);
+  ];
 
 
 
 
-  // Page Actions matching NewsList style
-  const pageActions = useMemo(() => (
-    <div style={{ display: "flex", gap: "0.5rem" }}>
-      <button
-        className="admin-btn admin-btn-outline-secondary"
-        onClick={fetchRoles}
-        disabled={loading}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.75rem 1rem",
-          backgroundColor: "#f8f9fa",
-          color: "#6c757d",
-          border: "1px solid #dee2e6",
-          borderRadius: "6px",
-          fontSize: "0.875rem",
-          fontWeight: "500",
-          cursor: "pointer",
-        }}
-        title="Làm mới danh sách vai trò"
-      >
-        <i className="fas fa-refresh"></i>
-        Làm mới
-      </button>
-      <button
-        className="admin-btn admin-btn-primary"
-        onClick={handleAddNew}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "0.5rem",
-          padding: "0.75rem 1rem",
-          backgroundColor: "#3b82f6",
-          color: "white",
-          border: "none",
-          borderRadius: "6px",
-          fontSize: "0.875rem",
-          fontWeight: "500",
-          cursor: "pointer",
-        }}
-      >
-        <i className="fas fa-plus"></i>
-        Thêm vai trò
-      </button>
-    </div>
-  ), [handleAddNew, fetchRoles, loading]);
+  // Page Actions using AdminPageActions
+  const pageActions = (
+    <AdminPageActions
+      loading={loading}
+      actions={[
+        AdminPageActions.createRefreshAction(loadData, loading),
+        AdminPageActions.createAddAction(handleAddNew, "Thêm vai trò")
+      ]}
+    />
+  );
 
   // Check permission - only Admin and SuperAdmin can manage roles
   if (!currentUser || currentUser.roleId > ROLES.ADMIN) {
@@ -349,86 +340,65 @@ const RoleManagement = () => {
     <PageWrapper actions={pageActions}>
       <div className="admin-news-list">
         {/* Filters Section */}
-        <div className="filters-section">
-          <div className="filter-group">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Tìm kiếm theo tên vai trò, mô tả..."
-              value={filters.search}
-              onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
-            />
-          </div>
-          <div className="filter-group">
-            <select
-              className="form-control"
-              value={filters.status}
-              onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
-            >
-              <option value="">Tất cả trạng thái</option>
-              <option value="active">Hoạt động</option>
-              <option value="inactive">Tạm khóa</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <button
-              className="admin-btn admin-btn-secondary"
-              onClick={() => setFilters({ search: "", status: "" })}
-            >
-              <i className="fas fa-times"></i>
-              <span>Reset</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Data Table */}
-        <DataTable
-          data={roles}
-          columns={columns}
-          actions={[
-            {
-              label: "Sửa",
-              onClick: handleEdit,
-              className: "admin-btn admin-btn-sm admin-btn-primary"
-            },
-            {
-              label: "Xóa",
-              onClick: handleDelete,
-              className: "admin-btn admin-btn-sm admin-btn-danger"
-            }
-          ]}
-          currentPage={currentPage}
-          onPageChange={setCurrentPage}
-          itemsPerPage={itemsPerPage}
-          sortConfig={sortConfig}
-          onSort={handleSort}
+        <AdminFilter
           filters={filters}
-          searchFields={["name", "description"]}
+          onFiltersChange={handleFiltersChange}
+          onPageChange={setCurrentPage}
+          filterConfig={filterConfig}
+          isSearching={isSearching}
+        />
+
+        {/* Table Container */}
+        <AdminTable
+            data={paginatedRoles}
+            columns={columns}
+            actions={[
+              {
+                label: "Sửa",
+                onClick: handleEdit,
+                className: "admin-btn admin-btn-xs admin-btn-primary",
+              },
+              {
+                label: "Xóa",
+                onClick: handleDelete,
+                className: "admin-btn admin-btn-xs admin-btn-danger",
+              }
+            ]}
+            sortConfig={sortConfig}
+            onSort={(key) => {
+              setSortConfig((prev) => ({
+                key,
+                direction:
+                  prev.key === key && prev.direction === "desc" ? "asc" : "desc",
+              }));
+            }}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+            }}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onItemsPerPageChange={(newSize) => {
+              setItemsPerPage(newSize);
+              setCurrentPage(1); // Reset về trang 1
+            }}
+            loading={loading}
+            emptyText="Chưa có vai trò nào"
         />
 
         {/* Form Modal */}
         <FormModal
           show={showModal}
           onClose={handleCloseModal}
+          onSubmit={() => handleSubmit()}
           title={editMode ? 'Chỉnh sửa vai trò' : 'Thêm vai trò mới'}
+          submitText={editMode ? "Cập nhật" : "Thêm mới"}
+          cancelText="Hủy"
+          loading={loading}
           size="lg"
-          showActions={false}
         >
-          <form onSubmit={handleSubmit}>
             <div className="form-grid">
-              <div className="form-group">
-                <label>Mức vai trò</label>
-                <select
-                  className="form-control"
-                  value={currentRole?.roleId || 3}
-                  onChange={(e) => handleInputChange('roleId', parseInt(e.target.value))}
-                  disabled={editMode}
-                >
-                  <option value={1}>1 - Super Admin</option>
-                  <option value={2}>2 - Admin</option>
-                  <option value={3}>3 - Editor</option>
-                </select>
-              </div>
               
               <div className="form-group">
                 <label>Tên vai trò *</label>
@@ -467,24 +437,6 @@ const RoleManagement = () => {
                 </select>
               </div>
             </div>
-            
-            <div className="form-actions">
-              <button
-                type="button"
-                className="admin-btn admin-btn-secondary"
-                onClick={handleCloseModal}
-              >
-                Hủy
-              </button>
-              <button
-                type="submit"
-                className="admin-btn admin-btn-primary"
-                disabled={loading}
-              >
-                {editMode ? "Cập nhật" : "Thêm mới"}
-              </button>
-            </div>
-          </form>
         </FormModal>
 
         <ToastMessage

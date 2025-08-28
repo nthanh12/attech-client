@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { getRoleColor, getRoleText, getAllRoles } from "../../utils/roleUtils";
-import { canModifyUser, getAssignableRoles } from "../../utils/hierarchyUtils";
+import { canModifyUser } from "../../utils/hierarchyUtils";
+import { fetchUsers, getUsers, createUser, updateUser, deleteUser, getRoleText as getServiceRoleText } from "../../services/userService";
+import { getRoles } from "../../services/roleService";
 import PageWrapper from "../components/PageWrapper";
-import DataTable from "../components/DataTable";
+import AdminTable from "../components/AdminTable";
 import FormModal from "../components/FormModal";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ToastMessage from "../components/ToastMessage";
 import AccessDenied from "../../components/AccessDenied";
+import AdminFilter from "../components/AdminFilter";
 import "./ContactList.css";
 import "./UserManagement.css";
 import "../styles/adminTable.css";
@@ -20,6 +23,7 @@ const UserManagement = () => {
 
   // Data state
   const [users, setUsers] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   // UI state
@@ -33,9 +37,11 @@ const UserManagement = () => {
     type: "info",
   });
 
-  // Pagination & filters
+  // Server-side pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [searchDebounce, setSearchDebounce] = useState("");
   const [sortConfig, setSortConfig] = useState({
     key: "id",
@@ -53,11 +59,62 @@ const UserManagement = () => {
     email: "",
     fullName: "",
     phone: "",
-    roleId: 3,
+    roleId: null, // Will be set dynamically based on available roles
     status: "active",
   });
 
   const [formErrors, setFormErrors] = useState({});
+
+  // Simple role filtering based on hierarchy
+  const getFilteredRoles = () => {
+    if (!roles || roles.length === 0) {
+      return [];
+    }
+    
+    // Admin and above can see Admin + Editor + User roles in filter dropdown
+    if (currentUser?.roleId <= ROLES.ADMIN) {
+      return roles.filter(role => role.id >= ROLES.ADMIN);
+    }
+    
+    return roles;
+  };
+
+  // Filter config for AdminFilter component
+  const filterConfig = [
+    {
+      key: "search",
+      type: "search",
+      label: "Tìm kiếm",
+      placeholder: "Nhập tên đăng nhập, email hoặc họ tên...",
+      icon: "fas fa-search"
+    },
+    {
+      key: "role",
+      type: "select",
+      label: "Vai trò",
+      icon: "fas fa-user-tag",
+      options: getFilteredRoles().map(role => ({
+        value: role.id,
+        label: role.name
+      }))
+    },
+    {
+      key: "status",
+      type: "select",
+      label: "Trạng thái",
+      icon: "fas fa-toggle-on",
+      options: [
+        { value: "active", label: "Hoạt động" },
+        { value: "inactive", label: "Tạm khóa" }
+      ]
+    }
+  ];
+
+  // Handle filters change
+  const handleFiltersChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
 
   // Debounce search - đợi user gõ xong
   useEffect(() => {
@@ -68,79 +125,73 @@ const UserManagement = () => {
     const timer = setTimeout(() => {
       setSearchDebounce(filters.search);
       setIsSearching(false);
-    }, 800);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [filters.search]);
 
-  const loadUsers = useCallback(async () => {
-    try {
+  // Load data function (following NewsList pattern)
+  const loadData = async (showLoadingIndicator = true) => {
+    if (showLoadingIndicator) {
       setIsLoading(true);
-      // Mock data for now - replace with real API
-      const mockUsers = [
-        {
-          id: 1,
-          username: "superadmin",
-          fullName: "Super Administrator", 
-          email: "superadmin@company.com",
-          phone: "+84123456789",
-          roleId: 1,
-          roleName: "superadmin",
-          status: "active",
-          lastLogin: "2024-08-20T10:30:00Z",
-          createdAt: "2024-01-01T00:00:00Z"
-        },
-        {
-          id: 2,
-          username: "admin",
-          fullName: "System Admin",
-          email: "admin@company.com", 
-          phone: "+84987654321",
-          roleId: 2,
-          roleName: "admin",
-          status: "active",
-          lastLogin: "2024-08-20T09:15:00Z",
-          createdAt: "2024-02-01T00:00:00Z"
-        },
-        {
-          id: 3,
-          username: "editor1",
-          fullName: "Content Editor 1",
-          email: "editor1@company.com",
-          phone: "+84555666777", 
-          roleId: 3,
-          roleName: "editor",
-          status: "active",
-          lastLogin: "2024-08-19T16:45:00Z",
-          createdAt: "2024-03-01T00:00:00Z"
-        },
-        {
-          id: 4,
-          username: "editor2",
-          fullName: "Content Editor 2",
-          email: "editor2@company.com",
-          phone: "+84111222333",
-          roleId: 3,
-          roleName: "editor", 
-          status: "inactive",
-          lastLogin: "2024-08-15T14:20:00Z",
-          createdAt: "2024-04-01T00:00:00Z"
-        }
-      ];
-      
-      setUsers(mockUsers);
-      showToast("Tải danh sách người dùng thành công", "success");
-    } catch (error) {
-      console.error("Error loading users:", error);
-      showToast("Không thể tải danh sách người dùng", "error");
-    } finally {
-      setIsLoading(false);
     }
+    try {
+      const [usersData, rolesData] = await Promise.all([
+        fetchUsers(currentPage, itemsPerPage, searchDebounce, filters, sortConfig),
+        getRoles({ size: 100 })
+      ]);
+
+      // Handle users data (fetchUsers returns direct data, not wrapped in status/data)
+      const mappedUsers = (usersData?.items || []).map(user => ({
+        id: user.id,
+        username: user.username,
+        fullName: user.fullName,
+        email: user.email,
+        phone: user.phone,
+        roleId: user.roleId,
+        roleName: user.roleName,
+        status: user.status,
+        lastLogin: user.lastLogin,
+        createdAt: user.createdAt
+      }));
+      
+      setUsers(mappedUsers);
+      setTotalItems(usersData?.totalItems || 0);
+      setTotalPages(usersData?.totalPages || 0);
+
+      // Handle roles data
+      if (rolesData && rolesData.data && rolesData.data.items) {
+        console.log('Roles data received:', rolesData.data.items);
+        setRoles(rolesData.data.items);
+      } else {
+        console.log('No roles data or invalid format:', rolesData);
+      }
+
+    } catch (error) {
+      console.error("Load data failed:", error);
+      showToast("Tải dữ liệu thất bại: " + error.message, "error");
+    } finally {
+      if (showLoadingIndicator) {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  // Load data when component mounts
+  useEffect(() => {
+    loadData();
   }, []);
 
+  // Load data when pagination/filters/sorting change
   useEffect(() => {
-    loadUsers();
-  }, [loadUsers]);
+    if (searchDebounce !== filters.search) {
+      // Search is still being debounced, don't show loading
+      loadData(false);
+    } else {
+      // Other filters or pagination changed, show loading
+      loadData(true);
+    }
+  }, [currentPage, itemsPerPage, searchDebounce, filters.role, filters.status, sortConfig]);
 
   const showToast = (message, type = "info") => {
     setToast({ show: true, message, type });
@@ -153,12 +204,19 @@ const UserManagement = () => {
   const handleCreate = () => {
     setEditMode(false);
     setEditingUser(null);
+    
+    // Get default role - lowest privilege role available to current user
+    const availableRoles = getFilteredRoles();
+    const defaultRoleId = availableRoles.length > 0 
+      ? availableRoles[availableRoles.length - 1].id  // Last role (highest ID = lowest privilege)
+      : 3; // Fallback to Editor if no roles available
+    
     setFormData({
       username: "",
       email: "",
       fullName: "",
       phone: "",
-      roleId: 3,
+      roleId: defaultRoleId,
       status: "active",
     });
     setFormErrors({});
@@ -195,11 +253,17 @@ const UserManagement = () => {
 
     if (window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.fullName}"?`)) {
       try {
-        // Call delete API here
-        setUsers(users.filter(u => u.id !== user.id));
-        showToast("Xóa người dùng thành công", "success");
+        const response = await deleteUser(user.id);
+        
+        if (response.status === 1) {
+          showToast("Xóa người dùng thành công", "success");
+          loadData(false); // Reload data from server without loading indicator
+        } else {
+          throw new Error(response.message || "Xóa thất bại");
+        }
       } catch (error) {
-        showToast("Không thể xóa người dùng", "error");
+        console.error("Delete error:", error);
+        showToast(error.message || "Không thể xóa người dùng", "error");
       }
     }
   };
@@ -215,6 +279,11 @@ const UserManagement = () => {
       errors.fullName = "Họ tên là bắt buộc";
     }
     
+    // Email required for create user
+    if (!editMode && !formData.email) {
+      errors.email = "Email là bắt buộc";
+    }
+    
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Email không hợp lệ";
     }
@@ -227,33 +296,70 @@ const UserManagement = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+  const handleSubmit = async () => {
     if (!validateForm()) return;
 
     try {
       if (editMode) {
-        // Update user
-        const updatedUser = { ...editingUser, ...formData };
-        setUsers(users.map(u => u.id === editingUser.id ? updatedUser : u));
-        showToast("Cập nhật người dùng thành công", "success");
-      } else {
-        // Create user
-        const newUser = {
-          ...formData,
-          id: Math.max(...users.map(u => u.id)) + 1,
-          roleName: getAllRoles().find(r => r.id === formData.roleId)?.name || 'editor',
-          lastLogin: null,
-          createdAt: new Date().toISOString()
+        // Update user - theo UpdateUserDto
+        const updateData = {
+          id: editingUser.id,
+          username: formData.username,
+          fullName: formData.fullName,
+          email: formData.email || null,
+          phone: formData.phone || null,
+          roleId: formData.roleId,
+          status: formData.status === "active" ? 1 : 0
         };
-        setUsers([...users, newUser]);
-        showToast("Tạo người dùng thành công", "success");
+        
+        const response = await updateUser(updateData);
+        
+        if (response.status === 1) {
+          showToast("Cập nhật người dùng thành công", "success");
+          loadData(false); // Reload data from server without loading indicator
+        } else {
+          throw new Error(response.message || "Cập nhật thất bại");
+        }
+      } else {
+        // Create user - theo CreateUserDto
+        // Get default role if not selected
+        let roleId = formData.roleId;
+        if (!roleId) {
+          const availableRoles = getFilteredRoles();
+          roleId = availableRoles.length > 0 
+            ? availableRoles[availableRoles.length - 1].id  // Lowest privilege role
+            : 3; // Fallback
+        }
+        
+        const createData = {
+          username: formData.username,
+          password: "123456", // Default password
+          fullName: formData.fullName,
+          email: formData.email, // Required theo document
+          phone: formData.phone || null,
+          roleId: roleId,
+          status: formData.status === "active" ? 1 : 0
+        };
+
+        // Validate email required
+        if (!createData.email) {
+          throw new Error("Email là bắt buộc khi tạo người dùng mới");
+        }
+        
+        const response = await createUser(createData);
+        
+        if (response.Status === 1) {
+          showToast("Tạo người dùng thành công", "success");
+          loadData(false); // Reload data from server without loading indicator
+        } else {
+          throw new Error(response.Message || "Tạo thất bại");
+        }
       }
       
       setShowModal(false);
     } catch (error) {
-      showToast(editMode ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng", "error");
+      console.error("Submit error:", error);
+      showToast(error.message || (editMode ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng"), "error");
     }
   };
 
@@ -318,7 +424,7 @@ const UserManagement = () => {
     <div style={{ display: "flex", gap: "0.5rem" }}>
       <button
         className="admin-btn admin-btn-outline-secondary"
-        onClick={loadUsers}
+        onClick={() => loadData(true)}
         disabled={isLoading}
         style={{
           display: "flex",
@@ -389,121 +495,59 @@ const UserManagement = () => {
     <PageWrapper actions={pageActions}>
       <div className="admin-contact-list">
         {/* Filters Section */}
-        <div className="filters-section">
-          <div className="filters-title">
-            <i className="fas fa-filter"></i>
-            Bộ lọc & Tìm kiếm
-          </div>
-          <div className="filters-grid">
-            <div className="filter-group">
-              <label>
-                {isSearching ? (
-                  <i className="fas fa-spinner fa-spin"></i>
-                ) : (
-                  <i className="fas fa-search"></i>
-                )} Tìm kiếm
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Nhập tên đăng nhập, email hoặc họ tên..."
-                value={filters.search}
-                onChange={(e) => {
-                  const newSearch = e.target.value;
-                  setFilters((prev) => ({ ...prev, search: newSearch }));
-                  setCurrentPage(1);
-                }}
-              />
-            </div>
-            <div className="filter-group">
-              <label><i className="fas fa-user-tag"></i> Vai trò</label>
-              <select
-                className="form-control"
-                value={filters.role}
-                onChange={(e) => {
-                  setFilters((prev) => ({ ...prev, role: e.target.value }));
-                  setCurrentPage(1);
-                }}
-              >
-                <option key="all-roles" value="">Tất cả vai trò</option>
-                <option key="superadmin" value="1">Super Admin</option>
-                <option key="admin" value="2">Admin</option>
-                <option key="editor" value="3">Editor</option>
-              </select>
-            </div>
-            <div className="filter-group">
-              <label><i className="fas fa-toggle-on"></i> Trạng thái</label>
-              <select
-                className="form-control"
-                value={filters.status}
-                onChange={(e) => {
-                  setFilters((prev) => ({ ...prev, status: e.target.value }));
-                  setCurrentPage(1);
-                }}
-              >
-                <option key="all-status" value="">Tất cả trạng thái</option>
-                <option key="active" value="active">Hoạt động</option>
-                <option key="inactive" value="inactive">Tạm khóa</option>
-              </select>
-            </div>
-            <div className="filter-actions">
-              <button
-                className="admin-btn admin-btn-primary"
-                onClick={() => {
-                  setFilters({
-                    search: "",
-                    role: "",
-                    status: "",
-                  });
-                  setCurrentPage(1);
-                }}
-                title="Xóa tất cả bộ lọc"
-              >
-                <i className="fas fa-eraser"></i>
-                Xóa lọc
-              </button>
-            </div>
-          </div>
-        </div>
+        <AdminFilter
+          filters={filters}
+          onFiltersChange={handleFiltersChange}
+          onPageChange={setCurrentPage}
+          filterConfig={filterConfig}
+          isSearching={isSearching}
+        />
 
         {/* Table Container */}
-        <div className="table-container">
-          <DataTable
-            data={users}
-            columns={columns}
-            actions={[
-              {
-                label: "Sửa",
-                onClick: handleEdit,
-                className: "admin-btn admin-btn-xs admin-btn-info",
-                condition: (row) => canModifyUser(currentUser, row).canEdit
-              },
-              {
-                label: "Xóa",
-                onClick: handleDelete,
-                className: "admin-btn admin-btn-xs admin-btn-danger",
-                condition: (row) => canModifyUser(currentUser, row).canDelete
-              }
-            ]}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-            itemsPerPage={itemsPerPage}
-            sortConfig={sortConfig}
-            onSort={setSortConfig}
-            filters={filters}
-            searchFields={["username", "fullName", "email"]}
-          />
-        </div>
+        <AdminTable
+          data={users}
+          columns={columns}
+          actions={[
+            {
+              label: "Sửa",
+              onClick: handleEdit,
+              className: "admin-btn admin-btn-xs admin-btn-info",
+              condition: (row) => canModifyUser(currentUser, row).canEdit
+            },
+            {
+              label: "Xóa",
+              onClick: handleDelete,
+              className: "admin-btn admin-btn-xs admin-btn-danger",
+              condition: (row) => canModifyUser(currentUser, row).canDelete
+            }
+          ]}
+          sortConfig={sortConfig}
+          onSort={(key) => {
+            setSortConfig((prev) => ({
+              key,
+              direction: prev.key === key && prev.direction === "desc" ? "asc" : "desc",
+            }));
+          }}
+          pagination={{
+            currentPage,
+            totalPages,
+            totalItems,
+            itemsPerPage,
+            onPageChange: setCurrentPage
+          }}
+          loading={isLoading}
+        />
 
         {/* Form Modal */}
         <FormModal
           show={showModal}
           onClose={() => setShowModal(false)}
+          onSubmit={handleSubmit}
           title={editMode ? "Chỉnh sửa người dùng" : "Thêm người dùng mới"}
           size="lg"
-          showActions={false}
+          submitText={editMode ? "Cập nhật" : "Thêm mới"}
+          loading={isLoading}
         >
-          <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group">
                 <label>Tên đăng nhập *</label>
@@ -512,7 +556,6 @@ const UserManagement = () => {
                   className={`form-control ${formErrors.username ? 'is-invalid' : ''}`}
                   value={formData.username}
                   onChange={(e) => setFormData({...formData, username: e.target.value})}
-                  disabled={editMode}
                 />
                 {formErrors.username && (
                   <div className="invalid-feedback">{formErrors.username}</div>
@@ -533,12 +576,13 @@ const UserManagement = () => {
               </div>
 
               <div className="form-group">
-                <label>Email</label>
+                <label>Email {!editMode && <span className="text-danger">*</span>}</label>
                 <input
                   type="email"
                   className={`form-control ${formErrors.email ? 'is-invalid' : ''}`}
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  required={!editMode}
                 />
                 {formErrors.email && (
                   <div className="invalid-feedback">{formErrors.email}</div>
@@ -562,9 +606,9 @@ const UserManagement = () => {
                   value={formData.roleId}
                   onChange={(e) => setFormData({...formData, roleId: parseInt(e.target.value)})}
                 >
-                  {getAssignableRoles(currentUser).map((role) => (
-                    <option key={role.value} value={role.value}>
-                      {role.label}
+                  {getFilteredRoles().map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.name}
                     </option>
                   ))}
                 </select>
@@ -582,24 +626,6 @@ const UserManagement = () => {
                 </select>
               </div>
             </div>
-            
-            <div className="form-actions">
-              <button
-                type="button"
-                className="admin-btn admin-btn-secondary"
-                onClick={() => setShowModal(false)}
-              >
-                Hủy
-              </button>
-              <button
-                type="submit"
-                className="admin-btn admin-btn-primary"
-                disabled={isLoading}
-              >
-                {editMode ? "Cập nhật" : "Thêm mới"}
-              </button>
-            </div>
-          </form>
         </FormModal>
 
         <ToastMessage

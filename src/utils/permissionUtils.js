@@ -3,12 +3,10 @@
  * Using roleId for permission checking
  */
 
-// Role constants
-export const ROLES = {
-  SUPERADMIN: 1,  // Super Admin - Full access
-  ADMIN: 2,       // Admin - Most features  
-  EDITOR: 3       // Editor - Limited access
-};
+import { ROLES } from '../contexts/AuthContext';
+
+// Re-export ROLES for backward compatibility
+export { ROLES };
 
 /**
  * Check if user has required permission level

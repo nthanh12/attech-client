@@ -15,16 +15,20 @@ const ServiceList = () => {
       try {
         setLoading(true);
         const servicesResponse = await getServices({ limit: 50 });
-        
+
         if (servicesResponse.success && servicesResponse.data.length > 0) {
-          const formattedServices = servicesResponse.data.map(service => {
+          const formattedServices = servicesResponse.data.map((service) => {
             return {
               id: service.id,
               slug: currentLanguage === "vi" ? service.slugVi : service.slugEn,
-              title: currentLanguage === "vi" ? service.titleVi : service.titleEn,
-              description: currentLanguage === "vi" ? service.descriptionVi : service.descriptionEn,
-              image: service.imageUrl || '/images/default-service.jpg',
-              status: service.status
+              title:
+                currentLanguage === "vi" ? service.titleVi : service.titleEn,
+              description:
+                currentLanguage === "vi"
+                  ? service.descriptionVi
+                  : service.descriptionEn,
+              image: service.imageUrl,
+              status: service.status,
             };
           });
           setServices(formattedServices);

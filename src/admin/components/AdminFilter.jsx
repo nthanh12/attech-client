@@ -66,6 +66,10 @@ const AdminFilter = ({
               placeholder={placeholder}
               value={value}
               onChange={(e) => handleFilterChange(key, e.target.value)}
+              autoComplete="off"
+              spellCheck="false"
+              autoCorrect="off"
+              autoCapitalize="off"
             />
           </div>
         );
@@ -150,7 +154,11 @@ const AdminFilter = ({
         Bộ lọc & Tìm kiếm
       </div>
       <div className="filters-grid">
-        {filterConfig.map(config => renderFilterInput(config))}
+        {filterConfig.map((config, index) => (
+          <React.Fragment key={config.key || index}>
+            {renderFilterInput(config)}
+          </React.Fragment>
+        ))}
         <div className="filter-actions">
           <button
             className="btn btn-primary"

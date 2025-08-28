@@ -538,6 +538,27 @@
   margin: 20px 0;
 }
 
+/* WordPress image alignment classes */
+.notification-detail-page .article-content img.aligncenter,
+.notification-detail-page .article-content .aligncenter img {
+  display: block !important;
+  margin: 20px auto !important;
+  text-align: center !important;
+  max-width: 100% !important;
+  width: auto !important;
+}
+
+.notification-detail-page .article-content p img.aligncenter {
+  margin: 20px auto !important;
+}
+
+.notification-detail-page .article-content img[style*="margin-left: auto"][style*="margin-right: auto"] {
+  display: block !important;
+  margin: 20px auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+}
+
 .notification-detail-page .article-content ul,
 .notification-detail-page .article-content ol {
   margin: 1rem 0;

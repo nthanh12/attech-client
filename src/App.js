@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import "./styles/content-formatting.css";
 import LocalizedRoutes from "./routes/LocalizedRoutes";
-import Admin from "./routes/Admin";
+import { AdminRoutes } from "./admin";
 import { useLocation } from "react-router-dom";
 import ChatWidget from "./components/Shared/ChatWidget/ChatWidget";
 import BackToTopButton from "./components/Shared/Navigation/BackToTopButton/BackToTopButton";
@@ -29,7 +29,7 @@ const AppContent = () => {
   return (
     <>
       <Routes>
-        <Route path="/admin/*" element={<Admin />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
         <Route path="*" element={<LocalizedRoutes />} />
       </Routes>
       {!isAdminRoute && (

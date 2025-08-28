@@ -61,7 +61,7 @@ const ServiceList = () => {
     const timer = setTimeout(() => {
       setSearchDebounce(filters.search);
       setIsSearching(false);
-    }, 800);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [filters.search]);

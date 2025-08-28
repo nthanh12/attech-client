@@ -105,7 +105,7 @@ export async function getNotificationBySlug(slug, language = "vi") {
 // Get notification categories for client-side
 export async function getNotificationCategories() {
   try {
-    const response = await api.get("/api/notification-category/find-all");
+    const response = await api.get("/api/notification-category/client/find-all");
     
     if (
       response.data &&

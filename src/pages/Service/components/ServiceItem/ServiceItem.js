@@ -5,16 +5,24 @@ import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 
 const ServiceItem = ({ id, slug, title, description, image }) => {
   const { t, currentLanguage } = useI18n();
-  
+
   return (
     <article className="card service-item">
       <div className="service-img">
         <img
-          src={image && image.startsWith('http') ? image : `${process.env.PUBLIC_URL || ''}${image || '/images/default-service.jpg'}`}
-          alt={currentLanguage === 'vi' ? `Hình ảnh minh họa cho dịch vụ ${title}` : `Image for ${title} service`}
+          src={
+            image && image.startsWith("http")
+              ? image
+              : `${process.env.PUBLIC_URL || ""}${image}`
+          }
+          alt={
+            currentLanguage === "vi"
+              ? `Hình ảnh cho dịch vụ ${title}`
+              : `Image for ${title} service`
+          }
           loading="lazy"
           onError={(e) => {
-            e.target.src = `${process.env.PUBLIC_URL || ''}/images/default-service.jpg`;
+            e.target.src = "";
           }}
         />
         <div className="service-overlay">
@@ -29,9 +37,13 @@ const ServiceItem = ({ id, slug, title, description, image }) => {
           routeKey="SERVICE_DETAIL"
           params={{ slug }}
           className="service-detail-btn"
-          aria-label={currentLanguage === 'vi' ? `Xem chi tiết về dịch vụ ${title}` : `View details about ${title} service`}
+          aria-label={
+            currentLanguage === "vi"
+              ? `Xem chi tiết về dịch vụ ${title}`
+              : `View details about ${title} service`
+          }
         >
-          <span>{t('frontend.services.viewDetails')}</span>
+          <span>{t("frontend.services.viewDetails")}</span>
         </LocalizedLink>
       </div>
     </article>

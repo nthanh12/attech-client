@@ -1,0 +1,61 @@
+.json-viewer {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background: #f8f9fa;
+  margin: 1rem 0;
+}
+
+.json-viewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  background: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.json-viewer-header h6 {
+  margin: 0;
+  color: #495057;
+  font-weight: 600;
+}
+
+.json-viewer-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.json-viewer-content {
+  padding: 1rem;
+  margin: 0;
+  background: #ffffff;
+  border-radius: 0 0 8px 8px;
+  overflow-x: auto;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #495057;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.json-viewer-content::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.json-viewer-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.json-viewer-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.json-viewer-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
