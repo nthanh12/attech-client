@@ -13,6 +13,7 @@ import { tinymceConfig } from "../../config/tinymceConfig";
 import { uploadFiles, FileType, EntityType } from "../../services/fileService";
 import { createProduct, updateProduct } from "../../services/productService";
 import { getApiUrl } from "../../config/apiConfig";
+import { processWysiwygContent } from "../../utils/contentUtils";
 import ToastMessage from "./ToastMessage";
 import "./ProductCreationForm.css";
 
@@ -38,8 +39,8 @@ const ProductCreationForm = ({
     titleEn: editingProduct?.titleEn || "",
     descriptionVi: editingProduct?.descriptionVi || "",
     descriptionEn: editingProduct?.descriptionEn || "",
-    contentVi: editingProduct?.contentVi || "",
-    contentEn: editingProduct?.contentEn || "",
+    contentVi: editingProduct?.contentVi ? processWysiwygContent(editingProduct.contentVi) : "",
+    contentEn: editingProduct?.contentEn ? processWysiwygContent(editingProduct.contentEn) : "",
     slugVi: editingProduct?.slugVi || "",
     slugEn: editingProduct?.slugEn || "",
     productCategoryId: editingProduct?.productCategoryId || "",

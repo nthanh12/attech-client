@@ -1,5 +1,6 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
+import { processWysiwygContent } from "../utils/contentUtils";
 
 // Real category IDs from your database (adjust these based on your product categories)
 export const PRODUCT_CATEGORY_IDS = {
@@ -607,12 +608,16 @@ export function formatProductForDisplay(productItem, language = "vi") {
   if (!productItem) return null;
   
   const isVietnamese = language === "vi";
+  let displayContent = isVietnamese ? (productItem.contentVi || productItem.contentEn) : (productItem.contentEn || productItem.contentVi);
+  
+  // Process WYSIWYG content to convert relative image paths to full URLs
+  displayContent = processWysiwygContent(displayContent);
   
   return {
     ...productItem,
     displayTitle: isVietnamese ? (productItem.titleVi || productItem.titleEn) : (productItem.titleEn || productItem.titleVi),
     displayDescription: isVietnamese ? (productItem.descriptionVi || productItem.descriptionEn) : (productItem.descriptionEn || productItem.descriptionVi),
-    displayContent: isVietnamese ? (productItem.contentVi || productItem.contentEn) : (productItem.contentEn || productItem.contentVi),
+    displayContent,
     displaySlug: isVietnamese ? (productItem.slugVi || productItem.slugEn) : (productItem.slugEn || productItem.slugVi),
     displayCategoryTitle: isVietnamese ? (productItem.productCategoryTitleVi || productItem.productCategoryTitleEn) : (productItem.productCategoryTitleEn || productItem.productCategoryTitleVi),
     displayCategorySlug: isVietnamese ? (productItem.productCategorySlugVi || productItem.productCategorySlugEn) : (productItem.productCategorySlugEn || productItem.productCategorySlugVi),

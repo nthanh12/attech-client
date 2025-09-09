@@ -8,11 +8,15 @@ import "../../../../styles/swiper-custom.css";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { useI18n } from "../../../../hooks/useI18n";
 import { Link } from "react-router-dom";
-import { getLatestNews, getNewsCategories, formatNewsForDisplay } from "../../../../services/clientNewsService";
+import {
+  getLatestNews,
+  getNewsCategories,
+  formatNewsForDisplay,
+} from "../../../../services/clientNewsService";
 
 function formatDate(isoString, lang) {
   const d = new Date(isoString);
-  return d.toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US');
+  return d.toLocaleDateString(lang === "vi" ? "vi-VN" : "en-US");
 }
 
 const AlertBox = () => {
@@ -27,9 +31,9 @@ const AlertBox = () => {
         setLoading(true);
         const [categoriesData, newsData] = await Promise.all([
           getNewsCategories(),
-          getLatestNews(12)
+          getLatestNews(12),
         ]);
-        
+
         setCategories(categoriesData);
         setLatestNews(newsData);
       } catch (error) {
@@ -74,13 +78,17 @@ const AlertBox = () => {
         ) : (
           latestNews.map((item) => {
             const formattedItem = formatNewsForDisplay(item, currentLanguage);
-            const category = categories.find(cat => cat.id === item.newsCategoryId);
-            const categorySlug = currentLanguage === 'vi' ? category?.slugVi : category?.slugEn;
-            
-            const link = currentLanguage === 'vi'
-              ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-              : `/en/news/${categorySlug}/${formattedItem.slug}`;
-              
+            const category = categories.find(
+              (cat) => cat.id === item.newsCategoryId
+            );
+            const categorySlug =
+              currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+
+            const link =
+              currentLanguage === "vi"
+                ? `/tin-tuc/${formattedItem.slug}.html`
+                : `/en/news/${formattedItem.slug}.html`;
+
             return (
               <SwiperSlide key={item.id}>
                 <Link
@@ -89,18 +97,26 @@ const AlertBox = () => {
                 >
                   <div className="wrap-item">
                     <div className="item-img" title={formattedItem.title}>
-                      <img 
-                        src={formattedItem.imageUrl || '/images/default-news.jpg'} 
-                        alt={formattedItem.title} 
+                      <img
+                        src={
+                          formattedItem.imageUrl || "/images/default-news.jpg"
+                        }
+                        alt={formattedItem.title}
                         loading="lazy"
                         onError={(e) => {
-                          e.target.src = '/images/default-news.jpg';
+                          e.target.src = "/images/default-news.jpg";
                         }}
                       />
                     </div>
-                    <div className="item-description" title={formattedItem.title}>
+                    <div
+                      className="item-description"
+                      title={formattedItem.title}
+                    >
                       <p className="item-time">
-                        <i className="fa fa-calendar-days" aria-hidden="true"></i>{" "}
+                        <i
+                          className="fa fa-calendar-days"
+                          aria-hidden="true"
+                        ></i>{" "}
                         {formattedItem.formattedDate}
                       </p>
                       <p className="item-text">{formattedItem.title}</p>

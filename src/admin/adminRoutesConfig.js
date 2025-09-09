@@ -22,6 +22,7 @@ import UserManagement from './pages/UserManagement.jsx';
 // PermissionManagement removed - using UserLevel system only
 import RoleManagement from './pages/RoleManagement.jsx';
 import AccountManagement from './pages/AccountManagement.jsx';
+import MenuManagement from './pages/MenuManagement.jsx';
 
 const adminRoutesConfig = [
   {
@@ -50,6 +51,7 @@ const adminRoutesConfig = [
       { path: 'config', element: ConfigBanner },
       { path: 'system-settings', element: SystemSettings },
       { path: 'seo', element: SEOManagement },
+      { path: 'menu', element: MenuManagement },
       { path: 'account', element: AccountManagement },
       { path: '*', element: NotFound },
     ],

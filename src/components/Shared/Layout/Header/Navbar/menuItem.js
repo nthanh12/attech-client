@@ -1,4 +1,5 @@
-const menuItems = [
+// Fallback menu items in case API fails
+const fallbackMenuItems = [
   {
     key: "home",
     labelVi: "Trang chủ",
@@ -469,4 +470,4 @@ const menuItems = [
   },
 ];
 
-export default menuItems;
+export default fallbackMenuItems;

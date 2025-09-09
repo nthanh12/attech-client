@@ -18,7 +18,7 @@ import "./NewsListPage.css";
 const NewsListPage = () => {
   const { currentLanguage } = useI18n();
   const { t } = useTranslation();
-  const { category } = useParams();
+  const { category, parent } = useParams();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,11 +61,15 @@ const NewsListPage = () => {
         const categoriesData = await getNewsCategories();
         setCategories(categoriesData);
 
-        // Find current category
+        // Find current category - handle both 1-level and 2-level routing
         if (category) {
+          // For 2-level routing: /tin-tuc/parent/category
+          const targetSlug = parent ? category : category;
+
           const foundCategory = categoriesData.find(
             (cat) =>
-              (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
+              (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) ===
+              targetSlug
           );
           setCurrentCategory(foundCategory);
         } else {
@@ -79,7 +83,7 @@ const NewsListPage = () => {
     };
 
     loadCategories();
-  }, [category, currentLanguage]);
+  }, [category, parent, currentLanguage]);
 
   // Load news data when category, page, or search changes
   useEffect(() => {
@@ -118,9 +122,13 @@ const NewsListPage = () => {
               pageSize: itemsPerPage,
             });
           } else {
-            // Regular category mode - try using the new slug endpoint first
+            // Regular category mode - handle both 1-level and 2-level routing
+            // For 2-level: use the actual category slug (final segment)
+            // For 1-level: use the category slug directly
+            const targetSlug = category;
+
             try {
-              response = await getNewsByCategorySlug(category, {
+              response = await getNewsByCategorySlug(targetSlug, {
                 pageIndex: currentPage,
                 pageSize: itemsPerPage,
               });
@@ -233,7 +241,7 @@ const NewsListPage = () => {
     <div className="news-list-root news-list-page newslist-minimal">
       <div className="container">
         <h1 className="page-title-minimal">{getCategoryTitle()}</h1>
-        <div className="search-container">
+        <div className="search-box-container">
           <SearchBox
             value={searchTerm}
             onChange={handleSearchChange}
@@ -257,8 +265,8 @@ const NewsListPage = () => {
                   <LocalizedLink
                     to={
                       currentLanguage === "vi"
-                        ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                        : `/en/news/${categorySlug}/${formattedItem.slug}`
+                        ? `/tin-tuc/${formattedItem.slug}.html`
+                        : `/en/news/${formattedItem.slug}.html`
                     }
                     className="newslist-img-link-minimal"
                   >
@@ -279,8 +287,8 @@ const NewsListPage = () => {
                     <LocalizedLink
                       to={
                         currentLanguage === "vi"
-                          ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                          : `/en/news/${categorySlug}/${formattedItem.slug}`
+                          ? `/tin-tuc/${formattedItem.slug}.html`
+                          : `/en/news/${formattedItem.slug}.html`
                       }
                       className="newslist-title-minimal clamp-2-lines"
                       title={formattedItem.title}

@@ -67,9 +67,9 @@ const Feature = () => {
             </div>
             <div className="feature-text">
               <h3>{t("frontend.home.services.cns.title")}</h3>
-              <p className="feature-desc">
+              {/* <p className="feature-desc">
                 {t("frontend.home.services.cns.description")}
-              </p>
+              </p> */}
             </div>
           </div>
         </LocalizedLink>
@@ -93,9 +93,9 @@ const Feature = () => {
             </div>
             <div className="feature-text">
               <h3>{t("frontend.home.services.flight.title")}</h3>
-              <p className="feature-desc">
+              {/* <p className="feature-desc">
                 {t("frontend.home.services.flight.description")}
-              </p>
+              </p> */}
             </div>
           </div>
         </LocalizedLink>
@@ -110,9 +110,9 @@ const Feature = () => {
             </div>
             <div className="feature-text">
               <h3>{t("frontend.home.services.industry.title")}</h3>
-              <p className="feature-desc">
+              {/* <p className="feature-desc">
                 {t("frontend.home.services.industry.description")}
-              </p>
+              </p> */}
             </div>
           </div>
         </LocalizedLink>
@@ -162,8 +162,8 @@ const Feature = () => {
                     <LocalizedLink
                       to={
                         currentLanguage === "vi"
-                          ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                          : `/en/news/${categorySlug}/${formattedItem.slug}`
+                          ? `/tin-tuc/${formattedItem.slug}.html`
+                          : `/en/news/${formattedItem.slug}.html`
                       }
                       style={{ textDecoration: "none", color: "inherit" }}
                     >

@@ -33,6 +33,8 @@ const NotificationCategory = () => {
     slugVi: "",
     slugEn: "",
     status: "active",
+    parentId: null,
+    order: 0,
   };
 
   const fieldsToCompare = [
@@ -43,6 +45,8 @@ const NotificationCategory = () => {
     "descriptionVi",
     "descriptionEn",
     "status",
+    "parentId",
+    "order",
   ];
 
   const {
@@ -80,6 +84,8 @@ const NotificationCategory = () => {
             : item.status === 1
             ? "active"
             : "inactive",
+        parentId: item.parentId || null,
+        order: item.order || 0,
       };
 
       console.log("🔍 handleEditCategory - Mapped item:", mappedItem);
@@ -173,6 +179,8 @@ const NotificationCategory = () => {
           slugVi: item.slugVi || "",
           slugEn: item.slugEn || "",
           status: item.status === 1 ? "active" : "inactive",
+          parentId: item.parentId || null,
+          order: item.order || 0,
         }));
 
         setCategories(mappedCategories);
@@ -186,6 +194,11 @@ const NotificationCategory = () => {
     fetchData();
   }, []);
 
+  // Helper function to get available parent options (excluding current category)
+  const getAvailableParentOptions = () => {
+    return categories.filter(cat => cat.id !== currentCategory.id);
+  };
+
   const validateForm = () => {
     const newErrors = {};
     const errorMessages = [];
@@ -198,6 +211,18 @@ const NotificationCategory = () => {
     if (!currentCategory.titleEn.trim()) {
       newErrors.titleEn = "Tên danh mục tiếng Anh là bắt buộc";
       errorMessages.push("Tên danh mục tiếng Anh là bắt buộc");
+    }
+
+    // Validate parentId - cannot be self
+    if (currentCategory.parentId && parseInt(currentCategory.parentId) === currentCategory.id) {
+      newErrors.parentId = "Không thể chọn chính nó làm danh mục cha";
+      errorMessages.push("Không thể chọn chính nó làm danh mục cha");
+    }
+
+    // Validate order - must be >= 0
+    if (currentCategory.order < 0) {
+      newErrors.order = "Thứ tự phải là số không âm";
+      errorMessages.push("Thứ tự phải là số không âm");
     }
 
     setErrors(newErrors);
@@ -256,6 +281,8 @@ const NotificationCategory = () => {
                   ? {
                       ...item,
                       ...updatedData,
+                      parentId: responseData.parentId || null,
+                      order: responseData.order || 0,
                     }
                   : item
               )
@@ -289,6 +316,8 @@ const NotificationCategory = () => {
               slugVi: responseData.slugVi || "",
               slugEn: responseData.slugEn || "",
               status: responseData.status === 1 ? "active" : "inactive",
+              parentId: responseData.parentId || null,
+              order: responseData.order || 0,
             };
             console.log("📝 New category to add:", newCategory);
             setCategories((prev) => [newCategory, ...prev]);
@@ -404,19 +433,24 @@ const NotificationCategory = () => {
       label: "Tên danh mục (VI)",
       sortable: true,
       width: "200px",
-      render: (row) => (
-        <div
-          style={{
-            maxWidth: "180px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            title: row.titleVi,
-          }}
-        >
-          {row.titleVi || "-"}
-        </div>
-      ),
+      render: (row) => {
+        const parentCategory = categories.find(c => c.id === row.parentId);
+        const hierarchyIndicator = row.parentId ? '├─ ' : '📁 ';
+        
+        return (
+          <div
+            style={{
+              maxWidth: "180px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              title: row.titleVi,
+            }}
+          >
+            {hierarchyIndicator}{row.titleVi || "-"}
+          </div>
+        );
+      },
     },
     {
       key: "titleEn",
@@ -435,6 +469,39 @@ const NotificationCategory = () => {
         >
           {row.titleEn || "-"}
         </div>
+      ),
+    },
+    {
+      key: "parentId",
+      label: "Danh mục cha",
+      sortable: true,
+      width: "150px",
+      render: (row) => {
+        const parentCategory = categories.find(c => c.id === row.parentId);
+        return (
+          <div
+            style={{
+              maxWidth: "130px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              title: parentCategory?.titleVi,
+            }}
+          >
+            {parentCategory ? parentCategory.titleVi : "-"}
+          </div>
+        );
+      },
+    },
+    {
+      key: "order",
+      label: "Thứ tự",
+      sortable: true,
+      width: "100px",
+      render: (row) => (
+        <span className="badge badge-info">
+          {row.order || 0}
+        </span>
       ),
     },
     {
@@ -644,6 +711,49 @@ const NotificationCategory = () => {
               {/* Common fields - 2 columns layout */}
               <div className="form-section">
                 <h4>Cài đặt chung</h4>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Danh mục cha</label>
+                    <select
+                      value={currentCategory.parentId || ''}
+                      onChange={(e) =>
+                        handleInputChangeWithSlug("parentId", e.target.value || null)
+                      }
+                      className={errors.parentId ? "error" : ""}
+                    >
+                      <option value="">-- Danh mục gốc --</option>
+                      {getAvailableParentOptions().map((category) => (
+                        <option key={category.id} value={category.id}>
+                          {category.titleVi}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.parentId && (
+                      <span className="error-text">{errors.parentId}</span>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label>Thứ tự</label>
+                    <input
+                      type="number"
+                      value={currentCategory.order}
+                      onChange={(e) =>
+                        handleInputChangeWithSlug("order", parseInt(e.target.value) || 0)
+                      }
+                      className={errors.order ? "error" : ""}
+                      min="0"
+                      placeholder="0"
+                    />
+                    {errors.order && (
+                      <span className="error-text">{errors.order}</span>
+                    )}
+                    <small className="form-text">
+                      Thứ tự hiển thị (0 = hiển thị đầu tiên)
+                    </small>
+                  </div>
+                </div>
 
                 <div className="form-row">
                   <div className="form-group">

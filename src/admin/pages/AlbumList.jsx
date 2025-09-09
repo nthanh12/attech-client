@@ -438,14 +438,14 @@ const AlbumList = () => {
                   </div>
                   <div className="album-actions">
                     <button
-                      className="admin-btn admin-btn-sm admin-btn-outline-primary"
+                      className="admin-btn admin-btn-xs admin-btn-outline-primary"
                       onClick={() => handleEdit(album)}
                       title="Chỉnh sửa"
                     >
                       <i className="fas fa-edit"></i>
                     </button>
                     <button
-                      className="admin-btn admin-btn-sm admin-btn-outline-danger"
+                      className="admin-btn admin-btn-xs admin-btn-outline-danger"
                       onClick={() => handleDelete(album)}
                       title="Xóa"
                     >

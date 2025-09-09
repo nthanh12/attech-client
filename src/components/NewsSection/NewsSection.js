@@ -87,8 +87,8 @@ const NewsSection = () => {
                   <LocalizedLink
                     to={
                       currentLanguage === "vi"
-                        ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                        : `/en/news/${categorySlug}/${formattedItem.slug}`
+                        ? `/tin-tuc/${formattedItem.slug}.html`
+                        : `/en/news/${formattedItem.slug}.html`
                     }
                   >
                     <img
@@ -124,8 +124,8 @@ const NewsSection = () => {
                     <LocalizedLink
                       to={
                         currentLanguage === "vi"
-                          ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                          : `/en/news/${categorySlug}/${formattedItem.slug}`
+                          ? `/tin-tuc/${formattedItem.slug}.html`
+                          : `/en/news/${formattedItem.slug}.html`
                       }
                     >
                       {formattedItem.title}

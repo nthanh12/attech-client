@@ -9,29 +9,37 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
-import { getNewsByCategory, getNewsCategories, formatNewsForDisplay, CATEGORY_IDS } from "../../../../services/clientNewsService";
+import {
+  getNewsByCategory,
+  getNewsCategories,
+  formatNewsForDisplay,
+  CATEGORY_IDS,
+} from "../../../../services/clientNewsService";
 
 const TrendingArea = () => {
   const { t, currentLanguage } = useI18n();
   const [newsData, setNewsData] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
         const categoriesData = await getNewsCategories();
         setCategories(categoriesData);
-        
+
         // Use Company Activities category ID directly
-        const newsResponse = await getNewsByCategory(CATEGORY_IDS.COMPANY_ACTIVITIES, {
-          pageIndex: 1,
-          pageSize: 15, // Get enough for all sections
-          sortBy: "timePosted",
-          sortDirection: "desc"
-        });
-        
+        const newsResponse = await getNewsByCategory(
+          CATEGORY_IDS.COMPANY_ACTIVITIES,
+          {
+            pageIndex: 1,
+            pageSize: 15, // Get enough for all sections
+            sortBy: "timePosted",
+            sortDirection: "desc",
+          }
+        );
+
         setNewsData(newsResponse.items);
       } catch (error) {
         console.error("Error loading trending area data:", error);
@@ -45,12 +53,13 @@ const TrendingArea = () => {
 
   const getNewsLink = (item) => {
     const formattedItem = formatNewsForDisplay(item, currentLanguage);
-    const category = categories.find(cat => cat.id === item.newsCategoryId);
-    const categorySlug = currentLanguage === 'vi' ? category?.slugVi : category?.slugEn;
-    
-    return currentLanguage === 'vi'
-      ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-      : `/en/news/${categorySlug}/${formattedItem.slug}`;
+    const category = categories.find((cat) => cat.id === item.newsCategoryId);
+    const categorySlug =
+      currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+
+    return currentLanguage === "vi"
+      ? `/tin-tuc/${formattedItem.slug}.html`
+      : `/en/news/${formattedItem.slug}.html`;
   };
 
   const trendingTop = newsData.slice(0, 3);
@@ -63,8 +72,14 @@ const TrendingArea = () => {
           <div className="row">
             <div className="col-12 pd_0">
               <div className="section-tittle">
-                <h3>{t('frontend.home.newsCategories.companyActivities')}</h3>
-                <ViewAllButton to={currentLanguage === 'vi' ? '/tin-tuc/hoat-dong-cong-ty' : '/en/news/company-activities'} />
+                <h3>{t("frontend.home.newsCategories.companyActivities")}</h3>
+                <ViewAllButton
+                  to={
+                    currentLanguage === "vi"
+                      ? "/tin-tuc/hoat-dong-cong-ty"
+                      : "/en/news/company-activities"
+                  }
+                />
               </div>
             </div>
           </div>
@@ -81,16 +96,22 @@ const TrendingArea = () => {
                   navigation={true}
                 >
                   {trendingTop.map((item) => {
-                    const formattedItem = formatNewsForDisplay(item, currentLanguage);
+                    const formattedItem = formatNewsForDisplay(
+                      item,
+                      currentLanguage
+                    );
                     return (
                       <SwiperSlide key={item.id}>
                         <div className="trend-top-img">
                           <img
-                            src={formattedItem.imageUrl || '/images/default-news.jpg'}
+                            src={
+                              formattedItem.imageUrl ||
+                              "/images/default-news.jpg"
+                            }
                             alt={formattedItem.title}
                             title={formattedItem.title}
                             onError={(e) => {
-                              e.target.src = '/images/default-news.jpg';
+                              e.target.src = "/images/default-news.jpg";
                             }}
                           />
                           <div className="trend-top-cap">
@@ -115,17 +136,23 @@ const TrendingArea = () => {
                   className="trending-bottom-swiper"
                 >
                   {trendingBottom.map((item) => {
-                    const formattedItem = formatNewsForDisplay(item, currentLanguage);
+                    const formattedItem = formatNewsForDisplay(
+                      item,
+                      currentLanguage
+                    );
                     return (
                       <SwiperSlide key={item.id}>
                         <div className="single-bottom">
                           <div className="trend-bottom-img">
                             <img
-                              src={formattedItem.imageUrl || '/images/default-news.jpg'}
+                              src={
+                                formattedItem.imageUrl ||
+                                "/images/default-news.jpg"
+                              }
                               alt={formattedItem.title}
                               title={formattedItem.title}
                               onError={(e) => {
-                                e.target.src = '/images/default-news.jpg';
+                                e.target.src = "/images/default-news.jpg";
                               }}
                             />
                           </div>
@@ -177,17 +204,23 @@ const TrendingArea = () => {
                 }}
               >
                 {trendingRight.map((item) => {
-                  const formattedItem = formatNewsForDisplay(item, currentLanguage);
+                  const formattedItem = formatNewsForDisplay(
+                    item,
+                    currentLanguage
+                  );
                   return (
                     <SwiperSlide key={item.id}>
                       <div className="trand-right-single d-flex">
                         <div className="trand-right-img">
                           <img
-                            src={formattedItem.imageUrl || '/images/default-news.jpg'}
+                            src={
+                              formattedItem.imageUrl ||
+                              "/images/default-news.jpg"
+                            }
                             alt={formattedItem.title}
                             title={formattedItem.title}
                             onError={(e) => {
-                              e.target.src = '/images/default-news.jpg';
+                              e.target.src = "/images/default-news.jpg";
                             }}
                           />
                         </div>

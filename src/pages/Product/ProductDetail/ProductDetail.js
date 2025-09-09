@@ -70,7 +70,7 @@ const ProductDetail = () => {
   }
 
   const getContent = () => {
-    return currentLanguage === "vi" ? product.contentVi : product.contentEn;
+    return product.displayContent || (currentLanguage === "vi" ? product.contentVi : product.contentEn);
   };
 
   const formatFileSize = (bytes) => {

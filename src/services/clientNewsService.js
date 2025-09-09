@@ -1,5 +1,6 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
+import { processWysiwygContent } from "../utils/contentUtils";
 
 // Real category IDs from your database (updated based on API response)
 export const CATEGORY_IDS = {
@@ -547,7 +548,10 @@ export function formatNewsForDisplay(newsItem, language = "vi") {
   let content = language === "en" ? newsItem.contentEn : newsItem.contentVi;
   const slug = language === "en" ? newsItem.slugEn : newsItem.slugVi;
 
-  // Process content to inject images from attachments
+  // Process WYSIWYG content to convert relative image paths to full URLs
+  content = processWysiwygContent(content);
+
+  // Process content to inject images from attachments (if any)
   content = processContentWithAttachments(content, newsItem.attachments);
 
   return {

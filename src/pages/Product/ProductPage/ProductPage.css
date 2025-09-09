@@ -73,6 +73,22 @@
   margin-left: 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 576px) {
+  .page-product .product-content {
+    padding: 10px;
+  }
   
+  .section-header {
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .section-header h2 {
+    font-size: 18px;
+  }
+  
+  .section-header .general-text {
+    font-size: 13px;
+    padding: 0 5px;
+  }
 }

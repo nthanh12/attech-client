@@ -1,5 +1,6 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
+import { processWysiwygContent } from "../utils/contentUtils";
 
 // Real category IDs from your database (adjust these based on your notification categories)
 export const NOTIFICATION_CATEGORY_IDS = {
@@ -462,7 +463,10 @@ export function formatNotificationForDisplay(notificationItem, language = "vi") 
   let content = language === "en" ? notificationItem.contentEn : notificationItem.contentVi;
   const slug = language === "en" ? notificationItem.slugEn : notificationItem.slugVi;
 
-  // Process content to inject images from attachments
+  // Process WYSIWYG content to convert relative image paths to full URLs
+  content = processWysiwygContent(content);
+
+  // Process content to inject images from attachments (if any)
   content = processContentWithAttachments(content, notificationItem.attachments);
 
   // Debug logging để kiểm tra API response

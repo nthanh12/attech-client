@@ -2,9 +2,15 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import sanitizeHtml from "sanitize-html";
-import { getNewsBySlug, getNewsCategories, getRelatedNews, formatNewsForDisplay } from "../../../services/clientNewsService";
+import {
+  getNewsBySlug,
+  getNewsCategories,
+  getRelatedNews,
+  formatNewsForDisplay,
+} from "../../../services/clientNewsService";
 import { useI18n } from "../../../hooks/useI18n";
 import { getLanguageFromPath } from "../../../utils/routeHelpers";
+import { getApiBaseUrl } from "../../../config/apiConfig";
 import LocalizedLink from "../../../components/Shared/LocalizedLink";
 import SearchBox from "../../../components/Shared/SearchBox";
 import ErrorPage from "../../../components/Shared/ErrorPage";
@@ -18,26 +24,31 @@ const NewsDetailPage = () => {
 
   // Helper functions for attachments
   const formatFileSize = (bytes) => {
-    if (!bytes || bytes === 0) return '0 B';
+    if (!bytes || bytes === 0) return "0 B";
     const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const sizes = ["B", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const getFileTypeDisplay = (contentType) => {
-    if (!contentType) return 'Unknown';
-    if (contentType.includes('pdf')) return 'PDF';
-    if (contentType.includes('word')) return 'Word';
-    if (contentType.includes('excel') || contentType.includes('spreadsheet')) return 'Excel';
-    if (contentType.includes('powerpoint') || contentType.includes('presentation')) return 'PowerPoint';
-    if (contentType.includes('image')) return 'Image';
-    if (contentType.includes('text')) return 'Text';
-    return contentType.split('/')[1]?.toUpperCase() || 'File';
+    if (!contentType) return "Unknown";
+    if (contentType.includes("pdf")) return "PDF";
+    if (contentType.includes("word")) return "Word";
+    if (contentType.includes("excel") || contentType.includes("spreadsheet"))
+      return "Excel";
+    if (
+      contentType.includes("powerpoint") ||
+      contentType.includes("presentation")
+    )
+      return "PowerPoint";
+    if (contentType.includes("image")) return "Image";
+    if (contentType.includes("text")) return "Text";
+    return contentType.split("/")[1]?.toUpperCase() || "File";
   };
   const location = useLocation();
   const navigate = useNavigate();
-  const { category: categorySlug, slug: newsSlug } = useParams();
+  const { slug: newsSlug } = useParams();
   const isEnglish = getLanguageFromPath(location.pathname) === "en";
   const [newsItem, setNewsItem] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -53,60 +64,63 @@ const NewsDetailPage = () => {
     setSearchTerm(value);
   }, []);
 
-  const handleSearch = useCallback((term) => {
-    if (term.trim()) {
-      // Navigate to news list page with search
-      const url = currentLanguage === "vi" ? `/tin-tuc?search=${encodeURIComponent(term)}` : `/en/news?search=${encodeURIComponent(term)}`;
-      navigate(url);
-    }
-  }, [navigate, currentLanguage]);
+  const handleSearch = useCallback(
+    (term) => {
+      if (term.trim()) {
+        // Navigate to news list page with search
+        const url =
+          currentLanguage === "vi"
+            ? `/tin-tuc?search=${encodeURIComponent(term)}`
+            : `/en/news?search=${encodeURIComponent(term)}`;
+        navigate(url);
+      }
+    },
+    [navigate, currentLanguage]
+  );
 
-  const handleSelectSuggestion = useCallback((suggestion) => {
-    // Navigate directly to the selected news article
-    const category = categories.find(cat => cat.id === suggestion.newsCategoryId);
-    const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
-    
-    if (categorySlug && suggestion.slug) {
-      const url = currentLanguage === "vi" 
-        ? `/tin-tuc/${categorySlug}/${suggestion.slug}`
-        : `/en/news/${categorySlug}/${suggestion.slug}`;
-      navigate(url);
-    }
-  }, [navigate, currentLanguage, categories]);
+  const handleSelectSuggestion = useCallback(
+    (suggestion) => {
+      // Navigate directly to the selected news article
+      const category = categories.find(
+        (cat) => cat.id === suggestion.newsCategoryId
+      );
+      const categorySlug =
+        currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+
+      if (categorySlug && suggestion.slug) {
+        const url =
+          currentLanguage === "vi"
+            ? `/tin-tuc/${suggestion.slug}.html`
+            : `/en/news/${suggestion.slug}.html`;
+        navigate(url);
+      }
+    },
+    [navigate, currentLanguage, categories]
+  );
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        
-        // Load categories first
-        const categoriesData = await getNewsCategories();
+
+        // Load categories and news data in parallel
+        const [categoriesData, newsData] = await Promise.all([
+          getNewsCategories(),
+          getNewsBySlug(newsSlug, isEnglish ? "en" : "vi"),
+        ]);
+
         setCategories(categoriesData);
-        
-        // Find category by slug
-        const category = categoriesData.find(cat => 
-          isEnglish ? cat.slugEn === categorySlug : cat.slugVi === categorySlug
+        setNewsItem(newsData);
+
+        // Load related news
+        const related = await getRelatedNews(
+          newsData.id,
+          newsData.newsCategoryId,
+          5
         );
-        
-        if (!category) {
-          setError("Category not found");
-          return;
-        }
+        setRelatedNews(related);
 
-        // Try to get news by slug
-        try {
-          const newsData = await getNewsBySlug(newsSlug, isEnglish ? "en" : "vi");
-          setNewsItem(newsData);
-          
-          // Load related news
-          const related = await getRelatedNews(newsData.id, newsData.newsCategoryId, 5);
-          setRelatedNews(related);
-          
-          setError(null);
-        } catch (slugError) {
-          setError("Article not found");
-        }
-
+        setError(null);
       } catch (err) {
         console.error("Error loading news detail:", err);
         setError("Error loading article");
@@ -117,7 +131,7 @@ const NewsDetailPage = () => {
     };
 
     loadData();
-  }, [categorySlug, newsSlug, isEnglish]);
+  }, [newsSlug, isEnglish]);
 
   // Generate Table of Contents from content headings
   useEffect(() => {
@@ -170,8 +184,6 @@ const NewsDetailPage = () => {
     };
   }, [newsItem]);
 
-
-
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString(
       currentLanguage === "vi" ? "vi-VN" : "en-GB",
@@ -187,17 +199,26 @@ const NewsDetailPage = () => {
   const getTitle = () => (isEnglish ? newsItem?.titleEn : newsItem?.titleVi);
   const getDescription = () =>
     isEnglish ? newsItem?.descriptionEn : newsItem?.descriptionVi;
-  const getContent = () =>
-    isEnglish ? newsItem?.contentEn : newsItem?.contentVi;
+  const getContent = () => {
+    const formattedItem = formatNewsForDisplay(
+      newsItem,
+      isEnglish ? "en" : "vi"
+    );
+    return formattedItem?.content;
+  };
   const getCategoryName = () => {
     if (!newsItem?.newsCategoryId) return "";
-    const category = categories.find(cat => cat.id === newsItem.newsCategoryId);
+    const category = categories.find(
+      (cat) => cat.id === newsItem.newsCategoryId
+    );
     return isEnglish ? category?.titleEn : category?.titleVi;
   };
-  
+
   const getCategorySlug = () => {
     if (!newsItem?.newsCategoryId) return "";
-    const category = categories.find(cat => cat.id === newsItem.newsCategoryId);
+    const category = categories.find(
+      (cat) => cat.id === newsItem.newsCategoryId
+    );
     return isEnglish ? category?.slugEn : category?.slugVi;
   };
 
@@ -222,7 +243,7 @@ const NewsDetailPage = () => {
         suggestions={[
           "Kiểm tra lại đường link",
           "Tìm kiếm tin tức khác",
-          "Quay lại trang danh sách tin tức"
+          "Quay lại trang danh sách tin tức",
         ]}
         type="news"
         backRoute="HOME"
@@ -240,8 +261,8 @@ const NewsDetailPage = () => {
         description={getDescription() || getTitle()}
         url={
           currentLanguage === "vi"
-            ? `/tin-tuc/${categorySlug}/${newsSlug}`
-            : `/en/news/${categorySlug}/${newsSlug}`
+            ? `/tin-tuc/${newsSlug}`
+            : `/en/news/${newsSlug}`
         }
       />
       <div className="news-detail-page">
@@ -260,22 +281,30 @@ const NewsDetailPage = () => {
                 style={{ minWidth: "100%", fontSize: 14 }}
               />
             </div>
-            
+
             <h3>{tNews("frontend.news.relatedNews")}</h3>
             <ul>
               {relatedNews.length > 0 ? (
                 relatedNews.map((n) => {
-                  const formattedItem = formatNewsForDisplay(n, currentLanguage);
-                  const category = categories.find(cat => cat.id === n.newsCategoryId);
-                  const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
-                  
+                  const formattedItem = formatNewsForDisplay(
+                    n,
+                    currentLanguage
+                  );
+                  const category = categories.find(
+                    (cat) => cat.id === n.newsCategoryId
+                  );
+                  const categorySlug =
+                    currentLanguage === "vi"
+                      ? category?.slugVi
+                      : category?.slugEn;
+
                   return (
                     <li key={n.id}>
                       <Link
                         to={
                           currentLanguage === "vi"
-                            ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                            : `/en/news/${categorySlug}/${formattedItem.slug}`
+                            ? `/tin-tuc/${formattedItem.slug}.html`
+                            : `/en/news/${formattedItem.slug}.html`
                         }
                         className={n.id === newsItem?.id ? "active" : ""}
                       >
@@ -342,18 +371,23 @@ const NewsDetailPage = () => {
 
               {/* Article Image */}
               {(() => {
-                const formattedItem = formatNewsForDisplay(newsItem, currentLanguage);
-                return formattedItem?.imageUrl && (
-                  <div className="article-image">
-                    <img
-                      src={formattedItem.imageUrl}
-                      alt={getTitle()}
-                      title={getTitle()}
-                      onError={(e) => {
-                        e.target.src = '/images/default-news.jpg';
-                      }}
-                    />
-                  </div>
+                const formattedItem = formatNewsForDisplay(
+                  newsItem,
+                  currentLanguage
+                );
+                return (
+                  formattedItem?.imageUrl && (
+                    <div className="article-image">
+                      <img
+                        src={formattedItem.imageUrl}
+                        alt={getTitle()}
+                        title={getTitle()}
+                        onError={(e) => {
+                          e.target.src = "/images/default-news.jpg";
+                        }}
+                      />
+                    </div>
+                  )
                 );
               })()}
 
@@ -431,93 +465,118 @@ const NewsDetailPage = () => {
               {newsItem?.attachments && (
                 <div className="article-attachments">
                   {/* Image Attachments */}
-                  {newsItem.attachments.images && newsItem.attachments.images.length > 0 && (
-                    <div className="attachments-section">
-                      <h3 className="attachments-title">
-                        <i className="bi bi-images"></i>
-                        Hình ảnh đính kèm
-                      </h3>
-                      <div className="attachments-gallery">
-                        {(showAllImages ? newsItem.attachments.images : newsItem.attachments.images.slice(0, 6))
-                          .map((img, index) => (
-                          <div key={img.id || index} className="attachment-item image-item">
-                            <img
-                              src={img.url?.startsWith('http') 
-                                ? img.url 
-                                : `${process.env.REACT_APP_API_URL}${img.url || `/api/attachments/${img.id}`}`
-                              }
-                              alt={img.originalFileName || `Image ${index + 1}`}
-                              className="attachment-image"
-                              loading="lazy"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                      {newsItem.attachments.images.length > 6 && (
-                        <div className="show-more-images">
-                          <button
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={() => setShowAllImages(!showAllImages)}
-                          >
-                            <i className={`bi bi-${showAllImages ? 'chevron-up' : 'images'}`}></i>
-                            {showAllImages 
-                              ? 'Ẩn bớt ảnh' 
-                              : `Xem thêm ${newsItem.attachments.images.length - 6} ảnh`
-                            }
-                          </button>
+                  {newsItem.attachments.images &&
+                    newsItem.attachments.images.length > 0 && (
+                      <div className="attachments-section">
+                        <h3 className="attachments-title">
+                          <i className="bi bi-images"></i>
+                          Hình ảnh đính kèm
+                        </h3>
+                        <div className="attachments-gallery">
+                          {(showAllImages
+                            ? newsItem.attachments.images
+                            : newsItem.attachments.images.slice(0, 6)
+                          ).map((img, index) => (
+                            <div
+                              key={img.id || index}
+                              className="attachment-item image-item"
+                            >
+                              <img
+                                src={
+                                  img.url?.startsWith("http")
+                                    ? img.url
+                                    : `${getApiBaseUrl()}${img.url}`
+                                }
+                                alt={
+                                  img.originalFileName || `Image ${index + 1}`
+                                }
+                                className="attachment-image"
+                                loading="lazy"
+                              />
+                            </div>
+                          ))}
                         </div>
-                      )}
-                    </div>
-                  )}
+                        {newsItem.attachments.images.length > 6 && (
+                          <div className="show-more-images">
+                            <button
+                              className="btn btn-outline-primary btn-sm"
+                              onClick={() => setShowAllImages(!showAllImages)}
+                            >
+                              <i
+                                className={`bi bi-${
+                                  showAllImages ? "chevron-up" : "images"
+                                }`}
+                              ></i>
+                              {showAllImages
+                                ? "Ẩn bớt ảnh"
+                                : `Xem thêm ${
+                                    newsItem.attachments.images.length - 6
+                                  } ảnh`}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                   {/* Document Attachments */}
-                  {newsItem.attachments.documents && newsItem.attachments.documents.length > 0 && (
-                    <div className="attachments-section">
-                      <h3 className="attachments-title">
-                        <i className="bi bi-paperclip"></i>
-                        Tài liệu đính kèm
-                      </h3>
-                      <div className="attachments-list">
-                        {newsItem.attachments.documents.map((doc, index) => (
-                          <div 
-                            key={doc.id || index} 
-                            className="attachment-item document-item clickable"
-                            onClick={() => {
-                              const url = doc.url?.startsWith('http') 
-                                ? doc.url 
-                                : `${process.env.REACT_APP_API_URL}${doc.url}`;
-                              window.open(url, '_blank', 'noopener,noreferrer');
-                            }}
-                            style={{ cursor: 'pointer' }}
-                            title="Click để xem tài liệu"
-                          >
-                            <div className="attachment-icon">
-                              {doc.contentType?.includes('pdf') ? (
-                                <i className="bi bi-file-pdf text-danger"></i>
-                              ) : doc.contentType?.includes('word') ? (
-                                <i className="bi bi-file-word text-primary"></i>
-                              ) : doc.contentType?.includes('excel') ? (
-                                <i className="bi bi-file-excel text-success"></i>
-                              ) : (
-                                <i className="bi bi-file-text"></i>
-                              )}
-                            </div>
-                            <div className="attachment-info">
-                              <h4 className="attachment-name">{doc.originalFileName || doc.fileName || 'Document'}</h4>
-                              <div className="attachment-meta">
-                                <span className="attachment-size">
-                                  {doc.fileSize ? formatFileSize(doc.fileSize) : 'N/A'}
-                                </span>
-                                <span className="attachment-type">
-                                  {getFileTypeDisplay(doc.contentType)}
-                                </span>
+                  {newsItem.attachments.documents &&
+                    newsItem.attachments.documents.length > 0 && (
+                      <div className="attachments-section">
+                        <h3 className="attachments-title">
+                          <i className="bi bi-paperclip"></i>
+                          Tài liệu đính kèm
+                        </h3>
+                        <div className="attachments-list">
+                          {newsItem.attachments.documents.map((doc, index) => (
+                            <div
+                              key={doc.id || index}
+                              className="attachment-item document-item clickable"
+                              onClick={() => {
+                                const url = doc.url?.startsWith("http")
+                                  ? doc.url
+                                  : `${process.env.REACT_APP_API_URL}${doc.url}`;
+                                window.open(
+                                  url,
+                                  "_blank",
+                                  "noopener,noreferrer"
+                                );
+                              }}
+                              style={{ cursor: "pointer" }}
+                              title="Click để xem tài liệu"
+                            >
+                              <div className="attachment-icon">
+                                {doc.contentType?.includes("pdf") ? (
+                                  <i className="bi bi-file-pdf text-danger"></i>
+                                ) : doc.contentType?.includes("word") ? (
+                                  <i className="bi bi-file-word text-primary"></i>
+                                ) : doc.contentType?.includes("excel") ? (
+                                  <i className="bi bi-file-excel text-success"></i>
+                                ) : (
+                                  <i className="bi bi-file-text"></i>
+                                )}
+                              </div>
+                              <div className="attachment-info">
+                                <h4 className="attachment-name">
+                                  {doc.originalFileName ||
+                                    doc.fileName ||
+                                    "Document"}
+                                </h4>
+                                <div className="attachment-meta">
+                                  <span className="attachment-size">
+                                    {doc.fileSize
+                                      ? formatFileSize(doc.fileSize)
+                                      : "N/A"}
+                                  </span>
+                                  <span className="attachment-type">
+                                    {getFileTypeDisplay(doc.contentType)}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               )}
 
@@ -546,7 +605,6 @@ const NewsDetailPage = () => {
                 </div>
               </footer>
             </article>
-
           </div>
         </div>
       </div>

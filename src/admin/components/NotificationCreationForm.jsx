@@ -12,6 +12,7 @@ import {
 import { tinymceConfig } from "../../config/tinymceConfig";
 import { createNotification, updateNotification } from "../../services/notificationService";
 import { getApiUrl } from "../../config/apiConfig";
+import { processWysiwygContent } from "../../utils/contentUtils";
 import ToastMessage from "./ToastMessage";
 import "./NotificationCreationForm.css";
 
@@ -37,8 +38,8 @@ const NotificationCreationForm = ({
     titleEn: editingNotification?.titleEn || "",
     descriptionVi: editingNotification?.descriptionVi || "",
     descriptionEn: editingNotification?.descriptionEn || "",
-    contentVi: editingNotification?.contentVi || "",
-    contentEn: editingNotification?.contentEn || "",
+    contentVi: editingNotification?.contentVi ? processWysiwygContent(editingNotification.contentVi) : "",
+    contentEn: editingNotification?.contentEn ? processWysiwygContent(editingNotification.contentEn) : "",
     slugVi: editingNotification?.slugVi || "",
     slugEn: editingNotification?.slugEn || "",
     notificationCategoryId: editingNotification?.notificationCategoryId || "",

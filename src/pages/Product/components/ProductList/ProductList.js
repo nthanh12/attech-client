@@ -63,6 +63,19 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
 
+  // Thêm state để theo dõi kích thước màn hình
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Load products and categories from API
   useEffect(() => {
     const loadData = async () => {
@@ -287,7 +300,9 @@ const ProductList = () => {
     products: products.length, 
     filteredProducts: filteredProducts.length, 
     currentProducts: currentProducts.length,
-    loading 
+    loading,
+    viewMode,
+    windowWidth
   });
 
 
@@ -373,7 +388,14 @@ const ProductList = () => {
         </div>
       </div>
 
-      <div className={`attech-product-grid ${viewMode}`}>
+      <div 
+        className={`attech-product-grid ${viewMode} ${
+          windowWidth <= 480 ? 'force-mobile-tiny' 
+          : windowWidth <= 768 ? 'force-mobile' 
+          : windowWidth <= 992 ? 'force-tablet' 
+          : 'force-desktop'
+        }`}
+      >
         {loading ? (
           <div>Loading products...</div>
         ) : currentProducts.length > 0 ? (

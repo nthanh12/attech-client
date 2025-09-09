@@ -9,279 +9,280 @@ import { useTheme } from "../../../../../contexts/ThemeContext";
 import { useClickOutside } from "../../../../../hooks/useClickOutside";
 import LocalizedLink from "../../../LocalizedLink/LocalizedLink";
 import debounce from "lodash/debounce";
-import menuItems from "./menuItem";
+import GlobalSearch from "../../../GlobalSearch/GlobalSearch";
+import useMenuData from "../../../../../hooks/useMenuData";
 
 const SCROLL_THRESHOLD = 50;
 const MOBILE_BREAKPOINT = 1024;
 
-const useSearch = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+const useGlobalSearch = () => {
+  const [isGlobalSearchOpen, setIsGlobalSearchOpen] = useState(false);
 
-  const handleSearchClick = useCallback(() => {
-    setIsSearchOpen((prev) => !prev);
+  const handleGlobalSearchOpen = useCallback(() => {
+    setIsGlobalSearchOpen(true);
   }, []);
 
-  const handleSearchBlur = useCallback(() => {
-    const searchInput = document.querySelector(".search-input");
-    if (!searchInput?.value) {
-      setIsSearchOpen(false);
-    }
+  const handleGlobalSearchClose = useCallback(() => {
+    setIsGlobalSearchOpen(false);
   }, []);
 
-  return { isSearchOpen, handleSearchClick, handleSearchBlur };
+  return {
+    isGlobalSearchOpen,
+    handleGlobalSearchOpen,
+    handleGlobalSearchClose,
+  };
 };
 
 const NavbarTop = ({
-    closeMobileMenu,
-    isSearchOpen,
-    handleSearchClick,
-    handleSearchBlur,
-    isDarkMode,
-    toggleDarkMode,
-    language,
-    handleLanguageSwitch,
-    translate,
-    isMobile,
-    mobileOpen,
-    toggleMobileMenu,
-  }) => {
-    const mobileMenuRef = useRef(null);
+  closeMobileMenu,
+  isGlobalSearchOpen,
+  handleGlobalSearchOpen,
+  handleGlobalSearchClose,
+  isDarkMode,
+  toggleDarkMode,
+  language,
+  handleLanguageSwitch,
+  translate,
+  isMobile,
+  mobileOpen,
+  toggleMobileMenu,
+  menuData: rawMenuData,
+}) => {
+  const mobileMenuRef = useRef(null);
 
-    useEffect(() => {
-      if (mobileOpen) {
-        document.body.classList.add("mobile-menu-open");
-      } else {
-        document.body.classList.remove("mobile-menu-open");
-      }
-    }, [mobileOpen]);
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.classList.add("mobile-menu-open");
+    } else {
+      document.body.classList.remove("mobile-menu-open");
+    }
+  }, [mobileOpen]);
 
-    useClickOutside(mobileMenuRef, () => {
-      if (mobileOpen) {
+  useClickOutside(mobileMenuRef, () => {
+    if (mobileOpen) {
+      closeMobileMenu();
+    }
+  });
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape" && mobileOpen) {
         closeMobileMenu();
       }
-    });
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [mobileOpen, closeMobileMenu]);
 
-    useEffect(() => {
-      const handleEscape = (e) => {
-        if (e.key === "Escape" && mobileOpen) {
-          closeMobileMenu();
-        }
-      };
-      document.addEventListener("keydown", handleEscape);
-      return () => document.removeEventListener("keydown", handleEscape);
-    }, [mobileOpen, closeMobileMenu]);
-
-    return (
-      <div className="navbar-top">
-        <div className="navbar-container">
-          <div className="navbar-left">
-            <LocalizedLink
-              routeKey="HOME"
-              className="logo"
-              onClick={closeMobileMenu}
-              aria-label="Trang chủ"
+  return (
+    <div className="navbar-top">
+      <div className="navbar-container">
+        <div className="navbar-left">
+          <LocalizedLink
+            routeKey="HOME"
+            className="logo"
+            onClick={closeMobileMenu}
+            aria-label="Trang chủ"
+          >
+            <img
+              src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
+              alt="ATTECH Logo"
+              loading="eager"
+            />
+          </LocalizedLink>
+        </div>
+        <div className="navbar-right">
+          <button
+            className="navbar-toggle"
+            onClick={toggleMobileMenu}
+            aria-label={language === "vi" ? "Mở menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
+          >
+            <span className="hamburger-icon" aria-hidden="true">☰</span>
+          </button>
+          <div className="desktop-controls">
+            <button
+              className="search-button"
+              onClick={handleGlobalSearchOpen}
+              aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
+              title={language === "vi" ? "Tìm kiếm toàn cục" : "Global Search"}
             >
-              <img
-                src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
-                alt="ATTECH Logo"
-                loading="eager"
-              />
+              <i className="fa fa-search"></i>
+            </button>
+            <div className="language-switcher">
+              <button
+                className={`lang-btn ${language === "vi" ? "active" : ""}`}
+                onClick={handleLanguageSwitch("vi")}
+                title="Tiếng Việt"
+                aria-pressed={language === "vi"}
+              >
+                <img
+                  src={require("../../../../../assets/img/flags/vi.png")}
+                  alt="Tiếng Việt"
+                />
+              </button>
+              <button
+                className={`lang-btn ${language === "en" ? "active" : ""}`}
+                onClick={handleLanguageSwitch("en")}
+                title="English"
+                aria-pressed={language === "en"}
+              >
+                <img
+                  src={require("../../../../../assets/img/flags/eng.png")}
+                  alt="English"
+                />
+              </button>
+            </div>
+            <LocalizedLink
+              routeKey="LOGIN"
+              className="login-btn"
+              title={language === "vi" ? "Đăng nhập" : "Login"}
+              aria-label={language === "vi" ? "Đăng nhập" : "Login"}
+            >
+              <i className="fa fa-solid fa-user"></i>
             </LocalizedLink>
           </div>
-          <div className="navbar-right">
-            <button
-              className="navbar-toggle"
-              onClick={toggleMobileMenu}
-              aria-label={language === "vi" ? "Mở menu" : "Open menu"}
-              aria-expanded={mobileOpen}
-              aria-controls="mobile-menu"
-            >
-              <i className="hamburger-icon fas fa-bars" aria-hidden="true"></i>
-            </button>
-            <div className="desktop-controls">
-              {/* <div className={`search-container${isSearchOpen ? " open" : ""}`}>
-                <button
-                  className="search-button"
-                  onClick={handleSearchClick}
-                  aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
-                  aria-expanded={isSearchOpen}
-                >
-                  <i className="fa fa-search"></i>
-                </button>
-                {isSearchOpen && (
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder={
-                      language === "vi" ? "Tìm kiếm..." : "Search..."
-                    }
-                    aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
-                    onBlur={handleSearchBlur}
-                    autoFocus
-                  />
-                )}
-              </div> */}
-              <div className="language-switcher">
-                <button
-                  className={`lang-btn ${language === "vi" ? "active" : ""}`}
-                  onClick={handleLanguageSwitch("vi")}
-                  title="Tiếng Việt"
-                  aria-pressed={language === "vi"}
-                >
-                  <img
-                    src={require("../../../../../assets/img/flags/vi.png")}
-                    alt="Tiếng Việt"
-                  />
-                </button>
-                <button
-                  className={`lang-btn ${language === "en" ? "active" : ""}`}
-                  onClick={handleLanguageSwitch("en")}
-                  title="English"
-                  aria-pressed={language === "en"}
-                >
-                  <img
-                    src={require("../../../../../assets/img/flags/eng.png")}
-                    alt="English"
-                  />
-                </button>
-              </div>
+          <div
+            className={`mobile-menu${mobileOpen ? " open" : ""}`}
+            id="mobile-menu"
+            ref={mobileMenuRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={language === "vi" ? "Menu di động" : "Mobile menu"}
+          >
+            <div className="mobile-menu-header">
               <LocalizedLink
-                routeKey="LOGIN"
-                className="login-btn"
-                title={language === "vi" ? "Đăng nhập" : "Login"}
-                aria-label={language === "vi" ? "Đăng nhập" : "Login"}
+                routeKey="HOME"
+                className="logo"
+                onClick={closeMobileMenu}
+                aria-label="Trang chủ"
               >
-                <i className="fa fa-solid fa-user"></i>
+                <img
+                  src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
+                  alt="ATTECH Logo"
+                />
               </LocalizedLink>
+              <button
+                className="close-menu"
+                onClick={closeMobileMenu}
+                aria-label={language === "vi" ? "Đóng menu" : "Close menu"}
+              >
+                ×
+              </button>
             </div>
-            <div
-              className={`mobile-menu${mobileOpen ? " open" : ""}`}
-              id="mobile-menu"
-              ref={mobileMenuRef}
-              role="dialog"
-              aria-modal="true"
-              aria-label={language === "vi" ? "Menu di động" : "Mobile menu"}
-            >
-              <div className="mobile-menu-header">
-                <LocalizedLink
-                  routeKey="HOME"
-                  className="logo"
-                  onClick={closeMobileMenu}
-                  aria-label="Trang chủ"
-                >
-                  <img
-                    src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
-                    alt="ATTECH Logo"
-                  />
-                </LocalizedLink>
-                <button
-                  className="close-menu"
-                  onClick={closeMobileMenu}
-                  aria-label={language === "vi" ? "Đóng menu" : "Close menu"}
-                >
-                  ×
-                </button>
-              </div>
-              <div className="mobile-menu-content">
-                <div className="mobile-menu-footer">
-                  <div className="mobile-search">
-                    <input
-                      type="text"
-                      placeholder={
-                        language === "vi" ? "Tìm kiếm..." : "Search..."
-                      }
-                      aria-label={language === "vi" ? "Tìm kiếm" : "Search"}
-                    />
-                  </div>
-                  <div className="mobile-actions">
-                    <div className="language-switcher">
-                      <button
-                        className={`lang-btn ${
-                          language === "vi" ? "active" : ""
-                        }`}
-                        onClick={handleLanguageSwitch("vi")}
-                        title="Tiếng Việt"
-                        aria-pressed={language === "vi"}
-                      >
-                        <img
-                          src={require("../../../../../assets/img/flags/vi.png")}
-                          alt="Tiếng Việt"
-                        />
-                      </button>
-                      <button
-                        className={`lang-btn ${
-                          language === "en" ? "active" : ""
-                        }`}
-                        onClick={handleLanguageSwitch("en")}
-                        title="English"
-                        aria-pressed={language === "en"}
-                      >
-                        <img
-                          src={require("../../../../../assets/img/flags/eng.png")}
-                          alt="English"
-                        />
-                      </button>
-                    </div>
-                    <LocalizedLink
-                      routeKey="LOGIN"
-                      className="login-btn"
-                      title={language === "vi" ? "Đăng nhập" : "Login"}
-                      aria-label={language === "vi" ? "Đăng nhập" : "Login"}
-                      onClick={closeMobileMenu}
-                    >
-                      <i className="fa fa-solid fa-user login-user"></i>
-                    </LocalizedLink>
-                  </div>
+            <div className="mobile-menu-content">
+              <div className="mobile-menu-footer">
+                <div className="mobile-search">
+                  <button
+                    className="mobile-search-button"
+                    onClick={handleGlobalSearchOpen}
+                    aria-label={language === "vi" ? "Tìm kiếm toàn cục" : "Global Search"}
+                  >
+                    <i className="fa fa-search"></i>
+                    <span>{language === "vi" ? "Tìm kiếm..." : "Search..."}</span>
+                  </button>
                 </div>
-                <nav>
-                  <ul className="mobile-nav-items" role="menu" key={`mobile-menu-${language}`}>
-                    <MenuItems
-                      menuItems={menuItems}
-                      isMobile={true}
-                      closeMobileMenu={closeMobileMenu}
-                    />
-                  </ul>
-                </nav>
+                <div className="mobile-actions">
+                  <div className="language-switcher">
+                    <button
+                      className={`lang-btn ${
+                        language === "vi" ? "active" : ""
+                      }`}
+                      onClick={handleLanguageSwitch("vi")}
+                      title="Tiếng Việt"
+                      aria-pressed={language === "vi"}
+                    >
+                      <img
+                        src={require("../../../../../assets/img/flags/vi.png")}
+                        alt="Tiếng Việt"
+                      />
+                    </button>
+                    <button
+                      className={`lang-btn ${
+                        language === "en" ? "active" : ""
+                      }`}
+                      onClick={handleLanguageSwitch("en")}
+                      title="English"
+                      aria-pressed={language === "en"}
+                    >
+                      <img
+                        src={require("../../../../../assets/img/flags/eng.png")}
+                        alt="English"
+                      />
+                    </button>
+                  </div>
+                  <LocalizedLink
+                    routeKey="LOGIN"
+                    className="login-btn"
+                    title={language === "vi" ? "Đăng nhập" : "Login"}
+                    aria-label={language === "vi" ? "Đăng nhập" : "Login"}
+                    onClick={closeMobileMenu}
+                  >
+                    <i className="fa fa-solid fa-user login-user"></i>
+                  </LocalizedLink>
+                </div>
               </div>
+              <nav>
+                <ul
+                  className="mobile-nav-items"
+                  role="menu"
+                  key={`mobile-menu-${language}`}
+                >
+                  <MenuItems
+                    menuItems={rawMenuData}
+                    isMobile={true}
+                    closeMobileMenu={closeMobileMenu}
+                  />
+                </ul>
+              </nav>
             </div>
-            <div
-              className={`mobile-menu-backdrop${mobileOpen ? " open" : ""}`}
-              onClick={closeMobileMenu}
-              aria-hidden="true"
-            />
           </div>
-        </div>
-      </div>
-    );
-  };
-
-const NavbarBottom = ({ mobileOpen, toggleMobileMenu, isMobile, closeMobileMenu, language }) => (
-    <div className="navbar-menu-wrapper">
-      <div className="navbar-container">
-        <button
-          className="navbar-toggle"
-          onClick={toggleMobileMenu}
-          aria-label={language === "vi" ? "Mở menu" : "Open menu"}
-          aria-expanded={mobileOpen}
-          aria-controls="main-menu"
-        >
-          ☰
-        </button>
-        <ul
-          className={`nav-menu${mobileOpen ? " open" : ""}`}
-          id="main-menu"
-          role="menubar"
-          key={`navbar-menu-${language}`} // Force re-render with language
-        >
-          <MenuItems
-            menuItems={menuItems}
-            isMobile={isMobile}
-            closeMobileMenu={closeMobileMenu}
+          <div
+            className={`mobile-menu-backdrop${mobileOpen ? " open" : ""}`}
+            onClick={closeMobileMenu}
+            aria-hidden="true"
           />
-        </ul>
+        </div>
       </div>
     </div>
   );
+};
+
+const NavbarBottom = ({
+  mobileOpen,
+  toggleMobileMenu,
+  isMobile,
+  closeMobileMenu,
+  language,
+  menuData: rawMenuData,
+}) => (
+  <div className="navbar-menu-wrapper">
+    <div className="navbar-container">
+      <button
+        className="navbar-toggle"
+        onClick={toggleMobileMenu}
+        aria-label={language === "vi" ? "Mở menu" : "Open menu"}
+        aria-expanded={mobileOpen}
+        aria-controls="main-menu"
+      >
+        ☰
+      </button>
+      <ul
+        className={`nav-menu${mobileOpen ? " open" : ""}`}
+        id="main-menu"
+        role="menubar"
+        key={`navbar-menu-${language}`} // Force re-render with language
+      >
+        <MenuItems
+          menuItems={rawMenuData}
+          isMobile={isMobile}
+          closeMobileMenu={closeMobileMenu}
+        />
+      </ul>
+    </div>
+  </div>
+);
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -294,7 +295,18 @@ const Navbar = () => {
     location.pathname === "/en/";
   const { currentLanguage, changeLanguage } = useI18n();
   const { isDarkMode, toggleDarkMode } = useTheme();
-  const { isSearchOpen, handleSearchClick, handleSearchBlur } = useSearch();
+  const {
+    isGlobalSearchOpen,
+    handleGlobalSearchOpen,
+    handleGlobalSearchClose,
+  } = useGlobalSearch();
+  const { rawMenuData, loading: menuLoading } = useMenuData(currentLanguage);
+
+  // Debug menu data
+  console.log("=== NAVBAR MENU DEBUG ===");
+  console.log("Raw menu data:", rawMenuData);
+  console.log("Menu loading:", menuLoading);
+  console.log("Current language:", currentLanguage);
 
   useEffect(() => {
     if (!isHomePage) {
@@ -343,9 +355,9 @@ const Navbar = () => {
     >
       <NavbarTop
         closeMobileMenu={closeMobileMenu}
-        isSearchOpen={isSearchOpen}
-        handleSearchClick={handleSearchClick}
-        handleSearchBlur={handleSearchBlur}
+        isGlobalSearchOpen={isGlobalSearchOpen}
+        handleGlobalSearchOpen={handleGlobalSearchOpen}
+        handleGlobalSearchClose={handleGlobalSearchClose}
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
         language={currentLanguage}
@@ -353,6 +365,7 @@ const Navbar = () => {
         isMobile={isMobile}
         mobileOpen={mobileOpen}
         toggleMobileMenu={toggleMobileMenu}
+        menuData={rawMenuData}
       />
       {!isMobile && (
         <NavbarBottom
@@ -361,8 +374,13 @@ const Navbar = () => {
           isMobile={isMobile}
           closeMobileMenu={closeMobileMenu}
           language={currentLanguage}
+          menuData={rawMenuData}
         />
       )}
+      <GlobalSearch
+        isOpen={isGlobalSearchOpen}
+        onClose={handleGlobalSearchClose}
+      />
     </nav>
   );
 };

@@ -222,7 +222,7 @@ const SEOManagement = () => {
       render: (value, page) => (
         <div className="action-buttons">
           <button
-            className="admin-btn admin-btn-sm admin-btn-primary"
+            className="admin-btn admin-btn-xs admin-btn-primary"
             onClick={() => handleEdit(page)}
             title="Chỉnh sửa"
           >
@@ -230,7 +230,7 @@ const SEOManagement = () => {
             <span>Sửa</span>
           </button>
           <button
-            className="admin-btn admin-btn-sm admin-btn-danger"
+            className="admin-btn admin-btn-xs admin-btn-danger"
             onClick={() => handleDelete(page.id)}
             title="Xóa"
           >

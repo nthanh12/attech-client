@@ -1,5 +1,6 @@
 import api from "../api";
 import { getApiBaseUrl } from "../config/apiConfig";
+import { processWysiwygContent } from "../utils/contentUtils";
 
 // Service does not use categories per requirements
 
@@ -487,12 +488,16 @@ export function formatServiceForDisplay(serviceItem, language = "vi") {
   if (!serviceItem) return null;
   
   const isVietnamese = language === "vi";
+  let displayContent = isVietnamese ? (serviceItem.contentVi || serviceItem.contentEn) : (serviceItem.contentEn || serviceItem.contentVi);
+  
+  // Process WYSIWYG content to convert relative image paths to full URLs
+  displayContent = processWysiwygContent(displayContent);
   
   return {
     ...serviceItem,
     displayTitle: isVietnamese ? (serviceItem.titleVi || serviceItem.titleEn) : (serviceItem.titleEn || serviceItem.titleVi),
     displayDescription: isVietnamese ? (serviceItem.descriptionVi || serviceItem.descriptionEn) : (serviceItem.descriptionEn || serviceItem.descriptionVi),
-    displayContent: isVietnamese ? (serviceItem.contentVi || serviceItem.contentEn) : (serviceItem.contentEn || serviceItem.contentVi),
+    displayContent,
     displaySlug: isVietnamese ? (serviceItem.slugVi || serviceItem.slugEn) : (serviceItem.slugEn || serviceItem.slugVi),
     imageUrl: getServiceImageUrl(serviceItem),
     formattedDate: serviceItem.timePosted ? new Date(serviceItem.timePosted).toLocaleDateString(isVietnamese ? 'vi-VN' : 'en-US') : "",

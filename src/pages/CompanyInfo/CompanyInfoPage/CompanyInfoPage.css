@@ -1,5 +1,42 @@
 .page-company-info {
-    /* Các styles khác nếu có */
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Content area that adjusts based on sidebar state */
+.company-content {
+    flex: 1;
+    transition: margin-left 0.3s ease;
+    min-height: 100vh;
+    margin-left: 280px; /* Default expanded state */
+}
+
+.company-content.sidebar-expanded {
+    margin-left: 280px; /* Full sidebar width */
+}
+
+.company-content.sidebar-collapsed {
+    margin-left: 60px; /* Collapsed sidebar width */
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .company-content.sidebar-expanded,
+    .company-content.sidebar-collapsed {
+        margin-left: 0;
+        padding: 10px;
+    }
+    
+    /* Hide sidebar on mobile or make it overlay */
+    .page-company-info .sidebar-company-info {
+        transform: translateX(-100%);
+        z-index: 1000;
+    }
+    
+    .page-company-info .sidebar-company-info:not(.resize) {
+        transform: translateX(0);
+    }
 }
 
 .company-info-page {

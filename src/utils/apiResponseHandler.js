@@ -118,6 +118,8 @@ export const prepareCategoryData = (currentCategory) => {
     descriptionVi: currentCategory.descriptionVi?.trim() || "",
     descriptionEn: currentCategory.descriptionEn?.trim() || "",
     status: currentCategory.status === "active" ? 1 : 0,
+    parentId: currentCategory.parentId ? parseInt(currentCategory.parentId) : null,
+    order: parseInt(currentCategory.order) || 0,
   };
 
   console.log("📝 Prepared category data:", data);

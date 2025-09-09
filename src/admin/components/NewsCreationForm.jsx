@@ -12,6 +12,7 @@ import {
 import { tinymceConfig } from "../../config/tinymceConfig";
 import { createNews, updateNews } from "../../services/newsService";
 import { getApiUrl } from "../../config/apiConfig";
+import { processWysiwygContent } from "../../utils/contentUtils";
 import ToastMessage from "./ToastMessage";
 import "./NewsCreationForm.css";
 
@@ -37,8 +38,8 @@ const NewsCreationForm = ({
     titleEn: editingNews?.titleEn || "",
     descriptionVi: editingNews?.descriptionVi || "",
     descriptionEn: editingNews?.descriptionEn || "",
-    contentVi: editingNews?.contentVi || "",
-    contentEn: editingNews?.contentEn || "",
+    contentVi: editingNews?.contentVi ? processWysiwygContent(editingNews.contentVi) : "",
+    contentEn: editingNews?.contentEn ? processWysiwygContent(editingNews.contentEn) : "",
     slugVi: editingNews?.slugVi || "",
     slugEn: editingNews?.slugEn || "",
     newsCategoryId: editingNews?.newsCategoryId || "",

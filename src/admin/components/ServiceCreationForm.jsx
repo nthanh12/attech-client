@@ -13,6 +13,7 @@ import { tinymceConfig } from "../../config/tinymceConfig";
 import { uploadFiles, FileType, EntityType } from "../../services/fileService";
 import { createService, updateService } from "../../services/serviceService";
 import { getApiUrl } from "../../config/apiConfig";
+import { processWysiwygContent } from "../../utils/contentUtils";
 import ToastMessage from "./ToastMessage";
 import "./ServiceCreationForm.css";
 
@@ -38,8 +39,8 @@ const ServiceCreationForm = ({
     titleEn: editingService?.titleEn || "",
     descriptionVi: editingService?.descriptionVi || "",
     descriptionEn: editingService?.descriptionEn || "",
-    contentVi: editingService?.contentVi || "",
-    contentEn: editingService?.contentEn || "",
+    contentVi: editingService?.contentVi ? processWysiwygContent(editingService.contentVi) : "",
+    contentEn: editingService?.contentEn ? processWysiwygContent(editingService.contentEn) : "",
     slugVi: editingService?.slugVi || "",
     slugEn: editingService?.slugEn || "",
     isOutstanding: editingService?.isOutstanding || false,

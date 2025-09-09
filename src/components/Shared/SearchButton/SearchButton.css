@@ -12,7 +12,7 @@
 
 /* Active/pressed state */
 .shared-search-button:active {
-  transform: scale(0.98);
+  /* Scale removed to prevent layout breaking */
 }
 
 /* Disabled state */

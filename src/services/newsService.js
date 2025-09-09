@@ -456,3 +456,173 @@ export const uploadContentImage = async (file, callback, failure) => {
   }
 };
 
+// ============================================================
+// DOCUMENT MANAGEMENT API
+// ============================================================
+
+// Get documents list
+export const getDocuments = async (params = {}) => {
+  try {
+    const queryParams = {
+      pageNumber: params.page || 1,
+      pageSize: params.pageSize || 10,
+      keyword: params.keyword || "",
+      status: params.status || undefined,
+      dateFrom: params.dateFrom || undefined,
+      dateTo: params.dateTo || undefined
+    };
+
+    // Add sorting if provided
+    if (params.sortBy) {
+      queryParams.sortBy = params.sortBy;
+      queryParams.sortDirection = params.sortDirection || 'desc';
+    }
+
+    console.log('📡 Fetching documents:', queryParams);
+    const response = await api.get('/api/news/documents', { params: queryParams });
+    
+    console.log('📨 Documents response:', response.data);
+
+    // Handle API response format
+    if (response.data && response.data.status === 1 && response.data.data) {
+      const dataObj = response.data.data;
+      return {
+        success: true,
+        data: {
+          items: dataObj.items || [],
+          totalItems: dataObj.totalItems || 0,
+          totalPages: Math.ceil((dataObj.totalItems || 0) / (params.pageSize || 10)),
+          currentPage: dataObj.page || (params.page || 1),
+          pageSize: dataObj.pageSize || (params.pageSize || 10)
+        }
+      };
+    }
+    
+    return {
+      success: false,
+      message: 'Invalid response format'
+    };
+  } catch (error) {
+    console.error('❌ Get documents error:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to fetch documents'
+    };
+  }
+};
+
+// Create document
+export const createDocument = async (documentData) => {
+  try {
+    console.log('📡 Creating document:', documentData);
+    const response = await api.post('/api/news/create-document', documentData);
+    
+    console.log('✅ Document created successfully');
+    return {
+      success: true,
+      data: response.data
+    };
+  } catch (error) {
+    console.error('❌ Create document error:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to create document'
+    };
+  }
+};
+
+// Update document
+export const updateDocument = async (documentId, documentData) => {
+  try {
+    console.log('📡 Updating document:', documentId, documentData);
+    const response = await api.put(`/api/news/update-document/${documentId}`, documentData);
+    
+    console.log('✅ Document updated successfully');
+    return {
+      success: true,
+      data: response.data
+    };
+  } catch (error) {
+    console.error('❌ Update document error:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to update document'
+    };
+  }
+};
+
+// Delete document
+export const deleteDocument = async (documentId) => {
+  try {
+    console.log('📡 Deleting document:', documentId);
+    const response = await api.delete(`/api/news/delete/${documentId}`);
+    
+    console.log('✅ Document deleted successfully');
+    return {
+      success: true,
+      data: response.data
+    };
+  } catch (error) {
+    console.error('❌ Delete document error:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to delete document'
+    };
+  }
+};
+
+// Get document detail
+export const getDocumentById = async (documentId) => {
+  try {
+    console.log('📡 Fetching document by ID:', documentId);
+    const response = await api.get(`/api/news/documents/${documentId}`);
+    
+    console.log('✅ Document detail fetched successfully');
+    if (response.data && response.data.status === 1) {
+      return {
+        success: true,
+        data: response.data.data
+      };
+    }
+    
+    return {
+      success: false,
+      message: 'Document not found'
+    };
+  } catch (error) {
+    console.error('❌ Get document by ID error:', error);
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Failed to get document detail'
+    };
+  }
+};
+
+// Download document
+export const downloadDocument = async (documentId, filename) => {
+  try {
+    console.log('📡 Downloading document:', documentId, filename);
+    
+    const response = await api.get(`/api/attachments/download/${documentId}`, {
+      responseType: 'blob'
+    });
+    
+    // Create download link
+    const blob = new Blob([response.data]);
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    
+    console.log('✅ Document downloaded successfully');
+    return { success: true };
+  } catch (error) {
+    console.error('❌ Download document error:', error);
+    throw new Error(error.response?.data?.message || 'Failed to download document');
+  }
+};
+

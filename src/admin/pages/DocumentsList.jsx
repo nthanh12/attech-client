@@ -12,7 +12,15 @@ import "../styles/adminButtons.css";
 import "./DocumentsList.css";
 import "./ContactList.css";
 
-import { documentService } from "../../services/documentService";
+// import { documentService } from "../../services/documentService";
+import { 
+  getDocuments, 
+  createDocument, 
+  updateDocument, 
+  deleteDocument, 
+  getDocumentById,
+  downloadDocument 
+} from "../../services/newsService";
 import DocumentCreationForm from "../components/DocumentCreationForm";
 
 const DocumentsList = () => {
@@ -99,7 +107,7 @@ const DocumentsList = () => {
       };
 
       console.log("🔍 Loading documents with params:", params);
-      const response = await documentService.getDocuments(params);
+      const response = await getDocuments(params);
       console.log("📋 Documents response:", response);
 
       if (response.success) {
@@ -145,7 +153,7 @@ const DocumentsList = () => {
   const handleDelete = async (documentItem) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa tài liệu này?")) {
       try {
-        const response = await documentService.deleteDocument(documentItem.id);
+        const response = await deleteDocument(documentItem.id);
         if (response.success) {
           await loadDocuments();
           showToast("Xóa tài liệu thành công!", "success");
@@ -192,7 +200,7 @@ const DocumentsList = () => {
 
   const handleDownloadDocument = async (documentItem) => {
     try {
-      await documentService.downloadDocument(documentItem.id, documentItem.originalFileName);
+      await downloadDocument(documentItem.id, documentItem.originalFileName || documentItem.titleVi);
       showToast("Tải xuống thành công!", "success");
     } catch (error) {
       showToast("Lỗi khi tải xuống tài liệu", "error");
@@ -202,41 +210,44 @@ const DocumentsList = () => {
   // Use server-side data directly (no client-side filtering/sorting)
   const paginatedDocuments = documents;
 
-  // Table columns
+  // Table columns - updated for document API response format
   const columns = [
     { key: "id", label: "ID", sortable: true, width: "80px" },
     {
-      key: "originalFileName",
-      label: "Tên file",
+      key: "titleVi",
+      label: "Tiêu đề",
       sortable: true,
       width: "250px",
       render: (item) => (
         <div>
-          <div className="document-name" title={item.originalFileName}>
-            {item.originalFileName}
+          <div className="document-name" title={item.titleVi}>
+            {item.titleVi}
           </div>
           <div className="document-title text-muted" style={{ fontSize: "0.85em" }}>
-            {item.title || "Chưa có tiêu đề"}
+            {item.titleEn || "No English title"}
           </div>
         </div>
       ),
     },
     {
-      key: "fileType", 
-      label: "Loại file",
-      width: "100px",
+      key: "newsCategoryNameVi", 
+      label: "Danh mục",
+      width: "150px",
       render: (item) => (
-        <span className={`file-type-badge ${item.fileType?.toLowerCase()}`}>
-          {item.fileType?.toUpperCase()}
+        <span className="category-badge">
+          {item.newsCategoryNameVi || "Chưa phân loại"}
         </span>
       ),
     },
     {
-      key: "fileSize",
-      label: "Kích thước",
-      sortable: true,
+      key: "documents",
+      label: "Files đính kèm",
       width: "120px",
-      render: (item) => formatFileSize(item.fileSize),
+      render: (item) => (
+        <span className="attachment-count">
+          {item.documents?.length || 0} file(s)
+        </span>
+      ),
     },
     {
       key: "status",
@@ -245,19 +256,21 @@ const DocumentsList = () => {
       render: (item) => (
         <span
           className={`badge ${
-            item.status === 1 ? "badge-success" : "badge-secondary"
+            item.status === 1 ? "badge-success" : 
+            item.status === 0 ? "badge-secondary" : "badge-warning"
           }`}
         >
-          {item.status === 1 ? "Hoạt động" : "Không hoạt động"}
+          {item.status === 1 ? "Xuất bản" : 
+           item.status === 0 ? "Nháp" : "Ẩn"}
         </span>
       ),
     },
     {
-      key: "createdAt",
-      label: "Ngày tạo",
+      key: "timePosted",
+      label: "Ngày đăng",
       sortable: true,
       width: "140px",
-      render: (item) => new Date(item.createdAt).toLocaleDateString("vi-VN"),
+      render: (item) => item.timePosted ? new Date(item.timePosted).toLocaleDateString("vi-VN") : "Chưa đăng",
     },
   ];
 
@@ -265,25 +278,25 @@ const DocumentsList = () => {
     {
       label: "Xem",
       onClick: handleViewDocument,
-      className: "admin-btn admin-btn-sm admin-btn-info",
+      className: "admin-btn admin-btn-xs admin-btn-info",
       icon: "bi bi-eye",
     },
     {
       label: "Tải xuống",
       onClick: handleDownloadDocument,
-      className: "admin-btn admin-btn-sm admin-btn-success",
+      className: "admin-btn admin-btn-xs admin-btn-success",
       icon: "bi bi-download",
     },
     {
       label: "Sửa",
       onClick: handleEdit,
-      className: "admin-btn admin-btn-sm admin-btn-primary",
+      className: "admin-btn admin-btn-xs admin-btn-primary",
       icon: "bi bi-pencil",
     },
     {
       label: "Xóa",
       onClick: handleDelete,
-      className: "admin-btn admin-btn-sm admin-btn-danger",
+      className: "admin-btn admin-btn-xs admin-btn-danger",
       icon: "bi bi-trash",
     },
   ];
@@ -528,29 +541,56 @@ const DocumentsList = () => {
           {selectedDocument && (
             <div className="document-detail">
               <div className="detail-row">
-                <strong>Tên file:</strong> {selectedDocument.originalFileName}
+                <strong>Tiêu đề (VI):</strong> {selectedDocument.titleVi}
               </div>
               <div className="detail-row">
-                <strong>Tiêu đề:</strong> {selectedDocument.title || "Chưa có"}
+                <strong>Tiêu đề (EN):</strong> {selectedDocument.titleEn || "Chưa có"}
               </div>
               <div className="detail-row">
-                <strong>Mô tả:</strong> {selectedDocument.description || "Chưa có"}
+                <strong>Mô tả (VI):</strong> {selectedDocument.descriptionVi || "Chưa có"}
               </div>
               <div className="detail-row">
-                <strong>Loại file:</strong> {selectedDocument.fileType?.toUpperCase()}
+                <strong>Mô tả (EN):</strong> {selectedDocument.descriptionEn || "Chưa có"}
               </div>
               <div className="detail-row">
-                <strong>Kích thước:</strong> {formatFileSize(selectedDocument.fileSize)}
+                <strong>Danh mục:</strong> {selectedDocument.newsCategoryNameVi || "Chưa phân loại"}
               </div>
               <div className="detail-row">
-                <strong>Ngày tạo:</strong> {new Date(selectedDocument.createdAt).toLocaleDateString("vi-VN")}
+                <strong>Trạng thái:</strong> 
+                <span className={`badge ${
+                  selectedDocument.status === 1 ? "badge-success" : 
+                  selectedDocument.status === 0 ? "badge-secondary" : "badge-warning"
+                }`}>
+                  {selectedDocument.status === 1 ? "Xuất bản" : 
+                   selectedDocument.status === 0 ? "Nháp" : "Ẩn"}
+                </span>
               </div>
               <div className="detail-row">
-                <strong>URL:</strong> 
-                <a href={selectedDocument.fileUrl} target="_blank" rel="noopener noreferrer">
-                  {selectedDocument.fileUrl}
-                </a>
+                <strong>Ngày đăng:</strong> {selectedDocument.timePosted ? new Date(selectedDocument.timePosted).toLocaleDateString("vi-VN") : "Chưa đăng"}
               </div>
+              <div className="detail-row">
+                <strong>Files đính kèm:</strong>
+                {selectedDocument.documents && selectedDocument.documents.length > 0 ? (
+                  <ul>
+                    {selectedDocument.documents.map((doc, index) => (
+                      <li key={index}>
+                        <a href={doc.previewUrl} target="_blank" rel="noopener noreferrer">
+                          {doc.fileName || `File ${index + 1}`}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <span>Không có file đính kèm</span>
+                )}
+              </div>
+              {selectedDocument.imageUrl && (
+                <div className="detail-row">
+                  <strong>Ảnh đại diện:</strong>
+                  <br/>
+                  <img src={selectedDocument.imageUrl} alt="Featured" style={{maxWidth: "200px", height: "auto"}} />
+                </div>
+              )}
             </div>
           )}
         </FormModal>

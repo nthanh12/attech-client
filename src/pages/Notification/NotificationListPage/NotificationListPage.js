@@ -2,7 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./NotificationListPage.css";
-import { getNotifications, getNotificationCategories, getNotificationsByCategory, getNotificationsByCategorySlug, searchNotifications, formatNotificationForDisplay } from "../../../services/clientNotificationService";
+import {
+  getNotifications,
+  getNotificationCategories,
+  getNotificationsByCategory,
+  getNotificationsByCategorySlug,
+  searchNotifications,
+  formatNotificationForDisplay,
+} from "../../../services/clientNotificationService";
 import { useI18n } from "../../../hooks/useI18n";
 import NotificationSearchBox from "../../../components/Shared/NotificationSearchBox";
 import LocalizedLink from "../../../components/Shared/LocalizedLink";
@@ -15,7 +22,11 @@ const NotificationListPage = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [notificationData, setNotificationData] = useState({ items: [], totalPages: 0, totalCount: 0 });
+  const [notificationData, setNotificationData] = useState({
+    items: [],
+    totalPages: 0,
+    totalCount: 0,
+  });
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState(null);
   const [categoriesLoaded, setCategoriesLoaded] = useState(false);
@@ -34,7 +45,7 @@ const NotificationListPage = () => {
   // Initialize search term from URL query parameter
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const searchQuery = params.get('search');
+    const searchQuery = params.get("search");
     if (searchQuery) {
       setSearchTerm(searchQuery);
     }
@@ -47,11 +58,12 @@ const NotificationListPage = () => {
         setCategoriesLoaded(false);
         const categoriesData = await getNotificationCategories();
         setCategories(categoriesData);
-        
+
         // Find current category
         if (category) {
           const foundCategory = categoriesData.find(
-            (cat) => (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
+            (cat) =>
+              (currentLanguage === "vi" ? cat.slugVi : cat.slugEn) === category
           );
           setCurrentCategory(foundCategory);
         } else {
@@ -63,7 +75,7 @@ const NotificationListPage = () => {
         setCategoriesLoaded(true);
       }
     };
-    
+
     loadCategories();
   }, [category, currentLanguage]);
 
@@ -73,32 +85,32 @@ const NotificationListPage = () => {
       setLoading(true);
       try {
         let response;
-        
+
         if (searchTerm.trim()) {
           // Search mode
           response = await searchNotifications(searchTerm, {
             pageIndex: currentPage,
             pageSize: itemsPerPage,
-            categoryId: currentCategory?.id
+            categoryId: currentCategory?.id,
           });
         } else if (category) {
           // Category mode - try using the new slug endpoint first
           try {
             response = await getNotificationsByCategorySlug(category, {
               pageIndex: currentPage,
-              pageSize: itemsPerPage
+              pageSize: itemsPerPage,
             });
           } catch (error) {
             // Fallback to old method if new endpoint fails
             if (currentCategory) {
               response = await getNotificationsByCategory(currentCategory.id, {
                 pageIndex: currentPage,
-                pageSize: itemsPerPage
+                pageSize: itemsPerPage,
               });
             } else {
               response = await getNotifications({
                 pageIndex: currentPage,
-                pageSize: itemsPerPage
+                pageSize: itemsPerPage,
               });
             }
           }
@@ -106,10 +118,10 @@ const NotificationListPage = () => {
           // All notifications mode
           response = await getNotifications({
             pageIndex: currentPage,
-            pageSize: itemsPerPage
+            pageSize: itemsPerPage,
           });
         }
-        
+
         setNotificationData(response);
       } catch (error) {
         console.error("❌ Error loading notifications:", error);
@@ -150,7 +162,10 @@ const NotificationListPage = () => {
           <div className="not-found notificationlist-empty">
             <h2>{t("frontend.notifications.categoryNotFound")}</h2>
             <p>{t("frontend.notifications.categoryNotExist", { category })}</p>
-            <LocalizedLink routeKey="NOTIFICATIONS" className="back-to-notifications">
+            <LocalizedLink
+              routeKey="NOTIFICATIONS"
+              className="back-to-notifications"
+            >
               {t("frontend.notifications.backToNotifications")}
             </LocalizedLink>
           </div>
@@ -158,7 +173,6 @@ const NotificationListPage = () => {
       </div>
     );
   }
-
 
   const formatDate = (dateString) => {
     const d = new Date(dateString);
@@ -195,25 +209,28 @@ const NotificationListPage = () => {
         <div className="notificationlist-grid-minimal">
           {notificationData.items.length > 0 ? (
             notificationData.items.map((item) => {
-              const formattedItem = formatNotificationForDisplay(item, currentLanguage);
-              
+              const formattedItem = formatNotificationForDisplay(
+                item,
+                currentLanguage
+              );
+
               return (
                 <div className="notificationlist-card-minimal" key={item.id}>
                   <LocalizedLink
                     to={
                       currentLanguage === "vi"
-                        ? `/thong-bao/${formattedItem.categorySlug}/${formattedItem.slug}`
-                        : `/en/notifications/${formattedItem.categorySlug}/${formattedItem.slug}`
+                        ? `/thong-bao/${formattedItem.slug}.html`
+                        : `/en/notifications/${formattedItem.slug}.html`
                     }
                     className="notificationlist-img-link-minimal"
                   >
                     <img
-                      src={formattedItem.imageUrl || ''}
+                      src={formattedItem.imageUrl || ""}
                       alt={formattedItem.title}
                       className="notificationlist-img-minimal"
                       title={formattedItem.title}
                       onError={(e) => {
-                        e.target.style.display = 'none';
+                        e.target.style.display = "none";
                       }}
                     />
                   </LocalizedLink>
@@ -224,8 +241,8 @@ const NotificationListPage = () => {
                     <LocalizedLink
                       to={
                         currentLanguage === "vi"
-                          ? `/thong-bao/${formattedItem.categorySlug}/${formattedItem.slug}`
-                          : `/en/notifications/${formattedItem.categorySlug}/${formattedItem.slug}`
+                          ? `/thong-bao/${formattedItem.slug}.html`
+                          : `/en/notifications/${formattedItem.slug}.html`
                       }
                       className="notificationlist-title-minimal clamp-2-lines"
                       title={formattedItem.title}
@@ -238,7 +255,11 @@ const NotificationListPage = () => {
             })
           ) : (
             <div className="notificationlist-empty">
-              <p>{searchTerm ? t("frontend.notifications.noSearchResults") : t("frontend.notifications.noNotificationsInCategory")}</p>
+              <p>
+                {searchTerm
+                  ? t("frontend.notifications.noSearchResults")
+                  : t("frontend.notifications.noNotificationsInCategory")}
+              </p>
             </div>
           )}
         </div>

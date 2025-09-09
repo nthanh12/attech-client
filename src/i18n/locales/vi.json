@@ -225,15 +225,15 @@
       "services": {
         "cns": {
           "title": "Dịch vụ thông tin, dẫn đường, giám sát",
-          "description": "CNS Service"
+          "description": ""
         },
         "flight": {
           "title": "Dịch vụ bay hiệu chuẩn",
-          "description": "Flight Inspection"
+          "description": ""
         },
         "industry": {
           "title": "Công nghiệp hàng không",
-          "description": "Aviation Industry"
+          "description": ""
         }
       },
       "newsCategories": {

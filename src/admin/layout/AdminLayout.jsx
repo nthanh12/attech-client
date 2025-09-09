@@ -265,6 +265,12 @@ const AdminLayout = () => {
             icon: "bi bi-search",
             requiredRoleId: ROLES.SUPERADMIN,
           },
+          {
+            path: "/admin/menu",
+            label: "Quản lý Menu",
+            icon: "bi bi-list-ul",
+            requiredRoleId: ROLES.ADMIN,
+          },
         ],
       },
     ];
@@ -337,6 +343,7 @@ const AdminLayout = () => {
       "/admin/contacts": "Quản lý liên hệ",
       "/admin/language-content": "Quản lý Thông tin",
       "/admin/seo": "Quản lý SEO",
+      "/admin/menu": "Quản lý Menu",
     };
 
     return titleMap[path] || "Admin Dashboard";

@@ -1,10 +1,22 @@
 import React, { useState, useEffect, useRef, memo } from "react";
 import { Link } from "react-router-dom";
 import { useI18n } from "../../../../../hooks/useI18n";
+import { getMenuChildren, getMenuLabel, getMenuPath, hasChildren as hasChildrenUtil } from "../../../../../utils/menuUtils";
 
-const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
+const NavItem = ({ item, allMenuItems, isMobile, closeMobileMenu, depthLevel = 0 }) => {
   const { currentLanguage, i18n } = useI18n();
-  const hasChildren = item.submenu && item.submenu.length > 0;
+  
+  // Check if we're using flat array format or hierarchical format
+  const isFlat = allMenuItems !== null;
+  
+  const hasChildren = isFlat 
+    ? hasChildrenUtil(allMenuItems, item.id)
+    : item.submenu && item.submenu.length > 0;
+    
+  const children = isFlat 
+    ? getMenuChildren(allMenuItems, item.id)
+    : item.submenu || [];
+  
   const [isOpen, setIsOpen] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(0);
   const linkRef = useRef(null);
@@ -61,11 +73,19 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
 
   // Force re-render on language change by using i18n.language directly
   const currentLang = i18n.language || currentLanguage || 'vi';
-  const label = currentLang === "vi" ? item.labelVi : item.labelEn;
-  const path = currentLang === "vi" ? item.pathVi : item.pathEn;
   
-  // Debug: Log khi component render
-  console.log(`NavItem [${item.key}]: currentLang=${currentLang}, label=${label}`);
+  const label = isFlat 
+    ? getMenuLabel(item, currentLang)
+    : (currentLang === "vi" ? item.titleVi : item.titleEn);
+    
+  const path = isFlat 
+    ? getMenuPath(item, currentLang)
+    : (currentLang === "vi" ? item.url : item.urlEn);
+    
+  // Handle external links for flat format
+  const isExternal = isFlat ? item.isExternal : false;
+  const target = isFlat ? item.target || "_self" : "_self";
+  
 
   return (
     <li
@@ -76,16 +96,33 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
     >
       <div className="nav-link-container">
         {label && (
-          <Link
-            to={path}
-            className="nav-link"
-            onClick={handleLinkClick}
-            ref={linkRef}
-            aria-haspopup={hasChildren ? "true" : "false"}
-            aria-expanded={hasChildren ? isOpen : undefined}
-          >
-            {label}
-          </Link>
+          <>
+            {isExternal ? (
+              <a
+                href={path}
+                target={target}
+                rel={target === "_blank" ? "noopener noreferrer" : undefined}
+                className="nav-link"
+                onClick={handleLinkClick}
+                ref={linkRef}
+                aria-haspopup={hasChildren ? "true" : "false"}
+                aria-expanded={hasChildren ? isOpen : undefined}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                to={path}
+                className="nav-link"
+                onClick={handleLinkClick}
+                ref={linkRef}
+                aria-haspopup={hasChildren ? "true" : "false"}
+                aria-expanded={hasChildren ? isOpen : undefined}
+              >
+                {label}
+              </Link>
+            )}
+          </>
         )}
         {hasChildren && (isMobile || depthLevel === 0) && (
           <button
@@ -101,10 +138,11 @@ const NavItem = ({ item, isMobile, closeMobileMenu, depthLevel = 0 }) => {
       </div>
       {hasChildren && (
         <ul className={`dropdown-menu${isOpen ? " open" : ""}`}>
-          {item.submenu.map((child, idx) => (
+          {children.map((child, idx) => (
             <NavItem
-              key={child.key || child.pathVi || idx}
+              key={child.key || child.url || idx}
               item={child}
+              allMenuItems={allMenuItems} // Pass through for nested items
               isMobile={isMobile}
               closeMobileMenu={closeMobileMenu}
               depthLevel={depthLevel + 1}

@@ -33,6 +33,8 @@ const NewsCategory = () => {
     slugVi: "",
     slugEn: "",
     status: "active",
+    parentId: null,
+    order: 0,
   };
 
   const fieldsToCompare = [
@@ -43,6 +45,8 @@ const NewsCategory = () => {
     "descriptionVi",
     "descriptionEn",
     "status",
+    "parentId",
+    "order",
   ];
 
   const {
@@ -80,6 +84,8 @@ const NewsCategory = () => {
             : item.status === 1
             ? "active"
             : "inactive",
+        parentId: item.parentId || null,
+        order: item.order || 0,
       };
 
       console.log("🔍 handleEditCategory - Mapped item:", mappedItem);
@@ -173,6 +179,8 @@ const NewsCategory = () => {
           slugVi: item.slugVi || "",
           slugEn: item.slugEn || "",
           status: item.status === 1 ? "active" : "inactive",
+          parentId: item.parentId || null,
+          order: item.order || 0,
         }));
 
         setCategories(mappedCategories);
@@ -198,6 +206,18 @@ const NewsCategory = () => {
     if (!currentCategory.titleEn.trim()) {
       newErrors.titleEn = "Tên danh mục tiếng Anh là bắt buộc";
       errorMessages.push("Tên danh mục tiếng Anh là bắt buộc");
+    }
+
+    // Parent validation - cannot be child of itself
+    if (editMode && currentCategory.parentId && parseInt(currentCategory.parentId) === currentCategory.id) {
+      newErrors.parentId = "Không thể chọn chính nó làm danh mục cha";
+      errorMessages.push("Không thể chọn chính nó làm danh mục cha");
+    }
+
+    // Order validation
+    if (currentCategory.order < 0) {
+      newErrors.order = "Thứ tự phải là số không âm";
+      errorMessages.push("Thứ tự phải là số không âm");
     }
 
     setErrors(newErrors);
@@ -331,6 +351,50 @@ const NewsCategory = () => {
     }
   };
 
+  // Helper function to flatten category tree for parent selector
+  const getFlatCategoryList = (categoryList, level = 0, result = []) => {
+    categoryList.forEach(category => {
+      result.push({
+        ...category,
+        level,
+        displayName: '→'.repeat(level) + ' ' + category.titleVi
+      });
+      
+      if (category.children && category.children.length > 0) {
+        getFlatCategoryList(category.children, level + 1, result);
+      }
+    });
+    return result;
+  };
+
+  // Filter out current category and its children from parent options
+  const getAvailableParentOptions = () => {
+    const flatCategories = getFlatCategoryList(categories);
+    
+    if (!editMode || !currentCategory.id) {
+      return flatCategories; // When adding new category, all categories are available as parents
+    }
+    
+    // When editing, exclude self and children
+    const excludeIds = [currentCategory.id];
+    
+    const addChildrenIds = (category) => {
+      if (category.children) {
+        category.children.forEach(child => {
+          excludeIds.push(child.id);
+          addChildrenIds(child);
+        });
+      }
+    };
+    
+    const findCurrentCategory = categories.find(cat => cat.id === currentCategory.id);
+    if (findCurrentCategory) {
+      addChildrenIds(findCurrentCategory);
+    }
+    
+    return flatCategories.filter(category => !excludeIds.includes(category.id));
+  };
+
   const handleTranslate = async (fromField, toField) => {
     const text = currentCategory[fromField] || "";
     if (!text) return;
@@ -403,18 +467,37 @@ const NewsCategory = () => {
       key: "titleVi",
       label: "Tên danh mục (VI)",
       sortable: true,
-      width: "200px",
+      width: "250px",
       render: (row) => (
-        <div
-          style={{
-            maxWidth: "180px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            title: row.titleVi,
-          }}
-        >
-          {row.titleVi || "-"}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Hierarchy indicator */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            {row.parentId ? (
+              <span style={{ color: '#6c757d', fontSize: '12px' }}>
+                ├─
+              </span>
+            ) : (
+              <span style={{ color: '#0d6efd', fontSize: '12px' }}>
+                📁
+              </span>
+            )}
+          </div>
+          <div
+            style={{
+              maxWidth: "200px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              title: row.titleVi,
+            }}
+          >
+            {row.titleVi || "-"}
+          </div>
+          {row.children && row.children.length > 0 && (
+            <span className="badge bg-info" style={{ fontSize: '10px' }}>
+              {row.children.length}
+            </span>
+          )}
         </div>
       ),
     },
@@ -435,6 +518,39 @@ const NewsCategory = () => {
         >
           {row.titleEn || "-"}
         </div>
+      ),
+    },
+    {
+      key: "parentId",
+      label: "Danh mục cha",
+      sortable: true,
+      width: "120px",
+      render: (row) => (
+        <div style={{ fontSize: '12px' }}>
+          {row.parentId ? (
+            <span className="badge bg-secondary">#{row.parentId}</span>
+          ) : (
+            <span className="badge bg-primary">Gốc</span>
+          )}
+          {row.children && row.children.length > 0 && (
+            <div className="mt-1">
+              <span className="badge bg-success" style={{ fontSize: '10px' }}>
+                {row.children.length} con
+              </span>
+            </div>
+          )}
+        </div>
+      ),
+    },
+    {
+      key: "order",
+      label: "Thứ tự",
+      sortable: true,
+      width: "80px",
+      render: (row) => (
+        <span className="badge bg-info">
+          {row.order || 0}
+        </span>
       ),
     },
     {
@@ -644,6 +760,52 @@ const NewsCategory = () => {
               {/* Common fields - 2 columns layout */}
               <div className="form-section">
                 <h4>Cài đặt chung</h4>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Danh mục cha</label>
+                    <select
+                      value={currentCategory.parentId || ''}
+                      onChange={(e) =>
+                        handleInputChangeWithSlug("parentId", e.target.value || null)
+                      }
+                      className={errors.parentId ? "error" : ""}
+                    >
+                      <option value="">-- Danh mục gốc --</option>
+                      {getAvailableParentOptions().map(category => (
+                        <option key={category.id} value={category.id}>
+                          {category.displayName}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.parentId && (
+                      <span className="error-text">{errors.parentId}</span>
+                    )}
+                    <small className="form-text">
+                      Chọn danh mục cha để tạo cấu trúc phân cấp
+                    </small>
+                  </div>
+
+                  <div className="form-group">
+                    <label>Thứ tự hiển thị</label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={currentCategory.order}
+                      onChange={(e) =>
+                        handleInputChangeWithSlug("order", parseInt(e.target.value) || 0)
+                      }
+                      className={errors.order ? "error" : ""}
+                      placeholder="0"
+                    />
+                    {errors.order && (
+                      <span className="error-text">{errors.order}</span>
+                    )}
+                    <small className="form-text">
+                      Số thứ tự để sắp xếp danh mục (0 = đầu tiên)
+                    </small>
+                  </div>
+                </div>
 
                 <div className="form-row">
                   <div className="form-group">

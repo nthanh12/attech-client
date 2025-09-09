@@ -344,12 +344,12 @@ const ProductList = () => {
     {
       label: "Sửa",
       onClick: handleEdit,
-      className: "admin-btn admin-btn-sm admin-btn-primary",
+      className: "admin-btn admin-btn-xs admin-btn-primary",
     },
     {
       label: "Xóa",
       onClick: handleDelete,
-      className: "admin-btn admin-btn-sm admin-btn-danger",
+      className: "admin-btn admin-btn-xs admin-btn-danger",
     },
   ];
 

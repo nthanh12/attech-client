@@ -71,7 +71,7 @@ const ServiceDetail = () => {
   }
 
   const getContent = () => {
-    return currentLanguage === "vi" ? service.contentVi : service.contentEn;
+    return service.displayContent || (currentLanguage === "vi" ? service.contentVi : service.contentEn);
   };
 
   const formatFileSize = (bytes) => {

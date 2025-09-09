@@ -10,14 +10,31 @@ export const getMenus = async () => {
   throw new Error("Invalid menus response");
 };
 
-export const getMenuTree = async () => {
-  const response = await api.get("/api/menu/tree");
+export const getMenuTree = async (language = 'vi') => {
+  const response = await api.get(`/api/menu/tree?language=${language}`);
   
   if (response.data && response.data.status === 1 && response.data.data) {
     return response.data.data;
   }
   
   throw new Error("Invalid menu tree response");
+};
+
+// API mới cho frontend với cấu trúc flat array (KHUYÊN DÙNG)
+export const getMenuHierarchy = async (language = 'vi') => {
+  const response = await api.get(`/api/menu/frontend?language=${language}`);
+  
+  // Check response format: { status: 1, data: [...], code: 200, message: "Ok" }
+  if (response.data && response.data.status === 1 && response.data.data) {
+    // API returns flat array with structure:
+    // {
+    //   id, key, labelVi, labelEn, pathVi, pathEn,
+    //   level, order, parentId, isActive, isExternal, target, menuType
+    // }
+    return response.data.data;
+  }
+  
+  throw new Error("Invalid menu hierarchy response");
 };
 
 export const getMenuById = async (id) => {

@@ -84,8 +84,8 @@ const NewsSection = () => {
                         key={item.id + "-" + idx}
                         to={
                           currentLanguage === "vi"
-                            ? `/tin-tuc/${categorySlug}/${formattedItem.slug}`
-                            : `/en/news/${categorySlug}/${formattedItem.slug}`
+                            ? `/tin-tuc/${formattedItem.slug}.html`
+                            : `/en/news/${formattedItem.slug}.html`
                         }
                         className="trend-link"
                       >

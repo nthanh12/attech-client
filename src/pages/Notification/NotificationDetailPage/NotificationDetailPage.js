@@ -3,10 +3,16 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import sanitizeHtml from "sanitize-html";
 import "./NotificationDetailPage.css";
-import { getNotificationBySlug, getNotificationCategories, getRelatedNotifications, formatNotificationForDisplay } from "../../../services/clientNotificationService";
+import {
+  getNotificationBySlug,
+  getNotificationCategories,
+  getRelatedNotifications,
+  formatNotificationForDisplay,
+} from "../../../services/clientNotificationService";
 import SEO from "../../../components/SEO/SEO";
 import { useI18n } from "../../../hooks/useI18n";
 import { getLanguageFromPath } from "../../../utils/routeHelpers";
+import { getApiBaseUrl } from "../../../config/apiConfig";
 import LocalizedLink from "../../../components/Shared/LocalizedLink";
 import SearchBox from "../../../components/Shared/SearchBox";
 import ErrorPage from "../../../components/Shared/ErrorPage";
@@ -18,25 +24,30 @@ const NotificationDetailPage = () => {
 
   // Helper functions for attachments
   const formatFileSize = (bytes) => {
-    if (!bytes || bytes === 0) return '0 B';
+    if (!bytes || bytes === 0) return "0 B";
     const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
+    const sizes = ["B", "KB", "MB", "GB"];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
   const getFileTypeDisplay = (contentType) => {
-    if (!contentType) return 'Unknown';
-    if (contentType.includes('pdf')) return 'PDF';
-    if (contentType.includes('word')) return 'Word';
-    if (contentType.includes('excel') || contentType.includes('spreadsheet')) return 'Excel';
-    if (contentType.includes('powerpoint') || contentType.includes('presentation')) return 'PowerPoint';
-    if (contentType.includes('image')) return 'Image';
-    if (contentType.includes('text')) return 'Text';
-    return contentType.split('/')[1]?.toUpperCase() || 'File';
+    if (!contentType) return "Unknown";
+    if (contentType.includes("pdf")) return "PDF";
+    if (contentType.includes("word")) return "Word";
+    if (contentType.includes("excel") || contentType.includes("spreadsheet"))
+      return "Excel";
+    if (
+      contentType.includes("powerpoint") ||
+      contentType.includes("presentation")
+    )
+      return "PowerPoint";
+    if (contentType.includes("image")) return "Image";
+    if (contentType.includes("text")) return "Text";
+    return contentType.split("/")[1]?.toUpperCase() || "File";
   };
   const location = useLocation();
-  const { category: categorySlug, slug: notificationSlug } = useParams();
+  const { slug: notificationSlug } = useParams();
   const isEnglish = getLanguageFromPath(location.pathname) === "en";
   const navigate = useNavigate();
   const [notificationItem, setNotificationItem] = useState(null);
@@ -53,60 +64,63 @@ const NotificationDetailPage = () => {
     setSearchTerm(value);
   }, []);
 
-  const handleSearch = useCallback((term) => {
-    if (term.trim()) {
-      // Navigate to notification list page with search
-      const url = currentLanguage === "vi" ? `/thong-bao?search=${encodeURIComponent(term)}` : `/en/notifications?search=${encodeURIComponent(term)}`;
-      navigate(url);
-    }
-  }, [navigate, currentLanguage]);
+  const handleSearch = useCallback(
+    (term) => {
+      if (term.trim()) {
+        // Navigate to notification list page with search
+        const url =
+          currentLanguage === "vi"
+            ? `/thong-bao?search=${encodeURIComponent(term)}`
+            : `/en/notifications?search=${encodeURIComponent(term)}`;
+        navigate(url);
+      }
+    },
+    [navigate, currentLanguage]
+  );
 
-  const handleSelectSuggestion = useCallback((suggestion) => {
-    // Navigate directly to the selected notification
-    const category = categories.find(cat => cat.id === suggestion.notificationCategoryId);
-    const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
-    
-    if (categorySlug && suggestion.slug) {
-      const url = currentLanguage === "vi" 
-        ? `/thong-bao/${categorySlug}/${suggestion.slug}`
-        : `/en/notifications/${categorySlug}/${suggestion.slug}`;
-      navigate(url);
-    }
-  }, [navigate, currentLanguage, categories]);
+  const handleSelectSuggestion = useCallback(
+    (suggestion) => {
+      // Navigate directly to the selected notification
+      const category = categories.find(
+        (cat) => cat.id === suggestion.notificationCategoryId
+      );
+      const categorySlug =
+        currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
+
+      if (categorySlug && suggestion.slug) {
+        const url =
+          currentLanguage === "vi"
+            ? `/thong-bao/${suggestion.slug}.html`
+            : `/en/notifications/${suggestion.slug}.html`;
+        navigate(url);
+      }
+    },
+    [navigate, currentLanguage, categories]
+  );
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true);
-        
-        // Load categories first
-        const categoriesData = await getNotificationCategories();
+
+        // Load categories and notification data in parallel
+        const [categoriesData, notificationData] = await Promise.all([
+          getNotificationCategories(),
+          getNotificationBySlug(notificationSlug, isEnglish ? "en" : "vi"),
+        ]);
+
         setCategories(categoriesData);
-        
-        // Find category by slug
-        const category = categoriesData.find(cat => 
-          isEnglish ? cat.slugEn === categorySlug : cat.slugVi === categorySlug
+        setNotificationItem(notificationData);
+
+        // Load related notifications
+        const related = await getRelatedNotifications(
+          notificationData.id,
+          notificationData.notificationCategoryId,
+          5
         );
-        
-        if (!category) {
-          setError("Category not found");
-          return;
-        }
+        setRelatedNotifications(related);
 
-        // Try to get notification by slug
-        try {
-          const notificationData = await getNotificationBySlug(notificationSlug, isEnglish ? "en" : "vi");
-          setNotificationItem(notificationData);
-          
-          // Load related notifications
-          const related = await getRelatedNotifications(notificationData.id, notificationData.notificationCategoryId, 5);
-          setRelatedNotifications(related);
-          
-          setError(null);
-        } catch (slugError) {
-          setError("Notification not found");
-        }
-
+        setError(null);
       } catch (err) {
         console.error("Error loading notification detail:", err);
         setError("Error loading notification");
@@ -117,7 +131,7 @@ const NotificationDetailPage = () => {
     };
 
     loadData();
-  }, [categorySlug, notificationSlug, isEnglish]);
+  }, [notificationSlug, isEnglish]);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString(
@@ -131,20 +145,32 @@ const NotificationDetailPage = () => {
   };
 
   // Helper functions to get localized content
-  const getTitle = () => (isEnglish ? notificationItem?.titleEn : notificationItem?.titleVi);
+  const getTitle = () =>
+    isEnglish ? notificationItem?.titleEn : notificationItem?.titleVi;
   const getDescription = () =>
-    isEnglish ? notificationItem?.descriptionEn : notificationItem?.descriptionVi;
-  const getContent = () =>
-    isEnglish ? notificationItem?.contentEn : notificationItem?.contentVi;
+    isEnglish
+      ? notificationItem?.descriptionEn
+      : notificationItem?.descriptionVi;
+  const getContent = () => {
+    const formattedItem = formatNotificationForDisplay(
+      notificationItem,
+      isEnglish ? "en" : "vi"
+    );
+    return formattedItem?.content;
+  };
   const getCategoryName = () => {
     if (!notificationItem?.notificationCategoryId) return "";
-    const category = categories.find(cat => cat.id === notificationItem.notificationCategoryId);
+    const category = categories.find(
+      (cat) => cat.id === notificationItem.notificationCategoryId
+    );
     return isEnglish ? category?.titleEn : category?.titleVi;
   };
-  
+
   const getCategorySlug = () => {
     if (!notificationItem?.notificationCategoryId) return "";
-    const category = categories.find(cat => cat.id === notificationItem.notificationCategoryId);
+    const category = categories.find(
+      (cat) => cat.id === notificationItem.notificationCategoryId
+    );
     return isEnglish ? category?.slugEn : category?.slugVi;
   };
 
@@ -169,7 +195,7 @@ const NotificationDetailPage = () => {
         suggestions={[
           "Kiểm tra lại đường link",
           "Tìm kiếm thông báo khác",
-          "Quay lại trang danh sách thông báo"
+          "Quay lại trang danh sách thông báo",
         ]}
         type="notification"
         backRoute="HOME"
@@ -187,8 +213,8 @@ const NotificationDetailPage = () => {
         description={getDescription() || getTitle()}
         url={
           currentLanguage === "vi"
-            ? `/thong-bao/${categorySlug}/${notificationSlug}`
-            : `/en/notifications/${categorySlug}/${notificationSlug}`
+            ? `/thong-bao/${notificationSlug}`
+            : `/en/notifications/${notificationSlug}`
         }
       />
       <div className="notification-detail-page">
@@ -207,24 +233,34 @@ const NotificationDetailPage = () => {
                 style={{ minWidth: "100%", fontSize: 14 }}
               />
             </div>
-            
+
             <h3>Thông báo liên quan</h3>
             <ul>
               {relatedNotifications.length > 0 ? (
                 relatedNotifications.map((n) => {
-                  const formattedItem = formatNotificationForDisplay(n, currentLanguage);
-                  const category = categories.find(cat => cat.id === n.notificationCategoryId);
-                  const categorySlug = currentLanguage === "vi" ? category?.slugVi : category?.slugEn;
-                  
+                  const formattedItem = formatNotificationForDisplay(
+                    n,
+                    currentLanguage
+                  );
+                  const category = categories.find(
+                    (cat) => cat.id === n.notificationCategoryId
+                  );
+                  const categorySlug =
+                    currentLanguage === "vi"
+                      ? category?.slugVi
+                      : category?.slugEn;
+
                   return (
                     <li key={n.id}>
                       <Link
                         to={
                           currentLanguage === "vi"
-                            ? `/thong-bao/${categorySlug}/${formattedItem.slug}`
-                            : `/en/notifications/${categorySlug}/${formattedItem.slug}`
+                            ? `/thong-bao/${formattedItem.slug}.html`
+                            : `/en/notifications/${formattedItem.slug}.html`
                         }
-                        className={n.id === notificationItem?.id ? "active" : ""}
+                        className={
+                          n.id === notificationItem?.id ? "active" : ""
+                        }
                       >
                         {formattedItem.title}
                       </Link>
@@ -232,9 +268,7 @@ const NotificationDetailPage = () => {
                   );
                 })
               ) : (
-                <li className="no-results">
-                  Không có thông báo liên quan
-                </li>
+                <li className="no-results">Không có thông báo liên quan</li>
               )}
             </ul>
           </aside>
@@ -243,13 +277,8 @@ const NotificationDetailPage = () => {
           <div className="notification-detail-container">
             {/* Breadcrumb */}
             <nav className="breadcrumb-nav">
-              <LocalizedLink routeKey="HOME">
-                Trang chủ
-              </LocalizedLink>{" "}
-              &gt;{" "}
-              <LocalizedLink routeKey="NOTIFICATIONS">
-                Thông báo
-              </LocalizedLink>{" "}
+              <LocalizedLink routeKey="HOME">Trang chủ</LocalizedLink> &gt;{" "}
+              <LocalizedLink routeKey="NOTIFICATIONS">Thông báo</LocalizedLink>{" "}
               &gt;{" "}
               <LocalizedLink
                 to={
@@ -289,18 +318,23 @@ const NotificationDetailPage = () => {
 
               {/* Article Image */}
               {(() => {
-                const formattedItem = formatNotificationForDisplay(notificationItem, currentLanguage);
-                return formattedItem?.imageUrl && (
-                  <div className="article-image">
-                    <img
-                      src={formattedItem.imageUrl}
-                      alt={getTitle()}
-                      title={getTitle()}
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                      }}
-                    />
-                  </div>
+                const formattedItem = formatNotificationForDisplay(
+                  notificationItem,
+                  currentLanguage
+                );
+                return (
+                  formattedItem?.imageUrl && (
+                    <div className="article-image">
+                      <img
+                        src={formattedItem.imageUrl}
+                        alt={getTitle()}
+                        title={getTitle()}
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                        }}
+                      />
+                    </div>
+                  )
                 );
               })()}
 
@@ -369,7 +403,12 @@ const NotificationDetailPage = () => {
                           padding: [/^\d+(?:px|em|%)$/],
                           width: [/^\d+(?:px|em|%)$/],
                           height: [/^\d+(?:px|em|%)$/],
-                          display: [/^block$/, /^inline$/, /^inline-block$/, /^none$/],
+                          display: [
+                            /^block$/,
+                            /^inline$/,
+                            /^inline-block$/,
+                            /^none$/,
+                          ],
                         },
                       },
                     }),
@@ -381,102 +420,128 @@ const NotificationDetailPage = () => {
               {notificationItem?.attachments && (
                 <div className="article-attachments">
                   {/* Image Attachments */}
-                  {notificationItem.attachments.images && notificationItem.attachments.images.length > 0 && (
-                    <div className="attachments-section">
-                      <h3 className="attachments-title">
-                        <i className="bi bi-images"></i>
-                        Hình ảnh đính kèm
-                      </h3>
-                      <div className="attachments-gallery">
-                        {(showAllImages ? notificationItem.attachments.images : notificationItem.attachments.images.slice(0, 6))
-                          .map((img, index) => (
-                          <div key={img.id || index} className="attachment-item image-item">
-                            <img
-                              src={img.url?.startsWith('http') 
-                                ? img.url 
-                                : `${process.env.REACT_APP_API_URL}${img.url || `/api/attachments/${img.id}`}`
-                              }
-                              alt={img.originalFileName || `Image ${index + 1}`}
-                              className="attachment-image"
-                              loading="lazy"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                      {notificationItem.attachments.images.length > 6 && (
-                        <div className="show-more-images">
-                          <button
-                            className="btn btn-outline-primary btn-sm"
-                            onClick={() => setShowAllImages(!showAllImages)}
-                          >
-                            <i className={`bi bi-${showAllImages ? 'chevron-up' : 'images'}`}></i>
-                            {showAllImages 
-                              ? 'Ẩn bớt ảnh' 
-                              : `Xem thêm ${notificationItem.attachments.images.length - 6} ảnh`
-                            }
-                          </button>
+                  {notificationItem.attachments.images &&
+                    notificationItem.attachments.images.length > 0 && (
+                      <div className="attachments-section">
+                        <h3 className="attachments-title">
+                          <i className="bi bi-images"></i>
+                          Hình ảnh đính kèm
+                        </h3>
+                        <div className="attachments-gallery">
+                          {(showAllImages
+                            ? notificationItem.attachments.images
+                            : notificationItem.attachments.images.slice(0, 6)
+                          ).map((img, index) => (
+                            <div
+                              key={img.id || index}
+                              className="attachment-item image-item"
+                            >
+                              <img
+                                src={
+                                  img.url?.startsWith("http")
+                                    ? img.url
+                                    : `${getApiBaseUrl()}${img.url}`
+                                }
+                                alt={
+                                  img.originalFileName || `Image ${index + 1}`
+                                }
+                                className="attachment-image"
+                                loading="lazy"
+                              />
+                            </div>
+                          ))}
                         </div>
-                      )}
-                    </div>
-                  )}
+                        {notificationItem.attachments.images.length > 6 && (
+                          <div className="show-more-images">
+                            <button
+                              className="btn btn-outline-primary btn-sm"
+                              onClick={() => setShowAllImages(!showAllImages)}
+                            >
+                              <i
+                                className={`bi bi-${
+                                  showAllImages ? "chevron-up" : "images"
+                                }`}
+                              ></i>
+                              {showAllImages
+                                ? "Ẩn bớt ảnh"
+                                : `Xem thêm ${
+                                    notificationItem.attachments.images.length -
+                                    6
+                                  } ảnh`}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                   {/* Document Attachments */}
-                  {notificationItem.attachments.documents && notificationItem.attachments.documents.length > 0 && (
-                    <div className="attachments-section">
-                      <h3 className="attachments-title">
-                        <i className="bi bi-paperclip"></i>
-                        Tài liệu đính kèm
-                      </h3>
-                      <div className="attachments-list">
-                        {notificationItem.attachments.documents.map((doc, index) => (
-                          <div 
-                            key={doc.id || index} 
-                            className="attachment-item document-item clickable"
-                            onClick={() => {
-                              const url = doc.url?.startsWith('http') 
-                                ? doc.url 
-                                : `${process.env.REACT_APP_API_URL}${doc.url}`;
-                              window.open(url, '_blank', 'noopener,noreferrer');
-                            }}
-                            style={{ cursor: 'pointer' }}
-                            title="Click để xem tài liệu"
-                          >
-                            <div className="attachment-icon">
-                              {doc.contentType?.includes('pdf') ? (
-                                <i className="bi bi-file-pdf text-danger"></i>
-                              ) : doc.contentType?.includes('word') ? (
-                                <i className="bi bi-file-word text-primary"></i>
-                              ) : doc.contentType?.includes('excel') ? (
-                                <i className="bi bi-file-excel text-success"></i>
-                              ) : (
-                                <i className="bi bi-file-text"></i>
-                              )}
-                            </div>
-                            <div className="attachment-info">
-                              <h4 className="attachment-name">{doc.originalFileName || doc.fileName || 'Document'}</h4>
-                              <div className="attachment-meta">
-                                <span className="attachment-size">
-                                  {doc.fileSize ? formatFileSize(doc.fileSize) : 'N/A'}
-                                </span>
-                                <span className="attachment-type">
-                                  {getFileTypeDisplay(doc.contentType)}
-                                </span>
+                  {notificationItem.attachments.documents &&
+                    notificationItem.attachments.documents.length > 0 && (
+                      <div className="attachments-section">
+                        <h3 className="attachments-title">
+                          <i className="bi bi-paperclip"></i>
+                          Tài liệu đính kèm
+                        </h3>
+                        <div className="attachments-list">
+                          {notificationItem.attachments.documents.map(
+                            (doc, index) => (
+                              <div
+                                key={doc.id || index}
+                                className="attachment-item document-item clickable"
+                                onClick={() => {
+                                  const url = doc.url?.startsWith("http")
+                                    ? doc.url
+                                    : `${process.env.REACT_APP_API_URL}${doc.url}`;
+                                  window.open(
+                                    url,
+                                    "_blank",
+                                    "noopener,noreferrer"
+                                  );
+                                }}
+                                style={{ cursor: "pointer" }}
+                                title="Click để xem tài liệu"
+                              >
+                                <div className="attachment-icon">
+                                  {doc.contentType?.includes("pdf") ? (
+                                    <i className="bi bi-file-pdf text-danger"></i>
+                                  ) : doc.contentType?.includes("word") ? (
+                                    <i className="bi bi-file-word text-primary"></i>
+                                  ) : doc.contentType?.includes("excel") ? (
+                                    <i className="bi bi-file-excel text-success"></i>
+                                  ) : (
+                                    <i className="bi bi-file-text"></i>
+                                  )}
+                                </div>
+                                <div className="attachment-info">
+                                  <h4 className="attachment-name">
+                                    {doc.originalFileName ||
+                                      doc.fileName ||
+                                      "Document"}
+                                  </h4>
+                                  <div className="attachment-meta">
+                                    <span className="attachment-size">
+                                      {doc.fileSize
+                                        ? formatFileSize(doc.fileSize)
+                                        : "N/A"}
+                                    </span>
+                                    <span className="attachment-type">
+                                      {getFileTypeDisplay(doc.contentType)}
+                                    </span>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        ))}
+                            )
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               )}
 
               {/* Article Footer */}
               <footer className="article-footer">
                 <div className="article-tags">
-                  <span className="tag-label">
-                    Danh mục:
-                  </span>
+                  <span className="tag-label">Danh mục:</span>
                   <LocalizedLink
                     to={
                       currentLanguage === "vi"

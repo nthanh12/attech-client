@@ -74,43 +74,46 @@ const NotificationSection = ({ title, notifications, type }) => {
       <div className="notification-grid">
         {currentNotifications.length > 0 ? (
           currentNotifications.map((notification) => {
-            const formattedItem = formatNotificationForDisplay(notification, currentLanguage);
-            
+            const formattedItem = formatNotificationForDisplay(
+              notification,
+              currentLanguage
+            );
+
             return (
-            <article key={notification.id}>
-              <div className="image-wrapper">
-                <img 
-                  src={formattedItem.imageUrl || ''} 
-                  alt={formattedItem.title}
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                  }}
-                />
-                {notification.isOutstanding && (
-                  <span className="badge-new">New</span>
-                )}
-              </div>
-              <div className="content-wrapper">
-                <h2>
-                  <Link
-                    className="notification_title"
-                    to={
-                      currentLanguage === "vi"
-                        ? `/thong-bao/${formattedItem.categorySlug}/${formattedItem.slug}`
-                        : `/en/notifications/${formattedItem.categorySlug}/${formattedItem.slug}`
-                    }
-                  >
-                    {formattedItem.title}
-                  </Link>
-                </h2>
-                <div className="notification-meta">
-                  <span>
-                    <i className="far fa-calendar"></i>
-                    {formattedItem.formattedDate}
-                  </span>
+              <article key={notification.id}>
+                <div className="image-wrapper">
+                  <img
+                    src={formattedItem.imageUrl || ""}
+                    alt={formattedItem.title}
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                    }}
+                  />
+                  {notification.isOutstanding && (
+                    <span className="badge-new">New</span>
+                  )}
                 </div>
-              </div>
-            </article>
+                <div className="content-wrapper">
+                  <h2>
+                    <Link
+                      className="notification_title"
+                      to={
+                        currentLanguage === "vi"
+                          ? `/thong-bao/${formattedItem.slug}.html`
+                          : `/en/notifications/${formattedItem.slug}.html`
+                      }
+                    >
+                      {formattedItem.title}
+                    </Link>
+                  </h2>
+                  <div className="notification-meta">
+                    <span>
+                      <i className="far fa-calendar"></i>
+                      {formattedItem.formattedDate}
+                    </span>
+                  </div>
+                </div>
+              </article>
             );
           })
         ) : (

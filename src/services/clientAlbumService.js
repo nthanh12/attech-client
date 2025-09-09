@@ -251,9 +251,17 @@ const clientAlbumService = {
   getImageUrl: (imageUrl) => {
     if (!imageUrl) return null;
     
-    return imageUrl.startsWith('http') 
-      ? imageUrl 
-      : `${process.env.REACT_APP_API_URL}${imageUrl}`;
+    if (imageUrl.startsWith('http')) {
+      return imageUrl;
+    }
+    
+    // Build API URL from environment variables
+    const protocol = process.env.REACT_APP_API_PROTOCOL || 'http';
+    const host = process.env.REACT_APP_API_HOST || 'localhost';
+    const port = process.env.REACT_APP_API_PORT || '5232';
+    const baseUrl = `${protocol}://${host}:${port}`;
+    
+    return `${baseUrl}${imageUrl}`;
   },
 
   /**

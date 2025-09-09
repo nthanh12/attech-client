@@ -3,10 +3,24 @@
  * Handles base URL configuration for all API calls
  */
 
-// Get base API URL from environment variables
+// No longer need config.json - using environment variables only
+
+// Get base API URL - prioritize environment variables
 export const getApiBaseUrl = () => {
-  // Priority: Environment variable -> Development fallback
-  return process.env.REACT_APP_API_URL || 'https://localhost:7276';
+  // First, try environment variables
+  const envProtocol = process.env.REACT_APP_API_PROTOCOL;
+  const envHost = process.env.REACT_APP_API_HOST;
+  const envPort = process.env.REACT_APP_API_PORT;
+  
+  if (envHost) {
+    const protocol = envProtocol || 'http';
+    const port = envPort ? `:${envPort}` : '';
+    return `${protocol}://${envHost}${port}`;
+  }
+  
+  // No environment variables set
+  console.error('No API configuration found');
+  throw new Error('API configuration required. Please set REACT_APP_API_HOST environment variable');
 };
 
 // Get full API URL with path
