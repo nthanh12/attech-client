@@ -212,6 +212,15 @@ const AdminLayout = () => {
         icon: "bi bi-file-earmark-text",
         requiredRoleId: ROLES.EDITOR,
       },
+
+      // Internal Document Management
+      {
+        path: "/admin/internal-documents",
+        label: "Quản lý nội bộ",
+        icon: "bi bi-file-earmark-lock",
+        requiredRoleId: ROLES.ADMIN,
+      },
+      
       // Contact Management
       {
         path: "/admin/contacts",
@@ -340,6 +349,7 @@ const AdminLayout = () => {
       "/admin/users": "Quản lý người dùng",
       "/admin/albums": "Quản lý thư viện",
       "/admin/documents": "Quản lý tài liệu",
+      "/admin/internal-documents": "Quản lý nội bộ",
       "/admin/contacts": "Quản lý liên hệ",
       "/admin/language-content": "Quản lý Thông tin",
       "/admin/seo": "Quản lý SEO",

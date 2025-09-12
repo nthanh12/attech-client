@@ -7,6 +7,7 @@ import NewsList from './pages/NewsList.jsx';
 import NotificationsList from './pages/NotificationsList.jsx';
 import AlbumList from './pages/AlbumList.jsx';
 import DocumentsList from './pages/DocumentsList.jsx';
+import InternalDocumentsList from './pages/InternalDocumentsList.jsx';
 import ContactList from './pages/ContactList.jsx';
 import LanguageContentManager from './pages/LanguageContentManager.jsx';
 
@@ -39,6 +40,7 @@ const adminRoutesConfig = [
       { path: 'notifications', element: NotificationsList },
       { path: 'albums', element: AlbumList },
       { path: 'documents', element: DocumentsList },
+      { path: 'internal-documents', element: InternalDocumentsList },
       { path: 'contacts', element: ContactList },
       { path: 'language-content', element: LanguageContentManager },
       { path: 'users', element: UserManagement },

@@ -1,0 +1,178 @@
+/* Contact Directory Specific Styles */
+
+.contact-directory {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.directory-controls {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.search-box {
+  position: relative;
+}
+
+.search-box i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  z-index: 2;
+}
+
+.search-box input {
+  padding-left: 45px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.search-box input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.contacts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.contact-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.contact-avatar {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.contact-avatar i {
+  font-size: 4rem;
+  color: #6c757d;
+}
+
+.contact-info {
+  text-align: center;
+}
+
+.contact-name {
+  color: #2c3e50;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.contact-position {
+  color: #3498db;
+  font-weight: 500;
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+.contact-department {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-details {
+  text-align: left;
+  border-top: 1px solid #e9ecef;
+  padding-top: 15px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-item i {
+  width: 20px;
+  color: #6c757d;
+}
+
+.contact-email {
+  font-size: 0.85rem;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contact-item .btn {
+  padding: 2px 6px;
+  font-size: 0.75rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contacts-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .contact-card {
+    padding: 20px;
+  }
+  
+  .directory-controls .row > * {
+    margin-bottom: 10px;
+  }
+  
+  .contact-item {
+    font-size: 0.85rem;
+  }
+  
+  .contact-email {
+    max-width: 120px;
+  }
+}
+
+/* Department Badge Styles */
+.contact-department {
+  position: relative;
+}
+
+/* Add department color coding if needed */
+.contact-card[data-department="Ban Giám đốc"] .contact-position {
+  color: #e74c3c;
+}
+
+.contact-card[data-department="Phòng Kỹ thuật"] .contact-position {
+  color: #2ecc71;
+}
+
+.contact-card[data-department="Phòng Nhân sự"] .contact-position {
+  color: #f39c12;
+}
+
+.contact-card[data-department="Phòng Tài chính"] .contact-position {
+  color: #9b59b6;
+}

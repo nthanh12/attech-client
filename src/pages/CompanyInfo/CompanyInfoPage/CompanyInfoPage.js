@@ -4,7 +4,7 @@ import SidebarCompanyInfo from "../components/SidebarCompanyInfo/SidebarCompanyI
 import "./CompanyInfoPage.css";
 
 const CompanyInfoPage = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
     <div className="page-company-info">

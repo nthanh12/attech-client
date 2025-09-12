@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { documentService } from "../../services/documentService";
+import documentService from "../../services/documentService";
+import api from "../../api";
+import { handleFeaturedImageUpload } from "../../services/attachmentService";
+import { getApiUrl } from "../../config/apiConfig";
 import ToastMessage from "./ToastMessage";
 import "./NewsCreationForm.css"; // Reuse existing styles
 
@@ -10,23 +13,26 @@ const DocumentCreationForm = ({
 }) => {
   const isEditMode = !!editingDocument;
 
-  // Form data
+  // Form data (like Album + 2 description fields + timePosted)
   const [formData, setFormData] = useState({
-    title: editingDocument?.title || "",
-    description: editingDocument?.description || "",
-    category: editingDocument?.category || "",
-    tags: editingDocument?.tags || "",
+    titleVi: editingDocument?.titleVi || "",
+    titleEn: editingDocument?.titleEn || "",
+    descriptionVi: editingDocument?.descriptionVi || "",
+    descriptionEn: editingDocument?.descriptionEn || "",
     status: editingDocument?.status ?? 1,
-    originalFileName: editingDocument?.originalFileName || "",
-    fileUrl: editingDocument?.fileUrl || "",
-    fileType: editingDocument?.fileType || "",
-    fileSize: editingDocument?.fileSize || 0,
+    attachmentIds: editingDocument?.attachmentIds || [],
+    featuredImageId: editingDocument?.featuredImageId || null,
+    newsCategoryId: editingDocument?.newsCategoryId || 1,
+    timePosted: editingDocument?.timePosted
+      ? editingDocument.timePosted.split("T")[0]
+      : new Date().toISOString().split("T")[0]
   });
 
-  // Upload state
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploading, setUploading] = useState(false);
+  // Upload state (like Album)
+  const [featuredImagePreview, setFeaturedImagePreview] = useState(null);
+  const [featuredImageId, setFeaturedImageId] = useState(null);
+  const [documentFiles, setDocumentFiles] = useState([]);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
 
   // UI state
   const [loading, setLoading] = useState(false);
@@ -37,17 +43,6 @@ const DocumentCreationForm = ({
     type: "info",
   });
 
-  // Document categories
-  const documentCategories = [
-    { value: "general", label: "Tổng quát" },
-    { value: "technical", label: "Kỹ thuật" },
-    { value: "marketing", label: "Marketing" },
-    { value: "legal", label: "Pháp lý" },
-    { value: "financial", label: "Tài chính" },
-    { value: "hr", label: "Nhân sự" },
-    { value: "training", label: "Đào tạo" },
-  ];
-
   // Allowed file types for documents
   const allowedFileTypes = [
     '.pdf', '.doc', '.docx', '.xls', '.xlsx', 
@@ -56,64 +51,90 @@ const DocumentCreationForm = ({
 
   const maxFileSize = 50 * 1024 * 1024; // 50MB
 
-  // Handle form input changes
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+  // Load existing attachments if editing (like Album)
+  useEffect(() => {
+    const loadExistingAttachments = async () => {
+      if (isEditMode && editingDocument) {
+        console.log('🔄 Loading existing attachments for edit:', editingDocument);
+        
+        try {
+          // Load featured image from imageUrl
+          const imageUrl = editingDocument.imageUrl;
+          if (imageUrl) {
+            const fullImageUrl = imageUrl.startsWith("http")
+              ? imageUrl
+              : getApiUrl(imageUrl);
+            setFeaturedImagePreview(fullImageUrl);
+            console.log('🖼️ Set featured image preview:', fullImageUrl);
+          }
+
+          // Set featured image ID from BE response
+          if (editingDocument.featuredImageId !== null && editingDocument.featuredImageId !== undefined) {
+            setFeaturedImageId(editingDocument.featuredImageId);
+            console.log('🆔 Set featured image ID:', editingDocument.featuredImageId);
+          }
+
+          // Load document files from API response
+          const documentFilesData = editingDocument.documents || [];
+          console.log('📎 Found document files:', documentFilesData);
+          
+          if (documentFilesData.length > 0) {
+            const baseUrl = api.defaults.baseURL;
+            const transformedFiles = documentFilesData.map((file, index) => ({
+              id: file.id,
+              name: file.originalFileName || file.fileName || `file-${index + 1}`,
+              size: file.fileSize || 0,
+              type: "application/octet-stream",
+              uploading: false,
+              attachmentId: file.id,
+            }));
+            
+            console.log('📄 Transformed files for edit:', transformedFiles);
+            setDocumentFiles(transformedFiles);
+            
+            // Update attachmentIds
+            const attachmentIds = documentFilesData.map(file => file.id);
+            console.log('🔢 Setting attachment IDs:', attachmentIds);
+            handleInputChange("attachmentIds", attachmentIds);
+          }
+        } catch (error) {
+          console.error('❌ Error loading existing attachments:', error);
+        }
+      }
+    };
+
+    loadExistingAttachments();
+  }, [isEditMode, editingDocument]);
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
     
-    // Clear error for this field
-    if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ""
-      }));
+    // Clear error when user types
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
     }
   };
 
-  // Handle file selection
-  const handleFileSelect = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const showToast = (message, type = "info") => {
+    setToast({ show: true, message, type });
+  };
 
-    // Validate file type
-    const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
-    if (!allowedFileTypes.includes(fileExtension)) {
-      setToast({
-        show: true,
-        message: `Loại file không được hỗ trợ. Chỉ chấp nhận: ${allowedFileTypes.join(', ')}`,
-        type: "error"
-      });
-      e.target.value = '';
-      return;
+  const hideToast = () => {
+    setToast({ ...toast, show: false });
+  };
+
+  // Featured image upload handler (like Album)
+  const handleFeaturedImageChange = (file) => {
+    if (file) {
+      handleFeaturedImageUpload(
+        file,
+        setFeaturedImagePreview,
+        setFeaturedImageId
+      );
+    } else {
+      setFeaturedImagePreview(null);
+      setFeaturedImageId(null);
     }
-
-    // Validate file size
-    if (file.size > maxFileSize) {
-      setToast({
-        show: true,
-        message: `File quá lớn. Kích thước tối đa: ${formatFileSize(maxFileSize)}`,
-        type: "error"
-      });
-      e.target.value = '';
-      return;
-    }
-
-    setSelectedFile(file);
-    setFormData(prev => ({
-      ...prev,
-      originalFileName: file.name,
-      fileType: fileExtension.substring(1), // Remove dot
-      fileSize: file.size
-    }));
-
-    // Clear file-related errors
-    setErrors(prev => ({
-      ...prev,
-      file: ""
-    }));
   };
 
   // Format file size
@@ -125,296 +146,456 @@ const DocumentCreationForm = ({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  // Validate form
-  const validateForm = () => {
-    const newErrors = {};
+  // Handle document upload (like Album image upload)
+  const handleDocumentUpload = async (files) => {
+    if (!files || files.length === 0) return;
 
-    if (!formData.title.trim()) {
-      newErrors.title = "Tiêu đề là bắt buộc";
-    }
-
-    if (!isEditMode && !selectedFile) {
-      newErrors.file = "Vui lòng chọn file tài liệu";
-    }
-
-    if (!formData.category) {
-      newErrors.category = "Vui lòng chọn danh mục";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-
-    setLoading(true);
-    
+    setUploadingFiles(true);
     try {
-      let documentData = {
-        title: formData.title,
-        description: formData.description,
-        category: formData.category,
-        tags: formData.tags,
-        status: parseInt(formData.status),
-      };
+      const fileArray = Array.from(files);
 
-      if (isEditMode) {
-        // Update existing document
-        if (selectedFile) {
-          // Upload new file if selected
-          const uploadResponse = await documentService.uploadDocument(selectedFile, {
-            onUploadProgress: (progressEvent) => {
-              const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-              setUploadProgress(progress);
-            }
-          });
-          
-          documentData.fileUrl = uploadResponse.fileUrl;
-          documentData.originalFileName = uploadResponse.originalFileName;
-          documentData.fileType = uploadResponse.fileType;
-          documentData.fileSize = uploadResponse.fileSize;
+      // Validate file types and sizes
+      for (const file of fileArray) {
+        const fileExtension = '.' + file.name.split('.').pop().toLowerCase();
+        if (!allowedFileTypes.includes(fileExtension)) {
+          showToast(`File không được hỗ trợ: ${file.name}. Chỉ chấp nhận: ${allowedFileTypes.join(', ')}`, "error");
+          setUploadingFiles(false);
+          return;
         }
-
-        const response = await documentService.updateDocument(editingDocument.id, documentData);
-        
-        if (response.success) {
-          onSuccess && onSuccess(response.data);
-        } else {
-          throw new Error(response.message || "Cập nhật tài liệu thất bại");
-        }
-      } else {
-        // Create new document
-        setUploading(true);
-        
-        const uploadResponse = await documentService.uploadDocument(selectedFile, {
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            setUploadProgress(progress);
-          }
-        });
-
-        documentData = {
-          ...documentData,
-          fileUrl: uploadResponse.fileUrl,
-          originalFileName: uploadResponse.originalFileName,
-          fileType: uploadResponse.fileType,
-          fileSize: uploadResponse.fileSize,
-        };
-
-        const response = await documentService.createDocument(documentData);
-        
-        if (response.success) {
-          onSuccess && onSuccess(response.data);
-        } else {
-          throw new Error(response.message || "Tạo tài liệu thất bại");
+        if (file.size > maxFileSize) {
+          showToast(`File quá lớn: ${file.name}. Kích thước tối đa: ${formatFileSize(maxFileSize)}`, "error");
+          setUploadingFiles(false);
+          return;
         }
       }
 
-    } catch (error) {
-      console.error("Error saving document:", error);
-      setToast({
-        show: true,
-        message: error.message || "Có lỗi xảy ra khi lưu tài liệu",
-        type: "error"
+      // Create file info objects
+      const fileInfos = fileArray.map((file, index) => ({
+        id: Date.now() + Math.random() + index,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        uploading: true,
+        attachmentId: null,
+        file: file,
+      }));
+
+      // Thêm tất cả vào document files ngay với preview
+      setDocumentFiles((prev) => [...prev, ...fileInfos]);
+
+      // Upload song song tất cả files
+      const uploadPromises = fileInfos.map(async (fileInfo) => {
+        try {
+          const formData = new FormData();
+          formData.append("file", fileInfo.file);
+
+          const response = await api.post("/api/attachments", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+
+          if (response.data?.status === 1 && response.data?.data?.id) {
+            const attachmentData = response.data.data;
+
+            // Update file này với data thật
+            setDocumentFiles((prev) =>
+              prev.map((file) =>
+                file.id === fileInfo.id
+                  ? {
+                      ...file,
+                      uploading: false,
+                      attachmentId: attachmentData.id,
+                    }
+                  : file
+              )
+            );
+
+            console.log(
+              `✅ Document file uploaded: ${fileInfo.name} -> ID: ${attachmentData.id}`
+            );
+            return {
+              success: true,
+              fileInfo,
+              attachmentId: attachmentData.id,
+            };
+          } else {
+            throw new Error("Upload failed - invalid response");
+          }
+        } catch (uploadError) {
+          console.error(
+            `❌ Document file upload failed: ${fileInfo.name}`,
+            uploadError
+          );
+
+          // Remove failed file from list
+          setDocumentFiles((prev) =>
+            prev.filter((file) => file.id !== fileInfo.id)
+          );
+
+          return { success: false, fileInfo, error: uploadError };
+        }
       });
+
+      // Đợi tất cả upload xong
+      const results = await Promise.all(uploadPromises);
+      const successCount = results.filter((r) => r.success).length;
+      const failCount = results.filter((r) => !r.success).length;
+
+      // Update attachmentIds với files đã upload thành công
+      const successfulAttachmentIds = results
+        .filter((r) => r.success)
+        .map((r) => r.attachmentId);
+      
+      if (successfulAttachmentIds.length > 0) {
+        const allAttachmentIds = [
+          ...formData.attachmentIds,
+          ...successfulAttachmentIds
+        ];
+        handleInputChange("attachmentIds", allAttachmentIds);
+      }
+
+      if (successCount > 0) {
+        showToast(`Upload thành công ${successCount}/${fileArray.length} file`, "success");
+      }
+
+      if (failCount > 0) {
+        showToast(`${failCount} file upload thất bại`, "error");
+      }
+    } catch (error) {
+      console.error("Document file upload error:", error);
+      showToast("Lỗi khi thêm file tài liệu", "error");
     } finally {
-      setLoading(false);
-      setUploading(false);
-      setUploadProgress(0);
+      setUploadingFiles(false);
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    console.log('🔍 Validating form with data:', {
+      titleVi: formData.titleVi,
+      documentFilesCount: documentFiles.length,
+      successfulFilesCount: documentFiles.filter(file => file.attachmentId && !file.uploading).length
+    });
+    
+    if (!formData.titleVi.trim()) {
+      newErrors.titleVi = "Tiêu đề tiếng Việt là bắt buộc";
+    }
+    
+    const successfulFiles = documentFiles.filter(file => file.attachmentId && !file.uploading);
+    if (successfulFiles.length === 0) {
+      newErrors.attachmentIds = "Cần upload ít nhất 1 file tài liệu";
+    }
+    
+    console.log('🔍 Validation errors:', newErrors);
+    
+    setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;
+    console.log('🔍 Form validation result:', isValid);
+    
+    return isValid;
+  };
+
+  const handleSave = async () => {
+    console.log('🚀 Save button clicked, starting validation...');
+    
+    if (!validateForm()) {
+      console.log('❌ Form validation failed, stopping submission');
+      setToast({
+        show: true,
+        message: "Vui lòng kiểm tra lại thông tin",
+        type: "error",
+      });
+      return;
+    }
+    
+    console.log('✅ Form validation passed, proceeding with submission...');
+
+    try {
+      setLoading(true);
+      
+      // Get successful attachment IDs from files
+      const successfulFiles = documentFiles.filter(file => file.attachmentId && !file.uploading);
+      const attachmentIds = successfulFiles.map(file => file.attachmentId);
+      
+      console.log('🔍 Document form submission data:', {
+        titleVi: formData.titleVi,
+        titleEn: formData.titleEn,
+        descriptionVi: formData.descriptionVi,
+        descriptionEn: formData.descriptionEn,
+        attachmentIds: attachmentIds,
+        featuredImageId: featuredImageId,
+        newsCategoryId: formData.newsCategoryId,
+        isEditMode: isEditMode
+      });
+      
+      const documentData = {
+        titleVi: formData.titleVi,
+        titleEn: formData.titleEn,
+        descriptionVi: formData.descriptionVi,
+        descriptionEn: formData.descriptionEn,
+        attachmentIds: attachmentIds,
+        featuredImageId: featuredImageId,
+        newsCategoryId: formData.newsCategoryId,
+        timePosted: new Date(formData.timePosted).toISOString()
+      };
+
+      console.log('📤 Sending document data to API:', documentData);
+
+      let response;
+      if (isEditMode) {
+        response = await documentService.updateDocument(editingDocument.id, documentData);
+      } else {
+        response = await documentService.createDocument(documentData);
+      }
+      
+      console.log('📥 API response:', response);
+
+      if (response.success) {
+        showToast(
+          isEditMode ? "Cập nhật tài liệu thành công" : "Tạo tài liệu thành công",
+          "success"
+        );
+        
+        // Call success callback immediately if truly successful  
+        if (response.data && (response.data.id || response.data.data?.id)) {
+          console.log('✅ Document created successfully, calling onSuccess callback');
+          setTimeout(() => {
+            onSuccess();
+          }, 1500);
+        } else {
+          console.log('⚠️ API returned success but no data, not calling onSuccess');
+          throw new Error('API returned success but no document data');
+        }
+      } else {
+        throw new Error(response.message || "Operation failed");
+      }
+    } catch (error) {
+      console.error("Error saving document:", error);
+      showToast("Lỗi lưu tài liệu: " + error.message, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const removeDocumentFile = (fileId) => {
+    setDocumentFiles((prev) => prev.filter((file) => file.id !== fileId));
+  };
+
   return (
-    <div className="document-creation-form">
-      <form onSubmit={handleSubmit}>
-        {/* Document Info Section */}
-        <div className="form-section">
-          <h4 className="section-title">Thông tin tài liệu</h4>
-          
+    <div className="news-creation-form">
+        {/* Title Section */}
+        <div className="form-row">
           <div className="form-group">
-            <label htmlFor="title">
-              Tiêu đề <span className="required">*</span>
+            <label className="form-label">
+              Tiêu đề tiếng Việt <span className="text-danger">*</span>
             </label>
             <input
               type="text"
-              id="title"
-              name="title"
-              className={`form-control ${errors.title ? 'is-invalid' : ''}`}
-              value={formData.title}
-              onChange={handleInputChange}
-              placeholder="Nhập tiêu đề tài liệu"
+              className={`form-control ${errors.titleVi ? 'is-invalid' : ''}`}
+              value={formData.titleVi}
+              onChange={(e) => handleInputChange("titleVi", e.target.value)}
+              placeholder="Nhập tiêu đề tài liệu..."
             />
-            {errors.title && <div className="invalid-feedback">{errors.title}</div>}
+            {errors.titleVi && (
+              <div className="invalid-feedback">{errors.titleVi}</div>
+            )}
           </div>
-
+          
           <div className="form-group">
-            <label htmlFor="description">Mô tả</label>
-            <textarea
-              id="description"
-              name="description"
-              className="form-control"
-              rows="3"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Mô tả về tài liệu..."
-            />
-          </div>
-
-          <div className="form-row">
-            <div className="form-group col-md-6">
-              <label htmlFor="category">
-                Danh mục <span className="required">*</span>
-              </label>
-              <select
-                id="category"
-                name="category"
-                className={`form-control ${errors.category ? 'is-invalid' : ''}`}
-                value={formData.category}
-                onChange={handleInputChange}
-              >
-                <option value="">Chọn danh mục</option>
-                {documentCategories.map(cat => (
-                  <option key={cat.value} value={cat.value}>{cat.label}</option>
-                ))}
-              </select>
-              {errors.category && <div className="invalid-feedback">{errors.category}</div>}
-            </div>
-
-            <div className="form-group col-md-6">
-              <label htmlFor="status">Trạng thái</label>
-              <select
-                id="status"
-                name="status"
-                className="form-control"
-                value={formData.status}
-                onChange={handleInputChange}
-              >
-                <option value={1}>Hoạt động</option>
-                <option value={0}>Không hoạt động</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="tags">Tags</label>
+            <label className="form-label">Tiêu đề tiếng Anh</label>
             <input
               type="text"
-              id="tags"
-              name="tags"
               className="form-control"
-              value={formData.tags}
-              onChange={handleInputChange}
-              placeholder="Nhập các tag, phân cách bằng dấu phẩy"
+              value={formData.titleEn}
+              onChange={(e) => handleInputChange("titleEn", e.target.value)}
+              placeholder="Enter document title..."
             />
-            <small className="form-text text-muted">
-              Ví dụ: hợp đồng, pháp lý, mẫu
-            </small>
           </div>
         </div>
 
-        {/* File Upload Section */}
-        <div className="form-section">
-          <h4 className="section-title">
-            {isEditMode ? "Thay đổi file (tùy chọn)" : "Upload file"}
-          </h4>
-          
-          {isEditMode && formData.originalFileName && (
-            <div className="current-file-info mb-3">
-              <strong>File hiện tại:</strong> {formData.originalFileName}
-              <span className="text-muted ml-2">
-                ({formatFileSize(formData.fileSize)})
-              </span>
-            </div>
-          )}
-
+        {/* Description Section */}
+        <div className="form-row">
           <div className="form-group">
-            <label htmlFor="file">
-              {isEditMode ? "Chọn file mới" : "Chọn file"} 
-              {!isEditMode && <span className="required">*</span>}
+            <label className="form-label">Mô tả tiếng Việt</label>
+            <textarea
+              className="form-control"
+              rows="3"
+              value={formData.descriptionVi}
+              onChange={(e) => handleInputChange("descriptionVi", e.target.value)}
+              placeholder="Mô tả tài liệu bằng tiếng Việt..."
+            />
+          </div>
+          
+          <div className="form-group">
+            <label className="form-label">Mô tả tiếng Anh</label>
+            <textarea
+              className="form-control"
+              rows="3"
+              value={formData.descriptionEn}
+              onChange={(e) => handleInputChange("descriptionEn", e.target.value)}
+              placeholder="Describe document in English..."
+            />
+          </div>
+        </div>
+
+        {/* Status & Time Posted */}
+        <div className="form-row">
+          <div className="form-group">
+            <label className="form-label">Trạng thái</label>
+            <select
+              className="form-control"
+              value={formData.status}
+              onChange={(e) => handleInputChange("status", parseInt(e.target.value))}
+            >
+              <option value={1}>Hoạt động</option>
+              <option value={0}>Không hoạt động</option>
+            </select>
+          </div>
+          
+          <div className="form-group">
+            <label className="form-label">Ngày đăng</label>
+            <input
+              type="date"
+              className="form-control"
+              value={formData.timePosted}
+              onChange={(e) =>
+                handleInputChange("timePosted", e.target.value)
+              }
+            />
+          </div>
+        </div>
+
+        {/* Featured Image Section */}
+        <div className="form-section">
+          <h4>Ảnh đại diện tài liệu</h4>
+          <div className="form-group">
+            <label className="form-label">Tải lên ảnh đại diện</label>
+            <div className="file-upload-area">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleFeaturedImageChange(e.target.files[0])}
+                style={{ marginBottom: "10px" }}
+              />
+              {featuredImagePreview && (
+                <div className="image-preview" style={{ marginTop: "15px" }}>
+                  <img
+                    src={featuredImagePreview}
+                    alt="Ảnh đại diện tài liệu"
+                    style={{
+                      maxWidth: "200px",
+                      maxHeight: "150px",
+                      objectFit: "cover",
+                      borderRadius: "6px",
+                      border: "1px solid #dee2e6",
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Document Files Section */}
+        <div className="form-section">
+          <h4>Tài liệu</h4>
+          <div className="form-group">
+            <label className="form-label">
+              Tải lên file tài liệu <span className="text-danger">*</span>
             </label>
             <input
               type="file"
-              id="file"
-              className={`form-control-file ${errors.file ? 'is-invalid' : ''}`}
-              onChange={handleFileSelect}
+              multiple
               accept={allowedFileTypes.join(',')}
+              onChange={(e) => {
+                const files = Array.from(e.target.files);
+                if (files.length > 0) {
+                  handleDocumentUpload(files);
+                }
+              }}
+              className={`form-control ${errors.attachmentIds ? 'is-invalid' : ''}`}
+              disabled={uploadingFiles}
             />
-            {errors.file && <div className="invalid-feedback d-block">{errors.file}</div>}
-            
             <small className="form-text text-muted">
-              Loại file được hỗ trợ: PDF, Word, Excel, PowerPoint, Text
-              <br />
-              Kích thước tối đa: {formatFileSize(maxFileSize)}
+              Chọn nhiều file tài liệu. Hỗ trợ PDF, Word, Excel, PowerPoint, Text.
             </small>
+            {errors.attachmentIds && (
+              <div className="invalid-feedback">{errors.attachmentIds}</div>
+            )}
           </div>
-
-          {selectedFile && (
-            <div className="selected-file-info">
-              <div className="file-info">
-                <i className="fas fa-file"></i>
-                <span className="file-name">{selectedFile.name}</span>
-                <span className="file-size">({formatFileSize(selectedFile.size)})</span>
-              </div>
-            </div>
-          )}
-
-          {uploading && (
-            <div className="upload-progress">
-              <div className="progress">
-                <div 
-                  className="progress-bar" 
-                  role="progressbar" 
-                  style={{width: `${uploadProgress}%`}}
-                >
-                  {uploadProgress}%
-                </div>
-              </div>
-              <small className="text-muted">Đang upload file...</small>
-            </div>
-          )}
         </div>
 
-        {/* Action Buttons */}
+        {/* Upload Progress */}
+        {uploadingFiles && (
+          <div className="upload-progress uploading">
+            <div className="spinner-border spinner-border-sm me-2"></div>
+            Đang upload file...
+          </div>
+        )}
+
+        {/* Document Files Preview */}
+        {documentFiles.length > 0 && (
+          <div className="uploaded-files-section">
+            <h6>Tài liệu: ({documentFiles.filter(file => !file.uploading).length}/{documentFiles.length} file)</h6>
+            <div className="files-grid">
+              {documentFiles.map((file) => (
+                <div key={file.id} className="file-item">
+                  <div className="file-info">
+                    <i className="fas fa-file-alt"></i>
+                    <div className="file-details">
+                      <div className="file-name">
+                        {file.name.length > 25 ? file.name.substring(0, 25) + '...' : file.name}
+                      </div>
+                      <div className="file-size">{formatFileSize(file.size)}</div>
+                      {file.uploading && (
+                        <div className="file-status uploading">
+                          <div className="spinner-border spinner-border-sm"></div>
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      className="remove-file-btn"
+                      onClick={() => removeDocumentFile(file.id)}
+                      title="Xóa file"
+                    >
+                      <i className="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Form Actions */}
         <div className="form-actions">
           <button
             type="button"
             className="btn btn-secondary"
             onClick={onCancel}
-            disabled={loading || uploading}
+            disabled={loading}
           >
             Hủy
           </button>
           <button
-            type="submit"
+            type="button"
             className="btn btn-primary"
-            disabled={loading || uploading}
+            onClick={handleSave}
+            disabled={loading || uploadingFiles}
           >
-            {loading || uploading ? (
-              <>
-                <i className="fas fa-spinner fa-spin"></i>
-                {uploading ? " Đang upload..." : " Đang lưu..."}
-              </>
-            ) : (
-              <>
-                <i className="fas fa-save"></i>
-                {isEditMode ? " Cập nhật" : " Lưu"}
-              </>
-            )}
+            {loading && <span className="spinner-border spinner-border-sm me-2"></span>}
+            {isEditMode ? "Cập nhật Tài liệu" : "Tạo Tài liệu"}
           </button>
         </div>
-      </form>
 
       <ToastMessage
         show={toast.show}
         message={toast.message}
         type={toast.type}
-        onClose={() => setToast({...toast, show: false})}
+        onClose={hideToast}
       />
     </div>
   );

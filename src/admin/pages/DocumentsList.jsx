@@ -12,16 +12,9 @@ import "../styles/adminButtons.css";
 import "./DocumentsList.css";
 import "./ContactList.css";
 
-// import { documentService } from "../../services/documentService";
-import { 
-  getDocuments, 
-  createDocument, 
-  updateDocument, 
-  deleteDocument, 
-  getDocumentById,
-  downloadDocument 
-} from "../../services/newsService";
+import documentService from "../../services/documentService";
 import DocumentCreationForm from "../components/DocumentCreationForm";
+import { getApiUrl } from "../../config/apiConfig";
 
 const DocumentsList = () => {
   const { user: currentUser, ROLES } = useAuth();
@@ -29,6 +22,7 @@ const DocumentsList = () => {
   // Data state
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isFiltering, setIsFiltering] = useState(false);
 
   // Server-side pagination state
   const [totalItems, setTotalItems] = useState(0);
@@ -59,9 +53,9 @@ const DocumentsList = () => {
   const [filters, setFilters] = useState({
     search: "",
     status: "",
-    fileType: "",
     dateFrom: "",
     dateTo: "",
+    isOutstanding: "",
   });
   const [searchDebounce, setSearchDebounce] = useState("");
 
@@ -81,8 +75,9 @@ const DocumentsList = () => {
 
   // Load data on mount and when pagination/filters/sorting change
   useEffect(() => {
-    loadDocuments();
-  }, [currentPage, itemsPerPage, searchDebounce, filters.status, filters.fileType, filters.dateFrom, filters.dateTo, sortConfig]);
+    const isInitialLoad = documents.length === 0 && !loading && !isFiltering;
+    loadDocuments(isInitialLoad);
+  }, [currentPage, itemsPerPage, searchDebounce, filters.status, filters.dateFrom, filters.dateTo, filters.isOutstanding, sortConfig]);
 
   const showToast = useCallback((message, type = "info") => {
     setToast({ show: true, message, type });
@@ -91,23 +86,30 @@ const DocumentsList = () => {
     }, 3000);
   }, []);
 
-  const loadDocuments = useCallback(async () => {
+  const loadDocuments = useCallback(async (isInitialLoad = false) => {
     try {
-      setLoading(true);
+      if (isInitialLoad) {
+        setLoading(true);
+      } else {
+        setIsFiltering(true);
+      }
       const params = {
-        page: currentPage,
+        pageNumber: currentPage,
         pageSize: itemsPerPage,
         keyword: searchDebounce || "",
         status: filters.status,
-        fileType: filters.fileType,
         dateFrom: filters.dateFrom,
         dateTo: filters.dateTo,
+        isOutstanding: filters.isOutstanding,
         sortBy: sortConfig.key,
         sortDirection: sortConfig.direction,
       };
 
+      console.log('🔍 DocumentsList filter params:', params);
+      console.log('🔍 Current filters state:', filters);
+
       console.log("🔍 Loading documents with params:", params);
-      const response = await getDocuments(params);
+      const response = await documentService.fetchDocuments(params);
       console.log("📋 Documents response:", response);
 
       if (response.success) {
@@ -134,6 +136,7 @@ const DocumentsList = () => {
       showToast("Lỗi tải danh sách tài liệu: " + error.message, "error");
     } finally {
       setLoading(false);
+      setIsFiltering(false);
     }
   }, [currentPage, itemsPerPage, searchDebounce, filters, sortConfig, showToast]);
 
@@ -145,15 +148,29 @@ const DocumentsList = () => {
   };
 
   const handleEdit = async (documentItem) => {
-    setEditMode(true);
-    setEditingDocument(documentItem);
-    setShowModal(true);
+    try {
+      // Call API to get full document detail
+      console.log('🔍 Fetching document detail for edit:', documentItem.id);
+      const response = await documentService.getDocumentById(documentItem.id);
+      
+      if (response.success && response.data) {
+        console.log('✅ Document detail loaded:', response.data);
+        setEditMode(true);
+        setEditingDocument(response.data);  // Use full detail data
+        setShowModal(true);
+      } else {
+        throw new Error('Failed to load document detail');
+      }
+    } catch (error) {
+      console.error('❌ Error loading document detail:', error);
+      showToast('Lỗi khi tải chi tiết tài liệu: ' + error.message, 'error');
+    }
   };
 
   const handleDelete = async (documentItem) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa tài liệu này?")) {
       try {
-        const response = await deleteDocument(documentItem.id);
+        const response = await documentService.deleteDocument(documentItem.id);
         if (response.success) {
           await loadDocuments();
           showToast("Xóa tài liệu thành công!", "success");
@@ -191,16 +208,26 @@ const DocumentsList = () => {
 
   const handleViewDocument = async (documentItem) => {
     try {
-      setSelectedDocument(documentItem);
-      setShowDocumentDetail(true);
+      // Call API to get full document detail
+      console.log('🔍 Fetching document detail for view:', documentItem.id);
+      const response = await documentService.getDocumentById(documentItem.id);
+      
+      if (response.success && response.data) {
+        console.log('✅ Document detail loaded for view:', response.data);
+        setSelectedDocument(response.data);  // Use full detail data
+        setShowDocumentDetail(true);
+      } else {
+        throw new Error('Failed to load document detail');
+      }
     } catch (error) {
-      showToast("Lỗi khi xem chi tiết tài liệu", "error");
+      console.error('❌ Error loading document detail for view:', error);
+      showToast("Lỗi khi xem chi tiết tài liệu: " + error.message, "error");
     }
   };
 
   const handleDownloadDocument = async (documentItem) => {
     try {
-      await downloadDocument(documentItem.id, documentItem.originalFileName || documentItem.titleVi);
+      await documentService.downloadDocument(documentItem.id, documentItem.originalFileName || documentItem.titleVi);
       showToast("Tải xuống thành công!", "success");
     } catch (error) {
       showToast("Lỗi khi tải xuống tài liệu", "error");
@@ -230,22 +257,12 @@ const DocumentsList = () => {
       ),
     },
     {
-      key: "newsCategoryNameVi", 
+      key: "newsCategoryTitleVi", 
       label: "Danh mục",
       width: "150px",
       render: (item) => (
         <span className="category-badge">
-          {item.newsCategoryNameVi || "Chưa phân loại"}
-        </span>
-      ),
-    },
-    {
-      key: "documents",
-      label: "Files đính kèm",
-      width: "120px",
-      render: (item) => (
-        <span className="attachment-count">
-          {item.documents?.length || 0} file(s)
+          {item.newsCategoryTitleVi || "Chưa phân loại"}
         </span>
       ),
     },
@@ -260,8 +277,8 @@ const DocumentsList = () => {
             item.status === 0 ? "badge-secondary" : "badge-warning"
           }`}
         >
-          {item.status === 1 ? "Xuất bản" : 
-           item.status === 0 ? "Nháp" : "Ẩn"}
+          {item.status === 1 ? "Hoạt động" : 
+           item.status === 0 ? "Không hoạt động" : "Không xác định"}
         </span>
       ),
     },
@@ -406,27 +423,6 @@ const DocumentsList = () => {
               />
             </div>
             <div className="filter-group">
-              <label><i className="fas fa-file"></i> Loại file</label>
-              <select
-                className="form-control"
-                value={filters.fileType}
-                onChange={(e) => {
-                  setFilters((prev) => ({ ...prev, fileType: e.target.value }));
-                  setCurrentPage(1);
-                }}
-              >
-                <option value="">Tất cả loại file</option>
-                <option value="pdf">PDF</option>
-                <option value="doc">Word (DOC)</option>
-                <option value="docx">Word (DOCX)</option>
-                <option value="xls">Excel (XLS)</option>
-                <option value="xlsx">Excel (XLSX)</option>
-                <option value="ppt">PowerPoint (PPT)</option>
-                <option value="pptx">PowerPoint (PPTX)</option>
-                <option value="txt">Text</option>
-              </select>
-            </div>
-            <div className="filter-group">
               <label><i className="fas fa-flag"></i> Trạng thái</label>
               <select
                 className="form-control"
@@ -437,8 +433,8 @@ const DocumentsList = () => {
                 }}
               >
                 <option key="all-status" value="">Tất cả trạng thái</option>
-                <option key="active" value="1">Hiển thị</option>
-                <option key="inactive" value="0">Ẩn</option>
+                <option key="active" value="1">Hoạt động</option>
+                <option key="inactive" value="0">Không hoạt động</option>
               </select>
             </div>
             <div className="filter-group">
@@ -472,9 +468,9 @@ const DocumentsList = () => {
                   setFilters({
                     search: "",
                     status: "",
-                    fileType: "",
                     dateFrom: "",
                     dateTo: "",
+                    isOutstanding: "",
                   });
                   setCurrentPage(1);
                 }}
@@ -561,8 +557,8 @@ const DocumentsList = () => {
                   selectedDocument.status === 1 ? "badge-success" : 
                   selectedDocument.status === 0 ? "badge-secondary" : "badge-warning"
                 }`}>
-                  {selectedDocument.status === 1 ? "Xuất bản" : 
-                   selectedDocument.status === 0 ? "Nháp" : "Ẩn"}
+                  {selectedDocument.status === 1 ? "Hoạt động" : 
+                   selectedDocument.status === 0 ? "Không hoạt động" : "Không xác định"}
                 </span>
               </div>
               <div className="detail-row">
@@ -573,10 +569,19 @@ const DocumentsList = () => {
                 {selectedDocument.documents && selectedDocument.documents.length > 0 ? (
                   <ul>
                     {selectedDocument.documents.map((doc, index) => (
-                      <li key={index}>
-                        <a href={doc.previewUrl} target="_blank" rel="noopener noreferrer">
-                          {doc.fileName || `File ${index + 1}`}
-                        </a>
+                      <li key={index} style={{marginBottom: '10px'}}>
+                        <div><strong>{doc.originalFileName || `File ${index + 1}`}</strong></div>
+                        <div>Kích thước: {doc.fileSize ? (doc.fileSize / 1024).toFixed(1) + ' KB' : 'N/A'}</div>
+                        {doc.url && (
+                          <a 
+                            href={getApiUrl(doc.url)} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            style={{color: '#007bff', textDecoration: 'none'}}
+                          >
+                            <i className="fas fa-download"></i> Tải xuống
+                          </a>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -588,7 +593,11 @@ const DocumentsList = () => {
                 <div className="detail-row">
                   <strong>Ảnh đại diện:</strong>
                   <br/>
-                  <img src={selectedDocument.imageUrl} alt="Featured" style={{maxWidth: "200px", height: "auto"}} />
+                  <img 
+                    src={getApiUrl(selectedDocument.imageUrl)} 
+                    alt="Featured" 
+                    style={{maxWidth: "200px", height: "auto", marginTop: "10px", borderRadius: "8px"}} 
+                  />
                 </div>
               )}
             </div>

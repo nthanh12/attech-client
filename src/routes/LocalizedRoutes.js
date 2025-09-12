@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useTransition } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { useI18n } from "../hooks/useI18n";
@@ -73,6 +73,10 @@ const CompanyInfoPage = lazy(() =>
 
 const NotFoundPage = lazy(() => import("../pages/NotFound/NotFoundPage"));
 const LoginPage = lazy(() => import("../pages/Auth/LoginPage"));
+const AdminLoginPage = lazy(() => import("../pages/Auth/AdminLoginPage"));
+const UserDashboard = lazy(() => import("../pages/User/UserDashboard"));
+const InternalDocuments = lazy(() => import("../pages/User/InternalDocuments"));
+const ContactDirectory = lazy(() => import("../pages/User/ContactDirectory"));
 
 // Minimal loading component to avoid double loading indicators
 const PageLoader = () => {
@@ -103,6 +107,7 @@ const PageLoader = () => {
 const LocalizedRoutes = () => {
   const location = useLocation();
   const { changeLanguage } = useI18n();
+  const [isPending, startTransition] = useTransition();
 
   // Sync language with URL (only on mount and language-related path changes)
   useEffect(() => {
@@ -111,9 +116,30 @@ const LocalizedRoutes = () => {
 
     // Only change language if it's different from current, and skip redirect
     if (langFromPath !== currentLang) {
-      changeLanguage(langFromPath, true); // Skip redirect to prevent loops
+      startTransition(() => {
+        changeLanguage(langFromPath, true); // Skip redirect to prevent loops
+      });
     }
   }, [location.pathname, changeLanguage]);
+
+  // Check if current path is internal system
+  const isInternalSystem = location.pathname.startsWith('/trang-noi-bo');
+
+  if (isInternalSystem) {
+    // Render internal system with nested routes (sidebar layout fixed)
+    return (
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/trang-noi-bo" element={<UserDashboard />}>
+            <Route index element={<div>Dashboard content</div>} />
+            <Route path=":category" element={<InternalDocuments />} />
+            <Route path="danh-ba" element={<ContactDirectory />} />
+          </Route>
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
+    );
+  }
 
   return (
     <MainLayout>
@@ -324,7 +350,12 @@ const LocalizedRoutes = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/dang-nhap" element={<LoginPage />} />
           <Route path="/en/login" element={<LoginPage />} />
-
+          
+          {/* Admin Login Routes */}
+          <Route path="/admin-login" element={<AdminLoginPage />} />
+          <Route path="/en/admin-login" element={<AdminLoginPage />} />
+          
+          {/* User Dashboard Routes - Outside MainLayout */}
           {/* 404 Not Found */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
