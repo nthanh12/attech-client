@@ -11,6 +11,7 @@ import LocalizedLink from "../../../LocalizedLink/LocalizedLink";
 import debounce from "lodash/debounce";
 import GlobalSearch from "../../../GlobalSearch/GlobalSearch";
 import useMenuData from "../../../../../hooks/useMenuData";
+import { useBannerSettings } from "../../../../../hooks/useBannerSettings";
 
 const SCROLL_THRESHOLD = 50;
 const MOBILE_BREAKPOINT = 1024;
@@ -47,6 +48,7 @@ const NavbarTop = ({
   mobileOpen,
   toggleMobileMenu,
   menuData: rawMenuData,
+  logoUrl,
 }) => {
   const mobileMenuRef = useRef(null);
 
@@ -85,7 +87,7 @@ const NavbarTop = ({
             aria-label="Trang chủ"
           >
             <img
-              src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
+              src={logoUrl}
               alt="ATTECH Logo"
               loading="eager"
             />
@@ -159,7 +161,7 @@ const NavbarTop = ({
                 aria-label="Trang chủ"
               >
                 <img
-                  src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png"
+                  src={logoUrl}
                   alt="ATTECH Logo"
                 />
               </LocalizedLink>
@@ -301,6 +303,10 @@ const Navbar = () => {
     handleGlobalSearchClose,
   } = useGlobalSearch();
   const { rawMenuData, loading: menuLoading } = useMenuData(currentLanguage);
+  const { getBannerUrl } = useBannerSettings();
+  
+  // Get logo URL with fallback
+  const logoUrl = getBannerUrl('Logo', '/assets/images/header/attech-bo-cuc-dau-trang-chu.png');
 
   // Debug menu data
   console.log("=== NAVBAR MENU DEBUG ===");
@@ -366,6 +372,7 @@ const Navbar = () => {
         mobileOpen={mobileOpen}
         toggleMobileMenu={toggleMobileMenu}
         menuData={rawMenuData}
+        logoUrl={logoUrl}
       />
       {!isMobile && (
         <NavbarBottom

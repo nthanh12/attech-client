@@ -221,60 +221,63 @@ export const getBannerPositions = () => {
 // ============================================================
 
 /**
- * Get all banner settings (banner1, banner2, logo, etc.)
+ * Get all banner settings from public endpoint (không cần authentication)
  */
 export const getAllBannerSettings = async () => {
   try {
-    console.log('🎌 Fetching all banner settings from API...');
-    const response = await api.get('/api/setting');
+    console.log('🎌 Fetching all banner settings from public API...');
+    const response = await api.get('/api/setting/public');
     
-    if (response.data?.status === 1) {
-      console.log('✅ Banner settings fetched successfully from API');
-      return response.data.data;
+    if (response.data && typeof response.data === 'object') {
+      console.log('✅ Banner settings fetched successfully from public API:', Object.keys(response.data));
+      return response.data;
     } else {
       console.warn('⚠️ API returned invalid setting data, using fallback');
       return {
-        Banner1: { url: null, uploadedAt: null },
-        Banner2: { url: null, uploadedAt: null },
-        Logo: { url: null, uploadedAt: null }
+        Banner1: { url: null, description: null },
+        Banner2: { url: null, description: null },
+        Banner3: { url: null, description: null },
+        Logo: { url: null, description: null }
       };
     }
   } catch (error) {
-    console.warn('⚠️ Failed to fetch banner settings from API:', error.message);
+    console.warn('⚠️ Failed to fetch banner settings from public API:', error.message);
     return {
-      Banner1: { url: null, uploadedAt: null },
-      Banner2: { url: null, uploadedAt: null },
-      Logo: { url: null, uploadedAt: null }
+      Banner1: { url: null, description: null },
+      Banner2: { url: null, description: null }, 
+      Banner3: { url: null, description: null },
+      Logo: { url: null, description: null }
     };
   }
 };
 
 /**
- * Get specific banner setting by key (banner1, banner2, logo)
+ * Get specific banner setting by key from public endpoint
  */
 export const getBannerSetting = async (key) => {
   try {
-    console.log(`🎌 Fetching banner setting: ${key}`);
-    const response = await api.get(`/api/setting/${key}`);
+    console.log(`🎌 Fetching banner setting from public API: ${key}`);
+    // Lấy tất cả settings rồi filter theo key (efficient caching)
+    const allSettings = await getAllBannerSettings();
     
-    // Handle direct response format from spec
-    if (response.data && response.data.url) {
-      console.log(`✅ Banner setting ${key} fetched successfully`);
+    // Tìm setting theo key (case-insensitive)
+    const settingValue = allSettings[key] || allSettings[key.toLowerCase()] || 
+                        allSettings[key.charAt(0).toUpperCase() + key.slice(1)];
+    
+    if (settingValue && settingValue.url) {
+      console.log(`✅ Banner setting ${key} fetched successfully from public API`);
       return {
-        settingKey: response.data.settingKey || key,
-        url: response.data.url,
-        id: response.data.id,
-        fileName: response.data.fileName,
-        fileSize: response.data.fileSize,
-        uploadDate: response.data.uploadDate
+        settingKey: key,
+        url: settingValue.url,
+        description: settingValue.description
       };
     } else {
-      console.warn(`⚠️ API returned invalid data for ${key}, using fallback`);
-      return { url: null, uploadDate: null };
+      console.warn(`⚠️ Setting ${key} not found in public API, using fallback`);
+      return { url: null, description: null };
     }
   } catch (error) {
     console.warn(`⚠️ Failed to fetch banner setting ${key}:`, error.message);
-    return { url: null, uploadDate: null };
+    return { url: null, description: null };
   }
 };
 
@@ -339,22 +342,45 @@ export const deleteBannerSetting = async (key) => {
  */
 export const getBannerKeys = () => {
   return [
-    // Main banners
-    { key: 'banner1', label: 'Banner chính 1', description: 'Banner chính hiển thị trên trang chủ' },
-    { key: 'banner2', label: 'Banner chính 2', description: 'Banner phụ hiển thị trên trang chủ' },
-    { key: 'banner3', label: 'Banner chính 3', description: 'Banner bổ sung cho trang chủ' },
-    { key: 'banner4', label: 'Banner chính 4', description: 'Banner bổ sung cho trang chủ' },
-    { key: 'banner5', label: 'Banner chính 5', description: 'Banner bổ sung cho trang chủ' },
+    // === MAIN SETTINGS - Tab "Logo & Banner chính" ===
+    { key: 'Banner1', label: 'Banner Carousel 1', description: 'Banner carousel đầu tiên trên trang chủ', category: 'settings' },
+    { key: 'Banner2', label: 'Banner Carousel 2', description: 'Banner carousel thứ hai trên trang chủ', category: 'settings' },
+    { key: 'Banner3', label: 'Banner Carousel 3', description: 'Banner carousel thứ ba trên trang chủ', category: 'settings' },
+    { key: 'Logo', label: 'Logo website', description: 'Logo chính hiển thị trên header', category: 'settings' },
     
-    // Logos
-    { key: 'logo', label: 'Logo website', description: 'Logo chính hiển thị trên header' },
-    { key: 'favicon', label: 'Favicon', description: 'Icon hiển thị trên tab browser' },
-    { key: 'footerlogo', label: 'Logo footer', description: 'Logo hiển thị ở cuối trang' },
+    // === HOME CONTENT - Tab "Ảnh trang chủ" ===
+    // Feature service backgrounds  
+    { key: 'HomeFeatCns', label: 'CNS/ATM Service Background', description: 'Ảnh nền dịch vụ CNS/ATM', category: 'homecontent' },
+    { key: 'HomeFeatBhc', label: 'Bay hiệu chuẩn Background', description: 'Ảnh nền dịch vụ Bay hiệu chuẩn', category: 'homecontent' },
+    { key: 'HomeFeatCnhk', label: 'CNHK Service Background', description: 'Ảnh nền dịch vụ Công nghệ hàng không', category: 'homecontent' },
     
-    // Background images
-    { key: 'herobackground', label: 'Ảnh nền Hero', description: 'Ảnh nền cho section hero' },
-    { key: 'aboutbackground', label: 'Ảnh nền About', description: 'Ảnh nền cho trang giới thiệu' },
-    { key: 'contactbackground', label: 'Ảnh nền Contact', description: 'Ảnh nền cho trang liên hệ' }
+    // Fact/Event image
+    { key: 'HomeFactEvent', label: 'Ảnh sự kiện trang chủ', description: 'Ảnh thông tin sự kiện hiển thị trên trang chủ', category: 'homecontent' },
+    
+    // About CNS/ATM Gallery (6 ảnh)
+    { key: 'AboutCns1', label: 'CNS/ATM Gallery 1', description: 'Ảnh thư viện CNS/ATM số 1', category: 'homecontent' },
+    { key: 'AboutCns2', label: 'CNS/ATM Gallery 2', description: 'Ảnh thư viện CNS/ATM số 2', category: 'homecontent' },
+    { key: 'AboutCns3', label: 'CNS/ATM Gallery 3', description: 'Ảnh thư viện CNS/ATM số 3', category: 'homecontent' },
+    { key: 'AboutCns4', label: 'DVOR DME Đà Nẵng', description: 'Ảnh DVOR DME Đà Nẵng', category: 'homecontent' },
+    { key: 'AboutCns5', label: 'DVOR DME Điện Biên', description: 'Ảnh DVOR DME Điện Biên', category: 'homecontent' },
+    { key: 'AboutCns6', label: 'DVOR DME Vân Đồn', description: 'Ảnh DVOR DME Vân Đồn', category: 'homecontent' },
+    
+    // About BHC Gallery (5 ảnh)
+    { key: 'AboutBhc1', label: 'Bay hiệu chuẩn Gallery 1', description: 'Ảnh bay kiểm tra hiệu chuẩn số 1', category: 'homecontent' },
+    { key: 'AboutBhc2', label: 'Bay hiệu chuẩn Gallery 2', description: 'Ảnh bay kiểm tra hiệu chuẩn số 2', category: 'homecontent' },
+    { key: 'AboutBhc3', label: 'Bay hiệu chuẩn Gallery 3', description: 'Ảnh bay kiểm tra hiệu chuẩn số 3', category: 'homecontent' },
+    { key: 'AboutBhc4', label: 'Bay hiệu chuẩn Gallery 4', description: 'Ảnh bay kiểm tra hiệu chuẩn số 4', category: 'homecontent' },
+    { key: 'AboutBhc5', label: 'Bay hiệu chuẩn Gallery 5', description: 'Ảnh bay kiểm tra hiệu chuẩn số 5', category: 'homecontent' },
+    
+    // About CNHK Gallery (8 ảnh)
+    { key: 'AboutCnhk1', label: 'CNHK Gallery 1', description: 'Ảnh công nghệ hàng không số 1', category: 'homecontent' },
+    { key: 'AboutCnhk2', label: 'CNHK Gallery 2', description: 'Ảnh công nghệ hàng không số 2', category: 'homecontent' },
+    { key: 'AboutCnhk3', label: 'CNHK Gallery 3', description: 'Ảnh công nghệ hàng không số 3', category: 'homecontent' },
+    { key: 'AboutCnhk4', label: 'CNHK Gallery 4', description: 'Ảnh công nghệ hàng không số 4', category: 'homecontent' },
+    { key: 'AboutCnhk5', label: 'CNHK Gallery 5', description: 'Ảnh công nghệ hàng không số 5', category: 'homecontent' },
+    { key: 'AboutCnhk6', label: 'CNHK Gallery 6', description: 'Ảnh công nghệ hàng không số 6', category: 'homecontent' },
+    { key: 'AboutCnhk7', label: 'CNHK Gallery 7', description: 'Ảnh công nghệ hàng không số 7', category: 'homecontent' },
+    { key: 'AboutCnhk8', label: 'CNHK Gallery 8', description: 'Ảnh công nghệ hàng không số 8', category: 'homecontent' }
   ];
 };
 

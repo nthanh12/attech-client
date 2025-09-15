@@ -9,6 +9,7 @@ import { Navigation, Pagination, A11y } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useBannerSettings } from "../../../../hooks/useBannerSettings";
 
 const ArrowIcon = () => (
   <svg
@@ -25,30 +26,18 @@ const ArrowIcon = () => (
   </svg>
 );
 
-const getProducts = (t, currentLanguage) => [
+// Function để lấy products với ảnh dynamic
+const getProductsWithDynamicImages = (t, currentLanguage, aboutGalleries) => [
   {
     titleKey: "frontend.home.services.cns.title",
-    images: [
-      "/assets/images/cns_atm/cns_atm_1.webp",
-      "/assets/images/cns_atm/cns_atm_2.webp",
-      "/assets/images/cns_atm/cns_atm_3.webp",
-      "/assets/images/cns_atm/dvor_dme_da_nang.webp",
-      "/assets/images/cns_atm/dvor_dme_dien_bien.webp",
-      "/assets/images/cns_atm/dvor_dme_van_don.webp",
-    ],
+    images: aboutGalleries.cnsAtmImages,
     routeKey: "SERVICE_DETAIL",
     slug:
       currentLanguage === "vi" ? "thong-tin-dan-duong-giam-sat" : "cns-service",
   },
   {
     titleKey: "frontend.home.services.flight.title",
-    images: [
-      "/assets/images/bhc/bkthc_1.jpg",
-      "/assets/images/bhc/bkthc_2.jpg",
-      "/assets/images/bhc/bkthc_3.jpg",
-      "/assets/images/bhc/bkthc_4.jpg",
-      "/assets/images/bhc/bkthc_5.jpg",
-    ],
+    images: aboutGalleries.bhcImages,
     routeKey: "SERVICE_DETAIL",
     slug:
       currentLanguage === "vi"
@@ -57,16 +46,7 @@ const getProducts = (t, currentLanguage) => [
   },
   {
     titleKey: "frontend.home.services.industry.title",
-    images: [
-      "/assets/images/cnhk/cnhk_1.webp",
-      "/assets/images/cnhk/cnhk_2.webp",
-      "/assets/images/cnhk/cnhk_3.webp",
-      "/assets/images/cnhk/cnhk_4.webp",
-      "/assets/images/cnhk/cnhk_5.webp",
-      "/assets/images/cnhk/cnhk_6.webp",
-      "/assets/images/cnhk/cnhk_7.webp",
-      "/assets/images/cnhk/cnhk_8.webp",
-    ],
+    images: aboutGalleries.cnhkImages,
     routeKey: "SERVICE_DETAIL",
     slug:
       currentLanguage === "vi"
@@ -77,7 +57,11 @@ const getProducts = (t, currentLanguage) => [
 
 export default function About() {
   const { t, currentLanguage } = useI18n();
-  const products = getProducts(t, currentLanguage);
+  const { getAboutGalleries } = useBannerSettings();
+  
+  // Get dynamic gallery images with fallbacks
+  const aboutGalleries = getAboutGalleries();
+  const products = getProductsWithDynamicImages(t, currentLanguage, aboutGalleries);
   const [currentIndices, setCurrentIndices] = useState(products.map(() => 0));
 
   useEffect(() => {

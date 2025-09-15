@@ -5,6 +5,7 @@ import FormModal from "../components/FormModal";
 import ToastMessage from "../components/ToastMessage";
 import LoadingSpinner from "../components/LoadingSpinner";
 import BannerManager from "../components/BannerManager";
+import HomeContentBanner from "../components/HomeContentBanner";
 import { 
   fetchBanners, 
   createBanner, 
@@ -572,29 +573,29 @@ const ConfigBanner = () => {
           className={`tab-button ${activeMainTab === 'settings' ? 'active' : ''}`}
           onClick={() => setActiveMainTab('settings')}
         >
-          <i className="bi bi-gear"></i>
-          Cài đặt Banner
+          <i className="bi bi-image"></i>
+          Logo & Banner chính
         </button>
         <button
-          className={`tab-button ${activeMainTab === 'management' ? 'active' : ''}`}
-          onClick={() => setActiveMainTab('management')}
+          className={`tab-button ${activeMainTab === 'homepage' ? 'active' : ''}`}
+          onClick={() => setActiveMainTab('homepage')}
         >
-          <i className="bi bi-table"></i>
-          Quản lý Banner
+          <i className="bi bi-house"></i>
+          Ảnh trang chủ
         </button>
       </div>
       <div className="tab-description">
         {activeMainTab === 'settings' ? (
-          <p>Quản lý banner và logo chính của website (banner1, banner2, logo)</p>
+          <p>Quản lý logo và banner chính của website</p>
         ) : (
-          <p>Quản lý banner theo vị trí và thời gian hiển thị</p>
+          <p>Quản lý ảnh carousel, dịch vụ và sự kiện trên trang chủ</p>
         )}
       </div>
     </div>
   );
 
   return (
-    <PageWrapper actions={activeMainTab === 'management' ? pageActions : null}>
+    <PageWrapper>
       <div className="admin-banner-config">
         
         {renderTabNavigation()}
@@ -602,36 +603,7 @@ const ConfigBanner = () => {
         {activeMainTab === 'settings' ? (
           <BannerManager />
         ) : (
-          <>
-            {renderFilters()}
-
-            <div className="admin-table-container">
-              <DataTable
-                data={paginatedBanners}
-                columns={columns}
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-                sortConfig={sortConfig}
-                onSort={handleSort}
-                itemsPerPage={itemsPerPage}
-                totalItems={sortedBanners.length}
-                tableClassName="admin-table"
-              />
-            </div>
-
-            <FormModal
-              show={showModal}
-              onClose={handleCloseModal}
-              title={editMode ? 'Chỉnh sửa banner' : 'Thêm banner mới'}
-              onSubmit={handleSubmit}
-              submitText={editMode ? 'Cập nhật' : 'Thêm'}
-              submitLoading={submitLoading}
-              width={1000}
-            >
-              {renderBannerForm()}
-            </FormModal>
-          </>
+          <HomeContentBanner />
         )}
 
         {toast.show && (

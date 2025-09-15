@@ -1,7 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import { fetchTranslationsForI18next } from '../services/languageContentService';
+import { fetchTranslationsForI18next, clearTranslationsCache } from '../services/languageContentService';
 import { isAuthenticated } from '../services/authService';
 
 // Import fallback language resources (in case API fails)
@@ -22,7 +22,6 @@ class ApiBackend {
   read(language, namespace, callback) {
     // Check if user is authenticated first
     if (!isAuthenticated()) {
-      console.log(`🔒 User not authenticated, using fallback translations for ${language}`);
       const fallback = language === 'vi' ? viTranslation : enTranslation;
       callback(null, fallback);
       return;
@@ -31,11 +30,9 @@ class ApiBackend {
     // If authenticated, try to load from API
     fetchTranslationsForI18next(language)
       .then(translations => {
-        console.log(`✅ Loaded ${language} translations from API:`, Object.keys(translations).length, 'keys');
         callback(null, translations);
       })
       .catch(error => {
-        console.error('❌ Failed to load translations from API, using fallback:', error);
         // Use fallback JSON files
         const fallback = language === 'vi' ? viTranslation : enTranslation;
         callback(null, fallback);
@@ -107,18 +104,22 @@ i18n
 // Function to reload translations from API (call after admin changes)
 export const reloadTranslations = async (language = null) => {
   try {
+    // Clear cache to force fresh data load
+    clearTranslationsCache();
+
     const currentLang = language || i18n.language;
     const translations = await fetchTranslationsForI18next(currentLang);
-    
+
     // Update i18n with new translations
     i18n.addResourceBundle(currentLang, 'translation', translations, true, true);
-    
-    console.log(`✅ Reloaded ${currentLang} translations from API`);
+
     return true;
   } catch (error) {
-    console.error('Failed to reload translations:', error);
     return false;
   }
 };
+
+// Function to clear translations cache (for admin use)
+export const clearTranslationCache = clearTranslationsCache;
 
 export default i18n;

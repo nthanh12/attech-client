@@ -3,6 +3,13 @@ import api from "../api";
 // Cache categories để tránh gọi API nhiều lần
 let cachedCategories = null;
 
+// Cache for client translations với long cache (API có LongCache)
+let translationsCache = {
+  data: null,
+  timestamp: null,
+  expiry: 30 * 60 * 1000 // 30 phút cache
+};
+
 // Get all language contents with pagination and filters
 export async function fetchLanguageContents(pageNumber = 1, pageSize = 20, keyword = "", filters = {}, sortConfig = null) {
   try {
@@ -30,18 +37,13 @@ export async function fetchLanguageContents(pageNumber = 1, pageSize = 20, keywo
           if (!cachedCategories) {
             cachedCategories = await fetchLanguageContentCategories();
           }
-          console.log('🏷️ Available categories:', cachedCategories);
-          console.log('🔍 Looking for category:', filters.category);
           
           const categoryItem = cachedCategories.find(cat => cat.name === filters.category);
           if (categoryItem && categoryItem.id) {
             params.categoryId = categoryItem.id;
-            console.log('✅ Mapped category name to ID:', filters.category, '→', categoryItem.id);
           } else {
-            console.warn('❌ Category not found:', filters.category);
           }
         } catch (err) {
-          console.warn('Failed to map category, skipping filter:', err);
           // Skip category filter if mapping fails
         }
       }
@@ -97,7 +99,6 @@ export async function fetchLanguageContentCategories() {
       { id: 7, name: 'errors', displayName: 'Errors' }
     ];
   } catch (error) {
-    console.error("Error fetching language content categories:", error);
     // Return default categories on error
     return [
       { id: 1, name: 'common', displayName: 'Common' },
@@ -156,11 +157,11 @@ export async function deleteLanguageContent(id) {
   }
 }
 
-// Get single language content by ID
+// Get single language content by ID (admin endpoint)
 export async function fetchLanguageContentById(id) {
   try {
     const response = await api.get(`/api/language-contents/find-by-id/${id}`);
-    
+
     if (
       response.data &&
       response.data.status === 1 &&
@@ -168,76 +169,113 @@ export async function fetchLanguageContentById(id) {
     ) {
       return response.data.data;
     }
-    
+
     throw new Error("Language content not found");
   } catch (error) {
     throw error;
   }
 }
 
-// Get translations for i18next (export format)  
+// Get single language content by ID using client endpoint
+export async function fetchLanguageContentByIdClient(id) {
+  try {
+    const response = await api.get(`/api/language-contents/client/${id}`);
+
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.result
+    ) {
+      return response.data.result;
+    }
+
+    throw new Error("Language content not found");
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Load all translations for client use with caching
+export async function loadAllTranslations() {
+  try {
+    // Check cache first
+    const now = Date.now();
+    if (translationsCache.data &&
+        translationsCache.timestamp &&
+        (now - translationsCache.timestamp) < translationsCache.expiry) {
+      return translationsCache.data;
+    }
+
+
+    // Use new client endpoint - loads all translations at once (no pagination)
+    const response = await api.get("/api/language-contents/client/find-all");
+
+    if (response.data && response.data.status === 1 && response.data.result) {
+      const items = response.data.result.items || response.data.result || [];
+
+      // Update cache
+      translationsCache.data = items;
+      translationsCache.timestamp = now;
+
+      return items;
+    }
+
+    throw new Error("Invalid response format from client API");
+  } catch (error) {
+    // Return cached data if available, even if expired
+    if (translationsCache.data) {
+      return translationsCache.data;
+    }
+    return [];
+  }
+}
+
+// Get single translation by key
+export async function getTranslationByKey(key) {
+  try {
+    const translations = await loadAllTranslations();
+    return translations.find(t => t.contentKey === key);
+  } catch (error) {
+    return null;
+  }
+}
+
+// Clear translations cache (call when admin updates translations)
+export function clearTranslationsCache() {
+  translationsCache.data = null;
+  translationsCache.timestamp = null;
+}
+
+// Get translations for i18next (export format) using client endpoint with caching
 export async function fetchTranslationsForI18next(language = 'vi') {
   try {
-    console.log(`🔄 Fetching ${language} translations from API...`);
-    
-    // Get all language contents with pagination (BE có limit pageSize)
+
+    // Use cached loading function
+    const items = await loadAllTranslations();
     let allTranslations = {};
-    let currentPage = 1;
-    const pageSize = 100; // Safe pageSize
-    let hasMorePages = true;
-    
-    while (hasMorePages) {
-      const response = await api.get("/api/language-contents/find-all", { 
-        params: { 
-          pageNumber: currentPage, 
-          pageSize: pageSize, 
-          keyword: "" 
-          // Không gửi categoryId để lấy tất cả
-        } 
-      });
-      
-      if (response.data && response.data.status === 1 && response.data.data) {
-        const items = response.data.data.items || [];
-        const totalItems = response.data.data.totalItems || 0;
-        
-        // Convert to nested object format for i18next
-        items.forEach(item => {
-          const value = language === 'vi' ? item.valueVi : item.valueEn;
-          if (value) {
-            // Handle nested keys like "auth.login" -> { auth: { login: "value" } }
-            const keys = item.contentKey.split('.');
-            let current = allTranslations;
-            
-            for (let i = 0; i < keys.length - 1; i++) {
-              if (!current[keys[i]]) {
-                current[keys[i]] = {};
-              }
-              current = current[keys[i]];
-            }
-            
-            current[keys[keys.length - 1]] = value;
+
+    // Convert to nested object format for i18next
+    items.forEach(item => {
+      const value = language === 'vi' ? item.valueVi : item.valueEn;
+      if (value) {
+        // Handle nested keys like "auth.login" -> { auth: { login: "value" } }
+        const keys = item.contentKey.split('.');
+        let current = allTranslations;
+
+        for (let i = 0; i < keys.length - 1; i++) {
+          if (!current[keys[i]]) {
+            current[keys[i]] = {};
           }
-        });
-        
-        // Check if there are more pages
-        const totalPages = Math.ceil(totalItems / pageSize);
-        hasMorePages = currentPage < totalPages;
-        currentPage++;
-        
-        console.log(`📄 Loaded page ${currentPage - 1}/${totalPages}, ${items.length} items`);
-      } else {
-        hasMorePages = false;
-        console.error("Invalid response format");
+          current = current[keys[i]];
+        }
+
+        current[keys[keys.length - 1]] = value;
       }
-    }
-    
-    console.log(`✅ Total ${language} translations loaded:`, Object.keys(allTranslations).length, 'categories');
+    });
+
     return allTranslations;
   } catch (error) {
-    console.error("❌ Error fetching translations for i18next:", error);
-    console.error("Request details:", error.config);
-    console.error("Response details:", error.response?.data);
-    
+
     // Return empty object on error to prevent i18next from breaking
     return {};
   }
@@ -258,7 +296,6 @@ export async function fetchLanguageContentStats() {
       completionRate: { vi: 0, en: 0 }
     };
   } catch (error) {
-    console.error("Error fetching language content stats:", error);
     return {
       total: 0,
       byCategory: {},

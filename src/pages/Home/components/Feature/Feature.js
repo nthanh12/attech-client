@@ -12,12 +12,17 @@ import {
   getNewsCategories,
   formatNewsForDisplay,
 } from "../../../../services/clientNewsService";
+import { useBannerSettings } from "../../../../hooks/useBannerSettings";
 
 const Feature = () => {
   const { t, currentLanguage } = useI18n();
   const [featuredNews, setFeaturedNews] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { getFeatureBackgrounds } = useBannerSettings();
+  
+  // Get feature background images with fallbacks
+  const featureBackgrounds = getFeatureBackgrounds();
 
   useEffect(() => {
     const loadData = async () => {
@@ -57,8 +62,7 @@ const Feature = () => {
           <div
             className="feature-item"
             style={{
-              backgroundImage:
-                "url(/assets/images/cns_atm/anh-dai-dien-cns.jpg)",
+              backgroundImage: `url(${featureBackgrounds.cns})`,
             }}
           >
             <div className="feature-overlay"></div>
@@ -85,7 +89,7 @@ const Feature = () => {
         >
           <div
             className="feature-item"
-            style={{ backgroundImage: "url(/assets/images/bhc/bhc_2.webp)" }}
+            style={{ backgroundImage: `url(${featureBackgrounds.bhc})` }}
           >
             <div className="feature-overlay"></div>
             <div className="feature-icon">
@@ -102,7 +106,7 @@ const Feature = () => {
         <LocalizedLink routeKey="PRODUCTS" className="feature-link">
           <div
             className="feature-item"
-            style={{ backgroundImage: "url(/assets/images/cnhk/cnhk_6.webp)" }}
+            style={{ backgroundImage: `url(${featureBackgrounds.cnhk})` }}
           >
             <div className="feature-overlay"></div>
             <div className="feature-icon">

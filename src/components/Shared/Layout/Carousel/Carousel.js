@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import "./Carousel.css";
 
 import useIsMobile from "../Header/Navbar/useIsMobile";
+import { useBannerSettings } from "../../../../hooks/useBannerSettings";
 
 const Carousel = () => {
   const isMobile = useIsMobile(1025);
   const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth < 600);
+  const { getCarouselImages, loading } = useBannerSettings();
 
   useEffect(() => {
     const handleResize = () => setIsSmallMobile(window.innerWidth < 600);
@@ -13,20 +15,8 @@ const Carousel = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const slides = [
-    {
-      img: "/assets/images/banner/banner_attech_1.webp",
-      className: "carousel-img-1",
-    },
-    {
-      img: "/assets/images/banner/banner_attech_2.jpg",
-      className: "carousel-img-2",
-    },
-    {
-      img: "/assets/images/banner/banner_attech_3.jpg",
-      className: "carousel-img-3",
-    },
-  ];
+  // Get slides from banner settings with fallback to default images
+  const slides = getCarouselImages();
 
   useEffect(() => {
     // Initialize carousel

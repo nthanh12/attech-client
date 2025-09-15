@@ -10,7 +10,7 @@ import ToastMessage from './ToastMessage';
 import LoadingSpinner from './LoadingSpinner';
 import './BannerManager.css';
 
-const BannerManager = () => {
+const HomeContentBanner = () => {
   const [banners, setBanners] = useState({});
   const [uploading, setUploading] = useState({});
   const [loading, setLoading] = useState(true);
@@ -20,8 +20,8 @@ const BannerManager = () => {
     type: 'success'
   });
 
-  // Chỉ lấy các banner có category='settings' cho tab "Cài đặt Banner"
-  const bannerKeys = getBannerKeys().filter(banner => banner.category === 'settings');
+  // Chỉ lấy các banner có category='homecontent'  
+  const homepageBannerKeys = getBannerKeys().filter(banner => banner.category === 'homecontent');
 
   // Fetch all banner settings on component mount
   const fetchAllBanners = async () => {
@@ -29,12 +29,12 @@ const BannerManager = () => {
       setLoading(true);
       const data = await getAllBannerSettings();
       setBanners(data);
-      console.log('🎌 Banners loaded:', data);
+      console.log('🏠 Homepage banners loaded:', data);
     } catch (error) {
-      console.error('❌ Failed to fetch banners:', error);
+      console.error('❌ Failed to fetch homepage banners:', error);
       setToast({
         show: true,
-        message: 'Không thể tải danh sách banner!',
+        message: 'Không thể tải danh sách ảnh trang chủ!',
         type: 'error'
       });
     } finally {
@@ -51,7 +51,7 @@ const BannerManager = () => {
     setUploading(prev => ({ ...prev, [bannerKey]: true }));
 
     try {
-      console.log(`🎌 Uploading ${bannerKey}:`, file);
+      console.log(`🏠 Uploading ${bannerKey}:`, file);
       
       // Validate file
       if (!file) {
@@ -142,15 +142,15 @@ const BannerManager = () => {
   return (
     <div className="banner-manager">
       <div className="banner-manager-header">
-        <h2>Quản lý Banner & Logo</h2>
+        <h2>Quản lý Ảnh Trang chủ</h2>
         <p className="banner-manager-description">
-          Quản lý các banner và logo hiển thị trên website. 
-          Chỉ chấp nhận file hình ảnh (JPG, PNG, GIF) với kích thước tối đa 5MB.
+          Quản lý tất cả hình ảnh hiển thị trên trang chủ: carousel, background dịch vụ và ảnh sự kiện. 
+          Chỉ chấp nhận file hình ảnh (JPG, PNG, GIF, WEBP) với kích thước tối đa 5MB.
         </p>
       </div>
 
       <div className="banner-grid">
-        {bannerKeys.map((bannerConfig) => {
+        {homepageBannerKeys.map((bannerConfig) => {
           const bannerKey = bannerConfig.key;
           const displayKey = bannerKey.charAt(0).toUpperCase() + bannerKey.slice(1);
           const currentBanner = banners[displayKey] || banners[bannerKey];
@@ -183,4 +183,4 @@ const BannerManager = () => {
   );
 };
 
-export default BannerManager;
+export default HomeContentBanner;
