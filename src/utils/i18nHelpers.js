@@ -112,9 +112,7 @@ export const formatLocalizedDate = (date, options = {}) => {
   try {
     const dateObj = typeof date === "string" ? new Date(date) : date;
     return new Intl.DateTimeFormat(locale, defaultOptions).format(dateObj);
-  } catch (error) {
-    console.error("Error formatting date:", error);
-    return date.toString();
+  } catch (error) {return date.toString();
   }
 };
 

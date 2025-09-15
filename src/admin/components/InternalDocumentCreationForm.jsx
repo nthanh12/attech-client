@@ -26,9 +26,7 @@ const InternalDocumentCreationForm = ({
 
   // Initialize form data for edit mode
   useEffect(() => {
-    if (editMode && editData) {
-      console.log("📝 Loading edit data:", editData);
-      setFormData({
+    if (editMode && editData) {setFormData({
         title: editData.title || "",
         description: editData.description || "",
         category: editData.category || "",
@@ -64,9 +62,7 @@ const InternalDocumentCreationForm = ({
     }
   };
 
-  const handleAttachmentsChange = useCallback((newAttachments) => {
-    console.log("📎 Attachments changed:", newAttachments);
-    setAttachments(newAttachments);
+  const handleAttachmentsChange = useCallback((newAttachments) => {setAttachments(newAttachments);
     
     // Extract attachment IDs
     const attachmentIds = newAttachments
@@ -101,23 +97,15 @@ const InternalDocumentCreationForm = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      console.log("❌ Form validation failed:", errors);
-      return;
+    if (!validateForm()) {return;
     }
 
     setIsSubmitting(true);
 
-    try {
-      console.log("🚀 Starting internal document submission process...");
-      
-      let attachmentId = null;
+    try {let attachmentId = null;
 
       // Step 1: Upload file first if there's a new file
-      if (attachments.length > 0 && attachments[0].file) {
-        console.log("📎 Uploading new file...");
-        
-        const file = attachments[0].file; // Take first file only
+      if (attachments.length > 0 && attachments[0].file) {const file = attachments[0].file; // Take first file only
         const uploadFormData = new FormData();
         uploadFormData.append('file', file);
 
@@ -126,26 +114,16 @@ const InternalDocumentCreationForm = ({
             headers: {
               "Content-Type": "multipart/form-data",
             },
-          });
-
-          console.log("✅ File uploaded successfully:", response.data);
-
-          if (response.data?.status === 1 && response.data?.data?.id) {
-            attachmentId = response.data.data.id;
-            console.log("📎 Got new attachment ID:", attachmentId);
-          } else {
+          });if (response.data?.status === 1 && response.data?.data?.id) {
+            attachmentId = response.data.data.id;} else {
             throw new Error('Invalid upload response');
           }
-        } catch (uploadError) {
-          console.error("❌ File upload error:", uploadError);
-          setErrors({ general: "Lỗi upload file. Vui lòng thử lại." });
+        } catch (uploadError) {setErrors({ general: "Lỗi upload file. Vui lòng thử lại." });
           return;
         }
       } else if (editMode && attachments.length > 0 && !attachments[0].file && attachments[0].id) {
         // Keep existing attachment if no new file uploaded
-        attachmentId = attachments[0].id;
-        console.log("📎 Keeping existing attachment ID:", attachmentId);
-      }
+        attachmentId = attachments[0].id;}
 
       // Step 2: Create/Update document with attachmentId
       const documentData = {
@@ -155,30 +133,15 @@ const InternalDocumentCreationForm = ({
         attachmentId: attachmentId,
         status: formData.status,
         timePosted: formData.timePosted ? new Date(formData.timePosted).toISOString() : null
-      };
-
-      console.log("📄 Creating/updating document with data:", documentData);
-      console.log("📎 Final attachmentId being sent:", documentData.attachmentId);
-
-      let result;
+      };let result;
       if (editMode && editData?.id) {
         result = await internalDocumentsAdminService.updateInternalDocument(editData.id, documentData);
       } else {
         result = await internalDocumentsAdminService.createInternalDocument(documentData);
+      }if (result.success) {onSuccess?.(result.data, editMode ? 'update' : 'create');
+      } else {setErrors({ general: result.message });
       }
-
-      console.log("📡 API Result:", result);
-
-      if (result.success) {
-        console.log(`✅ Internal document ${editMode ? 'updated' : 'created'} successfully`);
-        onSuccess?.(result.data, editMode ? 'update' : 'create');
-      } else {
-        console.error(`❌ Failed to ${editMode ? 'update' : 'create'} internal document:`, result.message);
-        setErrors({ general: result.message });
-      }
-    } catch (error) {
-      console.error(`❌ Error ${editMode ? 'updating' : 'creating'} internal document:`, error);
-      setErrors({ 
+    } catch (error) {setErrors({ 
         general: error.message || `Lỗi ${editMode ? 'cập nhật' : 'tạo'} tài liệu nội bộ` 
       });
     } finally {

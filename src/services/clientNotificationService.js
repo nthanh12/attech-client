@@ -54,9 +54,7 @@ export async function getNotifications(params = {}) {
     }
 
     throw new Error("Invalid response format");
-  } catch (error) {
-    console.error("❌ getNotifications error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 
@@ -74,9 +72,7 @@ export async function getNotificationById(id) {
     }
 
     throw new Error("Notification not found");
-  } catch (error) {
-    console.error("❌ getNotificationById error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 
@@ -95,10 +91,7 @@ export async function getNotificationBySlug(slug, language = "vi") {
     }
 
     throw new Error("Notification not found");
-  } catch (error) {
-    console.error("❌ getNotificationBySlug error with detail endpoint:", error);
-    
-    // No fallback needed for client endpoint - it only returns published content
+  } catch (error) {// No fallback needed for client endpoint - it only returns published content
     throw new Error("Notification not found");
   }
 }
@@ -118,9 +111,7 @@ export async function getNotificationCategories() {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getNotificationCategories error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -146,9 +137,7 @@ export async function getFeaturedNotifications(limit = 5) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getFeaturedNotifications error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -173,9 +162,7 @@ export async function getLatestNotifications(limit = 10) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getLatestNotifications error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -221,9 +208,7 @@ export async function getNotificationsByCategory(categoryId, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getNotificationsByCategory error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -274,9 +259,7 @@ export async function getNotificationsByCategorySlug(categorySlug, params = {}) 
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getNotificationsByCategorySlug error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -313,9 +296,7 @@ export async function getRelatedNotifications(notificationId, categoryId, limit 
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getRelatedNotifications error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -366,9 +347,7 @@ export async function searchNotifications(searchTerm, params = {}) {
       currentPage: pageIndex,
       pageSize,
     };
-  } catch (error) {
-    console.error("❌ searchNotifications error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -403,55 +382,23 @@ function processContentWithAttachments(content, attachments) {
   if (!content || !attachments?.images?.length) return content;
 
   let processedContent = content;
-  const baseUrl = getApiBaseUrl();
-
-  console.log("🔍 Processing content with attachments:", {
-    contentLength: content.length,
-    imagesCount: attachments.images.length,
-    baseUrl
-  });
-
-  // Strategy: Replace all img tags that don't have proper src with images from attachments
+  const baseUrl = getApiBaseUrl();// Strategy: Replace all img tags that don't have proper src with images from attachments
   let imageIndex = 0;
 
   // Replace img tags without src or with empty src
   processedContent = processedContent.replace(/<img([^>]*?)(\s*\/?>)/gi, (match, attributes, closing) => {
     // Check if this img tag already has a valid src
-    const hasSrc = /src\s*=\s*["'][^"'\s]+["']/i.test(match);
-    
-    console.log("🔍 Processing img tag:", {
-      match,
-      attributes,
-      hasSrc,
-      imageIndex
-    });
-
-    if (!hasSrc && imageIndex < attachments.images.length) {
+    const hasSrc = /src\s*=\s*["'][^"'\s]+["']/i.test(match);if (!hasSrc && imageIndex < attachments.images.length) {
       const image = attachments.images[imageIndex];
       const fullImageUrl = `${baseUrl}${image.url}`;
       
       // Add src attribute to the img tag
-      const newImgTag = `<img${attributes} src="${fullImageUrl}"${closing}`;
-      
-      console.log("🔍 Replacing img tag:", {
-        oldTag: match,
-        newTag: newImgTag,
-        imageUrl: fullImageUrl
-      });
-      
-      imageIndex++;
+      const newImgTag = `<img${attributes} src="${fullImageUrl}"${closing}`;imageIndex++;
       return newImgTag;
     }
 
     return match; // Return original if already has src or no more images
-  });
-
-  console.log("🔍 Content processing completed:", {
-    processedLength: processedContent.length,
-    imagesProcessed: imageIndex
-  });
-
-  return processedContent;
+  });return processedContent;
 }
 
 // Format notification data for client display
@@ -470,15 +417,6 @@ export function formatNotificationForDisplay(notificationItem, language = "vi") 
   content = processContentWithAttachments(content, notificationItem.attachments);
 
   // Debug logging để kiểm tra API response
-  console.log("🔍 Debug notification item:", {
-    id: notificationItem.id,
-    title: notificationItem.titleVi,
-    imageUrl: notificationItem.imageUrl,
-    ImageUrl: notificationItem.ImageUrl,
-    image: notificationItem.image,
-    rawItem: notificationItem
-  });
-
   const formattedResult = {
     ...notificationItem,
     title,
@@ -491,9 +429,5 @@ export function formatNotificationForDisplay(notificationItem, language = "vi") 
     // Add category info from API response
     categoryName: language === "en" ? notificationItem.notificationCategoryTitleEn : notificationItem.notificationCategoryTitleVi,
     categorySlug: language === "en" ? notificationItem.notificationCategorySlugEn : notificationItem.notificationCategorySlugVi,
-  };
-
-  console.log("🔍 Formatted result imageUrl:", formattedResult.imageUrl);
-  
-  return formattedResult;
+  };return formattedResult;
 }

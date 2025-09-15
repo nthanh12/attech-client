@@ -131,15 +131,7 @@ const UserManagement = () => {
 
     // Thêm password nếu có (cho tạo mới)
     if (user.password && user.password.trim() !== "") {
-      userData.password = user.password.trim();
-      console.log(
-        "🔍 Password included:",
-        userData.password.length,
-        "characters"
-      );
-    } else {
-      console.log("🔍 No password provided");
-    }
+      userData.password = user.password.trim();} else {}
 
     // Đảm bảo userLevel và status là number
     if (typeof userData.userLevel === "string") {
@@ -149,11 +141,7 @@ const UserManagement = () => {
       userData.status = parseInt(userData.status);
     }
 
-    // Log chi tiết userLevel để debug
-    console.log("🔍 UserLevel before sending:", userData.userLevel);
-    console.log("🔍 UserLevel type:", typeof userData.userLevel);
-
-    // Đảm bảo roleIds là array of numbers
+    // Log chi tiết userLevel để debug// Đảm bảo roleIds là array of numbers
     if (userData.roleIds && Array.isArray(userData.roleIds)) {
       userData.roleIds = userData.roleIds.map((id) =>
         typeof id === "string" ? parseInt(id) : id
@@ -188,12 +176,7 @@ const UserManagement = () => {
         // Xử lý users data từ API response structure theo BE
         if (usersData?.status === 1) {
           const usersFromAPI = usersData.data?.items || [];
-          const mappedUsers = usersFromAPI.map(mapUserFromAPI);
-
-          console.log("📊 API Response users:", usersFromAPI);
-          console.log("📊 Mapped users for table:", mappedUsers);
-
-          setUsers(mappedUsers);
+          const mappedUsers = usersFromAPI.map(mapUserFromAPI);setUsers(mappedUsers);
         } else {
           setUsers([]);
         }
@@ -814,9 +797,7 @@ const UserManagement = () => {
       sortable: true,
       width: "130px",
       render: (row) => {
-        const lastLogin = row.LastLogin || row.lastLogin;
-        console.log("LastLogin debug:", { lastLogin, row });
-        try {
+        const lastLogin = row.LastLogin || row.lastLogin;try {
           return lastLogin
             ? new Date(lastLogin).toLocaleDateString("vi-VN")
             : "Chưa đăng nhập";
@@ -1599,11 +1580,7 @@ const UserManagement = () => {
             </small>
           </div>
 
-          {console.log("🔍 Table data check:", {
-            paginatedUsers: paginatedUsers.slice(0, 2),
-            firstUserLastLogin: paginatedUsers[0]?.lastLogin,
-            totalUsers: paginatedUsers.length,
-          })}
+          {/* Table data check completed */}
           <DataTable
             data={paginatedUsers}
             columns={columns}

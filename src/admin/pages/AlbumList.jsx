@@ -60,32 +60,20 @@ const AlbumList = () => {
           limit: itemsPerPage,
           search: searchFilters.search !== undefined ? searchFilters.search : searchDebounce || "",
           status: searchFilters.status !== undefined ? searchFilters.status : filters.status,
-        };
-
-        console.log("🔍 Loading albums with params:", params);
-        const response = await albumService.fetchAlbums(params);
-        console.log("📋 Albums response:", response);
-
-        if (response.success) {
+        };const response = await albumService.fetchAlbums(params);if (response.success) {
           let albumsData = Array.isArray(response.data) ? response.data : [];
 
           // Update pagination info from server response
           setTotalItems(response.total || 0);
           setTotalPages(Math.ceil((response.total || 0) / itemsPerPage));
 
-          // Use server-side data directly (no client-side filtering)
-          console.log("📋 Final albums data:", albumsData);
-          setAlbums(albumsData);
-        } else {
-          console.log("❌ Albums response not successful:", response);
-          setAlbums([]);
+          // Use server-side data directly (no client-side filtering)setAlbums(albumsData);
+        } else {setAlbums([]);
           setTotalItems(0);
           setTotalPages(0);
           showToast("Lỗi tải danh sách album", "error");
         }
-      } catch (error) {
-        console.error("Error loading albums:", error);
-        setAlbums([]);
+      } catch (error) {setAlbums([]);
         setTotalItems(0);
         setTotalPages(0);
         showToast("Lỗi kết nối server", "error");
@@ -145,33 +133,23 @@ const AlbumList = () => {
     setShowModal(true);
   };
 
-  const handleEdit = async (item) => {
-    console.log("✏️ Editing album:", item.id);
-    setEditMode(true);
+  const handleEdit = async (item) => {setEditMode(true);
     setShowModal(true);
 
     try {
       // Load full album details with attachments
       const response = await albumService.getAlbumById(item.id);
-      if (response.success) {
-        console.log("📝 Loaded album details for editing:", response.data);
-        setEditingItem(response.data);
-      } else {
-        console.error("❌ Failed to load album details:", response.message);
-        setEditingItem(item); // Fallback to basic item data
+      if (response.success) {setEditingItem(response.data);
+      } else {setEditingItem(item); // Fallback to basic item data
         showToast("Lỗi tải chi tiết album để chỉnh sửa", "error");
       }
-    } catch (error) {
-      console.error("❌ Error loading album for edit:", error);
-      setEditingItem(item); // Fallback to basic item data
+    } catch (error) {setEditingItem(item); // Fallback to basic item data
       showToast("Lỗi tải album để chỉnh sửa", "error");
     }
   };
 
   // Handle view album details
-  const handleViewAlbum = async (album) => {
-    console.log("👁️ Viewing album details:", album.id);
-    setSelectedAlbum(album);
+  const handleViewAlbum = async (album) => {setSelectedAlbum(album);
     setShowAlbumDetail(true);
 
     try {
@@ -180,9 +158,7 @@ const AlbumList = () => {
       if (response.success && response.data.attachments) {
         setAlbumImages(response.data.attachments.images || []);
       }
-    } catch (error) {
-      console.error("Error loading album images:", error);
-      showToast("Lỗi tải ảnh album", "error");
+    } catch (error) {showToast("Lỗi tải ảnh album", "error");
     }
   };
 
@@ -200,9 +176,7 @@ const AlbumList = () => {
       } else {
         throw new Error(response.message || "Delete failed");
       }
-    } catch (error) {
-      console.error("Error deleting album:", error);
-      showToast("Lỗi xóa album", "error");
+    } catch (error) {showToast("Lỗi xóa album", "error");
     }
   };
 
@@ -255,13 +229,6 @@ const AlbumList = () => {
   );
 
   // Check permission - Editor and above can manage albums
-  console.log("🔍 Album permission check:", {
-    currentUser: currentUser,
-    roleId: currentUser?.roleId,
-    ROLES_EDITOR: ROLES.EDITOR,
-    hasPermission: currentUser && currentUser.roleId <= ROLES.EDITOR,
-  });
-
   if (!currentUser || currentUser.roleId > ROLES.EDITOR) {
     return (
       <PageWrapper>

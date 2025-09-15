@@ -114,9 +114,7 @@ const ContactList = () => {
       setContacts(contactData?.items || []);
       setTotalItems(contactData?.totalItems || 0);
       setTotalPages(contactData?.totalPages || 0);
-    } catch (error) {
-      console.error("Load data failed:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Tải dữ liệu thất bại: " + error.message,
         type: "error",

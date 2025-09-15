@@ -105,32 +105,17 @@ const InternalDocumentsList = () => {
         dateTo: filters.dateTo,
         sortBy: sortConfig.key,
         sortDirection: sortConfig.direction,
-      };
-
-      console.log("📡 Loading internal documents with params:", params);
-
-      const result = await internalDocumentsAdminService.fetchInternalDocuments(params);
+      };const result = await internalDocumentsAdminService.fetchInternalDocuments(params);
 
       if (result.success) {
         setInternalDocuments(result.data.items || []);
         setTotalItems(result.data.totalItems || 0);
-        setTotalPages(result.data.totalPages || 0);
-
-        console.log("✅ Internal documents loaded:", {
-          items: result.data.items?.length || 0,
-          total: result.data.totalItems,
-          pages: result.data.totalPages
-        });
-      } else {
-        console.error("❌ Failed to load internal documents:", result.message);
-        showToast(result.message || "Không thể tải danh sách tài liệu nội bộ", "error");
+        setTotalPages(result.data.totalPages || 0);} else {showToast(result.message || "Không thể tải danh sách tài liệu nội bộ", "error");
         setInternalDocuments([]);
         setTotalItems(0);
         setTotalPages(0);
       }
-    } catch (error) {
-      console.error("❌ Error loading internal documents:", error);
-      showToast("Có lỗi xảy ra khi tải danh sách tài liệu nội bộ", "error");
+    } catch (error) {showToast("Có lỗi xảy ra khi tải danh sách tài liệu nội bộ", "error");
       setInternalDocuments([]);
       setTotalItems(0);
       setTotalPages(0);
@@ -154,9 +139,7 @@ const InternalDocumentsList = () => {
 
   // Handle edit document
   const handleEdit = async (document) => {
-    try {
-      console.log("✏️ Editing internal document:", document.id);
-      const result = await internalDocumentsAdminService.getInternalDocumentById(document.id);
+    try {const result = await internalDocumentsAdminService.getInternalDocumentById(document.id);
       
       if (result.success) {
         setEditMode(true);
@@ -165,17 +148,13 @@ const InternalDocumentsList = () => {
       } else {
         showToast(result.message || "Không thể tải chi tiết tài liệu để chỉnh sửa", "error");
       }
-    } catch (error) {
-      console.error("❌ Error loading document for edit:", error);
-      showToast("Có lỗi xảy ra khi tải chi tiết tài liệu", "error");
+    } catch (error) {showToast("Có lỗi xảy ra khi tải chi tiết tài liệu", "error");
     }
   };
 
   // Handle view document detail
   const handleViewDetail = async (document) => {
-    try {
-      console.log("👀 Viewing internal document detail:", document.id);
-      const result = await internalDocumentsAdminService.getInternalDocumentById(document.id);
+    try {const result = await internalDocumentsAdminService.getInternalDocumentById(document.id);
       
       if (result.success) {
         setSelectedDocument(result.data);
@@ -183,9 +162,7 @@ const InternalDocumentsList = () => {
       } else {
         showToast(result.message || "Không thể tải chi tiết tài liệu", "error");
       }
-    } catch (error) {
-      console.error("❌ Error viewing document detail:", error);
-      showToast("Có lỗi xảy ra khi tải chi tiết tài liệu", "error");
+    } catch (error) {showToast("Có lỗi xảy ra khi tải chi tiết tài liệu", "error");
     }
   };
 
@@ -195,9 +172,7 @@ const InternalDocumentsList = () => {
       return;
     }
 
-    try {
-      console.log("🗑️ Deleting internal document:", document.id);
-      const result = await internalDocumentsAdminService.deleteInternalDocument(document.id);
+    try {const result = await internalDocumentsAdminService.deleteInternalDocument(document.id);
 
       if (result.success) {
         showToast("Xóa tài liệu nội bộ thành công", "success");
@@ -205,9 +180,7 @@ const InternalDocumentsList = () => {
       } else {
         showToast(result.message || "Không thể xóa tài liệu", "error");
       }
-    } catch (error) {
-      console.error("❌ Error deleting internal document:", error);
-      showToast("Có lỗi xảy ra khi xóa tài liệu", "error");
+    } catch (error) {showToast("Có lỗi xảy ra khi xóa tài liệu", "error");
     }
   };
 
@@ -216,9 +189,7 @@ const InternalDocumentsList = () => {
     try {
       await internalDocumentsAdminService.downloadInternalDocument(document.id, document.title);
       showToast("Tải tài liệu thành công", "success");
-    } catch (error) {
-      console.error("❌ Error downloading document:", error);
-      showToast("Có lỗi xảy ra khi tải tài liệu", "error");
+    } catch (error) {showToast("Có lỗi xảy ra khi tải tài liệu", "error");
     }
   };
 

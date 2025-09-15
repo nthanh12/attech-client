@@ -86,7 +86,7 @@ const hasKids = hasChildren(rawMenuData, menuId);
 
 // Loop through all menu items
 rawMenuData.forEach(item => {
-  console.log(\`\${' '.repeat(item.level * 2)}\${item.labelVi} (Order: \${item.order})\`);
+  // Process each menu item as needed
 });`}
         </pre>
       </div>

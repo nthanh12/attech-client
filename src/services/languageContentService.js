@@ -244,6 +244,23 @@ export async function getTranslationByKey(key) {
 export function clearTranslationsCache() {
   translationsCache.data = null;
   translationsCache.timestamp = null;
+
+  // Also clear localStorage cache for i18n
+  try {
+    localStorage.removeItem('i18nextLng');
+    ['vi', 'en'].forEach(lang => {
+      localStorage.removeItem(`i18n_${lang}_timestamp`);
+    });
+
+    // Clear any other i18n related cache
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('i18next') || key.startsWith('i18n_')) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch (error) {
+    console.warn('Could not clear localStorage cache:', error);
+  }
 }
 
 // Get translations for i18next (export format) using client endpoint with caching

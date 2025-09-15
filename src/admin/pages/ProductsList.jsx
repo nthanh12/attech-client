@@ -100,9 +100,7 @@ const ProductList = () => {
       setTotalItems(productData?.totalItems || 0);
       setTotalPages(productData?.totalPages || 0);
       setCategories(categoriesData || []);
-    } catch (error) {
-      console.error("Load data failed:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Tải dữ liệu thất bại: " + error.message,
         type: "error",
@@ -130,9 +128,7 @@ const ProductList = () => {
       const fullProductData = await getProductById(productItem.id);
       setEditingProduct(fullProductData);
       setShowModal(true); // Only show modal after data is loaded
-    } catch (error) {
-      console.error("Error loading product detail:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi tải chi tiết sản phẩm: " + error.message,
         type: "error",
@@ -186,9 +182,7 @@ const ProductList = () => {
           type: "success",
         });
       }
-    } catch (error) {
-      console.error("Error reloading data:", error);
-      // Fallback to old behavior if loadData fails
+    } catch (error) {// Fallback to old behavior if loadData fails
       if (editMode) {
         setProduct((prev) =>
           prev.map((item) =>

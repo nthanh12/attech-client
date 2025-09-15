@@ -25,9 +25,7 @@ const NewsSection = () => {
 
         setCategories(categoriesData);
         setTrendingNews(featuredNewsData);
-      } catch (error) {
-        console.error("Error loading trending news:", error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

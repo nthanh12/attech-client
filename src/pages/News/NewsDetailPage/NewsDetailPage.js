@@ -121,9 +121,7 @@ const NewsDetailPage = () => {
         setRelatedNews(related);
 
         setError(null);
-      } catch (err) {
-        console.error("Error loading news detail:", err);
-        setError("Error loading article");
+      } catch (err) {setError("Error loading article");
       } finally {
         setLoading(false);
         setIsInitialized(true);
@@ -151,9 +149,7 @@ const NewsDetailPage = () => {
           text: heading.textContent,
           level: parseInt(heading.tagName.charAt(1)),
         }));
-      } catch (error) {
-        console.error("Error parsing content:", error);
-        return [];
+      } catch (error) {return [];
       }
     };
 

@@ -43,17 +43,7 @@ const AdminLayout = () => {
 
   // Handle authentication state
   useEffect(() => {
-    const authStatus = isAuthenticated();
-    console.log("🔍 AdminLayout auth check:", {
-      pathname: location.pathname,
-      loading,
-      authStatus,
-      user: user?.username,
-    });
-
-    if (!loading && !authStatus) {
-      console.log("❌ Not authenticated, redirecting to login");
-      navigate("/dang-nhap", { replace: true });
+    const authStatus = isAuthenticated();if (!loading && !authStatus) {navigate("/dang-nhap", { replace: true });
     }
   }, [loading, isAuthenticated, navigate, location.pathname, user]);
 
@@ -855,10 +845,7 @@ const AdminLayout = () => {
             overflow: "auto",
           }}
         >
-          {console.log(
-            "🔍 AdminLayout rendering Outlet for path:",
-            location.pathname
-          )}
+          {/* AdminLayout rendering Outlet */}
           <Outlet />
         </main>
       </div>

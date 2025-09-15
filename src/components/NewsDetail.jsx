@@ -17,22 +17,12 @@ const NewsDetail = () => {
       setLoading(true);
       setError(null);
       
-      try {
-        console.log('🔍 Fetching news detail for slug:', slug);
-        const response = await getNewsBySlug(slug);
-        
-        console.log('📰 News detail API response:', response);
-        
-        // Handle documentation format: {statusCode: 200, data: {...}}
+      try {const response = await getNewsBySlug(slug);// Handle documentation format: {statusCode: 200, data: {...}}
         if (response && response.statusCode === 200 && response.data) {
-          setNews(response.data);
-          console.log('✅ News detail loaded successfully:', response.data);
-        } else {
+          setNews(response.data);} else {
           throw new Error('Invalid response format from server');
         }
-      } catch (err) {
-        console.error('❌ Error fetching news detail:', err);
-        setError(err.message || 'Không thể tải thông tin tin tức');
+      } catch (err) {setError(err.message || 'Không thể tải thông tin tin tức');
       } finally {
         setLoading(false);
       }
@@ -109,9 +99,7 @@ const NewsDetail = () => {
               borderRadius: '8px',
               marginTop: '1rem'
             }}
-            onError={(e) => {
-              console.error('❌ Failed to load image:', news.imageUrl);
-              e.target.style.display = 'none';
+            onError={(e) => {e.target.style.display = 'none';
             }}
           />
         )}

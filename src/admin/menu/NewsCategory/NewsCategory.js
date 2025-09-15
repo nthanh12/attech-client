@@ -67,8 +67,6 @@ const NewsCategory = () => {
   // Custom handleEdit để map dữ liệu từ API response sang form format
   const handleEditCategory = useCallback(
     (item) => {
-      console.log("🔍 handleEditCategory - Original item:", item);
-
       // Map dữ liệu từ API response sang form format
       const mappedItem = {
         id: item.id,
@@ -87,9 +85,6 @@ const NewsCategory = () => {
         parentId: item.parentId || null,
         order: item.order || 0,
       };
-
-      console.log("🔍 handleEditCategory - Mapped item:", mappedItem);
-
       handleEdit(mappedItem);
     },
     [handleEdit]
@@ -248,7 +243,6 @@ const NewsCategory = () => {
 
       if (editMode) {
         // Update category - gọi API
-        console.log("🔄 Updating news category:", categoryData);
         const response = await updateNewsCategory({
           id: currentCategory.id,
           ...categoryData,
@@ -259,7 +253,6 @@ const NewsCategory = () => {
           "update",
           // onSuccess callback
           (response) => {
-            console.log("✅ Update success callback, response:", response);
             const responseData = response.data || categoryData;
             const updatedData = {
               titleVi: responseData.titleVi || "",
@@ -283,14 +276,11 @@ const NewsCategory = () => {
             resetForm();
           },
           // onError callback
-          (response) => {
-            console.log("❌ Update error callback, response:", response);
-          },
+          (response) => {},
           setToast
         );
       } else {
         // Create new category - gọi API
-        console.log("🔄 Creating new news category:", categoryData);
         const response = await createNewsCategory(categoryData);
 
         handleApiResponse(
@@ -298,7 +288,6 @@ const NewsCategory = () => {
           "create",
           // onSuccess callback
           (response) => {
-            console.log("✅ Create success callback, response:", response);
             const responseData = response.data || categoryData;
             const newCategory = {
               id: responseData?.id || Date.now(),
@@ -310,7 +299,6 @@ const NewsCategory = () => {
               slugEn: responseData.slugEn || "",
               status: responseData.status === 1 ? "active" : "inactive",
             };
-            console.log("📝 New category to add:", newCategory);
             setCategories((prev) => [newCategory, ...prev]);
             resetForm();
           },
@@ -329,7 +317,6 @@ const NewsCategory = () => {
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")) {
       try {
-        console.log("🗑️ Deleting news category with ID:", id);
         const response = await deleteNewsCategory(id);
 
         handleApiResponse(

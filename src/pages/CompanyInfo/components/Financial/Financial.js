@@ -64,14 +64,9 @@ const Financial = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const handleViewDocument = async (slug) => {
-    try {
-      console.log('📄 Fetching document details for slug:', slug);
-      const response = await clientDocumentService.getDocumentBySlug(slug);
+    try {const response = await clientDocumentService.getDocumentBySlug(slug);
       
-      if (response.success && response.data) {
-        console.log('📄 Document details:', response.data);
-        
-        // Handle multiple files
+      if (response.success && response.data) {// Handle multiple files
         if (response.data.documents && response.data.documents.length > 0) {
           if (response.data.documents.length === 1) {
             // Chỉ 1 file → mở luôn
@@ -89,9 +84,7 @@ const Financial = () => {
       } else {
         alert('Không thể tải tài liệu');
       }
-    } catch (error) {
-      console.error('Error viewing document:', error);
-      alert('Có lỗi xảy ra khi tải tài liệu');
+    } catch (error) {alert('Có lỗi xảy ra khi tải tài liệu');
     }
   };
 
@@ -103,11 +96,7 @@ const Financial = () => {
           pageSize: 50,
           sortBy: 'timePosted',
           sortDirection: 'desc'
-        });
-        
-        console.log('📋 API Response:', response);
-        
-        if (response.success && response.data && response.data.items) {
+        });if (response.success && response.data && response.data.items) {
           const transformedReports = response.data.items.map(item => ({
             id: item.id,
             title: item.titleVi || item.titleEn || item.title,
@@ -115,17 +104,10 @@ const Financial = () => {
             date: item.timePosted ? new Date(item.timePosted).toLocaleDateString('vi-VN') : '',
             slug: item.slugVi || item.slugEn,
             file: null // Will be loaded when user clicks view/download
-          }));
-          
-          console.log('📊 Transformed reports:', transformedReports);
-          setFinancialReports(transformedReports);
-        } else {
-          console.error('❌ API response error:', response);
-          setError(response.message || 'Không thể tải dữ liệu báo cáo tài chính');
+          }));setFinancialReports(transformedReports);
+        } else {setError(response.message || 'Không thể tải dữ liệu báo cáo tài chính');
         }
-      } catch (err) {
-        console.error('Error fetching financial reports:', err);
-        setError('Có lỗi xảy ra khi tải dữ liệu');
+      } catch (err) {setError('Có lỗi xảy ra khi tải dữ liệu');
       } finally {
         setLoading(false);
       }

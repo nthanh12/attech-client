@@ -16,13 +16,7 @@ export const processEntityAttachments = async (
   entityType,
   entityId
 ) => {
-  try {
-    console.log("🔄 Processing entity attachments...", {
-      entityType,
-      entityId,
-    });
-
-    const allAttachmentIds = new Set();
+  try {const allAttachmentIds = new Set();
     let processedContent = entityData.content;
 
     // 1. Featured image attachment
@@ -50,23 +44,16 @@ export const processEntityAttachments = async (
       entityData.attachmentIds.forEach((id) => allAttachmentIds.add(id));
     }
 
-    const attachmentIdsArray = Array.from(allAttachmentIds);
-    console.log("📎 Total attachments to associate:", attachmentIdsArray);
-
-    // 5. Associate tất cả với entity
+    const attachmentIdsArray = Array.from(allAttachmentIds);// 5. Associate tất cả với entity
     if (attachmentIdsArray.length > 0) {
-      await associateAttachments(attachmentIdsArray, entityType, entityId);
-      console.log("✅ Attachments associated successfully");
-    }
+      await associateAttachments(attachmentIdsArray, entityType, entityId);}
 
     return {
       ...entityData,
       content: processedContent,
       processedAttachmentIds: attachmentIdsArray,
     };
-  } catch (error) {
-    console.error("❌ Process entity attachments failed:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -80,18 +67,11 @@ export const handleFeaturedImageUpload = async (
 ) => {
   // Tạo preview URL ngay
   const previewUrl = URL.createObjectURL(file);
-  setPreviewUrl(previewUrl);
-
-  console.log("🖼️ Created featured image preview:", previewUrl);
-
-  try {
+  setPreviewUrl(previewUrl);try {
     // Upload temp ngay - backend đã support đầy đủ!
     const { uploadFeaturedImage } = await import("./uploadService");
     const api = await import("../api");
-    const result = await uploadFeaturedImage(file);
-    console.log("✅ Featured image temp upload:", result);
-
-    // Thay blob URL bằng server URL
+    const result = await uploadFeaturedImage(file);// Thay blob URL bằng server URL
     const baseUrl = api.default.defaults.baseURL;
     const serverUrl = result.url?.startsWith("http")
       ? result.url
@@ -102,9 +82,7 @@ export const handleFeaturedImageUpload = async (
 
     // Cleanup blob URL
     URL.revokeObjectURL(previewUrl);
-  } catch (error) {
-    console.error("❌ Featured image upload failed:", error);
-    // Giữ blob URL nếu upload failed
+  } catch (error) {// Giữ blob URL nếu upload failed
     setAttachmentId(null);
   }
 };

@@ -309,10 +309,6 @@ const Navbar = () => {
   const logoUrl = getBannerUrl('Logo', '/assets/images/header/attech-bo-cuc-dau-trang-chu.png');
 
   // Debug menu data
-  console.log("=== NAVBAR MENU DEBUG ===");
-  console.log("Raw menu data:", rawMenuData);
-  console.log("Menu loading:", menuLoading);
-  console.log("Current language:", currentLanguage);
 
   useEffect(() => {
     if (!isHomePage) {

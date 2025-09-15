@@ -20,9 +20,7 @@ export const submitContactForm = async (formData) => {
     }
 
     throw new Error(response.data?.message || "Gửi liên hệ thất bại");
-  } catch (error) {
-    console.error("Contact form submission error:", error);
-    throw {
+  } catch (error) {throw {
       success: false,
       message: error.response?.data?.message || error.message || "Có lỗi xảy ra khi gửi liên hệ"
     };

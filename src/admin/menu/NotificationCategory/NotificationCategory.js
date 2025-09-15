@@ -67,8 +67,6 @@ const NotificationCategory = () => {
   // Custom handleEdit để map dữ liệu từ API response sang form format
   const handleEditCategory = useCallback(
     (item) => {
-      console.log("🔍 handleEditCategory - Original item:", item);
-
       // Map dữ liệu từ API response sang form format
       const mappedItem = {
         id: item.id,
@@ -87,9 +85,6 @@ const NotificationCategory = () => {
         parentId: item.parentId || null,
         order: item.order || 0,
       };
-
-      console.log("🔍 handleEditCategory - Mapped item:", mappedItem);
-
       handleEdit(mappedItem);
     },
     [handleEdit]
@@ -253,7 +248,6 @@ const NotificationCategory = () => {
 
       if (editMode) {
         // Update category - gọi API
-        console.log("🔄 Updating notification category:", categoryData);
         const response = await updateNotificationCategory({
           id: currentCategory.id,
           ...categoryData,
@@ -264,7 +258,6 @@ const NotificationCategory = () => {
           "update",
           // onSuccess callback
           (response) => {
-            console.log("✅ Update success callback, response:", response);
             const responseData = response.data || categoryData;
             const updatedData = {
               titleVi: responseData.titleVi || "",
@@ -290,14 +283,11 @@ const NotificationCategory = () => {
             resetForm();
           },
           // onError callback
-          (response) => {
-            console.log("❌ Update error callback, response:", response);
-          },
+          (response) => {},
           setToast
         );
       } else {
         // Create new category - gọi API
-        console.log("🔄 Creating new notification category:", categoryData);
         const response = await createNotificationCategory(categoryData);
 
         handleApiResponse(
@@ -305,7 +295,6 @@ const NotificationCategory = () => {
           "create",
           // onSuccess callback
           (response) => {
-            console.log("✅ Create success callback, response:", response);
             const responseData = response.data || categoryData;
             const newCategory = {
               id: responseData?.id || Date.now(),
@@ -319,7 +308,6 @@ const NotificationCategory = () => {
               parentId: responseData.parentId || null,
               order: responseData.order || 0,
             };
-            console.log("📝 New category to add:", newCategory);
             setCategories((prev) => [newCategory, ...prev]);
             resetForm();
           },
@@ -338,7 +326,6 @@ const NotificationCategory = () => {
   const handleDeleteCategory = async (id) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa danh mục này?")) {
       try {
-        console.log("🗑️ Deleting notification category with ID:", id);
         const response = await deleteNotificationCategory(id);
 
         handleApiResponse(

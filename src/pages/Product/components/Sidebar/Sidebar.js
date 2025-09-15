@@ -9,8 +9,6 @@ const Sidebar = ({ isOpen, onClose, selectedCategories, onCategoryChange, produc
   const categories = productMenu?.submenu || [];
 
   // Log kiểm tra dữ liệu categories
-  console.log('Sidebar categories:', categories);
-
   const [expandedCategory, setExpandedCategory] = useState(null);
 
   const handleCategoryClick = (category) => {

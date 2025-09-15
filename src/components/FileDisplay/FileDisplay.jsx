@@ -50,9 +50,7 @@ const FileDisplay = ({
         }
 
         setFileUrl(url);
-      } catch (err) {
-        console.error('❌ Error generating file URL:', err);
-        setError('Không thể tạo URL file');
+      } catch (err) {setError('Không thể tạo URL file');
       } finally {
         setIsLoading(false);
       }

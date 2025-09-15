@@ -53,31 +53,14 @@ const WeeklyNews = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const categoriesData = await getNewsCategories();
-
-        console.log(
-          "🔄 WeeklyNews: Loading all recent news to distribute by category..."
-        );
-
-        // NEW STRATEGY: Load all news first, then distribute by category
+        const categoriesData = await getNewsCategories();// NEW STRATEGY: Load all news first, then distribute by category
         const allNewsData = await getNews({
           pageIndex: 1,
           pageSize: 100, // Get more items to ensure coverage for all 3 categories
           sortBy: "timePosted",
           sortDirection: "desc",
         });
-
-        console.log(
-          `📊 WeeklyNews: Total news loaded: ${allNewsData.items.length}`
-        );
-        console.log(
-          "📋 WeeklyNews: All news items:",
-          allNewsData.items.map((item) => ({
-            id: item.id,
-            categoryId: item.newsCategoryId,
-            title: item.titleVi?.substring(0, 30) + "...",
-          }))
-        );
+        // Processing all news items
 
         // Group news by category
         const newsByCategory = {};
@@ -89,15 +72,7 @@ const WeeklyNews = () => {
           newsByCategory[catId].push(item);
         });
 
-        console.log(
-          "📈 WeeklyNews distribution by category:",
-          Object.keys(newsByCategory)
-            .map(
-              (catId) =>
-                `Category ${catId}: ${newsByCategory[catId].length} items`
-            )
-            .join(", ")
-        );
+        // Analyzing news distribution by category
 
         // Create grouped news for each target category
         const grouped = {};
@@ -106,13 +81,7 @@ const WeeklyNews = () => {
           const categoryNews = newsByCategory[categoryId] || [];
           const newsToShow = categoryNews.slice(0, 5); // Take first 5 news items
 
-          console.log(`🎯 WeeklyNews Category ${categoryId}:`, {
-            totalInCategory: categoryNews.length,
-            showing: newsToShow.length,
-            titles: newsToShow
-              .map((n) => n.titleVi?.substring(0, 30) + "...")
-              .join(" | "),
-          });
+          // Processing category news
 
           // Find category data from API or use fallback
           const category = categoriesData.find(
@@ -134,31 +103,19 @@ const WeeklyNews = () => {
               category: category,
               news: newsToShow,
             };
-          } else {
-            console.log(
-              `⚠️ No news found for WeeklyNews category ${categoryId}, skipping`
-            );
-          }
+          } else {}
         });
 
         setGroupedNews(grouped);
 
-        console.log(
-          "✅ WeeklyNews: Final grouped categories:",
-          Object.keys(grouped).length
-        );
-        console.log(
-          "🔍 WeeklyNews: Check category diversity:",
-          Object.keys(grouped).map((slug) => ({
-            slug,
-            newsCount: grouped[slug].news.length,
-            firstNewsId: grouped[slug].news[0]?.id,
-            title: grouped[slug].news[0]?.titleVi?.substring(0, 40) + "...",
-          }))
-        );
-      } catch (error) {
-        console.error("Error loading weekly news:", error);
-      } finally {
+        // Final grouped categories processed
+        const processedCategories = Object.keys(grouped).map((slug) => ({
+          slug,
+          newsCount: grouped[slug].news.length,
+          firstNewsId: grouped[slug].news[0]?.id,
+          title: grouped[slug].news[0]?.titleVi?.substring(0, 40) + "...",
+        }));
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

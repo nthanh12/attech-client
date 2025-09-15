@@ -107,10 +107,7 @@ export const getOptimizedFileUrl = (filePath) => {
   
   // Use backend URL directly
   const backendUrl = getApiBaseUrl();
-  const url = `${backendUrl}/${cleanPath}`;
-  
-  console.log(`📁 File URL: ${url}`);
-  return url;
+  const url = `${backendUrl}/${cleanPath}`;return url;
 };
 
 // Get file URL with fallback options
@@ -183,9 +180,7 @@ export const checkFileAccessibility = async (fileUrl) => {
   try {
     const response = await fetch(fileUrl, { method: 'HEAD' });
     return response.ok;
-  } catch (error) {
-    console.error('File accessibility check failed:', error);
-    return false;
+  } catch (error) {return false;
   }
 };
 
@@ -206,9 +201,7 @@ export const getFileMetadata = async (filePath) => {
       etag: response.headers.get('etag'),
       cacheControl: response.headers.get('cache-control')
     };
-  } catch (error) {
-    console.error('Failed to get file metadata:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 

@@ -27,9 +27,7 @@ const ProductDetail = () => {
         } else {
           setError("Product not found");
         }
-      } catch (err) {
-        console.error("Error loading product:", err);
-        setError(err.message);
+      } catch (err) {setError(err.message);
       } finally {
         setLoading(false);
       }

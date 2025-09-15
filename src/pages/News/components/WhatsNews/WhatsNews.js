@@ -43,11 +43,7 @@ const WhatsNews = () => {
           pageSize: 10,
           sortBy: "timePosted",
           sortDirection: "desc",
-        });
-
-        console.log("🔍 Aviation news response:", newsResponse);
-
-        // Find aviation category for display purposes
+        });// Find aviation category for display purposes
         const aviationCat = categoriesData.find(
           (cat) => cat.slugVi === aviationSlug
         ) || {
@@ -61,9 +57,7 @@ const WhatsNews = () => {
         // Always use aviation category, even if no news found
         setAviationCategory(aviationCat);
         setAviationNews(newsResponse.items || []);
-      } catch (error) {
-        console.error("Error loading aviation news:", error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

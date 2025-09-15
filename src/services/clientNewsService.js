@@ -72,9 +72,7 @@ export async function getNews(params = {}) {
     }
 
     throw new Error("Invalid response format");
-  } catch (error) {
-    console.error("❌ getNews error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 
@@ -92,9 +90,7 @@ export async function getNewsById(id) {
     }
 
     throw new Error("News not found");
-  } catch (error) {
-    console.error("❌ getNewsById error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 
@@ -113,10 +109,7 @@ export async function getNewsBySlug(slug, language = "vi") {
     }
 
     throw new Error("News not found");
-  } catch (error) {
-    console.error("❌ getNewsBySlug error with detail endpoint:", error);
-    
-    // No fallback needed for client endpoint - it only returns published content
+  } catch (error) {// No fallback needed for client endpoint - it only returns published content
     throw new Error("News not found");
   }
 }
@@ -136,9 +129,7 @@ export async function getNewsCategories() {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getNewsCategories error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -164,9 +155,7 @@ export async function getFeaturedNews(limit = 5) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getFeaturedNews error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -191,9 +180,7 @@ export async function getLatestNews(limit = 10) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getLatestNews error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -239,9 +226,7 @@ export async function getNewsByCategory(categoryId, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getNewsByCategory error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -292,9 +277,7 @@ export async function getNewsByCategorySlug(categorySlug, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getNewsByCategorySlug error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -331,9 +314,7 @@ export async function getRelatedNews(newsId, categoryId, limit = 5) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getRelatedNews error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -384,9 +365,7 @@ export async function searchNews(searchTerm, params = {}) {
       currentPage: pageIndex,
       pageSize,
     };
-  } catch (error) {
-    console.error("❌ searchNews error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -452,9 +431,7 @@ export async function getActivityNews(params = {}) {
       currentPage: pageIndex,
       pageSize,
     };
-  } catch (error) {
-    console.error("❌ getActivityNews error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -488,55 +465,23 @@ function processContentWithAttachments(content, attachments) {
   if (!content || !attachments?.images?.length) return content;
 
   let processedContent = content;
-  const baseUrl = getApiBaseUrl();
-
-  console.log("🔍 Processing content with attachments:", {
-    contentLength: content.length,
-    imagesCount: attachments.images.length,
-    baseUrl
-  });
-
-  // Strategy: Replace all img tags that don't have proper src with images from attachments
+  const baseUrl = getApiBaseUrl();// Strategy: Replace all img tags that don't have proper src with images from attachments
   let imageIndex = 0;
 
   // Replace img tags without src or with empty src
   processedContent = processedContent.replace(/<img([^>]*?)(\s*\/?>)/gi, (match, attributes, closing) => {
     // Check if this img tag already has a valid src
-    const hasSrc = /src\s*=\s*["'][^"'\s]+["']/i.test(match);
-    
-    console.log("🔍 Processing img tag:", {
-      match,
-      attributes,
-      hasSrc,
-      imageIndex
-    });
-
-    if (!hasSrc && imageIndex < attachments.images.length) {
+    const hasSrc = /src\s*=\s*["'][^"'\s]+["']/i.test(match);if (!hasSrc && imageIndex < attachments.images.length) {
       const image = attachments.images[imageIndex];
       const fullImageUrl = `${baseUrl}${image.url}`;
       
       // Add src attribute to the img tag
-      const newImgTag = `<img${attributes} src="${fullImageUrl}"${closing}`;
-      
-      console.log("🔍 Replacing img tag:", {
-        oldTag: match,
-        newTag: newImgTag,
-        imageUrl: fullImageUrl
-      });
-      
-      imageIndex++;
+      const newImgTag = `<img${attributes} src="${fullImageUrl}"${closing}`;imageIndex++;
       return newImgTag;
     }
 
     return match; // Return original if already has src or no more images
-  });
-
-  console.log("🔍 Content processing completed:", {
-    processedLength: processedContent.length,
-    imagesProcessed: imageIndex
-  });
-
-  return processedContent;
+  });return processedContent;
 }
 
 // Format news data for client display

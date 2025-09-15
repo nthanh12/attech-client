@@ -37,9 +37,7 @@ const AdminTable = ({
   variant = "default"
 }) => {
   // Validate columns
-  if (!columns || !Array.isArray(columns)) {
-    console.error('AdminTable: columns prop is invalid:', columns);
-    return (
+  if (!columns || !Array.isArray(columns)) {return (
       <div className="admin-table-error">
         <div className="error-message">
           <i className="fas fa-exclamation-triangle"></i>
@@ -50,9 +48,7 @@ const AdminTable = ({
   }
 
   // Validate data
-  if (!data || !Array.isArray(data)) {
-    console.error('AdminTable: data prop is invalid:', data);
-    return (
+  if (!data || !Array.isArray(data)) {return (
       <div className="admin-table-error">
         <div className="error-message">
           <i className="fas fa-exclamation-triangle"></i>
@@ -149,9 +145,7 @@ const AdminTable = ({
                         (() => {
                           const value = row[col.key];
                           if (value === null || value === undefined) return '—';
-                          if (typeof value === 'object') {
-                            console.warn(`Warning: Object found in column ${col.key}:`, value);
-                            return `[Object: ${Object.keys(value).join(', ')}]`;
+                          if (typeof value === 'object') {return `[Object: ${Object.keys(value).join(', ')}]`;
                           }
                           return String(value);
                         })()
@@ -180,7 +174,7 @@ const AdminTable = ({
                           <>
                             <button
                               className="admin-table-action-btn admin-table-action-edit"
-                              onClick={() => console.warn('Edit action not implemented')}
+                              onClick={() => { /* Edit action not implemented */ }}
                               title="Chỉnh sửa"
                             >
                               <i className="fas fa-edit"></i>
@@ -188,7 +182,7 @@ const AdminTable = ({
                             </button>
                             <button
                               className="admin-table-action-btn admin-table-action-delete"
-                              onClick={() => console.warn('Delete action not implemented')}
+                              onClick={() => { /* Delete action not implemented */ }}
                               title="Xóa"
                             >
                               <i className="fas fa-trash"></i>

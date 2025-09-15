@@ -38,9 +38,7 @@ const DashboardStats = () => {
           weeklyGrowth: 12.5,
           monthlyGrowth: 8.3
         });
-      } catch (error) {
-        console.error('Error fetching stats:', error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

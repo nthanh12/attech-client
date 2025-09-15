@@ -69,9 +69,7 @@ const NotificationListPage = () => {
         } else {
           setCurrentCategory(null);
         }
-      } catch (error) {
-        console.error("Error loading notification categories:", error);
-      } finally {
+      } catch (error) {} finally {
         setCategoriesLoaded(true);
       }
     };
@@ -123,9 +121,7 @@ const NotificationListPage = () => {
         }
 
         setNotificationData(response);
-      } catch (error) {
-        console.error("❌ Error loading notifications:", error);
-        setNotificationData({ items: [], totalPages: 0, totalCount: 0 });
+      } catch (error) {setNotificationData({ items: [], totalPages: 0, totalCount: 0 });
       } finally {
         setLoading(false);
       }

@@ -20,14 +20,10 @@ const DataTable = ({
   tableClassName = "admin-table"
 }) => {
   // Validate columns
-  if (!columns || !Array.isArray(columns)) {
-    console.error('DataTable: columns prop is invalid:', columns);
-    return <div>Error: Invalid columns configuration</div>;
+  if (!columns || !Array.isArray(columns)) {return <div>Error: Invalid columns configuration</div>;
   }
   // Validate data
-  if (!data || !Array.isArray(data)) {
-    console.error('DataTable: data prop is invalid:', data);
-    return <div>Error: Invalid data configuration</div>;
+  if (!data || !Array.isArray(data)) {return <div>Error: Invalid data configuration</div>;
   }
   // Check if there's already an actions column in the columns definition
   const hasActionsColumn = columns.some(col => col.key === 'actions');
@@ -84,9 +80,7 @@ const DataTable = ({
                       (() => {
                         const value = row[col.key];
                         if (value === null || value === undefined) return '';
-                        if (typeof value === 'object') {
-                          console.warn(`Warning: Object found in column ${col.key}:`, value);
-                          return `[Object: ${Object.keys(value).join(', ')}]`;
+                        if (typeof value === 'object') {return `[Object: ${Object.keys(value).join(', ')}]`;
                         }
                         return String(value);
                       })()

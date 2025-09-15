@@ -71,15 +71,7 @@ export const useFormWithConfirm = (
   }, [emptyData]);
 
   const handleEdit = useCallback((item) => {
-    setEditMode(true);
-    console.log(
-      "🔍 handleEdit - Original status:",
-      item.status,
-      "Type:",
-      typeof item.status
-    );
-
-    // Convert status from number to string for form compatibility
+    setEditMode(true);// Convert status from number to string for form compatibility
     // Nếu status đã là string rồi thì giữ nguyên, nếu là number thì chuyển đổi
     const convertedStatus =
       typeof item.status === "string"
@@ -91,14 +83,7 @@ export const useFormWithConfirm = (
     const itemWithConvertedStatus = {
       ...item,
       status: convertedStatus,
-    };
-
-    console.log(
-      "🔍 handleEdit - Converted status:",
-      itemWithConvertedStatus.status
-    );
-
-    setCurrentData(itemWithConvertedStatus);
+    };setCurrentData(itemWithConvertedStatus);
     setOriginalData(itemWithConvertedStatus);
     setErrors({});
     setHasChanges(false); // Reset thay đổi
@@ -146,11 +131,7 @@ export const useFormWithConfirm = (
       };
     });
 
-    console.log("🔍 Form Data Debug:", {
-      hasChanges,
-      hasUnsavedChanges: hasUnsavedChanges(),
-      formData,
-    });
+    // Debug information available in formData object
 
     return formData;
   }, [currentData, hasChanges, hasUnsavedChanges]);

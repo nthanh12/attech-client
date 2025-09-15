@@ -34,10 +34,7 @@ export const searchGlobal = async (keyword, limit = 5) => {
       searchTime: apiData.searchTime,
       results: apiData.results || [],
     };
-  } catch (error) {
-    console.error("Global search error:", error);
-
-    return {
+  } catch (error) {return {
       success: false,
       error: error.message || "Có lỗi xảy ra khi tìm kiếm",
       data: null,

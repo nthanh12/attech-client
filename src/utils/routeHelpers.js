@@ -128,9 +128,7 @@ export const getLocalizedRoute = (routeKey, params = {}, lang = null) => {
   const currentLang = lang || i18n.language || "vi";
   const route = ROUTES[routeKey];
 
-  if (!route) {
-    console.warn(`Route key "${routeKey}" not found`);
-    return "/";
+  if (!route) {return "/";
   }
 
   let path = route[currentLang] || route.vi;

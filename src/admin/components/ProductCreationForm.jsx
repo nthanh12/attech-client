@@ -182,9 +182,7 @@ const ProductCreationForm = ({
           }
         }
       }
-    } catch (error) {
-      console.error("Failed to load existing attachments:", error);
-    }
+    } catch (error) {}
   };
 
   // Form handlers
@@ -209,9 +207,7 @@ const ProductCreationForm = ({
     try {
       const translated = await translateViToEn(text);
       handleInputChange(toField, translated);
-    } catch (err) {
-      console.error("Translation failed:", err);
-      setToast({ show: true, message: "Dịch thất bại", type: "error" });
+    } catch (err) {setToast({ show: true, message: "Dịch thất bại", type: "error" });
     } finally {
       setTranslating((prev) => ({ ...prev, [toField]: false }));
     }
@@ -290,12 +286,7 @@ const ProductCreationForm = ({
             );
 
             // Cleanup blob URL
-            URL.revokeObjectURL(imageInfo.preview);
-
-            console.log(
-              `✅ Gallery image uploaded: ${imageInfo.name} -> ID: ${attachmentData.id}`
-            );
-            return {
+            URL.revokeObjectURL(imageInfo.preview);return {
               success: true,
               imageInfo,
               attachmentId: attachmentData.id,
@@ -303,13 +294,7 @@ const ProductCreationForm = ({
           } else {
             throw new Error("Upload failed - invalid response");
           }
-        } catch (uploadError) {
-          console.error(
-            `❌ Gallery image upload failed: ${imageInfo.name}`,
-            uploadError
-          );
-
-          // Remove failed image from gallery
+        } catch (uploadError) {// Remove failed image from gallery
           setGalleryImages((prev) =>
             prev.filter((img) => img.id !== imageInfo.id)
           );
@@ -339,9 +324,7 @@ const ProductCreationForm = ({
           type: "error",
         });
       }
-    } catch (error) {
-      console.error("Gallery image upload error:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi khi thêm ảnh vào gallery",
         type: "error",
@@ -411,9 +394,7 @@ const ProductCreationForm = ({
           } else {
             throw new Error("Upload failed");
           }
-        } catch (uploadError) {
-          console.error("File upload failed:", uploadError);
-          setAttachments((prev) =>
+        } catch (uploadError) {setAttachments((prev) =>
             prev.filter((att) => att.id !== fileInfo.id)
           );
           setToast({
@@ -429,9 +410,7 @@ const ProductCreationForm = ({
         message: `Đang tải lên ${fileArray.length} file...`,
         type: "info",
       });
-    } catch (error) {
-      console.error("File upload error:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi khi thêm file đính kèm",
         type: "error",
@@ -502,27 +481,12 @@ const ProductCreationForm = ({
           ],
         }),
       };
-
-      console.log("💾 Saving product with new flow...", { isEditMode });
-      console.log("📤 Data gửi lên BE:", JSON.stringify(productData, null, 2));
-      console.log("🖼️ Featured image ID:", featuredImageId);
-      console.log("🎨 Gallery images raw:", galleryImages);
-      console.log(
-        "🎨 Gallery attachmentIds:",
-        galleryImages.map((img) => img.attachmentId)
-      );
-      console.log("📎 Attachments raw:", attachments);
-      console.log(
-        "📎 Attachment IDs:",
-        attachments.map((att) => att.attachmentId || att.id)
-      );
+      // Data prepared for backend
 
       // 1. Create or Update product using service methods
       const response = isEditMode
         ? await updateProduct(editingProduct.id, productData)
         : await createProduct(productData);
-
-      console.log("🔍 BE Response:", response);
 
       if (response?.status === 1 && response?.data?.id) {
         const productId = response.data.id;
@@ -553,9 +517,7 @@ const ProductCreationForm = ({
         const errorMessage = response?.message || "Lưu thất bại";
         throw new Error(errorMessage);
       }
-    } catch (error) {
-      console.error("Save failed:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message:
           error.message || error.response?.data?.message || "Lưu thất bại",

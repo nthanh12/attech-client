@@ -22,9 +22,7 @@ const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
     setUser(currentUser);
   };
 
-  const handleLoginSuccess = (result) => {
-    console.log('🎉 Login successful:', result);
-    checkAuthStatus();
+  const handleLoginSuccess = (result) => {checkAuthStatus();
     onClose();
     
     // Show success notification
@@ -33,9 +31,7 @@ const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
     }, 100);
   };
 
-  const handleRegisterSuccess = (result) => {
-    console.log('🎉 Registration successful:', result);
-    setMode('login');
+  const handleRegisterSuccess = (result) => {setMode('login');
     // Don't close modal, let user login
   };
 

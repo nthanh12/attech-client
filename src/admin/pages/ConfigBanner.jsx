@@ -16,9 +16,7 @@ import {
 } from "../../services/bannerService";
 import "./ConfigBanner.css";
 
-const ConfigBanner = () => {
-  console.log('🎌 ConfigBanner component is rendering...');
-  const [activeMainTab, setActiveMainTab] = useState('settings'); // 'settings' or 'management'
+const ConfigBanner = () => {const [activeMainTab, setActiveMainTab] = useState('settings'); // 'settings' or 'management'
   const [banners, setBanners] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -62,11 +60,7 @@ const ConfigBanner = () => {
         setIsLoading(true);
         try {
           const bannersData = await fetchBanners();
-          setBanners(bannersData);
-          console.log('✅ Banners loaded successfully', bannersData);
-        } catch (error) {
-          console.error('Failed to fetch banners:', error);
-          setBanners([]);
+          setBanners(bannersData);} catch (error) {setBanners([]);
           setToast({ show: true, message: 'Không thể tải danh sách banner!', type: 'error' });
         } finally {
           setIsLoading(false);

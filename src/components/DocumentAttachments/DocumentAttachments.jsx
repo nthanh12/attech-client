@@ -13,33 +13,20 @@ const DocumentAttachments = ({ entityType, entityId, title = "File đính kèm" 
     }
   }, [entityType, entityId]);
 
-  const fetchDocumentsByEntity = async () => {
-    console.log(`📄 DocumentAttachments: Fetching documents for entity ${entityType}/${entityId}`);
-    setLoading(true);
+  const fetchDocumentsByEntity = async () => {setLoading(true);
     try {
       const response = await getDocumentsByEntity(entityType, entityId);
-      const documentsData = Array.isArray(response?.data) ? response.data : (Array.isArray(response) ? response : []);
-      
-      console.log(`📎 DocumentAttachments: Found ${documentsData.length} documents`);
-      setDocuments(documentsData);
-    } catch (error) {
-      console.error('❌ DocumentAttachments: Failed to fetch documents:', error);
-      setDocuments([]);
+      const documentsData = Array.isArray(response?.data) ? response.data : (Array.isArray(response) ? response : []);setDocuments(documentsData);
+    } catch (error) {setDocuments([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDownload = async (document) => {
-    console.log(`⬇️ Downloading document: ${document.fileName}`);
-    setDownloading(prev => ({ ...prev, [document.id]: true }));
+  const handleDownload = async (document) => {setDownloading(prev => ({ ...prev, [document.id]: true }));
     
     try {
-      await downloadDocument(document.id);
-      console.log('✅ Download completed:', document.fileName);
-    } catch (error) {
-      console.error('❌ Download failed:', error);
-      alert('Không thể tải file. Vui lòng thử lại.');
+      await downloadDocument(document.id);} catch (error) {alert('Không thể tải file. Vui lòng thử lại.');
     } finally {
       setDownloading(prev => ({ ...prev, [document.id]: false }));
     }

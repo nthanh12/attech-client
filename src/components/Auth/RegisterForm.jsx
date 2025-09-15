@@ -74,19 +74,14 @@ const RegisterForm = ({ onRegisterSuccess, onSwitchToLogin }) => {
       });
       
       if (result.success) {
-        setSuccess('Registration successful! You can now sign in.');
-        console.log('✅ Registration successful:', result);
-        
-        // Auto switch to login after 2 seconds
+        setSuccess('Registration successful! You can now sign in.');// Auto switch to login after 2 seconds
         setTimeout(() => {
           onRegisterSuccess(result);
         }, 2000);
       } else {
         setError(result.message || 'Registration failed');
       }
-    } catch (error) {
-      console.error('❌ Registration error:', error);
-      setError('Registration failed. Please try again.');
+    } catch (error) {setError('Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }

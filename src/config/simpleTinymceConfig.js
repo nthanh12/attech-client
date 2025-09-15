@@ -4,15 +4,12 @@ import { uploadForTinyMCE, createPreviewUrl } from '../services/uploadService';
 // Simple upload handler theo luồng mới
 const handleImageUpload = async (blobInfo, success, failure) => {
   try {
-    console.log('📝 Simple TinyMCE upload:', blobInfo.blob().name);
+    // Processing image upload
     
     const file = blobInfo.blob();
     
     // 1. Tạo blob URL ngay để preview
-    const previewUrl = createPreviewUrl(file);
-    console.log('📸 Simple preview URL:', previewUrl);
-    
-    // 2. Upload temp ngầm
+    const previewUrl = createPreviewUrl(file);// 2. Upload temp ngầm
     const tempUpload = uploadForTinyMCE(file);
     
     // 3. Trả preview URL ngay
@@ -23,15 +20,9 @@ const handleImageUpload = async (blobInfo, success, failure) => {
       if (!window.tinymceAttachmentMap) {
         window.tinymceAttachmentMap = new Map();
       }
-      window.tinymceAttachmentMap.set(previewUrl, result.id);
-      console.log('🗺️ Simple mapping saved:', previewUrl, '->', result.id);
-    }).catch(error => {
-      console.error('❌ Background temp upload failed:', error);
-    });
+      window.tinymceAttachmentMap.set(previewUrl, result.id);}).catch(error => {});
     
-  } catch (error) {
-    console.error('❌ Simple TinyMCE upload failed:', error);
-    failure('Upload thất bại: ' + error.message);
+  } catch (error) {failure('Upload thất bại: ' + error.message);
   }
 };
 

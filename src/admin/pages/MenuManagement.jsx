@@ -54,9 +54,7 @@ const MenuManagement = () => {
       setError(null);
       const data = await getMenuList();
       setMenus(data);
-    } catch (err) {
-      console.error("Load menus failed:", err);
-      setError(err.message);
+    } catch (err) {setError(err.message);
       setToast({
         show: true,
         message: "Tải dữ liệu thất bại: " + err.message,
@@ -157,11 +155,7 @@ const MenuManagement = () => {
         target: formData.target,
         descriptionVi: formData.descriptionVi || null,
         descriptionEn: formData.descriptionEn || null,
-      };
-
-      console.log('Sending data:', submitData);
-
-      if (editingMenu) {
+      };if (editingMenu) {
         await updateMenu(editingMenu.id, submitData);
         setToast({
           show: true,
@@ -180,9 +174,7 @@ const MenuManagement = () => {
       setShowModal(false);
       resetForm();
       loadMenus();
-    } catch (err) {
-      console.error('Menu submit error:', err);
-      setToast({
+    } catch (err) {setToast({
         show: true,
         message: "Lỗi: " + (err.response?.data?.message || err.message || 'Không thể kết nối tới server'),
         type: "error",

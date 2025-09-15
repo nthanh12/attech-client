@@ -30,10 +30,7 @@ import "tinymce/plugins/codesample";
 
 // 🆕 NEW: TinyMCE upload handler - upload ngay như featured image
 const handleImageUpload = async (blobInfo, success, failure) => {
-  try {
-    console.log('🔄 TinyMCE upload starting...');
-    
-    const file = blobInfo.blob();
+  try {const file = blobInfo.blob();
     
     // Validate file
     if (!file || file.size === 0) {
@@ -47,10 +44,7 @@ const handleImageUpload = async (blobInfo, success, failure) => {
     }
     
     // Upload temp ngay - backend đã support đầy đủ!
-    const result = await uploadForTinyMCE(file);
-    console.log('✅ TinyMCE temp upload completed:', result);
-    
-    // Trả full server URL cho TinyMCE
+    const result = await uploadForTinyMCE(file);// Trả full server URL cho TinyMCE
     const baseUrl = api.defaults.baseURL;
     const serverUrl = result.url?.startsWith('http') 
       ? result.url 
@@ -61,13 +55,7 @@ const handleImageUpload = async (blobInfo, success, failure) => {
     if (!window.tinymceAttachmentMap) {
       window.tinymceAttachmentMap = new Map();
     }
-    window.tinymceAttachmentMap.set(serverUrl, result.id);
-    
-    console.log('🗺️ Saved TinyMCE mapping:', serverUrl, '->', result.id);
-    
-  } catch (error) {
-    console.error('❌ TinyMCE upload failed:', error);
-    failure('Upload failed: ' + error.message);
+    window.tinymceAttachmentMap.set(serverUrl, result.id);} catch (error) {failure('Upload failed: ' + error.message);
   }
 };
 
@@ -169,10 +157,7 @@ export const tinymceConfig = {
   
   // Setup callbacks để đảm bảo resize handles
   setup: function(editor) {
-    editor.on('init', function() {
-      console.log('TinyMCE initialized');
-      
-      // Add CSS to fix handle positioning
+    editor.on('init', function() {// Add CSS to fix handle positioning
       try {
         const doc = editor.getDoc();
         const style = doc.createElement('style');
@@ -190,24 +175,16 @@ export const tinymceConfig = {
           }
         `;
         doc.head.appendChild(style);
-      } catch (error) {
-        console.log('Could not add CSS:', error);
-      }
+      } catch (error) {}
     });
     
-    editor.on('ObjectSelected', function(e) {
-      console.log('Object selected:', e.target ? e.target.tagName : 'no target');
-      // Force show resize handles
+    editor.on('ObjectSelected', function(e) {// Force show resize handles
       setTimeout(() => {
         try {
           const selected = editor.selection.getNode();
-          if (selected && selected.tagName === 'IMG') {
-            console.log('Image selected, forcing resize handles');
-            editor.nodeChanged();
+          if (selected && selected.tagName === 'IMG') {editor.nodeChanged();
           }
-        } catch (error) {
-          console.log('Error in ObjectSelected:', error);
-        }
+        } catch (error) {}
       }, 100);
     });
   },
@@ -243,14 +220,8 @@ export const tinymceConfig = {
             return;
           }
 
-          try {
-            console.log('🔄 File picker upload starting...');
-            
-            // Upload ngay như handleImageUpload
-            const result = await uploadForTinyMCE(file);
-            console.log('✅ File picker temp upload completed:', result);
-            
-            // Trả full server URL
+          try {// Upload ngay như handleImageUpload
+            const result = await uploadForTinyMCE(file);// Trả full server URL
             const baseUrl = api.defaults.baseURL;
             const serverUrl = result.url?.startsWith('http') 
               ? result.url 
@@ -264,13 +235,7 @@ export const tinymceConfig = {
             if (!window.tinymceAttachmentMap) {
               window.tinymceAttachmentMap = new Map();
             }
-            window.tinymceAttachmentMap.set(serverUrl, result.id);
-            
-            console.log('🗺️ File picker mapping saved:', serverUrl, '->', result.id);
-            
-          } catch (error) {
-            console.error('❌ File picker failed:', error);
-            alert('Upload ảnh thất bại: ' + error.message);
+            window.tinymceAttachmentMap.set(serverUrl, result.id);} catch (error) {alert('Upload ảnh thất bại: ' + error.message);
           }
         }
       };
@@ -293,10 +258,7 @@ export const extractTinyMCEAttachments = (htmlContent) => {
     if (htmlContent.includes(serverUrl) && !attachmentIds.includes(attachmentId)) {
       attachmentIds.push(attachmentId);
     }
-  });
-  
-  console.log('🔍 Extracted TinyMCE attachments:', attachmentIds);
-  return attachmentIds;
+  });return attachmentIds;
 };
 
 // Helper: Extract attachment IDs từ TinyMCE content (images đã upload)
@@ -312,10 +274,7 @@ export const prepareTinyMCEContent = (htmlContent) => {
     if (htmlContent.includes(serverUrl) && !attachmentIds.includes(attachmentId)) {
       attachmentIds.push(attachmentId);
     }
-  });
-  
-  console.log('🔧 TinyMCE content ready, attachments:', attachmentIds);
-  return htmlContent; // Content đã có server URLs rồi
+  });return htmlContent; // Content đã có server URLs rồi
 };
 
 export default tinymceConfig;

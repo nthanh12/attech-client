@@ -38,14 +38,7 @@ const documentService = {
       if (params.sortBy) {
         queryParams.sortBy = params.sortBy;
         queryParams.sortDirection = params.sortDirection || 'desc';
-      }
-
-      console.log('📡 Fetching documents:', queryParams);
-      const response = await api.get('/api/news/documents', { params: queryParams });
-      
-      console.log('📨 Documents response:', response.data);
-
-      // Handle API response format
+      }const response = await api.get('/api/news/documents', { params: queryParams });// Handle API response format
       if (response.data && response.data.status === 1 && response.data.data) {
         const dataObj = response.data.data;
         return {
@@ -64,9 +57,7 @@ const documentService = {
         success: false,
         message: 'Invalid response format'
       };
-    } catch (error) {
-      console.error('❌ Get documents error:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Failed to fetch documents'
       };
@@ -77,12 +68,7 @@ const documentService = {
    * Get document by ID
    */
   getDocumentById: async (documentId) => {
-    try {
-      console.log('📡 Fetching document by ID:', documentId);
-      const response = await api.get(`/api/news/documents/${documentId}`);
-      
-      console.log('✅ Document detail fetched successfully');
-      if (response.data && response.data.status === 1) {
+    try {const response = await api.get(`/api/news/documents/${documentId}`);if (response.data && response.data.status === 1) {
         return {
           success: true,
           data: response.data.data
@@ -93,9 +79,7 @@ const documentService = {
         success: false,
         message: 'Document not found'
       };
-    } catch (error) {
-      console.error('❌ Get document by ID error:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Failed to get document detail'
       };
@@ -106,10 +90,7 @@ const documentService = {
    * Create new document
    */
   createDocument: async (documentData) => {
-    try {
-      console.log('🚀 DocumentService.createDocument called with:', documentData);
-      
-      const payload = {
+    try {const payload = {
         titleVi: documentData.titleVi,
         titleEn: documentData.titleEn || '',
         descriptionVi: documentData.descriptionVi || '',
@@ -119,29 +100,12 @@ const documentService = {
         newsCategoryId: documentData.newsCategoryId || 1,
         timePosted: documentData.timePosted || new Date().toISOString(),
         status: documentData.status || 1
-      };
-      
-      console.log('📡 Making API call to /api/news/create-document with payload:', payload);
-      
-      const response = await api.post('/api/news/create-document', payload);
-      
-      console.log('✅ API response received:', response);
-      
-      return {
+      };const response = await api.post('/api/news/create-document', payload);return {
         success: true,
         data: response.data,
         message: 'Tạo tài liệu thành công'
       };
-    } catch (error) {
-      console.error('❌ Error creating document:', error);
-      console.error('❌ Error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        message: error.message
-      });
-      
-      const errorMessage = error.response?.data?.message || error.response?.data?.Message || error.message || 'Lỗi tạo tài liệu';
+    } catch (error) {const errorMessage = error.response?.data?.message || error.response?.data?.Message || error.message || 'Lỗi tạo tài liệu';
       
       return {
         success: false,
@@ -157,10 +121,7 @@ const documentService = {
    * Update document
    */
   updateDocument: async (documentId, documentData) => {
-    try {
-      console.log('🔧 DocumentService.updateDocument called with:', { documentId, documentData });
-      
-      const payload = {
+    try {const payload = {
         titleVi: documentData.titleVi,
         titleEn: documentData.titleEn || '',
         descriptionVi: documentData.descriptionVi || '',
@@ -170,29 +131,12 @@ const documentService = {
         newsCategoryId: documentData.newsCategoryId || 1,
         timePosted: documentData.timePosted || new Date().toISOString(),
         status: documentData.status || 1
-      };
-      
-      console.log('📡 Making API call to /api/news/update-document/' + documentId + ' with payload:', payload);
-      
-      const response = await api.put(`/api/news/update-document/${documentId}`, payload);
-      
-      console.log('✅ Update API response received:', response);
-      
-      return {
+      };const response = await api.put(`/api/news/update-document/${documentId}`, payload);return {
         success: true,
         data: response.data,
         message: 'Cập nhật tài liệu thành công'
       };
-    } catch (error) {
-      console.error('❌ Error updating document:', error);
-      console.error('❌ Error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        message: error.message
-      });
-      
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi cập nhật tài liệu',
         data: null,
@@ -206,19 +150,12 @@ const documentService = {
    * Delete document
    */
   deleteDocument: async (documentId) => {
-    try {
-      console.log('📡 Deleting document:', documentId);
-      const response = await api.delete(`/api/news/delete/${documentId}`);
-      
-      console.log('✅ Document deleted successfully');
-      return {
+    try {const response = await api.delete(`/api/news/delete/${documentId}`);return {
         success: true,
         data: response.data,
         message: 'Xóa tài liệu thành công'
       };
-    } catch (error) {
-      console.error('❌ Delete document error:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Failed to delete document'
       };
@@ -235,9 +172,7 @@ const documentService = {
         success: true,
         message: `Xóa ${ids.length} tài liệu thành công`
       };
-    } catch (error) {
-      console.error('Error bulk deleting documents:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Lỗi xóa tài liệu'
       };
@@ -248,10 +183,7 @@ const documentService = {
    * Download document
    */
   downloadDocument: async (documentId, filename) => {
-    try {
-      console.log('📡 Downloading document:', documentId, filename);
-      
-      const response = await api.get(`/api/attachments/download/${documentId}`, {
+    try {const response = await api.get(`/api/attachments/download/${documentId}`, {
         responseType: 'blob'
       });
       
@@ -264,13 +196,8 @@ const documentService = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      
-      console.log('✅ Document downloaded successfully');
-      return { success: true };
-    } catch (error) {
-      console.error('❌ Download document error:', error);
-      throw new Error(error.response?.data?.message || 'Failed to download document');
+      window.URL.revokeObjectURL(url);return { success: true };
+    } catch (error) {throw new Error(error.response?.data?.message || 'Failed to download document');
     }
   },
 
@@ -284,9 +211,7 @@ const documentService = {
         success: true,
         data: response.data.data || []
       };
-    } catch (error) {
-      console.error('Error fetching document attachments:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Lỗi tải file tài liệu',
         data: []
@@ -351,9 +276,7 @@ const documentService = {
         data: [],
         total: 0
       };
-    } catch (error) {
-      console.error('Error searching documents:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: 'Lỗi tìm kiếm tài liệu',
         data: [],

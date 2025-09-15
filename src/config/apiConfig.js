@@ -18,9 +18,7 @@ export const getApiBaseUrl = () => {
     return `${protocol}://${envHost}${port}`;
   }
   
-  // No environment variables set
-  console.error('No API configuration found');
-  throw new Error('API configuration required. Please set REACT_APP_API_HOST environment variable');
+  // No environment variables setthrow new Error('API configuration required. Please set REACT_APP_API_HOST environment variable');
 };
 
 // Get full API URL with path

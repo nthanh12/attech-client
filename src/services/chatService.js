@@ -9,7 +9,5 @@ export const openChat = (service = "whatsapp", config = {}) => {
   const serviceFn = chatServices[service];
   if (serviceFn) {
     serviceFn(config.phoneNumber || config.zaloId);
-  } else {
-    console.error(`Chat service ${service} not supported`);
-  }
+  } else {}
 };

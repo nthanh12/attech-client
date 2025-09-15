@@ -85,9 +85,7 @@ const ChangePasswordPage = () => {
       } else {
         alert(`Lỗi: ${result.message}`);
       }
-    } catch (error) {
-      console.error('Change password error:', error);
-      alert('Có lỗi xảy ra khi đổi mật khẩu. Vui lòng thử lại.');
+    } catch (error) {alert('Có lỗi xảy ra khi đổi mật khẩu. Vui lòng thử lại.');
     } finally {
       setLoading(false);
     }

@@ -31,9 +31,7 @@ const Notification = () => {
         });
         setNotifications(notificationsData.items || []);
         
-      } catch (error) {
-        console.error("❌ Error loading notification data:", error);
-        setCategories([]);
+      } catch (error) {setCategories([]);
         setNotifications([]);
       } finally {
         setLoading(false);

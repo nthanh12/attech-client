@@ -12,15 +12,9 @@ module.exports = function(app) {
       changeOrigin: true,
       secure: false, // Cho phép HTTPS không valid cert
       logLevel: 'debug',
-      onProxyReq: (proxyReq, req, res) => {
-        console.log(`🔄 Proxying ${req.method} ${req.url} to ${target}${req.url}`);
-      },
-      onProxyRes: (proxyRes, req, res) => {
-        console.log(`✅ Proxy response: ${proxyRes.statusCode} for ${req.url}`);
-      },
-      onError: (err, req, res) => {
-        console.error('❌ Proxy error:', err.message);
-      }
+      onProxyReq: (proxyReq, req, res) => {},
+      onProxyRes: (proxyRes, req, res) => {},
+      onError: (err, req, res) => {}
     })
   );
 
@@ -32,12 +26,8 @@ module.exports = function(app) {
       changeOrigin: true,
       secure: false,
       logLevel: 'debug',
-      onProxyReq: (proxyReq, req, res) => {
-        console.log(`📁 Proxying upload ${req.method} ${req.url} to ${target}${req.url}`);
-      },
-      onError: (err, req, res) => {
-        console.error('❌ Upload proxy error:', err.message);
-      }
+      onProxyReq: (proxyReq, req, res) => {},
+      onError: (err, req, res) => {}
     })
   );
 

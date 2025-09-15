@@ -76,101 +76,65 @@ const mockSystemSettings = {
 
 // Get all system settings
 export const fetchSystemSettings = async () => {
-  try {
-    console.log('⚙️ Fetching system settings from API...');
-    const response = await api.get('/api/settings');
+  try {const response = await api.get('/api/settings');
     
-    if (response.data) {
-      console.log('✅ System settings fetched successfully from API');
-      return response.data;
-    } else {
-      console.warn('⚠️ API returned invalid settings data, using mock data');
-      return mockSystemSettings;
+    if (response.data) {return response.data;
+    } else {return mockSystemSettings;
     }
-  } catch (error) {
-    console.warn('⚠️ Failed to fetch system settings from API, using mock data:', error.message);
-    return mockSystemSettings;
+  } catch (error) {return mockSystemSettings;
   }
 };
 
 // Get settings by category
 export const fetchSettingsByCategory = async (category) => {
-  try {
-    console.log(`⚙️ Fetching ${category} settings from API...`);
-    const response = await api.get(`/api/settings/${category}`);
+  try {const response = await api.get(`/api/settings/${category}`);
     
-    if (response.data) {
-      console.log(`✅ ${category} settings fetched successfully from API`);
-      return response.data;
-    } else {
-      console.warn(`⚠️ API returned invalid ${category} settings, using mock data`);
-      return mockSystemSettings[category] || {};
+    if (response.data) {return response.data;
+    } else {return mockSystemSettings[category] || {};
     }
-  } catch (error) {
-    console.warn(`⚠️ Failed to fetch ${category} settings from API, using mock data:`, error.message);
-    return mockSystemSettings[category] || {};
+  } catch (error) {return mockSystemSettings[category] || {};
   }
 };
 
 // Update system settings
 export const updateSystemSettings = async (category, settings) => {
-  try {
-    console.log(`⚙️ Updating ${category} settings:`, settings);
-    const response = await api.put(`/api/settings/${category}`, settings);
+  try {const response = await api.put(`/api/settings/${category}`, settings);
     
-    if (response.data) {
-      console.log(`✅ ${category} settings updated successfully`);
-      return response.data;
+    if (response.data) {return response.data;
     } else {
       throw new Error('Invalid response from server');
     }
-  } catch (error) {
-    console.error(`❌ Failed to update ${category} settings:`, error);
-    throw new Error(`Cập nhật cài đặt ${category} thất bại: ${error.response?.data?.Message || error.message}`);
+  } catch (error) {throw new Error(`Cập nhật cài đặt ${category} thất bại: ${error.response?.data?.Message || error.message}`);
   }
 };
 
 // Update specific setting
 export const updateSetting = async (key, value) => {
-  try {
-    console.log(`⚙️ Updating setting ${key}:`, value);
-    const response = await api.patch('/api/settings', { key, value });
+  try {const response = await api.patch('/api/settings', { key, value });
     
-    if (response.data) {
-      console.log(`✅ Setting ${key} updated successfully`);
-      return response.data;
+    if (response.data) {return response.data;
     } else {
       throw new Error('Invalid response from server');
     }
-  } catch (error) {
-    console.error(`❌ Failed to update setting ${key}:`, error);
-    throw new Error(`Cập nhật cài đặt thất bại: ${error.response?.data?.Message || error.message}`);
+  } catch (error) {throw new Error(`Cập nhật cài đặt thất bại: ${error.response?.data?.Message || error.message}`);
   }
 };
 
 // Reset settings to default
 export const resetSettingsToDefault = async (category) => {
-  try {
-    console.log(`⚙️ Resetting ${category} settings to default`);
-    const response = await api.post(`/api/settings/${category}/reset`);
+  try {const response = await api.post(`/api/settings/${category}/reset`);
     
-    if (response.data) {
-      console.log(`✅ ${category} settings reset successfully`);
-      return response.data;
+    if (response.data) {return response.data;
     } else {
       throw new Error('Invalid response from server');
     }
-  } catch (error) {
-    console.error(`❌ Failed to reset ${category} settings:`, error);
-    throw new Error(`Khôi phục cài đặt ${category} thất bại: ${error.response?.data?.Message || error.message}`);
+  } catch (error) {throw new Error(`Khôi phục cài đặt ${category} thất bại: ${error.response?.data?.Message || error.message}`);
   }
 };
 
 // Export settings
 export const exportSettings = async () => {
-  try {
-    console.log('⚙️ Exporting system settings...');
-    const response = await api.get('/api/settings/export', {
+  try {const response = await api.get('/api/settings/export', {
       responseType: 'blob'
     });
     
@@ -182,21 +146,14 @@ export const exportSettings = async () => {
     document.body.appendChild(link);
     link.click();
     link.remove();
-    window.URL.revokeObjectURL(url);
-    
-    console.log('✅ Settings exported successfully');
-    return true;
-  } catch (error) {
-    console.error('❌ Failed to export settings:', error);
-    throw new Error(`Xuất cài đặt thất bại: ${error.response?.data?.Message || error.message}`);
+    window.URL.revokeObjectURL(url);return true;
+  } catch (error) {throw new Error(`Xuất cài đặt thất bại: ${error.response?.data?.Message || error.message}`);
   }
 };
 
 // Import settings
 export const importSettings = async (file) => {
-  try {
-    console.log('⚙️ Importing system settings...');
-    const formData = new FormData();
+  try {const formData = new FormData();
     formData.append('file', file);
     
     const response = await api.post('/api/settings/import', formData, {
@@ -205,51 +162,35 @@ export const importSettings = async (file) => {
       }
     });
     
-    if (response.data) {
-      console.log('✅ Settings imported successfully');
-      return response.data;
+    if (response.data) {return response.data;
     } else {
       throw new Error('Invalid response from server');
     }
-  } catch (error) {
-    console.error('❌ Failed to import settings:', error);
-    throw new Error(`Nhập cài đặt thất bại: ${error.response?.data?.Message || error.message}`);
+  } catch (error) {throw new Error(`Nhập cài đặt thất bại: ${error.response?.data?.Message || error.message}`);
   }
 };
 
 // Test email configuration
 export const testEmailConfiguration = async (emailSettings) => {
-  try {
-    console.log('⚙️ Testing email configuration...');
-    const response = await api.post('/api/settings/test-email', emailSettings);
+  try {const response = await api.post('/api/settings/test-email', emailSettings);
     
-    if (response.data) {
-      console.log('✅ Email test successful');
-      return response.data;
+    if (response.data) {return response.data;
     } else {
       throw new Error('Invalid response from server');
     }
-  } catch (error) {
-    console.error('❌ Email test failed:', error);
-    throw new Error(`Kiểm tra email thất bại: ${error.response?.data?.Message || error.message}`);
+  } catch (error) {throw new Error(`Kiểm tra email thất bại: ${error.response?.data?.Message || error.message}`);
   }
 };
 
 // Clear cache
 export const clearSystemCache = async () => {
-  try {
-    console.log('⚙️ Clearing system cache...');
-    const response = await api.post('/api/settings/clear-cache');
+  try {const response = await api.post('/api/settings/clear-cache');
     
-    if (response.data) {
-      console.log('✅ Cache cleared successfully');
-      return response.data;
+    if (response.data) {return response.data;
     } else {
       throw new Error('Invalid response from server');
     }
-  } catch (error) {
-    console.error('❌ Failed to clear cache:', error);
-    throw new Error(`Xóa cache thất bại: ${error.response?.data?.Message || error.message}`);
+  } catch (error) {throw new Error(`Xóa cache thất bại: ${error.response?.data?.Message || error.message}`);
   }
 };
 

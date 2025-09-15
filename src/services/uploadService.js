@@ -11,21 +11,14 @@ import api from "../api";
  * - Trả về URL để preview ngay
  */
 export const uploadTempFile = async (file) => {
-  try {
-    console.log("🔄 Temp upload:", file.name);
-
-    const formData = new FormData();
+  try {const formData = new FormData();
     formData.append("File", file);
 
     const response = await api.post("/api/attachments", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    });
-
-    console.log("🔍 Upload response:", response.data);
-
-    // Check if backend returned success
+    });// Check if backend returned success
     if (response.data?.status === 1 && response.data?.data) {
       const result = response.data.data;
 
@@ -39,9 +32,7 @@ export const uploadTempFile = async (file) => {
 
     // Check if backend returned error
     if (response.data?.status === 0) {
-      const errorMsg = response.data?.message || "Upload failed";
-      console.error("❌ Backend upload error:", errorMsg);
-      throw new Error(`Backend Error: ${errorMsg}`);
+      const errorMsg = response.data?.message || "Upload failed";throw new Error(`Backend Error: ${errorMsg}`);
     }
 
     // Check direct data format (alternative API)
@@ -66,13 +57,8 @@ export const uploadTempFile = async (file) => {
         isTemporary: result.isTemporary,
         fileName: result.fileName || file.name,
       };
-    }
-
-    console.error("❌ Unexpected response format:", response.data);
-    throw new Error("Unexpected API response format");
-  } catch (error) {
-    console.error("❌ Temp upload failed:", error);
-    throw error;
+    }throw new Error("Unexpected API response format");
+  } catch (error) {throw error;
   }
 };
 
@@ -86,19 +72,14 @@ export const associateAttachments = async (
   objectType,
   objectId
 ) => {
-  try {
-    console.log("🔗 Associating:", { attachmentIds, objectType, objectId });
-
-    const response = await api.post("/api/attachments/associate", {
+  try {const response = await api.post("/api/attachments/associate", {
       attachmentIds: attachmentIds,
       ObjectType: objectType,
       ObjectId: objectId,
     });
 
     return response.data;
-  } catch (error) {
-    console.error("❌ Associate failed:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 

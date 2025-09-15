@@ -99,9 +99,7 @@ const NotificationList = () => {
       setTotalItems(notificationData?.totalItems || 0);
       setTotalPages(notificationData?.totalPages || 0);
       setCategories(categoriesData || []);
-    } catch (error) {
-      console.error("Load data failed:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Tải dữ liệu thất bại: " + error.message,
         type: "error",
@@ -131,9 +129,7 @@ const NotificationList = () => {
       );
       setEditingNotification(fullNotificationData);
       setShowModal(true); // Only show modal after data is loaded
-    } catch (error) {
-      console.error("Error loading notification detail:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi tải chi tiết thông báo: " + error.message,
         type: "error",
@@ -187,9 +183,7 @@ const NotificationList = () => {
           type: "success",
         });
       }
-    } catch (error) {
-      console.error("Error reloading data:", error);
-      // Fallback to old behavior if loadData fails
+    } catch (error) {// Fallback to old behavior if loadData fails
       if (editMode) {
         setNotification((prev) =>
           prev.map((item) =>

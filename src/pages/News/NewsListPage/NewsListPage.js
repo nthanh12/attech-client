@@ -75,9 +75,7 @@ const NewsListPage = () => {
         } else {
           setCurrentCategory(null);
         }
-      } catch (error) {
-        console.error("Error loading categories:", error);
-      } finally {
+      } catch (error) {} finally {
         setCategoriesLoaded(true);
       }
     };
@@ -93,10 +91,7 @@ const NewsListPage = () => {
         let response;
 
         if (searchTerm.trim()) {
-          // Search mode
-          console.log("🔍 Searching for:", searchTerm);
-
-          // Check if we're on the special activity news page
+          // Search mode// Check if we're on the special activity news page
           if (category === "tin-hoat-dong" || category === "activity-news") {
             // Search within activity categories
             response = await getActivityNews({
@@ -111,9 +106,7 @@ const NewsListPage = () => {
               pageSize: itemsPerPage,
               categoryId: currentCategory?.id,
             });
-          }
-          console.log("🔍 Search response:", response);
-        } else if (category) {
+          }} else if (category) {
           // Check if this is the special activity news page
           if (category === "tin-hoat-dong" || category === "activity-news") {
             // Special page: Get news from 4 activity categories
@@ -156,9 +149,7 @@ const NewsListPage = () => {
         }
 
         setNewsData(response);
-      } catch (error) {
-        console.error("❌ Error loading news:", error);
-        setNewsData({ items: [], totalPages: 0, totalCount: 0 });
+      } catch (error) {setNewsData({ items: [], totalPages: 0, totalCount: 0 });
       } finally {
         setLoading(false);
       }

@@ -42,10 +42,7 @@ const albumService = {
 
       const urlParams = new URLSearchParams(queryParams).toString();
 
-      const response = await api.get(`/api/news/albums?${urlParams}`);
-      console.log('🔍 Albums API response:', response.data);
-      
-      // Handle response structure: { status: 1, data: { items: [...], total: 1 } }
+      const response = await api.get(`/api/news/albums?${urlParams}`);// Handle response structure: { status: 1, data: { items: [...], total: 1 } }
       const responseData = response.data.data || response.data;
       const items = responseData.items || responseData || [];
       
@@ -55,9 +52,7 @@ const albumService = {
         pagination: responseData.pagination || {},
         total: responseData.total || responseData.totalItems || items.length || 0
       };
-    } catch (error) {
-      console.error('Error fetching albums:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi tải danh sách album',
         data: [],
@@ -71,19 +66,14 @@ const albumService = {
    */
   getAlbumById: async (id) => {
     try {
-      const response = await api.get(`/api/news/albums/${id}`);
-      console.log('🔍 Album detail response:', response.data);
-      
-      // Handle response structure: { status: 1, data: { ... attachments: { images: [...] } } }
+      const response = await api.get(`/api/news/albums/${id}`);// Handle response structure: { status: 1, data: { ... attachments: { images: [...] } } }
       const albumData = response.data.data || response.data;
       
       return {
         success: true,
         data: albumData
       };
-    } catch (error) {
-      console.error('Error fetching album:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi tải album',
         data: null
@@ -101,9 +91,7 @@ const albumService = {
         success: true,
         data: response.data
       };
-    } catch (error) {
-      console.error('Error fetching album by slug:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Không tìm thấy album',
         data: null
@@ -115,25 +103,16 @@ const albumService = {
    * Create new album with slug support
    */
   createAlbum: async (albumData) => {
-    try {
-      console.log('🚀 AlbumService.createAlbum called with:', albumData);
-      
-      const payload = {
+    try {const payload = {
         titleVi: albumData.titleVi,
         titleEn: albumData.titleEn || '',
         attachmentIds: albumData.attachmentIds || [],
         featuredImageId: albumData.featuredImageId || null,
         newsCategoryId: albumData.newsCategoryId || 1
         // Remove descriptionVi, descriptionEn - not needed for albums
-      };
-      
-      console.log('📡 Making API call to /api/news/create-album with payload:', payload);
-      
-      // Try regular news endpoint first, if it fails try create-album
+      };// Try regular news endpoint first, if it fails try create-album
       let response;
-      try {
-        console.log('📡 Trying regular /api/news endpoint...');
-        response = await api.post('/api/news', {
+      try {response = await api.post('/api/news', {
           ...payload,
           isAlbum: true,
           contentVi: '', // Empty content for album
@@ -141,27 +120,13 @@ const albumService = {
           timePosted: new Date().toISOString(),
           status: 1
         });
-      } catch (newsError) {
-        console.log('📡 Regular /api/news failed, trying /api/news/create-album...');
-        response = await api.post('/api/news/create-album', payload);
-      }
-      
-      console.log('✅ API response received:', response);
-      
-      return {
+      } catch (newsError) {response = await api.post('/api/news/create-album', payload);
+      }return {
         success: true,
         data: response.data,
         message: 'Tạo album thành công'
       };
-    } catch (error) {
-      console.error('❌ Error creating album:', error);
-      console.error('❌ Error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        message: error.message
-      });
-      const errorMessage = error.response?.data?.message || error.response?.data?.Message || error.message || 'Lỗi tạo album';
+    } catch (error) {const errorMessage = error.response?.data?.message || error.response?.data?.Message || error.message || 'Lỗi tạo album';
       
       return {
         success: false,
@@ -177,53 +142,29 @@ const albumService = {
    * Update album with slug support
    */
   updateAlbum: async (id, albumData) => {
-    try {
-      console.log('🔧 AlbumService.updateAlbum called with:', { id, albumData });
-      
-      const payload = {
+    try {const payload = {
         titleVi: albumData.titleVi,
         titleEn: albumData.titleEn || '',
         attachmentIds: albumData.attachmentIds || [],
         featuredImageId: albumData.featuredImageId || null,
         newsCategoryId: albumData.newsCategoryId || 1
         // Remove descriptionVi, descriptionEn - not needed for albums
-      };
-      
-      console.log('📡 Making API call to /api/news/update-album/' + id + ' with payload:', payload);
-      
-      // Try update-album endpoint first, fallback to regular PUT
+      };// Try update-album endpoint first, fallback to regular PUT
       let response;
-      try {
-        console.log('📡 Trying /api/news/update-album/' + id + '...');
-        response = await api.put(`/api/news/update-album/${id}`, payload);
-      } catch (updateError) {
-        console.log('📡 Update-album endpoint failed, trying regular /api/news/' + id + '...');
-        response = await api.put(`/api/news/${id}`, {
+      try {response = await api.put(`/api/news/update-album/${id}`, payload);
+      } catch (updateError) {response = await api.put(`/api/news/${id}`, {
           ...payload,
           isAlbum: true,
           contentVi: '', // Empty content for album
           contentEn: '',
           status: albumData.status || 1
         });
-      }
-      
-      console.log('✅ Update API response received:', response);
-      
-      return {
+      }return {
         success: true,
         data: response.data,
         message: 'Cập nhật album thành công'
       };
-    } catch (error) {
-      console.error('❌ Error updating album:', error);
-      console.error('❌ Error details:', {
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        message: error.message
-      });
-      
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi cập nhật album',
         data: null,
@@ -243,9 +184,7 @@ const albumService = {
         success: true,
         message: 'Xóa album thành công'
       };
-    } catch (error) {
-      console.error('Error deleting album:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi xóa album'
       };
@@ -262,9 +201,7 @@ const albumService = {
         success: true,
         message: `Xóa ${ids.length} album thành công`
       };
-    } catch (error) {
-      console.error('Error bulk deleting albums:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi xóa albums'
       };
@@ -298,9 +235,7 @@ const albumService = {
         data: response.data.successUploads || response.data || [],
         message: `Upload ${Array.isArray(files) ? files.length : 1} ảnh thành công`
       };
-    } catch (error) {
-      console.error('Error uploading images:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi upload ảnh',
         data: []
@@ -319,9 +254,7 @@ const albumService = {
         success: true,
         data: response.data.data || []
       };
-    } catch (error) {
-      console.error('Error fetching album attachments:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi tải ảnh album',
         data: []
@@ -343,9 +276,7 @@ const albumService = {
         data: response.data,
         message: 'Thêm ảnh vào album thành công'
       };
-    } catch (error) {
-      console.error('Error adding images to album:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi thêm ảnh vào album'
       };
@@ -362,9 +293,7 @@ const albumService = {
         success: true,
         message: 'Xóa ảnh khỏi album thành công'
       };
-    } catch (error) {
-      console.error('Error removing image from album:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi xóa ảnh khỏi album'
       };
@@ -385,9 +314,7 @@ const albumService = {
         data: response.data,
         message: 'Sắp xếp ảnh thành công'
       };
-    } catch (error) {
-      console.error('Error reordering album images:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || error.response?.data?.Message || 'Lỗi sắp xếp ảnh'
       };
@@ -441,9 +368,7 @@ const albumService = {
         pagination: response.data.pagination || {},
         total: response.data.total || 0
       };
-    } catch (error) {
-      console.error('Error searching albums:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: 'Lỗi tìm kiếm album',
         data: [],

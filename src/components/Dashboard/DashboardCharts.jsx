@@ -59,9 +59,7 @@ const DashboardCharts = () => {
             { hour: '22:00', views: 134 }
           ]
         });
-      } catch (error) {
-        console.error('Error fetching chart data:', error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

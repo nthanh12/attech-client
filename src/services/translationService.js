@@ -19,10 +19,7 @@ export const translateText = async (text, sourceLanguage = 'vi', targetLanguage 
     return '';
   }
 
-  try {
-    console.log(`🔄 Translating: "${text}" from ${sourceLanguage} to ${targetLanguage}`);
-    
-    // Gọi API translate từ backend sử dụng api instance (có authentication)
+  try {// Gọi API translate từ backend sử dụng api instance (có authentication)
     const response = await api.post('/api/Translate', {
       text: text.trim(),
       source: sourceLanguage,
@@ -31,14 +28,8 @@ export const translateText = async (text, sourceLanguage = 'vi', targetLanguage 
 
     const data = response.data;
 
-    const translatedText = data?.translatedText || data?.data?.translatedText || text;
-    console.log(`✅ Translation result: "${translatedText}"`);
-    
-    return translatedText;
-  } catch (error) {
-    console.warn('⚠️ Translation failed:', error.message);
-    
-    // Fallback to original text
+    const translatedText = data?.translatedText || data?.data?.translatedText || text;return translatedText;
+  } catch (error) {// Fallback to original text
     return text;
   }
 };

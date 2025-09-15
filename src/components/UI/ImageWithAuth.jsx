@@ -68,9 +68,7 @@ const ImageWithAuth = ({
 
         // Cleanup function để revoke blob URL
         return () => URL.revokeObjectURL(blobUrl);
-      } catch (err) {
-        console.error('Error loading image:', err);
-        if (isMounted) {
+      } catch (err) {if (isMounted) {
           setError(true);
           setLoading(false);
           if (fallbackSrc) {

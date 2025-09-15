@@ -51,9 +51,7 @@ export const fetchUsers = async (pageNumber = 1, pageSize = 10, keyword = "", fi
     }
     
     throw new Error("Invalid users response");
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -93,9 +91,7 @@ export const getUsers = async (params = {}) => {
     
     const response = await api.get("/api/user", { params: apiParams });
     return response.data;
-  } catch (error) {
-    console.error('Error fetching users:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -108,9 +104,7 @@ export const getUserById = async (id) => {
   try {
     const response = await api.get(`/api/user/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching user by ID:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -153,9 +147,7 @@ export const createUser = async (userData) => {
         Message: result.message
       };
     }
-  } catch (error) {
-    console.error('Error creating user:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -211,9 +203,7 @@ export const updateUser = async (userData) => {
     
     const response = await api.put("/api/user", updateUserDto);
     return response.data;
-  } catch (error) {
-    console.error('Error updating user:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -226,9 +216,7 @@ export const deleteUser = async (id) => {
   try {
     const response = await api.delete(`/api/user/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error deleting user:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -244,9 +232,7 @@ export const addRoleToUser = async (userId, roleId) => {
   try {
     const response = await api.post(`/api/user/${userId}/roles/${roleId}`);
     return response.data;
-  } catch (error) {
-    console.error('Error adding role to user:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -260,9 +246,7 @@ export const removeRoleFromUser = async (userId, roleId) => {
   try {
     const response = await api.delete(`/api/user/${userId}/roles/${roleId}`);
     return response.data;
-  } catch (error) {
-    console.error('Error removing role from user:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 

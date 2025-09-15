@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom';
 import adminRoutesConfig from './adminRoutesConfig';
 
 export default function AdminRoutes() {
-  // console.log('🚦 Render AdminRoutes, config:', adminRoutesConfig);
   return (
     <Routes>
       {adminRoutesConfig.map((route, idx) =>

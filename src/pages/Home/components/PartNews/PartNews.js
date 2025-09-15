@@ -50,32 +50,19 @@ const PartNews = () => {
 
         // Step 1: Load all available categories from API
         const categories = await getNewsCategories();
-        console.log(
-          "📋 Available categories:",
-          categories.map((cat) => ({
-            id: cat.id,
-            titleVi: cat.titleVi,
-            slugVi: cat.slugVi,
-          }))
-        );
 
         if (categories.length === 0) {
-          console.warn("⚠️ No categories found from API");
           setNewsGroups([]);
           return;
         }
 
         // Step 2: Load all recent news to distribute by category
-        console.log("🔄 Loading all recent news to distribute by category...");
-
         const allNewsData = await getNews({
           pageIndex: 1,
           pageSize: 8, // Chỉ cần 8 tin cho 4 categories (dự phòng)
           sortBy: "timePosted",
           sortDirection: "desc",
         });
-
-        console.log(`📊 Total news loaded: ${allNewsData.items.length}`);
 
         // Step 3: Group news by category
         const newsByCategory = {};
@@ -87,15 +74,6 @@ const PartNews = () => {
           newsByCategory[catId].push(item);
         });
 
-        console.log(
-          "📈 News distribution by category:",
-          Object.keys(newsByCategory)
-            .map(
-              (catId) =>
-                `Category ${catId}: ${newsByCategory[catId].length} items`
-            )
-            .join(", ")
-        );
 
         // Step 4: Lấy 4 categories cố định cho trang chủ (ID: 2,3,4,5)
         const featuredCategoryIds = [2, 3, 4, 5]; // Hoạt động công ty, Đảng bộ, Công đoàn, Đoàn TN
@@ -108,12 +86,6 @@ const PartNews = () => {
             const featuredNews =
               categoryNews.length > 0 ? categoryNews[0] : null;
 
-            console.log(`🎯 Category ${category.id} (${category.titleVi}):`, {
-              totalInCategory: categoryNews.length,
-              hasNews: !!featuredNews,
-              featuredTitle:
-                featuredNews?.titleVi?.substring(0, 50) + "..." || "No news",
-            });
 
             // Get title key for translation
             const titleKey =
@@ -132,25 +104,7 @@ const PartNews = () => {
           });
 
         setNewsGroups(newsGroupsWithData);
-
-        console.log(
-          "✅ Final news groups:",
-          newsGroupsWithData.length,
-          "cards"
-        );
-        console.log(
-          "🔍 Categories with news:",
-          newsGroupsWithData.map((g) => ({
-            categoryId: g.id,
-            categoryTitle: g.categoryData.titleVi,
-            newsId: g.featuredNews?.id || "none",
-            title:
-              g.featuredNews?.titleVi?.substring(0, 30) + "..." || "No news",
-          }))
-        );
-      } catch (error) {
-        console.error("Error loading news groups:", error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

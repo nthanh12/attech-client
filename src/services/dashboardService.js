@@ -174,29 +174,18 @@ const mockStatistics = {
 
 // Get dashboard overview statistics
 export const fetchDashboardOverview = async () => {
-  try {
-    console.log("📊 Fetching dashboard overview from API...");
-    const response = await api.get("/api/dashboard/all");
+  try {const response = await api.get("/api/dashboard/all");
 
-    if (response.data?.status === 1) {
-      console.log("✅ Dashboard overview fetched successfully from API");
-      return {
+    if (response.data?.status === 1) {return {
         success: true,
         data: response.data.data,
       };
-    } else {
-      console.warn("⚠️ API returned invalid overview data, using mock data");
-      return {
+    } else {return {
         success: true,
         data: mockStatistics.overview,
       };
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch dashboard overview from API, using mock data:",
-      error.message
-    );
-    return {
+  } catch (error) {return {
       success: true,
       data: mockStatistics.overview,
     };
@@ -205,157 +194,77 @@ export const fetchDashboardOverview = async () => {
 
 // Get user statistics
 export const fetchUserStatistics = async () => {
-  try {
-    console.log("📊 Fetching user statistics from API...");
-    const response = await api.get("/api/dashboard/all");
+  try {const response = await api.get("/api/dashboard/all");
 
-    if (response.data?.status === 1) {
-      console.log("✅ User statistics fetched successfully from API");
-      return response.data.data;
-    } else {
-      console.warn("⚠️ API returned invalid user data, using mock data");
-      return mockStatistics.userStats;
+    if (response.data?.status === 1) {return response.data.data;
+    } else {return mockStatistics.userStats;
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch user statistics from API, using mock data:",
-      error.message
-    );
-    return mockStatistics.userStats;
+  } catch (error) {return mockStatistics.userStats;
   }
 };
 
 // Get content statistics
 export const fetchContentStatistics = async () => {
-  try {
-    console.log("📊 Fetching content statistics from API...");
-    const response = await api.get("/api/dashboard/all");
+  try {const response = await api.get("/api/dashboard/all");
 
-    if (response.data?.status === 1) {
-      console.log("✅ Content statistics fetched successfully from API");
-      return response.data.data;
-    } else {
-      console.warn("⚠️ API returned invalid content data, using mock data");
-      return mockStatistics.contentStats;
+    if (response.data?.status === 1) {return response.data.data;
+    } else {return mockStatistics.contentStats;
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch content statistics from API, using mock data:",
-      error.message
-    );
-    return mockStatistics.contentStats;
+  } catch (error) {return mockStatistics.contentStats;
   }
 };
 
 // Get system statistics
 export const fetchSystemStatistics = async () => {
-  try {
-    console.log("📊 Fetching system statistics from API...");
-    const response = await api.get("/api/dashboard/all");
+  try {const response = await api.get("/api/dashboard/all");
 
-    if (response.data?.status === 1) {
-      console.log("✅ System statistics fetched successfully from API");
-      return response.data.data;
-    } else {
-      console.warn("⚠️ API returned invalid system data, using mock data");
-      return mockStatistics.systemStats;
+    if (response.data?.status === 1) {return response.data.data;
+    } else {return mockStatistics.systemStats;
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch system statistics from API, using mock data:",
-      error.message
-    );
-    return mockStatistics.systemStats;
+  } catch (error) {return mockStatistics.systemStats;
   }
 };
 
 // Get recent activities
 export const fetchRecentActivities = async (limit = 10) => {
-  try {
-    console.log("📊 Fetching recent activities from API...");
-    const response = await api.get("/api/dashboard/activities", {
+  try {const response = await api.get("/api/dashboard/activities", {
       params: { limit },
     });
 
-    if (response.data?.status === 1) {
-      console.log("✅ Recent activities fetched successfully from API");
-      return response.data.data;
-    } else {
-      console.warn("⚠️ API returned invalid activities data, using mock data");
-      return mockStatistics.recentActivities.slice(0, limit);
+    if (response.data?.status === 1) {return response.data.data;
+    } else {return mockStatistics.recentActivities.slice(0, limit);
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch recent activities from API, using mock data:",
-      error.message
-    );
-    return mockStatistics.recentActivities.slice(0, limit);
+  } catch (error) {return mockStatistics.recentActivities.slice(0, limit);
   }
 };
 
 // Get contact trend chart data from API
 export const fetchContactTrendChart = async (days = 30) => {
-  try {
-    console.log(
-      `📊 Fetching contact trend chart data for ${days} days from API...`
-    );
-    const response = await api.get(
+  try {const response = await api.get(
       `/api/dashboard/charts/contacttrend?days=${days}`
-    );
-    console.log("🔍 Contact trend chart API response:", response.data);
-
-    if (response.data?.status === 1 || response.data?.success) {
-      console.log("✅ Contact trend chart data fetched successfully from API");
-      return response.data.data || response.data;
+    );if (response.data?.status === 1 || response.data?.success) {return response.data.data || response.data;
     } else {
       throw new Error("Contact trend API returned invalid data");
     }
-  } catch (error) {
-    console.error(
-      "❌ Failed to fetch contact trend chart data from API:",
-      error.message
-    );
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
 // Get chart data for dashboard
 export const fetchChartData = async (chartType) => {
-  try {
-    console.log(`📊 Fetching ${chartType} chart data from API...`);
-    const response = await api.get("/api/dashboard/all");
+  try {const response = await api.get("/api/dashboard/all");
 
-    if (response.data?.status === 1) {
-      console.log(`✅ ${chartType} chart data fetched successfully from API`);
-      return response.data.data;
-    } else {
-      console.warn(
-        `⚠️ API returned invalid ${chartType} chart data, using mock data`
-      );
-      return mockStatistics.charts[chartType] || {};
+    if (response.data?.status === 1) {return response.data.data;
+    } else {return mockStatistics.charts[chartType] || {};
     }
-  } catch (error) {
-    console.warn(
-      `⚠️ Failed to fetch ${chartType} chart data from API, using mock data:`,
-      error.message
-    );
-    return mockStatistics.charts[chartType] || {};
+  } catch (error) {return mockStatistics.charts[chartType] || {};
   }
 };
 
 // Get contact statistics specifically
 export const fetchContactStatistics = async () => {
-  try {
-    console.log("📊 Fetching contact statistics from API...");
-    const response = await api.get("/api/dashboard/contacts");
-    console.log("🔍 Contact statistics API response:", response.data);
-
-    if (response.data?.status === 1 || response.data?.success) {
-      console.log("✅ Contact statistics fetched successfully from API");
-      return response.data.data || response.data;
-    } else {
-      console.warn("⚠️ Contact API returned invalid data, using mock data");
-      return {
+  try {const response = await api.get("/api/dashboard/contacts");if (response.data?.status === 1 || response.data?.success) {return response.data.data || response.data;
+    } else {return {
         totalContacts: 442,
         unreadContacts: 23,
         readContacts: 419,
@@ -372,12 +281,7 @@ export const fetchContactStatistics = async () => {
         },
       };
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch contact statistics from API:",
-      error.message
-    );
-    return {
+  } catch (error) {return {
       totalContacts: 442,
       unreadContacts: 23,
       readContacts: 419,
@@ -398,14 +302,7 @@ export const fetchContactStatistics = async () => {
 
 // Get comprehensive dashboard data with all statistics
 export const fetchAllDashboardData = async () => {
-  try {
-    console.log("📊 Fetching dashboard data from API...");
-    const response = await api.get("/api/dashboard/overview");
-    console.log("🔍 Dashboard overview API response:", response.data);
-
-    if (response.data?.status === 1 && response.data?.data) {
-      console.log("✅ Dashboard overview data fetched successfully from API");
-      const apiData = response.data.data;
+  try {const response = await api.get("/api/dashboard/overview");if (response.data?.status === 1 && response.data?.data) {const apiData = response.data.data;
 
       // API trả về overview data structure
       return {
@@ -438,14 +335,9 @@ export const fetchAllDashboardData = async () => {
         recentActivities: [],
         charts: mockStatistics.charts,
       };
-    } else {
-      console.warn("⚠️ Overview API returned invalid data");
-      throw new Error("Overview API returned invalid data");
+    } else {throw new Error("Overview API returned invalid data");
     }
-  } catch (error) {
-    console.warn("⚠️ Failed to fetch dashboard data from API:", error.message);
-
-    return {
+  } catch (error) {return {
       overview: {
         totalUsers: 0,
         totalProducts: 0,
@@ -469,26 +361,15 @@ export const fetchStatisticsByDateRange = async (
   endDate,
   type = "overview"
 ) => {
-  try {
-    console.log(
-      `📊 Fetching ${type} statistics for date range ${startDate} to ${endDate}...`
-    );
-    const response = await api.get(`/api/dashboard/${type}/range`, {
+  try {const response = await api.get(`/api/dashboard/${type}/range`, {
       params: { startDate, endDate },
     });
 
-    if (response.data?.status === 1) {
-      console.log(`✅ ${type} statistics for date range fetched successfully`);
-      return response.data.data;
+    if (response.data?.status === 1) {return response.data.data;
     } else {
       throw new Error("Invalid response from server");
     }
-  } catch (error) {
-    console.error(
-      `❌ Failed to fetch ${type} statistics for date range:`,
-      error
-    );
-    throw new Error(
+  } catch (error) {throw new Error(
       `Lấy thống kê ${type} thất bại: ${
         error.response?.data?.message || error.message
       }`
@@ -501,16 +382,12 @@ export const exportDashboardData = async (
   format = "json",
   dateRange = null
 ) => {
-  try {
-    console.log("📊 Fetching dashboard export data from API...");
-    const response = await api.get("/api/dashboard/export", {
+  try {const response = await api.get("/api/dashboard/export", {
       params: { format, dateRange },
       responseType: "blob",
     });
 
-    if (response.data) {
-      console.log("✅ Dashboard export data fetched successfully from API");
-      // Create download link from API response
+    if (response.data) {// Create download link from API response
       const url = window.URL.createObjectURL(response.data);
       const link = document.createElement("a");
       link.href = url;
@@ -523,9 +400,7 @@ export const exportDashboardData = async (
       link.remove();
       window.URL.revokeObjectURL(url);
       return true;
-    } else {
-      console.warn("⚠️ API returned invalid export data, using mock data");
-      // Fallback to mock data
+    } else {// Fallback to mock data
       const exportData = JSON.stringify(mockStatistics, null, 2);
       const blob = new Blob([exportData], { type: "application/json" });
       const url = window.URL.createObjectURL(blob);
@@ -541,12 +416,7 @@ export const exportDashboardData = async (
       window.URL.revokeObjectURL(url);
       return true;
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch dashboard export data from API, using mock data:",
-      error.message
-    );
-    // Fallback to mock data
+  } catch (error) {// Fallback to mock data
     const exportData = JSON.stringify(mockStatistics, null, 2);
     const blob = new Blob([exportData], { type: "application/json" });
     const url = window.URL.createObjectURL(blob);
@@ -559,37 +429,22 @@ export const exportDashboardData = async (
     document.body.appendChild(link);
     link.click();
     link.remove();
-    window.URL.revokeObjectURL(url);
-    console.log("✅ Mock dashboard data exported successfully");
-    return true;
+    window.URL.revokeObjectURL(url);return true;
   }
 };
 
 // Refresh cache for dashboard data
 export const refreshDashboardCache = async () => {
-  try {
-    console.log("📊 Refreshing dashboard cache from API...");
-    const response = await api.post("/api/dashboard/cache/refresh");
+  try {const response = await api.post("/api/dashboard/cache/refresh");
 
-    if (response.data?.status === 1) {
-      console.log("✅ Dashboard cache refreshed successfully from API");
-      return response.data.data;
-    } else {
-      console.warn(
-        "⚠️ API returned invalid cache refresh data, using mock data"
-      );
-      return {
+    if (response.data?.status === 1) {return response.data.data;
+    } else {return {
         success: true,
         message: "Mock cache refresh completed",
         timestamp: new Date().toISOString(),
       };
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to refresh dashboard cache from API, using mock data:",
-      error.message
-    );
-    return {
+  } catch (error) {return {
       success: true,
       message: "Mock cache refresh completed",
       timestamp: new Date().toISOString(),
@@ -599,16 +454,10 @@ export const refreshDashboardCache = async () => {
 
 // Get real-time system metrics (alias for fetchRealTimeMetrics)
 export const fetchRealtimeData = async () => {
-  try {
-    console.log("📊 Fetching real-time data from API...");
-    const response = await api.get("/api/dashboard/realtime");
+  try {const response = await api.get("/api/dashboard/realtime");
 
-    if (response.data?.status === 1) {
-      console.log("✅ Real-time data fetched successfully from API");
-      return response.data.data;
-    } else {
-      console.warn("⚠️ API returned invalid real-time data, using mock data");
-      return {
+    if (response.data?.status === 1) {return response.data.data;
+    } else {return {
         cpuUsage: mockStatistics.systemStats.cpuUsage,
         memoryUsage: mockStatistics.systemStats.memoryUsage,
         diskUsage: mockStatistics.systemStats.diskUsage,
@@ -617,12 +466,7 @@ export const fetchRealtimeData = async () => {
         timestamp: new Date().toISOString(),
       };
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch real-time data from API, using mock data:",
-      error.message
-    );
-    return {
+  } catch (error) {return {
       cpuUsage: mockStatistics.systemStats.cpuUsage,
       memoryUsage: mockStatistics.systemStats.memoryUsage,
       diskUsage: mockStatistics.systemStats.diskUsage,
@@ -635,13 +479,9 @@ export const fetchRealtimeData = async () => {
 
 // Get real-time system metrics and updates
 export const fetchRealTimeMetrics = async () => {
-  try {
-    console.log("📊 Fetching real-time metrics from API...");
-    const response = await api.get("/api/dashboard/realtime");
+  try {const response = await api.get("/api/dashboard/realtime");
 
-    if (response.data && typeof response.data === "object") {
-      console.log("✅ Real-time metrics fetched successfully from API");
-      return {
+    if (response.data && typeof response.data === "object") {return {
         cpuUsage: response.data.cpuUsage || 0,
         memoryUsage: response.data.memoryUsage || 0,
         diskUsage: response.data.diskUsage || 0,
@@ -660,9 +500,7 @@ export const fetchRealTimeMetrics = async () => {
         // Live notifications
         liveNotifications: response.data.liveNotifications || [],
       };
-    } else {
-      console.warn("⚠️ Real-time API returned invalid data, using mock data");
-      return {
+    } else {return {
         cpuUsage: mockStatistics.systemStats.cpuUsage,
         memoryUsage: mockStatistics.systemStats.memoryUsage,
         diskUsage: mockStatistics.systemStats.diskUsage,
@@ -677,12 +515,7 @@ export const fetchRealTimeMetrics = async () => {
         liveNotifications: [],
       };
     }
-  } catch (error) {
-    console.warn(
-      "⚠️ Failed to fetch real-time metrics from API:",
-      error.message
-    );
-    return {
+  } catch (error) {return {
       cpuUsage: mockStatistics.systemStats.cpuUsage,
       memoryUsage: mockStatistics.systemStats.memoryUsage,
       diskUsage: mockStatistics.systemStats.diskUsage,

@@ -16,9 +16,7 @@ export const useBannerSettings = () => {
         setLoading(true);
         const data = await getAllBannerSettings();
         setBannerSettings(data);
-        console.log('🎨 Banner settings loaded for components:', Object.keys(data));
       } catch (err) {
-        console.error('❌ Failed to load banner settings:', err);
         setError(err);
         // Use empty object so components fall back to default images
         setBannerSettings({});
@@ -37,8 +35,6 @@ export const useBannerSettings = () => {
    * @returns {string} - Image URL
    */
   const getBannerUrl = (key, defaultImage) => {
-    console.log('🖼️ getBannerUrl called:', { key, defaultImage });
-    console.log('🖼️ Current bannerSettings:', bannerSettings);
     
     // Try different key formats (carousel_1, Carousel_1, etc.)
     const possibleKeys = [
@@ -57,12 +53,10 @@ export const useBannerSettings = () => {
           fullUrl = getApiUrl(rawUrl);
         }
         
-        console.log('✅ Found banner URL:', possibleKey, rawUrl, '→', fullUrl);
         return fullUrl;
       }
     }
 
-    console.log('⚠️ No banner found, using fallback:', defaultImage);
     // Fallback to default image
     return defaultImage;
   };

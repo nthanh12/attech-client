@@ -28,7 +28,6 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('❌ API Request Error:', error);
     return Promise.reject(error);
   }
 );
@@ -48,12 +47,10 @@ api.interceptors.response.use(
       originalRequest._retryCount = (originalRequest._retryCount || 0) + 1;
       
       if (originalRequest._retryCount <= MAX_RETRIES) {
-        console.warn(`🔄 Retrying request (${originalRequest._retryCount}/${MAX_RETRIES}) after timeout/network error: ${error.message}`);
         
         await wait(RETRY_DELAY * originalRequest._retryCount);
         return api(originalRequest);
       } else {
-        console.error(`❌ Request failed after ${MAX_RETRIES} retries: ${error.message}`);
       }
     }
     
@@ -61,8 +58,6 @@ api.interceptors.response.use(
 
       originalRequest._retry = true;
       
-      console.warn('🔒 Received 401 on:', originalRequest.url);
-      console.warn('🔍 Full request URL:', (originalRequest.baseURL || '') + (originalRequest.url || ''));
       
       // Special handling for specific endpoints that may have UserLevel restrictions
       const fullUrl = (originalRequest.baseURL || '') + (originalRequest.url || '');
@@ -75,12 +70,9 @@ api.interceptors.response.use(
         fullUrl.includes('/api/notification-category') ||
         fullUrl.includes('/api/dashboard')
       )) {
-        console.warn('⚠️ 401 on content endpoint - may be UserLevel restricted, not authentication issue');
-        console.warn('⚠️ NOT redirecting to login, letting component handle the error');
         return Promise.reject(error);
       }
       
-      console.warn('🔒 Attempting token refresh...');
       
       // Check if we have refresh token
       const refreshToken = localStorage.getItem('refreshToken');
@@ -102,12 +94,10 @@ api.interceptors.response.use(
             return api(originalRequest);
           }
         } catch (refreshError) {
-          console.error('❌ Token refresh failed:', refreshError);
         }
       }
       
       // If refresh fails or no refresh token, redirect to login
-      console.error('❌ Authentication failed, redirecting to login');
       localStorage.removeItem('auth_token');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('user_data');
@@ -118,28 +108,19 @@ api.interceptors.response.use(
     // Handle backend error responses with proper format
     if (error.response?.data) {
       const errorData = error.response.data;
-      console.error(`❌ API Response Error: ${error.response?.status} ${error.config?.url}`, errorData);
       
       // Log validation errors if available
       if (errorData.errors) {
-        console.error('❌ Validation Errors:', errorData.errors);
       }
       
       if (errorData.status === 0) {
-        console.error(`❌ Backend Error: ${errorData.Message} (Code: ${errorData.Code})`);
       }
     } else {
-      console.error(`❌ Network Error: ${error.message}`);
       
       // Add more specific network error handling
       if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
-        console.error('⏰ Request timeout - Backend is taking too long to respond');
-        console.error('💡 Suggestions: Check backend performance, database connections, or increase timeout');
       } else if (error.code === 'ERR_NETWORK' || error.message.includes('Network Error') || error.message.includes('ERR_CONNECTION_REFUSED')) {
-        console.error('❌ Connection refused - Backend server may be down or unreachable');
-        console.error('💡 Suggestions: Verify backend is running, check URL and port');
       } else {
-        console.error('💡 Unknown network error - Check network connection and backend status');
       }
     }
     

@@ -54,9 +54,7 @@ export async function getServices(params = {}) {
       currentPage: pageIndex,
       pageSize,
     };
-  } catch (error) {
-    console.error("❌ getServices error:", error);
-    return {
+  } catch (error) {return {
       success: false,
       data: [],
       totalCount: 0,
@@ -81,9 +79,7 @@ export async function getServiceById(id) {
     }
 
     throw new Error("Service not found");
-  } catch (error) {
-    console.error("❌ getServiceById error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 
@@ -102,10 +98,7 @@ export async function getServiceBySlug(slug, language = "vi") {
     }
 
     throw new Error("Service not found");
-  } catch (error) {
-    console.error("❌ getServiceBySlug error with detail endpoint:", error);
-    
-    // No fallback needed for client endpoint - it only returns published content
+  } catch (error) {// No fallback needed for client endpoint - it only returns published content
     throw error;
   }
 }
@@ -132,9 +125,7 @@ export async function getFeaturedServices(limit = 6) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getFeaturedServices error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -159,9 +150,7 @@ export async function getLatestServices(limit = 10) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getLatestServices error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -181,9 +170,7 @@ export async function getRelatedServices(serviceId, limit = 4) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getRelatedServices error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -232,9 +219,7 @@ export async function searchServices(searchTerm, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ searchServices error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -263,9 +248,7 @@ export async function getServiceStats() {
       totalCategories: 0,
       featuredServices: 0
     };
-  } catch (error) {
-    console.error("❌ getServiceStats error:", error);
-    return {
+  } catch (error) {return {
       totalServices: 0,
       totalCategories: 0,
       featuredServices: 0
@@ -287,9 +270,7 @@ export async function getServicesForSitemap() {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getServicesForSitemap error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -307,9 +288,7 @@ export async function getServiceBreadcrumbs(serviceId) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getServiceBreadcrumbs error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -327,9 +306,7 @@ export async function getServiceTags() {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getServiceTags error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -377,9 +354,7 @@ export async function getServicesByTag(tag, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getServicesByTag error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -403,9 +378,7 @@ export async function getServicePricing(serviceId) {
     }
 
     return null;
-  } catch (error) {
-    console.error("❌ getServicePricing error:", error);
-    return null;
+  } catch (error) {return null;
   }
 }
 
@@ -425,9 +398,7 @@ export async function getServiceTestimonials(serviceId, limit = 5) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getServiceTestimonials error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -445,9 +416,7 @@ export async function getServiceFAQ(serviceId) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getServiceFAQ error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 

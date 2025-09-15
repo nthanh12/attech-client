@@ -102,24 +102,13 @@ const LanguageContentManager = () => {
           category: filters.category && filters.category !== "" ? filters.category : undefined
         }, sortConfig),
         fetchLanguageContentCategories(),
-      ]);
-
-      console.log('🔍 Loading data with filters:', { 
-        searchDebounce, 
-        category: filters.category,
-        currentPage,
-        itemsPerPage 
-      });
-
-      startTransition(() => {
+      ]);startTransition(() => {
         setContents(contentsData.items || []);
         setTotalItems(contentsData.totalItems || 0);
         setTotalPages(contentsData.totalPages || 1);
         setCategories(categoriesData || []);
       });
-    } catch (error) {
-      console.error("Error loading data:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi khi tải dữ liệu",
         type: "error",
@@ -189,9 +178,7 @@ const LanguageContentManager = () => {
       // Reload translations
       await reloadTranslations('vi');
       await reloadTranslations('en');
-    } catch (error) {
-      console.error("Error deleting:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: `Lỗi: ${error.message || "Có lỗi xảy ra"}`,
         type: "error",
@@ -231,9 +218,7 @@ const LanguageContentManager = () => {
       // Reload translations
       await reloadTranslations('vi');
       await reloadTranslations('en');
-    } catch (error) {
-      console.error("Error saving:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: `Lỗi: ${error.message || "Có lỗi xảy ra"}`,
         type: "error",

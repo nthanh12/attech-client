@@ -24,9 +24,7 @@ const useMenuData = (language = 'vi') => {
         setRawMenuData([]);
         setMenuData([]);
       }
-    } catch (err) {
-      console.error('Failed to fetch menu data:', err);
-      setError(err.message);
+    } catch (err) {setError(err.message);
       setRawMenuData([]);
       setMenuData([]);
     } finally {

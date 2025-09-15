@@ -1275,9 +1275,7 @@
 			width = window.innerWidth;
 		} else if (document.documentElement && document.documentElement.clientWidth) {
 			width = document.documentElement.clientWidth;
-		} else {
-			console.warn('Can not detect viewport width.');
-		}
+		} else {}
 		return width;
 	};
 
@@ -2533,8 +2531,7 @@
 						this.stop();
 					}
 				} else if (e.namespace && e.property.name === 'position') {
-					//console.log('play?', e);
-					if (this._core.settings.autoplay) {
+					//if (this._core.settings.autoplay) {
 						this._setAutoPlayInterval();
 					}
 				}

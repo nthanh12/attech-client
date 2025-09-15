@@ -41,9 +41,7 @@ const TrendingArea = () => {
         );
 
         setNewsData(newsResponse.items);
-      } catch (error) {
-        console.error("Error loading trending area data:", error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

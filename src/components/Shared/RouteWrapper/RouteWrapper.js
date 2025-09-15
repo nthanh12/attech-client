@@ -10,10 +10,7 @@ const RouteWrapper = ({ children }) => {
     // Scroll to top on route change
     window.scrollTo({ top: 0, behavior: 'smooth' });
     
-    // Log route change for debugging (remove in production)
-    console.log('Route changed:', location.pathname, params);
-    
-    // Store current params for next comparison
+    // Log route change for debugging (remove in production)// Store current params for next comparison
     prevParams.current = params;
   }, [location.pathname, params.slug, params.category]);
 

@@ -14,20 +14,13 @@ import api from '../api';
  * @returns {Promise<Object>} Response data
  */
 export const getInternalDocuments = async (params = {}) => {
-  try {
-    console.log("📂 Fetching all published internal documents...", params);
-    
-    const queryParams = new URLSearchParams();
+  try {const queryParams = new URLSearchParams();
     
     if (params.search) queryParams.append('keyword', params.search);
     if (params.page) queryParams.append('pageNumber', params.page);
     if (params.limit) queryParams.append('pageSize', params.limit);
     
-    const response = await api.get(`/api/internal-documents/find-all-published?${queryParams.toString()}`);
-    
-    console.log("📡 Internal documents response:", response.data);
-    
-    if (response.data.status === 1) {
+    const response = await api.get(`/api/internal-documents/find-all-published?${queryParams.toString()}`);if (response.data.status === 1) {
       return {
         success: true,
         data: response.data.data,
@@ -41,10 +34,7 @@ export const getInternalDocuments = async (params = {}) => {
       message: response.data.message || "Failed to fetch documents"
     };
     
-  } catch (error) {
-    console.error("❌ Failed to fetch internal documents:", error.response?.data || error.message);
-    
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || error.message || "Failed to fetch documents"
     };
@@ -61,20 +51,13 @@ export const getInternalDocuments = async (params = {}) => {
  * @returns {Promise<Object>} Response data
  */
 export const getInternalDocumentsByCategory = async (category, params = {}) => {
-  try {
-    console.log("📂 Fetching internal documents by category:", category, params);
-    
-    const queryParams = new URLSearchParams();
+  try {const queryParams = new URLSearchParams();
     
     if (params.search) queryParams.append('keyword', params.search);
     if (params.page) queryParams.append('pageNumber', params.page);
     if (params.limit) queryParams.append('pageSize', params.limit);
     
-    const response = await api.get(`/api/internal-documents/find-by-category/${category}?${queryParams.toString()}`);
-    
-    console.log("📡 Internal documents by category response:", response.data);
-    
-    if (response.data.status === 1) {
+    const response = await api.get(`/api/internal-documents/find-by-category/${category}?${queryParams.toString()}`);if (response.data.status === 1) {
       return {
         success: true,
         data: response.data.data,
@@ -88,10 +71,7 @@ export const getInternalDocumentsByCategory = async (category, params = {}) => {
       message: response.data.message || "Failed to fetch documents"
     };
     
-  } catch (error) {
-    console.error("❌ Failed to fetch internal documents by category:", error.response?.data || error.message);
-    
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || error.message || "Failed to fetch documents"
     };
@@ -104,14 +84,7 @@ export const getInternalDocumentsByCategory = async (category, params = {}) => {
  * @returns {Promise<Object>} Response data
  */
 export const getInternalDocumentById = async (id) => {
-  try {
-    console.log(`📄 Fetching published internal document ${id}...`);
-    
-    const response = await api.get(`/api/internal-documents/find-published-by-id/${id}`);
-    
-    console.log("📡 Internal document response:", response.data);
-    
-    if (response.data.status === 1) {
+  try {const response = await api.get(`/api/internal-documents/find-published-by-id/${id}`);if (response.data.status === 1) {
       return {
         success: true,
         data: response.data.data
@@ -123,10 +96,7 @@ export const getInternalDocumentById = async (id) => {
       message: response.data.message || "Document not found"
     };
     
-  } catch (error) {
-    console.error("❌ Failed to fetch internal document:", error.response?.data || error.message);
-    
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || error.message || "Failed to fetch document"
     };
@@ -140,10 +110,7 @@ export const getInternalDocumentById = async (id) => {
  * @returns {Promise<Object>} Response data
  */
 export const downloadInternalDocument = async (id, filename) => {
-  try {
-    console.log(`⬇️ Downloading internal document ${id}...`);
-    
-    const response = await api.get(`/api/internal-documents/download/${id}`, {
+  try {const response = await api.get(`/api/internal-documents/download/${id}`, {
       responseType: 'blob'
     });
     
@@ -155,19 +122,12 @@ export const downloadInternalDocument = async (id, filename) => {
     document.body.appendChild(link);
     link.click();
     link.remove();
-    window.URL.revokeObjectURL(url);
-    
-    console.log("✅ Document downloaded successfully");
-    
-    return {
+    window.URL.revokeObjectURL(url);return {
       success: true,
       message: "Document downloaded successfully"
     };
     
-  } catch (error) {
-    console.error("❌ Failed to download document:", error.response?.data || error.message);
-    
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || error.message || "Failed to download document"
     };
@@ -188,14 +148,7 @@ export const getInternalDocumentViewUrl = (id) => {
  * @returns {Promise<Object>} Response data
  */
 export const getInternalDocumentCategories = async () => {
-  try {
-    console.log("📋 Fetching internal document categories...");
-    
-    const response = await api.get('/api/internal-documents/categories');
-    
-    console.log("📡 Categories response:", response.data);
-    
-    if (response.data.status === 1) {
+  try {const response = await api.get('/api/internal-documents/categories');if (response.data.status === 1) {
       return {
         success: true,
         data: response.data.data || []
@@ -207,10 +160,7 @@ export const getInternalDocumentCategories = async () => {
       message: response.data.message || "Failed to fetch categories"
     };
     
-  } catch (error) {
-    console.error("❌ Failed to fetch categories:", error.response?.data || error.message);
-    
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || error.message || "Failed to fetch categories"
     };
@@ -222,14 +172,7 @@ export const getInternalDocumentCategories = async () => {
  * @returns {Promise<Object>} Response data
  */
 export const getInternalDocumentStats = async () => {
-  try {
-    console.log("📊 Fetching internal document statistics...");
-    
-    const response = await api.get('/api/internal-documents/stats');
-    
-    console.log("📡 Stats response:", response.data);
-    
-    if (response.data.status === 1) {
+  try {const response = await api.get('/api/internal-documents/stats');if (response.data.status === 1) {
       return {
         success: true,
         data: response.data.data
@@ -241,10 +184,7 @@ export const getInternalDocumentStats = async () => {
       message: response.data.message || "Failed to fetch statistics"
     };
     
-  } catch (error) {
-    console.error("❌ Failed to fetch statistics:", error.response?.data || error.message);
-    
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || error.message || "Failed to fetch statistics"
     };

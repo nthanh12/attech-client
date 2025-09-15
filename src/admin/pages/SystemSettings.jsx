@@ -45,11 +45,7 @@ const SystemSettings = () => {
       try {
         const settingsData = await fetchSystemSettings();
         setSettings(settingsData);
-        setTempSettings(settingsData);
-        console.log('✅ System settings loaded successfully');
-      } catch (error) {
-        console.error('Failed to fetch system settings:', error);
-        setToast({ show: true, message: 'Không thể tải cài đặt hệ thống!', type: 'error' });
+        setTempSettings(settingsData);} catch (error) {setToast({ show: true, message: 'Không thể tải cài đặt hệ thống!', type: 'error' });
       } finally {
         setLoading(false);
       }

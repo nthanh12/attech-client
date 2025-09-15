@@ -12,38 +12,24 @@ export const getMenuList = async () => {
 };
 
 // Create new menu
-export const createMenu = async (menuData) => {
-  console.log('Creating menu with data:', menuData);
-  try {
-    const response = await api.post("/api/menu/create", menuData);
-    console.log('Create menu response:', response.data);
-    
-    if (response.data && response.data.status === 1) {
+export const createMenu = async (menuData) => {try {
+    const response = await api.post("/api/menu/create", menuData);if (response.data && response.data.status === 1) {
       return response.data;
     }
     
     throw new Error("Failed to create menu");
-  } catch (error) {
-    console.error('Create menu error:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
 // Update existing menu
-export const updateMenu = async (id, menuData) => {
-  console.log('Updating menu', id, 'with data:', menuData);
-  try {
-    const response = await api.put(`/api/menu/update/${id}`, menuData);
-    console.log('Update menu response:', response.data);
-    
-    if (response.data && response.data.status === 1) {
+export const updateMenu = async (id, menuData) => {try {
+    const response = await api.put(`/api/menu/update/${id}`, menuData);if (response.data && response.data.status === 1) {
       return response.data;
     }
     
     throw new Error("Failed to update menu");
-  } catch (error) {
-    console.error('Update menu error:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 

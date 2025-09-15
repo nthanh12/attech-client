@@ -92,9 +92,7 @@ const ServiceList = () => {
       setService(serviceData?.items || []);
       setTotalItems(serviceData?.totalItems || 0);
       setTotalPages(serviceData?.totalPages || 0);
-    } catch (error) {
-      console.error("Load data failed:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Tải dữ liệu thất bại: " + error.message,
         type: "error",
@@ -122,9 +120,7 @@ const ServiceList = () => {
       const fullServiceData = await getServiceById(serviceItem.id);
       setEditingService(fullServiceData);
       setShowModal(true); // Only show modal after data is loaded
-    } catch (error) {
-      console.error("Error loading service detail:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi tải chi tiết dịch vụ: " + error.message,
         type: "error",
@@ -178,9 +174,7 @@ const ServiceList = () => {
           type: "success",
         });
       }
-    } catch (error) {
-      console.error("Error reloading data:", error);
-      // Fallback to old behavior if loadData fails
+    } catch (error) {// Fallback to old behavior if loadData fails
       if (editMode) {
         setService((prev) =>
           prev.map((item) =>

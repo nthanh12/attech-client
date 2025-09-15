@@ -11,6 +11,10 @@
     animation: subtle-zoom 20s infinite alternate;
 }
 
+#carouselId {
+    transition: none !important;
+}
+
 @keyframes subtle-zoom {
     0% {
         transform: scale(1);

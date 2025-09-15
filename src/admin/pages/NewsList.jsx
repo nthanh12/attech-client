@@ -102,9 +102,7 @@ const NewsList = () => {
       setTotalItems(newsData?.totalItems || 0);
       setTotalPages(newsData?.totalPages || 0);
       setCategories(categoriesData || []);
-    } catch (error) {
-      console.error("Load data failed:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Tải dữ liệu thất bại: " + error.message,
         type: "error",
@@ -132,9 +130,7 @@ const NewsList = () => {
       const fullNewsData = await getNewsById(newsItem.id);
       setEditingNews(fullNewsData);
       setShowModal(true); // Only show modal after data is loaded
-    } catch (error) {
-      console.error("Error loading news detail:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi tải chi tiết tin tức: " + error.message,
         type: "error",
@@ -188,9 +184,7 @@ const NewsList = () => {
           type: "success",
         });
       }
-    } catch (error) {
-      console.error("Error reloading data:", error);
-      // Fallback to old behavior if loadData fails
+    } catch (error) {// Fallback to old behavior if loadData fails
       if (editMode) {
         setNews((prev) =>
           prev.map((item) =>

@@ -28,11 +28,7 @@ const BannerManager = () => {
     try {
       setLoading(true);
       const data = await getAllBannerSettings();
-      setBanners(data);
-      console.log('🎌 Banners loaded:', data);
-    } catch (error) {
-      console.error('❌ Failed to fetch banners:', error);
-      setToast({
+      setBanners(data);} catch (error) {setToast({
         show: true,
         message: 'Không thể tải danh sách banner!',
         type: 'error'
@@ -50,10 +46,7 @@ const BannerManager = () => {
   const handleUploadBanner = async (bannerKey, file) => {
     setUploading(prev => ({ ...prev, [bannerKey]: true }));
 
-    try {
-      console.log(`🎌 Uploading ${bannerKey}:`, file);
-      
-      // Validate file
+    try {// Validate file
       if (!file) {
         throw new Error('Vui lòng chọn file để upload');
       }
@@ -89,9 +82,7 @@ const BannerManager = () => {
       // Refresh all banners to ensure consistency
       await fetchAllBanners();
       
-    } catch (error) {
-      console.error(`❌ Upload ${bannerKey} failed:`, error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: error.message || `Upload ${bannerKey} thất bại!`,
         type: 'error'
@@ -125,9 +116,7 @@ const BannerManager = () => {
       // Refresh all banners
       await fetchAllBanners();
       
-    } catch (error) {
-      console.error(`❌ Delete ${bannerKey} failed:`, error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: error.message || `Xóa ${bannerKey} thất bại!`,
         type: 'error'

@@ -121,9 +121,7 @@ const NotificationDetailPage = () => {
         setRelatedNotifications(related);
 
         setError(null);
-      } catch (err) {
-        console.error("Error loading notification detail:", err);
-        setError("Error loading notification");
+      } catch (err) {setError("Error loading notification");
       } finally {
         setLoading(false);
         setIsInitialized(true);

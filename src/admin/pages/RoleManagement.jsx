@@ -91,9 +91,7 @@ const RoleManagement = () => {
         setTotalItems(response.data.totalItems || 0);
         setTotalPages(response.data.totalPages || 0);
       }
-    } catch (error) {
-      console.error("Error loading roles:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Tải dữ liệu thất bại: " + error.message,
         type: "error",
@@ -231,9 +229,7 @@ const RoleManagement = () => {
       }
       
       handleCloseModal();
-    } catch (error) {
-      console.error('Save role error:', error);
-      showToast(error.message || `Lỗi khi ${editMode ? 'cập nhật' : 'tạo'} vai trò`, 'error');
+    } catch (error) {showToast(error.message || `Lỗi khi ${editMode ? 'cập nhật' : 'tạo'} vai trò`, 'error');
     }
   }, [editMode, currentRole, validateForm, handleCloseModal, loadData]);
 
@@ -247,9 +243,7 @@ const RoleManagement = () => {
         } else {
           throw new Error(response.message || 'Xóa thất bại');
         }
-      } catch (error) {
-        console.error('Delete role error:', error);
-        showToast(error.message || 'Lỗi khi xóa vai trò', 'error');
+      } catch (error) {showToast(error.message || 'Lỗi khi xóa vai trò', 'error');
       }
     }
   }, [loadData]);

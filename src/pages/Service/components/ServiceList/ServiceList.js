@@ -35,9 +35,7 @@ const ServiceList = () => {
         } else {
           setServices([]);
         }
-      } catch (error) {
-        console.error("❌ Error loading services:", error);
-        setServices([]);
+      } catch (error) {setServices([]);
       } finally {
         setLoading(false);
       }

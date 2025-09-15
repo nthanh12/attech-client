@@ -143,9 +143,7 @@ const ImageUploadPreview = ({
                 borderRadius: '4px',
                 border: '1px solid #ddd'
               }}
-              onError={(e) => {
-                console.error('Image preview error:', e);
-                e.target.style.display = 'none';
+              onError={(e) => {e.target.style.display = 'none';
               }}
             />
             <button

@@ -20,9 +20,7 @@ const DynamicRoutes = () => {
         const routesData = await getRoutes();
         setRoutes(routesData);
         
-      } catch (err) {
-        console.error('Error fetching routes:', err);
-        setError('Không thể tải cấu hình routes');
+      } catch (err) {setError('Không thể tải cấu hình routes');
         
         // Fallback to static routes if API fails
         setRoutes(getStaticRoutes());

@@ -59,40 +59,23 @@ const GalleryDetail = () => {
       if (!slug) return;
 
       try {
-        setLoading(true);
-        console.log("🔍 Loading album with slug:", slug);
-
-        // Get album gallery images (all images including featured)
-        const galleryResponse = await clientAlbumService.getAlbumGallery(slug);
-        console.log("📸 Gallery response:", galleryResponse);
-
-        if (galleryResponse.success) {
+        setLoading(true);// Get album gallery images (all images including featured)
+        const galleryResponse = await clientAlbumService.getAlbumGallery(slug);if (galleryResponse.success) {
           // Get album detail for title and info
-          const albumResponse = await clientAlbumService.getAlbumBySlug(slug);
-          console.log("📋 Album detail response:", albumResponse);
-
-          if (albumResponse.success) {
+          const albumResponse = await clientAlbumService.getAlbumBySlug(slug);if (albumResponse.success) {
             const formattedAlbum = clientAlbumService.formatAlbumForDisplay(
               albumResponse.data,
               currentLanguage
-            );
-            console.log("✨ Formatted album:", formattedAlbum);
-            setNews(formattedAlbum);
+            );setNews(formattedAlbum);
 
             // If gallery endpoint returns empty, try to use attachments from album detail
             let galleryImages = galleryResponse.data || [];
-            if (galleryImages.length === 0 && albumResponse.data.attachments) {
-              console.log(
-                "🔄 Gallery empty, trying attachments from album detail..."
-              );
-              const albumAttachments = albumResponse.data.attachments;
+            if (galleryImages.length === 0 && albumResponse.data.attachments) {const albumAttachments = albumResponse.data.attachments;
               if (
                 albumAttachments.images &&
                 Array.isArray(albumAttachments.images)
               ) {
-                galleryImages = albumAttachments.images;
-                console.log("📎 Using album attachments:", galleryImages);
-              }
+                galleryImages = albumAttachments.images;}
             }
 
             // Set gallery images URLs
@@ -109,21 +92,12 @@ const GalleryDetail = () => {
             
             const allImageUrls = featuredImageUrl 
               ? [featuredImageUrl, ...attachmentImageUrls.filter(url => url !== featuredImageUrl)] // Tránh duplicate
-              : attachmentImageUrls;
-              
-            console.log("🖼️ Featured image:", featuredImageUrl);
-            console.log("🖼️ Attachment images:", attachmentImageUrls);
-            console.log("🖼️ Final combined images:", allImageUrls);
-            setImages(allImageUrls);
+              : attachmentImageUrls;setImages(allImageUrls);
           }
-        } else {
-          console.warn("❌ Gallery response failed:", galleryResponse.message);
-          setNews(null);
+        } else {setNews(null);
           setImages([]);
         }
-      } catch (error) {
-        console.error("❌ Error loading gallery detail:", error);
-        setNews(null);
+      } catch (error) {setNews(null);
         setImages([]);
       } finally {
         setLoading(false);

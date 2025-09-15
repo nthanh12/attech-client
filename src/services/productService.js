@@ -66,9 +66,7 @@ export async function fetchProductCategories() {
     }
 
     throw new Error("Invalid categories response");
-  } catch (error) {
-    console.error("❌ fetchProductCategories error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 

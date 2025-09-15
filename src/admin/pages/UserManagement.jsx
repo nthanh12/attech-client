@@ -160,16 +160,10 @@ const UserManagement = () => {
       setTotalPages(usersData?.totalPages || 0);
 
       // Handle roles data
-      if (rolesData && rolesData.data && rolesData.data.items) {
-        console.log('Roles data received:', rolesData.data.items);
-        setRoles(rolesData.data.items);
-      } else {
-        console.log('No roles data or invalid format:', rolesData);
-      }
+      if (rolesData && rolesData.data && rolesData.data.items) {setRoles(rolesData.data.items);
+      } else {}
 
-    } catch (error) {
-      console.error("Load data failed:", error);
-      showToast("Tải dữ liệu thất bại: " + error.message, "error");
+    } catch (error) {showToast("Tải dữ liệu thất bại: " + error.message, "error");
     } finally {
       if (showLoadingIndicator) {
         setIsLoading(false);
@@ -261,9 +255,7 @@ const UserManagement = () => {
         } else {
           throw new Error(response.message || "Xóa thất bại");
         }
-      } catch (error) {
-        console.error("Delete error:", error);
-        showToast(error.message || "Không thể xóa người dùng", "error");
+      } catch (error) {showToast(error.message || "Không thể xóa người dùng", "error");
       }
     }
   };
@@ -357,9 +349,7 @@ const UserManagement = () => {
       }
       
       setShowModal(false);
-    } catch (error) {
-      console.error("Submit error:", error);
-      showToast(error.message || (editMode ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng"), "error");
+    } catch (error) {showToast(error.message || (editMode ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng"), "error");
     }
   };
 

@@ -194,12 +194,8 @@ export const AlbumGalleryById = ({ albumId, ...props }) => {
         if (response.ok) {
           const data = await response.json();
           setAttachments(data.data || []);
-        } else {
-          console.error('Failed to fetch attachments');
-        }
-      } catch (error) {
-        console.error('Error fetching attachments:', error);
-      } finally {
+        } else {}
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

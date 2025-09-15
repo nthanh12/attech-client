@@ -5,15 +5,10 @@ import useIsMobile from "../Header/Navbar/useIsMobile";
 import { useBannerSettings } from "../../../../hooks/useBannerSettings";
 
 const Carousel = () => {
-  const isMobile = useIsMobile(1025);
-  const [isSmallMobile, setIsSmallMobile] = useState(window.innerWidth < 600);
+  // Pre-calculate responsive values to prevent re-render
+  const [isMobile] = useState(window.innerWidth <= 1025);
+  const [isSmallMobile] = useState(window.innerWidth <= 600);
   const { getCarouselImages, loading } = useBannerSettings();
-
-  useEffect(() => {
-    const handleResize = () => setIsSmallMobile(window.innerWidth < 600);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   // Get slides from banner settings with fallback to default images
   const slides = getCarouselImages();
@@ -32,8 +27,10 @@ const Carousel = () => {
     }
   }, []);
 
+  // Remove inline marginTop - use CSS only
   const carouselStyle = {
-    marginTop: isSmallMobile ? 48 : isMobile ? 60 : 120,
+    transition: 'none',
+    animation: 'none'
   };
 
   return (

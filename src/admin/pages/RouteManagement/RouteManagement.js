@@ -74,9 +74,7 @@ const RouteManagement = () => {
     try {
       // Sử dụng mock data thay vì API call
       setRoutes(mockRoutes);
-    } catch (error) {
-      console.error('Error fetching routes:', error);
-      setToast({ show: true, message: 'Lỗi khi tải routes!', type: 'error' });
+    } catch (error) {setToast({ show: true, message: 'Lỗi khi tải routes!', type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -355,11 +353,7 @@ const RouteManagement = () => {
         <label htmlFor="is_active" className="checkbox-label">Hoạt động</label>
       </div>
     </div>
-  );
-
-  console.log('RouteManagement render - loading:', loading, 'routes:', routes.length, 'filteredRoutes:', filteredRoutes.length);
-  
-  if (loading) {
+  );if (loading) {
     return <LoadingSpinner />;
   }
 

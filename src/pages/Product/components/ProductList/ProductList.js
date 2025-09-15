@@ -87,9 +87,7 @@ const ProductList = () => {
         if (category) {
           productsParams.categorySlug = category;
         }
-        const productsResponse = await getProducts(productsParams);
-        console.log("🔍 Products response:", productsResponse);
-        if (productsResponse.status === 1 && productsResponse.data?.items?.length > 0) {
+        const productsResponse = await getProducts(productsParams);if (productsResponse.status === 1 && productsResponse.data?.items?.length > 0) {
           const formattedProducts = productsResponse.data.items.map(product => ({
             id: product.id,
             slug: currentLanguage === "vi" ? product.slugVi : product.slugEn,
@@ -101,12 +99,8 @@ const ProductList = () => {
             categorySlug: currentLanguage === "vi" ? product.productCategorySlugVi : product.productCategorySlugEn,
             status: product.status
           }));
-          const finalProducts = formattedProducts.filter(p => p.status === 1);
-          console.log("🔍 Final products:", finalProducts);
-          setProducts(finalProducts);
-        } else {
-          console.log("❌ No products or invalid response");
-          setProducts([]);
+          const finalProducts = formattedProducts.filter(p => p.status === 1);setProducts(finalProducts);
+        } else {setProducts([]);
         }
 
         // Load categories
@@ -120,9 +114,7 @@ const ProductList = () => {
         } else {
           setCategories([]);
         }
-      } catch (error) {
-        console.error("❌ Error loading products/categories:", error);
-        setProducts([]);
+      } catch (error) {setProducts([]);
         setCategories([]);
       } finally {
         setLoading(false);
@@ -137,18 +129,12 @@ const ProductList = () => {
     setSelectedCategory(category || "");
   }, [category]);
 
-  useEffect(() => {
-    console.log("🔍 Filtering products:", { products: products.length, selectedCategory, searchTerm });
-    let result = [...products];
+  useEffect(() => {let result = [...products];
 
-    if (selectedCategory) {
-      console.log("🔍 Filtering by category:", selectedCategory);
-      const beforeFilter = result.length;
+    if (selectedCategory) {const beforeFilter = result.length;
       result = result.filter(
         (product) => product.categorySlug === selectedCategory
-      );
-      console.log("🔍 After category filter:", beforeFilter, "->", result.length);
-    }
+      );}
 
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
@@ -157,9 +143,7 @@ const ProductList = () => {
         (product) =>
           product.title.toLowerCase().includes(searchLower) ||
           product.description.toLowerCase().includes(searchLower)
-      );
-      console.log("🔍 After search filter:", beforeFilter, "->", result.length);
-    }
+      );}
 
     result.sort((a, b) => {
       switch (sortBy) {
@@ -170,10 +154,7 @@ const ProductList = () => {
         default:
           return 0;
       }
-    });
-    
-    console.log("🔍 Final filtered result:", result.length);
-    setFilteredProducts(result);
+    });setFilteredProducts(result);
     setCurrentPage(1);
   }, [products, selectedCategory, searchTerm, sortBy]);
 
@@ -294,19 +275,7 @@ const ProductList = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  console.log("🔍 Render state:", { 
-    products: products.length, 
-    filteredProducts: filteredProducts.length, 
-    currentProducts: currentProducts.length,
-    loading,
-    viewMode,
-    windowWidth
-  });
-
-
-  if (loading) {
+  };if (loading) {
     return (
       <div className="text-center" style={{ padding: "50px" }}>
         <div className="spinner-border" role="status">

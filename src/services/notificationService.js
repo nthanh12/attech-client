@@ -66,9 +66,7 @@ export async function fetchNotificationCategories() {
     }
 
     throw new Error("Invalid categories response");
-  } catch (error) {
-    console.error("❌ fetchNotificationCategories error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 

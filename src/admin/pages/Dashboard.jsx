@@ -80,28 +80,19 @@ const Dashboard = () => {
       
       try {
         // Try to fetch real data from API
-        const data = await fetchAllDashboardData();
-        console.log("🔍 Dashboard data received:", data);
-        
-        // Validate data structure before setting
+        const data = await fetchAllDashboardData();// Validate data structure before setting
         if (data && typeof data === 'object') {
           setDashboardData(data);
           setAccessDenied(false);
-        } else {
-          console.warn("⚠️ Invalid data structure received:", data);
-          throw new Error("Invalid data structure");
+        } else {throw new Error("Invalid data structure");
         }
       } catch (apiError) {
         // Check if it's a 401 unauthorized error
         if (apiError.message && apiError.message.includes('401')) {
-          console.warn("⚠️ Dashboard access denied (401)");
+          // Dashboard access denied (401)
           setAccessDenied(true);
           return;
-        }
-        
-        console.warn("⚠️ Dashboard API not available, using static data:", apiError.message);
-        
-        // Use static dashboard data when API is not available
+        }// Use static dashboard data when API is not available
         const staticData = {
           overview: {
             totalUsers: 0,
@@ -121,9 +112,7 @@ const Dashboard = () => {
       }
       
       setLastUpdated(new Date());
-    } catch (error) {
-      console.error("Failed to initialize dashboard:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Không thể khởi tạo dashboard!",
         type: "error",
@@ -137,9 +126,7 @@ const Dashboard = () => {
   const fetchRealTime = useCallback(async () => {
     try {
       // Check permission before making API call
-      if (!currentUser?.permissions?.includes('menu_dashboard')) {
-        console.warn("⚠️ User doesn't have menu_dashboard permission for realtime");
-        return;
+      if (!currentUser?.permissions?.includes('menu_dashboard')) {return;
       }
       
       const metrics = await fetchRealTimeMetrics();
@@ -147,13 +134,10 @@ const Dashboard = () => {
     } catch (error) {
       // Check if it's a 401 unauthorized error
       if (error.message && error.message.includes('401')) {
-        console.warn("⚠️ Real-time metrics access denied (401)");
+        // Real-time metrics access denied (401)
         setAccessDenied(true);
         return;
-      }
-      
-      console.warn("⚠️ Real-time metrics API not available:", error.message);
-      // Use static real-time metrics when API is not available
+      }// Use static real-time metrics when API is not available
       setRealTimeMetrics({
         cpuUsage: 0,
         memoryUsage: 0,
@@ -174,9 +158,7 @@ const Dashboard = () => {
       
       const trendData = await fetchContactTrendChart(30);
       setContactTrendData(trendData);
-    } catch (error) {
-      console.warn("⚠️ Contact trend chart API not available:", error.message);
-      setContactTrendData(null);
+    } catch (error) {setContactTrendData(null);
     }
   }, [currentUser]);
 
@@ -187,9 +169,7 @@ const Dashboard = () => {
       
       try {
         await refreshDashboardCache();
-      } catch (cacheError) {
-        console.warn("⚠️ Cache refresh API not available:", cacheError.message);
-      }
+      } catch (cacheError) {}
       
       // Refresh all data including contact trend
       await Promise.all([
@@ -225,9 +205,7 @@ const Dashboard = () => {
           message: "Xuất dữ liệu thành công!",
           type: "success",
         });
-      } catch (exportError) {
-        console.warn("⚠️ Export API not available:", exportError.message);
-        setToast({
+      } catch (exportError) {setToast({
           show: true,
           message: "Tính năng xuất dữ liệu chưa khả dụng!",
           type: "warning",
@@ -257,15 +235,10 @@ const Dashboard = () => {
   }, [fetchRealTime]);
 
   const renderOverviewCards = () => {
-    if (!dashboardData?.overview) {
-      console.warn("🔍 No overview data available:", dashboardData);
-      return null;
+    if (!dashboardData?.overview) {return null;
     }
 
-    const { overview } = dashboardData;
-    console.log("🔍 Rendering overview cards with data:", overview);
-
-    // Ensure all values are numbers and handle null/undefined
+    const { overview } = dashboardData;// Ensure all values are numbers and handle null/undefined
     const safeNumber = (value) => {
       const num = Number(value);
       return isNaN(num) ? 0 : num;
@@ -536,15 +509,10 @@ const Dashboard = () => {
   };
 
   const renderContactStatsSection = () => {
-    if (!dashboardData?.contactStats) {
-      console.warn("🔍 No contactStats data available:", dashboardData);
-      return null;
+    if (!dashboardData?.contactStats) {return null;
     }
 
-    const { contactStats } = dashboardData;
-    console.log("🔍 Rendering contact stats with data:", contactStats);
-
-    // Ensure all values are numbers and handle null/undefined
+    const { contactStats } = dashboardData;// Ensure all values are numbers and handle null/undefined
     const safeNumber = (value) => {
       const num = Number(value);
       return isNaN(num) ? 0 : num;
@@ -645,15 +613,10 @@ const Dashboard = () => {
   };
 
   const renderContentStats = () => {
-    if (!dashboardData?.contentStats) {
-      console.warn("🔍 No contentStats data available:", dashboardData);
-      return null;
+    if (!dashboardData?.contentStats) {return null;
     }
 
-    const { contentStats } = dashboardData;
-    console.log("🔍 Rendering content stats with data:", contentStats);
-
-    // Ensure all values are numbers and handle null/undefined
+    const { contentStats } = dashboardData;// Ensure all values are numbers and handle null/undefined
     const safeNumber = (value) => {
       const num = Number(value);
       return isNaN(num) ? 0 : num;

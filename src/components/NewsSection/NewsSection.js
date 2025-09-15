@@ -27,9 +27,7 @@ const NewsSection = () => {
 
         setCategories(categoriesData);
         setNews(latestNews);
-      } catch (error) {
-        console.error("Error fetching news:", error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

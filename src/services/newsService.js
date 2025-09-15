@@ -70,9 +70,7 @@ export async function fetchNewsCategories() {
     }
 
     throw new Error("Invalid categories response");
-  } catch (error) {
-    console.error("❌ fetchNewsCategories error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 
@@ -476,14 +474,7 @@ export const getDocuments = async (params = {}) => {
     if (params.sortBy) {
       queryParams.sortBy = params.sortBy;
       queryParams.sortDirection = params.sortDirection || 'desc';
-    }
-
-    console.log('📡 Fetching documents:', queryParams);
-    const response = await api.get('/api/news/documents', { params: queryParams });
-    
-    console.log('📨 Documents response:', response.data);
-
-    // Handle API response format
+    }const response = await api.get('/api/news/documents', { params: queryParams });// Handle API response format
     if (response.data && response.data.status === 1 && response.data.data) {
       const dataObj = response.data.data;
       return {
@@ -502,9 +493,7 @@ export const getDocuments = async (params = {}) => {
       success: false,
       message: 'Invalid response format'
     };
-  } catch (error) {
-    console.error('❌ Get documents error:', error);
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || 'Failed to fetch documents'
     };
@@ -513,18 +502,11 @@ export const getDocuments = async (params = {}) => {
 
 // Create document
 export const createDocument = async (documentData) => {
-  try {
-    console.log('📡 Creating document:', documentData);
-    const response = await api.post('/api/news/create-document', documentData);
-    
-    console.log('✅ Document created successfully');
-    return {
+  try {const response = await api.post('/api/news/create-document', documentData);return {
       success: true,
       data: response.data
     };
-  } catch (error) {
-    console.error('❌ Create document error:', error);
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || 'Failed to create document'
     };
@@ -533,18 +515,11 @@ export const createDocument = async (documentData) => {
 
 // Update document
 export const updateDocument = async (documentId, documentData) => {
-  try {
-    console.log('📡 Updating document:', documentId, documentData);
-    const response = await api.put(`/api/news/update-document/${documentId}`, documentData);
-    
-    console.log('✅ Document updated successfully');
-    return {
+  try {const response = await api.put(`/api/news/update-document/${documentId}`, documentData);return {
       success: true,
       data: response.data
     };
-  } catch (error) {
-    console.error('❌ Update document error:', error);
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || 'Failed to update document'
     };
@@ -553,18 +528,11 @@ export const updateDocument = async (documentId, documentData) => {
 
 // Delete document
 export const deleteDocument = async (documentId) => {
-  try {
-    console.log('📡 Deleting document:', documentId);
-    const response = await api.delete(`/api/news/delete/${documentId}`);
-    
-    console.log('✅ Document deleted successfully');
-    return {
+  try {const response = await api.delete(`/api/news/delete/${documentId}`);return {
       success: true,
       data: response.data
     };
-  } catch (error) {
-    console.error('❌ Delete document error:', error);
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || 'Failed to delete document'
     };
@@ -573,12 +541,7 @@ export const deleteDocument = async (documentId) => {
 
 // Get document detail
 export const getDocumentById = async (documentId) => {
-  try {
-    console.log('📡 Fetching document by ID:', documentId);
-    const response = await api.get(`/api/news/documents/${documentId}`);
-    
-    console.log('✅ Document detail fetched successfully');
-    if (response.data && response.data.status === 1) {
+  try {const response = await api.get(`/api/news/documents/${documentId}`);if (response.data && response.data.status === 1) {
       return {
         success: true,
         data: response.data.data
@@ -589,9 +552,7 @@ export const getDocumentById = async (documentId) => {
       success: false,
       message: 'Document not found'
     };
-  } catch (error) {
-    console.error('❌ Get document by ID error:', error);
-    return {
+  } catch (error) {return {
       success: false,
       message: error.response?.data?.message || 'Failed to get document detail'
     };
@@ -600,10 +561,7 @@ export const getDocumentById = async (documentId) => {
 
 // Download document
 export const downloadDocument = async (documentId, filename) => {
-  try {
-    console.log('📡 Downloading document:', documentId, filename);
-    
-    const response = await api.get(`/api/attachments/download/${documentId}`, {
+  try {const response = await api.get(`/api/attachments/download/${documentId}`, {
       responseType: 'blob'
     });
     
@@ -616,13 +574,8 @@ export const downloadDocument = async (documentId, filename) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-    
-    console.log('✅ Document downloaded successfully');
-    return { success: true };
-  } catch (error) {
-    console.error('❌ Download document error:', error);
-    throw new Error(error.response?.data?.message || 'Failed to download document');
+    window.URL.revokeObjectURL(url);return { success: true };
+  } catch (error) {throw new Error(error.response?.data?.message || 'Failed to download document');
   }
 };
 

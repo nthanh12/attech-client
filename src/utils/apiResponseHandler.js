@@ -15,11 +15,7 @@ export const handleApiResponse = (
   onError,
   setToast
 ) => {
-  console.log(`📡 API Response (${action}):`, response);
-  console.log(`📡 Response status:`, response?.status);
-  console.log(`📡 Response statusCode:`, response?.statusCode);
-  console.log(`📡 Response data:`, response?.data);
-
+  // API Response processed
   // Xử lý response - support cả documentation format và legacy format
   const isSuccess =
     (response && response.statusCode === 200) || // Documentation format
@@ -39,7 +35,6 @@ export const handleApiResponse = (
       message: successMessage,
       type: "success",
     });
-    console.log("🔔 Toast set successfully");
     return true;
   } else {
     // Thất bại - hiển thị message từ API
@@ -121,8 +116,6 @@ export const prepareCategoryData = (currentCategory) => {
     parentId: currentCategory.parentId ? parseInt(currentCategory.parentId) : null,
     order: parseInt(currentCategory.order) || 0,
   };
-
-  console.log("📝 Prepared category data:", data);
   return data;
 };
 
@@ -145,7 +138,6 @@ export const prepareNewsData = (currentNews) => {
     imageUrl === "null" ||
     imageUrl === "[object Object]"
   ) {
-    console.warn("🚨 Invalid image URL detected and cleared:", imageUrl);
     imageUrl = "";
   }
 
@@ -153,7 +145,6 @@ export const prepareNewsData = (currentNews) => {
   const baseUrl = getApiBaseUrl();
   if (imageUrl.startsWith(baseUrl)) {
     imageUrl = imageUrl.replace(baseUrl, "");
-    console.log("🔄 Converted absolute URL to relative:", imageUrl);
   }
 
   // Xử lý categoryId - đảm bảo > 0
@@ -186,14 +177,7 @@ export const prepareNewsData = (currentNews) => {
     slugVi: currentNews.slugVi?.trim() || "",
     slugEn: currentNews.slugEn?.trim() || "",
     imageUrl: imageUrl,
-  };
-
-  console.log("📝 Prepared news data:", data);
-  console.log("📝 Original imageUrl:", currentNews.imageUrl);
-  console.log("📝 Original image:", currentNews.image);
-  console.log("📝 Final image:", imageUrl);
-
-  // Enhanced validation
+  };// Enhanced validation
   const validationErrors = [];
 
   if (!data.titleVi || data.titleVi.trim() === "") {
@@ -234,35 +218,10 @@ export const prepareNewsData = (currentNews) => {
   }
 
   if (validationErrors.length > 0) {
-    console.error("❌ Validation errors before API call:", validationErrors);
     throw new Error("Validation failed: " + validationErrors.join(", "));
   }
 
-  // Log final data being sent to help debug backend issues
-  console.log("🚀 Final data to be sent to backend:");
-  console.log(
-    "- Title length (Vi/En):",
-    data.titleVi?.length,
-    "/",
-    data.titleEn?.length
-  );
-  console.log(
-    "- Description length (Vi/En):",
-    data.descriptionVi?.length,
-    "/",
-    data.descriptionEn?.length
-  );
-  console.log(
-    "- Content length (Vi/En):",
-    data.contentVi?.length,
-    "/",
-    data.contentEn?.length
-  );
-  console.log("- imageUrl path:", data.imageUrl);
-  console.log("- Slug (Vi/En):", data.slugVi, "/", data.slugEn);
-  console.log("- CategoryId:", data.newsCategoryId);
-  console.log("- timePosted:", data.timePosted);
-
+  // Data validation completed
   return data;
 };
 
@@ -285,7 +244,6 @@ export const prepareNotificationData = (currentNotification) => {
     imageUrl === "null" ||
     imageUrl === "[object Object]"
   ) {
-    console.warn("🚨 Invalid image URL detected and cleared:", imageUrl);
     imageUrl = "";
   }
 
@@ -319,11 +277,6 @@ export const prepareNotificationData = (currentNotification) => {
     slugEn: currentNotification.slugEn?.trim() || "",
     imageUrl: imageUrl,
   };
-
-  console.log("📝 Prepared notification data:", data);
-  console.log("📝 Original imageUrl:", currentNotification.imageUrl);
-  console.log("📝 Original image:", currentNotification.image);
-  console.log("📝 Final image:", imageUrl);
   return data;
 };
 
@@ -346,18 +299,11 @@ export const prepareProductData = (currentProduct) => {
     imageUrl === "null" ||
     imageUrl === "[object Object]"
   ) {
-    console.warn("🚨 Invalid image URL detected and cleared:", imageUrl);
     imageUrl = "";
   }
 
   // Xử lý categoryId - đảm bảo > 0
   const categoryId = parseInt(currentProduct.productCategoryId) || 0;
-  console.log("📝 Category parsing:", {
-    productCategoryId: currentProduct.productCategoryId,
-    categoryId: currentProduct.categoryId,
-    category: currentProduct.category,
-    finalCategoryId: categoryId,
-  });
 
   // Xử lý date format
   let timePosted = currentProduct.timePosted || new Date().toISOString();
@@ -366,11 +312,6 @@ export const prepareProductData = (currentProduct) => {
     try {
       timePosted = new Date(timePosted + "T00:00:00").toISOString();
     } catch (error) {
-      console.error(
-        "Date parsing error in prepareProductData:",
-        error,
-        timePosted
-      );
       timePosted = new Date().toISOString();
     }
   }
@@ -389,32 +330,10 @@ export const prepareProductData = (currentProduct) => {
     slugEn: currentProduct.slugEn?.trim() || "",
     imageUrl: imageUrl,
     isOutstanding: currentProduct.isOutstanding || false,
-  };
-
-  console.log("📝 Prepared product data:", data);
-  console.log("📝 Original imageUrl:", currentProduct.imageUrl);
-  console.log("📝 Original image:", currentProduct.image);
-  console.log("📝 Final image:", imageUrl);
-  console.log("📝 Product ID:", currentProduct.id);
-  console.log(
-    "📝 Product category:",
-    currentProduct.productCategoryId || currentProduct.category
-  );
-  console.log("📝 Product status:", currentProduct.status);
-
-  // Validation trước khi return
-  if (!data.titleVi || !data.titleEn) {
-    console.error("❌ Missing required fields:", {
-      titleVi: data.titleVi,
-      titleEn: data.titleEn,
-    });
-  }
-  if (categoryId <= 0) {
-    console.error("❌ Invalid category ID:", categoryId);
-  }
-  if (!data.imageUrl) {
-    console.error("❌ Missing image:", data.imageUrl);
-  }
+  };// Validation trước khi return
+  if (!data.titleVi || !data.titleEn) {}
+  if (categoryId <= 0) {}
+  if (!data.imageUrl) {}
 
   return data;
 };
@@ -438,7 +357,6 @@ export const prepareServiceData = (currentService) => {
     imageUrl === "null" ||
     imageUrl === "[object Object]"
   ) {
-    console.warn("🚨 Invalid image URL detected and cleared:", imageUrl);
     imageUrl = "";
   }
 
@@ -452,11 +370,6 @@ export const prepareServiceData = (currentService) => {
     try {
       timePosted = new Date(timePosted + "T00:00:00").toISOString();
     } catch (error) {
-      console.error(
-        "Date parsing error in prepareServiceData:",
-        error,
-        timePosted
-      );
       timePosted = new Date().toISOString();
     }
   }
@@ -475,11 +388,6 @@ export const prepareServiceData = (currentService) => {
     imageUrl: imageUrl,
     isOutstanding: currentService.isOutstanding || false,
   };
-
-  console.log("📝 Prepared service data:", data);
-  console.log("📝 Original imageUrl:", currentService.imageUrl);
-  console.log("📝 Original image:", currentService.image);
-  console.log("📝 Final image:", imageUrl);
   return data;
 };
 
@@ -487,7 +395,6 @@ export const prepareServiceData = (currentService) => {
  * Xử lý lỗi chung
  */
 export const handleApiError = (error, setToast, action = "thao tác") => {
-  console.error(`❌ Error ${action}:`, error);
   setToast({
     show: true,
     message: `Lỗi khi ${action}: ` + (error.message || "Unknown error"),

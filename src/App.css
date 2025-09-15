@@ -31,6 +31,35 @@ body {
 :root {
   /* --mainColor: #002a5c; */
   --mainColor: rgba(45, 94, 134, 1);
+  --header-height: 80px;
+}
+
+/* Fix carousel layout shift - prevent white space on page navigation */
+div.container-fluid.overflow-hidden.px-0 {
+  margin-top: 120px !important;
+  transition: none !important;
+  animation: none !important;
+  /* Force immediate layout */
+  will-change: auto !important;
+  transform: translateZ(0) !important;
+}
+
+@media (max-width: 1025px) {
+  div.container-fluid.overflow-hidden.px-0 {
+    margin-top: 60px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  div.container-fluid.overflow-hidden.px-0 {
+    margin-top: 48px !important;
+  }
+}
+
+/* Force disable all transitions on carousel container */
+div.container-fluid.overflow-hidden.px-0 * {
+  transition: none !important;
+  animation: none !important;
 }
 
 h1,

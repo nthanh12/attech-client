@@ -57,9 +57,7 @@ export const getMediaGallery = async (params = {}) => {
     
     const response = await api.get(`${MEDIA_API}/gallery`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching media gallery:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -75,9 +73,7 @@ export const getMediaImages = async (params = {}) => {
     
     const response = await api.get(`${MEDIA_API}/images`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching media images:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -93,9 +89,7 @@ export const getMediaVideos = async (params = {}) => {
     
     const response = await api.get(`${MEDIA_API}/videos`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching media videos:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -111,9 +105,7 @@ export const getMediaByEntity = async (entityType, entityId, params = {}) => {
     
     const response = await api.get(`${MEDIA_API}/by-entity/${entityType}/${entityId}`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching media by entity:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -124,9 +116,7 @@ export const getMediaById = async (id) => {
   try {
     const response = await api.get(`${MEDIA_API}/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching media by ID:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -149,9 +139,7 @@ export const uploadMedia = async (file, metadata = {}) => {
     });
     
     return response.data;
-  } catch (error) {
-    console.error('Error uploading media:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -162,9 +150,7 @@ export const updateMediaMetadata = async (id, metadata) => {
   try {
     const response = await api.put(`${MEDIA_API}/${id}/metadata`, metadata);
     return response.data;
-  } catch (error) {
-    console.error('Error updating media metadata:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -175,9 +161,7 @@ export const deleteMedia = async (id) => {
   try {
     const response = await api.delete(`${MEDIA_API}/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error deleting media:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -188,9 +172,7 @@ export const bulkDeleteMedia = async (mediaIds) => {
   try {
     const response = await api.post(`${MEDIA_API}/bulk-delete`, mediaIds);
     return response.data;
-  } catch (error) {
-    console.error('Error bulk deleting media:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -201,9 +183,7 @@ export const bulkUpdateMedia = async (updateData) => {
   try {
     const response = await api.post(`${MEDIA_API}/bulk-update`, updateData);
     return response.data;
-  } catch (error) {
-    console.error('Error bulk updating media:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -226,9 +206,7 @@ export const getDocuments = async (params = {}) => {
     
     const response = await api.get(DOCUMENTS_API, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching documents:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -247,9 +225,7 @@ export const searchDocuments = async (params = {}) => {
     
     const response = await api.get(`${DOCUMENTS_API}/search`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error searching documents:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -265,9 +241,7 @@ export const getDocumentsByEntity = async (entityType, entityId, params = {}) =>
     
     const response = await api.get(`${DOCUMENTS_API}/by-entity/${entityType}/${entityId}`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching documents by entity:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -278,9 +252,7 @@ export const getDocumentById = async (id) => {
   try {
     const response = await api.get(`${DOCUMENTS_API}/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching document by ID:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -305,9 +277,7 @@ export const downloadDocument = async (id, filename) => {
     window.URL.revokeObjectURL(url);
     
     return { success: true };
-  } catch (error) {
-    console.error('Error downloading document:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -330,9 +300,7 @@ export const uploadDocument = async (file, metadata = {}) => {
     });
     
     return response.data;
-  } catch (error) {
-    console.error('Error uploading document:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -343,9 +311,7 @@ export const updateDocumentMetadata = async (id, metadata) => {
   try {
     const response = await api.put(`${DOCUMENTS_API}/${id}/metadata`, metadata);
     return response.data;
-  } catch (error) {
-    console.error('Error updating document metadata:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -356,9 +322,7 @@ export const deleteDocument = async (id) => {
   try {
     const response = await api.delete(`${DOCUMENTS_API}/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error deleting document:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -369,9 +333,7 @@ export const bulkDeleteDocuments = async (documentIds) => {
   try {
     const response = await api.post(`${DOCUMENTS_API}/bulk-delete`, documentIds);
     return response.data;
-  } catch (error) {
-    console.error('Error bulk deleting documents:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -382,9 +344,7 @@ export const deleteDocumentsByEntity = async (entityType, entityId) => {
   try {
     const response = await api.delete(`${DOCUMENTS_API}/by-entity/${entityType}/${entityId}`);
     return response.data;
-  } catch (error) {
-    console.error('Error deleting documents by entity:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -409,9 +369,7 @@ export const getAllFiles = async (params = {}) => {
     
     const response = await api.get(FILES_API, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching all files:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -431,9 +389,7 @@ export const searchFiles = async (params = {}) => {
     
     const response = await api.get(`${FILES_API}/search`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error searching files:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -449,9 +405,7 @@ export const getFilesByType = async (fileType, params = {}) => {
     
     const response = await api.get(`${FILES_API}/by-type/${fileType}`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching files by type:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -467,9 +421,7 @@ export const getFilesByEntityType = async (entityType, params = {}) => {
     
     const response = await api.get(`${FILES_API}/by-entity-type/${entityType}`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching files by entity type:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -485,9 +437,7 @@ export const getFilesByEntity = async (entityType, entityId, params = {}) => {
     
     const response = await api.get(`${FILES_API}/entity/${entityType}/${entityId}`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching files by entity:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -498,9 +448,7 @@ export const getFileById = async (id) => {
   try {
     const response = await api.get(`${FILES_API}/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching file by ID:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -516,9 +464,7 @@ export const getOrphanedFiles = async (params = {}) => {
     
     const response = await api.get(`${FILES_API}/orphaned`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching orphaned files:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -534,9 +480,7 @@ export const getDuplicateFiles = async (params = {}) => {
     
     const response = await api.get(`${FILES_API}/duplicates`, { params: queryParams });
     return handleApiResponse(response);
-  } catch (error) {
-    console.error('Error fetching duplicate files:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -547,9 +491,7 @@ export const getStorageStats = async () => {
   try {
     const response = await api.get(`${FILES_API}/storage-stats`);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching storage stats:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -560,9 +502,7 @@ export const getFileRelations = async (id) => {
   try {
     const response = await api.get(`${FILES_API}/${id}/relations`);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching file relations:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -573,9 +513,7 @@ export const getFileUsageStats = async (id) => {
   try {
     const response = await api.get(`${FILES_API}/${id}/usage-stats`);
     return response.data;
-  } catch (error) {
-    console.error('Error fetching file usage stats:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -598,9 +536,7 @@ export const uploadStandaloneFile = async (file, metadata = {}) => {
     });
     
     return response.data;
-  } catch (error) {
-    console.error('Error uploading standalone file:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -627,9 +563,7 @@ export const uploadFileWithEntity = async (file, entityType, entityId, relationT
     });
     
     return response.data;
-  } catch (error) {
-    console.error('Error uploading file with entity:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -647,9 +581,7 @@ export const reuseFile = async (fileId, entityType, entityId, relationType, isPr
     });
     
     return response.data;
-  } catch (error) {
-    console.error('Error reusing file:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -667,9 +599,7 @@ export const createFileRelation = async (fileId, entityType, entityId, relationT
     });
     
     return response.data;
-  } catch (error) {
-    console.error('Error creating file relation:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -680,9 +610,7 @@ export const bulkDeleteFiles = async (fileIds) => {
   try {
     const response = await api.post(`${FILES_API}/bulk-delete`, fileIds);
     return response.data;
-  } catch (error) {
-    console.error('Error bulk deleting files:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -693,9 +621,7 @@ export const bulkUpdateFiles = async (updateData) => {
   try {
     const response = await api.post(`${FILES_API}/bulk-update`, updateData);
     return response.data;
-  } catch (error) {
-    console.error('Error bulk updating files:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -708,9 +634,7 @@ export const cleanupOldFiles = async (olderThanDays = 30) => {
       params: { olderThanDays }
     });
     return response.data;
-  } catch (error) {
-    console.error('Error cleaning up old files:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -721,9 +645,7 @@ export const updateFileMetadata = async (id, metadata) => {
   try {
     const response = await api.put(`${FILES_API}/${id}/metadata`, metadata);
     return response.data;
-  } catch (error) {
-    console.error('Error updating file metadata:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -738,9 +660,7 @@ export const updateFileRelation = async (relationId, relationType, isPrimary) =>
     });
     
     return response.data;
-  } catch (error) {
-    console.error('Error updating file relation:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -751,9 +671,7 @@ export const deleteFile = async (id) => {
   try {
     const response = await api.delete(`${FILES_API}/${id}`);
     return response.data;
-  } catch (error) {
-    console.error('Error deleting file:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 
@@ -764,9 +682,7 @@ export const deleteFileRelation = async (relationId) => {
   try {
     const response = await api.delete(`${FILES_API}/relations/${relationId}`);
     return response.data;
-  } catch (error) {
-    console.error('Error deleting file relation:', error);
-    throw error;
+  } catch (error) {throw error;
   }
 };
 

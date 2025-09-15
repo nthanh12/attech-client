@@ -54,31 +54,21 @@ const DocumentCreationForm = ({
   // Load existing attachments if editing (like Album)
   useEffect(() => {
     const loadExistingAttachments = async () => {
-      if (isEditMode && editingDocument) {
-        console.log('🔄 Loading existing attachments for edit:', editingDocument);
-        
-        try {
+      if (isEditMode && editingDocument) {try {
           // Load featured image from imageUrl
           const imageUrl = editingDocument.imageUrl;
           if (imageUrl) {
             const fullImageUrl = imageUrl.startsWith("http")
               ? imageUrl
               : getApiUrl(imageUrl);
-            setFeaturedImagePreview(fullImageUrl);
-            console.log('🖼️ Set featured image preview:', fullImageUrl);
-          }
+            setFeaturedImagePreview(fullImageUrl);}
 
           // Set featured image ID from BE response
           if (editingDocument.featuredImageId !== null && editingDocument.featuredImageId !== undefined) {
-            setFeaturedImageId(editingDocument.featuredImageId);
-            console.log('🆔 Set featured image ID:', editingDocument.featuredImageId);
-          }
+            setFeaturedImageId(editingDocument.featuredImageId);}
 
           // Load document files from API response
-          const documentFilesData = editingDocument.documents || [];
-          console.log('📎 Found document files:', documentFilesData);
-          
-          if (documentFilesData.length > 0) {
+          const documentFilesData = editingDocument.documents || [];if (documentFilesData.length > 0) {
             const baseUrl = api.defaults.baseURL;
             const transformedFiles = documentFilesData.map((file, index) => ({
               id: file.id,
@@ -87,19 +77,12 @@ const DocumentCreationForm = ({
               type: "application/octet-stream",
               uploading: false,
               attachmentId: file.id,
-            }));
-            
-            console.log('📄 Transformed files for edit:', transformedFiles);
-            setDocumentFiles(transformedFiles);
+            }));setDocumentFiles(transformedFiles);
             
             // Update attachmentIds
-            const attachmentIds = documentFilesData.map(file => file.id);
-            console.log('🔢 Setting attachment IDs:', attachmentIds);
-            handleInputChange("attachmentIds", attachmentIds);
+            const attachmentIds = documentFilesData.map(file => file.id);handleInputChange("attachmentIds", attachmentIds);
           }
-        } catch (error) {
-          console.error('❌ Error loading existing attachments:', error);
-        }
+        } catch (error) {}
       }
     };
 
@@ -209,12 +192,7 @@ const DocumentCreationForm = ({
                     }
                   : file
               )
-            );
-
-            console.log(
-              `✅ Document file uploaded: ${fileInfo.name} -> ID: ${attachmentData.id}`
-            );
-            return {
+            );return {
               success: true,
               fileInfo,
               attachmentId: attachmentData.id,
@@ -222,13 +200,7 @@ const DocumentCreationForm = ({
           } else {
             throw new Error("Upload failed - invalid response");
           }
-        } catch (uploadError) {
-          console.error(
-            `❌ Document file upload failed: ${fileInfo.name}`,
-            uploadError
-          );
-
-          // Remove failed file from list
+        } catch (uploadError) {// Remove failed file from list
           setDocumentFiles((prev) =>
             prev.filter((file) => file.id !== fileInfo.id)
           );
@@ -262,9 +234,7 @@ const DocumentCreationForm = ({
       if (failCount > 0) {
         showToast(`${failCount} file upload thất bại`, "error");
       }
-    } catch (error) {
-      console.error("Document file upload error:", error);
-      showToast("Lỗi khi thêm file tài liệu", "error");
+    } catch (error) {showToast("Lỗi khi thêm file tài liệu", "error");
     } finally {
       setUploadingFiles(false);
     }
@@ -273,11 +243,7 @@ const DocumentCreationForm = ({
   const validateForm = () => {
     const newErrors = {};
     
-    console.log('🔍 Validating form with data:', {
-      titleVi: formData.titleVi,
-      documentFilesCount: documentFiles.length,
-      successfulFilesCount: documentFiles.filter(file => file.attachmentId && !file.uploading).length
-    });
+    // Validating form data
     
     if (!formData.titleVi.trim()) {
       newErrors.titleVi = "Tiêu đề tiếng Việt là bắt buộc";
@@ -286,51 +252,22 @@ const DocumentCreationForm = ({
     const successfulFiles = documentFiles.filter(file => file.attachmentId && !file.uploading);
     if (successfulFiles.length === 0) {
       newErrors.attachmentIds = "Cần upload ít nhất 1 file tài liệu";
-    }
-    
-    console.log('🔍 Validation errors:', newErrors);
-    
-    setErrors(newErrors);
-    const isValid = Object.keys(newErrors).length === 0;
-    console.log('🔍 Form validation result:', isValid);
-    
-    return isValid;
+    }setErrors(newErrors);
+    const isValid = Object.keys(newErrors).length === 0;return isValid;
   };
 
-  const handleSave = async () => {
-    console.log('🚀 Save button clicked, starting validation...');
-    
-    if (!validateForm()) {
-      console.log('❌ Form validation failed, stopping submission');
-      setToast({
+  const handleSave = async () => {if (!validateForm()) {setToast({
         show: true,
         message: "Vui lòng kiểm tra lại thông tin",
         type: "error",
       });
       return;
-    }
-    
-    console.log('✅ Form validation passed, proceeding with submission...');
-
-    try {
+    }try {
       setLoading(true);
       
       // Get successful attachment IDs from files
       const successfulFiles = documentFiles.filter(file => file.attachmentId && !file.uploading);
-      const attachmentIds = successfulFiles.map(file => file.attachmentId);
-      
-      console.log('🔍 Document form submission data:', {
-        titleVi: formData.titleVi,
-        titleEn: formData.titleEn,
-        descriptionVi: formData.descriptionVi,
-        descriptionEn: formData.descriptionEn,
-        attachmentIds: attachmentIds,
-        featuredImageId: featuredImageId,
-        newsCategoryId: formData.newsCategoryId,
-        isEditMode: isEditMode
-      });
-      
-      const documentData = {
+      const attachmentIds = successfulFiles.map(file => file.attachmentId);const documentData = {
         titleVi: formData.titleVi,
         titleEn: formData.titleEn,
         descriptionVi: formData.descriptionVi,
@@ -339,41 +276,27 @@ const DocumentCreationForm = ({
         featuredImageId: featuredImageId,
         newsCategoryId: formData.newsCategoryId,
         timePosted: new Date(formData.timePosted).toISOString()
-      };
-
-      console.log('📤 Sending document data to API:', documentData);
-
-      let response;
+      };let response;
       if (isEditMode) {
         response = await documentService.updateDocument(editingDocument.id, documentData);
       } else {
         response = await documentService.createDocument(documentData);
-      }
-      
-      console.log('📥 API response:', response);
-
-      if (response.success) {
+      }if (response.success) {
         showToast(
           isEditMode ? "Cập nhật tài liệu thành công" : "Tạo tài liệu thành công",
           "success"
         );
         
         // Call success callback immediately if truly successful  
-        if (response.data && (response.data.id || response.data.data?.id)) {
-          console.log('✅ Document created successfully, calling onSuccess callback');
-          setTimeout(() => {
+        if (response.data && (response.data.id || response.data.data?.id)) {setTimeout(() => {
             onSuccess();
           }, 1500);
-        } else {
-          console.log('⚠️ API returned success but no data, not calling onSuccess');
-          throw new Error('API returned success but no document data');
+        } else {throw new Error('API returned success but no document data');
         }
       } else {
         throw new Error(response.message || "Operation failed");
       }
-    } catch (error) {
-      console.error("Error saving document:", error);
-      showToast("Lỗi lưu tài liệu: " + error.message, "error");
+    } catch (error) {showToast("Lỗi lưu tài liệu: " + error.message, "error");
     } finally {
       setLoading(false);
     }

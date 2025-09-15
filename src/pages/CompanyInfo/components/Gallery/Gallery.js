@@ -18,25 +18,12 @@ const Gallery = () => {
   useEffect(() => {
     const loadAlbums = async () => {
       try {
-        setLoading(true);
-        console.log('📸 Loading gallery albums...');
-        
-        // Use clientAlbumService for album data
-        const albumsResponse = await clientAlbumService.getAlbums({ limit: 50 });
-        console.log('📸 Albums response:', albumsResponse);
-        
-        if (albumsResponse.success && albumsResponse.data.length > 0) {
+        setLoading(true);// Use clientAlbumService for album data
+        const albumsResponse = await clientAlbumService.getAlbums({ limit: 50 });if (albumsResponse.success && albumsResponse.data.length > 0) {
           const formattedAlbums = albumsResponse.data.map(album => {
             const formattedItem = clientAlbumService.formatAlbumForDisplay(album, currentLanguage);
             
-            // Debug log để kiểm tra imageUrl
-            console.log('🖼️ Album image debug:', {
-              id: album.id,
-              title: album.titleVi,
-              imageUrl: album.imageUrl,
-              featuredImage: formattedItem.featuredImage,
-              finalImage: formattedItem.featuredImage || clientAlbumService.getImageUrl(album.imageUrl)
-            });
+            // Album image processing
             
             return {
               id: album.id,
@@ -46,16 +33,10 @@ const Gallery = () => {
               date: formattedItem.createdAt,
               coverImage: formattedItem.featuredImage || clientAlbumService.getImageUrl(album.imageUrl) || 'https://via.placeholder.com/400x300/cccccc/ffffff?text=No+Image',
             };
-          });
-          console.log('✅ Formatted albums with images:', formattedAlbums);
-          setAlbums(formattedAlbums);
-        } else {
-          console.warn('⚠️ No albums from API');
-          setAlbums([]);
+          });setAlbums(formattedAlbums);
+        } else {setAlbums([]);
         }
-      } catch (error) {
-        console.error("❌ Error loading gallery albums:", error);
-        setAlbums([]);
+      } catch (error) {setAlbums([]);
       } finally {
         setLoading(false);
       }

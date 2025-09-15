@@ -30,15 +30,7 @@ const ImageUpload = ({ value, onChange, label = 'Ảnh', disabled = false, uploa
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef();
   
-  // Debug logging
-  console.log("🖼️ ImageUpload component debug:", {
-    value: value,
-    valueType: typeof value,
-    hasValue: !!value,
-    label: label
-  });
-  
-  const handleFileChange = async (e) => {
+  // Debug loggingconst handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) {
       // Nếu không có file được chọn, giữ nguyên giá trị cũ
@@ -108,27 +100,17 @@ const ImageUpload = ({ value, onChange, label = 'Ảnh', disabled = false, uploa
               );
             }
 
-            const fullImageUrl = getImageUrl(imageUrl);
-            console.log("🖼️ ImageUpload preview:", {
-              originalUrl: imageUrl,
-              fullUrl: fullImageUrl
-            });
-            
-            return (
+            const fullImageUrl = getImageUrl(imageUrl);return (
               <img 
                 src={fullImageUrl} 
                 alt="Preview" 
                 style={{ width: 80, height: 60, objectFit: 'cover', borderRadius: 4, border: '1px solid #eee' }}
-                onError={(e) => {
-                  console.error("❌ ImageUpload preview error:", fullImageUrl);
-                  // Simple approach: just hide the image on error
+                onError={(e) => {// Simple approach: just hide the image on error
                   if (e.target) {
                     e.target.style.display = 'none';
                   }
                 }}
-                onLoad={() => {
-                  console.log("✅ ImageUpload preview loaded:", fullImageUrl);
-                }}
+                onLoad={() => {}}
               />
             );
           })()}

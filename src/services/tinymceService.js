@@ -16,10 +16,7 @@ const API_BASE_URL = getApiBaseUrl();
  * @param {File} file - Image file to upload
  * @returns {Promise<{tempUrl: string}>} - Temp URL for preview
  */
-export const uploadTempImage = async (file) => {
-  console.log('🖼️ TinyMCE temp upload:', file.name);
-  
-  const formData = new FormData();
+export const uploadTempImage = async (file) => {const formData = new FormData();
   formData.append('file', file);
   
   try {
@@ -31,15 +28,11 @@ export const uploadTempImage = async (file) => {
     });
     
     if (response.data?.status === 1 && response.data?.data?.tempUrl) {
-      const tempUrl = response.data.data.tempUrl;
-      console.log('✅ TinyMCE temp upload success:', tempUrl);
-      return { tempUrl };
+      const tempUrl = response.data.data.tempUrl;return { tempUrl };
     } else {
       throw new Error(response.data?.message || 'Invalid response format');
     }
-  } catch (error) {
-    console.error('❌ TinyMCE temp upload failed:', error);
-    throw new Error(`Temp upload failed: ${error.response?.data?.message || error.response?.data?.Message || error.message}`);
+  } catch (error) {throw new Error(`Temp upload failed: ${error.response?.data?.message || error.response?.data?.Message || error.message}`);
   }
 };
 
@@ -53,10 +46,7 @@ export const extractTempUrls = (content) => {
   
   // Match /uploads/temp/ URLs in HTML content
   const tempUrlRegex = /\/uploads\/temp\/[^"\s)]+/g;
-  const matches = content.match(tempUrlRegex) || [];
-  
-  console.log('🔍 Found temp URLs in content:', matches);
-  return matches;
+  const matches = content.match(tempUrlRegex) || [];return matches;
 };
 
 /**
@@ -66,22 +56,13 @@ export const extractTempUrls = (content) => {
 export const cleanupTinyMceTemp = async (content) => {
   const tempUrls = extractTempUrls(content);
   
-  if (tempUrls.length === 0) {
-    console.log('🧹 No temp files to cleanup');
-    return;
-  }
-  
-  console.log('🧹 Cleaning up temp files:', tempUrls);
-  
-  try {
+  if (tempUrls.length === 0) {return;
+  }try {
     // Send cleanup request to backend
     await api.post('/api/tinymce/cleanup', {
       tempUrls: tempUrls
-    });
-    
-    console.log('✅ Temp files cleanup successful');
-  } catch (error) {
-    console.warn('⚠️ Temp files cleanup failed (non-critical):', error);
+    });} catch (error) {
+    // Temp files cleanup failed (non-critical)
     // Non-critical error, don't throw
   }
 };

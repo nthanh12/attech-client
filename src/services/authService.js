@@ -15,13 +15,10 @@ import api from '../api';
  */
 export const register = async (userData) => {
   try {
-    console.log("👤 Attempting user registration...");
     const response = await api.post("/api/auth/register", userData);
     
-    console.log("📡 Register response:", response.data);
     
     if (response.data.status === 1) {
-      console.log("✅ User registration successful");
       
       return {
         success: true,
@@ -36,9 +33,6 @@ export const register = async (userData) => {
     };
     
   } catch (error) {
-    console.error("❌ User registration failed:", error.response?.data || error.message);
-    console.error("🔍 Full error response:", error.response);
-    console.error("🔍 Request data sent:", userData);
     
     return {
       success: false,
@@ -49,13 +43,11 @@ export const register = async (userData) => {
 
 export const login = async (username, password) => {
   try {
-    console.log("🔐 Attempting login...");
     const response = await api.post("/api/auth/login", {
       username,
       password
     });
 
-    console.log("📡 Login response:", response.data);
 
     if (response.data.status === 1 && response.data.data) {
       const { token, user } = response.data.data;
@@ -63,7 +55,6 @@ export const login = async (username, password) => {
       // Store token
       localStorage.setItem('auth_token', token);
       
-      console.log("✅ Login successful, token stored");
       
       return {
         success: true,
@@ -79,7 +70,6 @@ export const login = async (username, password) => {
     };
 
   } catch (error) {
-    console.error("❌ Login failed:", error.response?.data || error.message);
     
     return {
       success: false,
@@ -90,17 +80,14 @@ export const login = async (username, password) => {
 
 export const changePassword = async (passwordData) => {
   try {
-    console.log("🔐 Attempting password change...");
     const response = await api.post("/api/auth/change-password", {
       currentPassword: passwordData.currentPassword,
       newPassword: passwordData.newPassword,
       confirmPassword: passwordData.confirmPassword
     });
 
-    console.log("📡 Change password response:", response.data);
 
     if (response.data.status === 1) {
-      console.log("✅ Password changed successfully");
       
       return {
         success: true,
@@ -114,7 +101,6 @@ export const changePassword = async (passwordData) => {
     };
 
   } catch (error) {
-    console.error("❌ Password change failed:", error.response?.data || error.message);
     
     // Handle different error cases
     if (error.response?.status === 400) {
@@ -139,7 +125,6 @@ export const changePassword = async (passwordData) => {
 export const logout = () => {
   localStorage.removeItem('auth_token');
   localStorage.removeItem('refreshToken');
-  console.log("🚪 Logged out, tokens cleared");
 };
 
 export const isAuthenticated = () => {
@@ -166,14 +151,12 @@ export const refreshToken = async () => {
     if (response.data.status === 1 && response.data.data) {
       const { token } = response.data.data;
       localStorage.setItem('auth_token', token);
-      console.log("✅ Token refreshed successfully");
       return true;
     }
 
     throw new Error('Token refresh failed');
 
   } catch (error) {
-    console.error("❌ Token refresh failed:", error);
     logout();
     return false;
   }

@@ -98,9 +98,7 @@ export async function getProducts(params = {}) {
         pageSize: params.limit || params.pageSize || 50,
       }
     };
-  } catch (error) {
-    console.error("❌ getProducts error:", error);
-    return {
+  } catch (error) {return {
       status: 0,
       data: {
         items: [],
@@ -127,9 +125,7 @@ export async function getProductById(id) {
     }
 
     throw new Error("Product not found");
-  } catch (error) {
-    console.error("❌ getProductById error:", error);
-    throw error;
+  } catch (error) {throw error;
   }
 }
 
@@ -148,10 +144,7 @@ export async function getProductBySlug(slug, language = "vi") {
     }
 
     throw new Error("Product not found");
-  } catch (error) {
-    console.error("❌ getProductBySlug error with detail endpoint:", error);
-    
-    // No fallback needed for client endpoint - it only returns published content
+  } catch (error) {// No fallback needed for client endpoint - it only returns published content
     throw error;
   }
 }
@@ -178,9 +171,7 @@ export async function getFeaturedProducts(limit = 6) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getFeaturedProducts error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -205,9 +196,7 @@ export async function getLatestProducts(limit = 10) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getLatestProducts error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -227,9 +216,7 @@ export async function getRelatedProducts(productId, categoryId, limit = 4) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getRelatedProducts error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -280,9 +267,7 @@ export async function getProductsByCategory(categoryId, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getProductsByCategory error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -338,9 +323,7 @@ export async function getProductsByCategorySlug(categorySlug, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getProductsByCategorySlug error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -397,9 +380,7 @@ export async function searchProducts(searchTerm, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ searchProducts error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,
@@ -430,9 +411,7 @@ export async function getProductCategories() {
       success: false,
       data: []
     };
-  } catch (error) {
-    console.error("❌ getProductCategories error:", error);
-    return {
+  } catch (error) {return {
       success: false,
       data: []
     };
@@ -457,9 +436,7 @@ export async function getProductStats() {
       totalCategories: 0,
       featuredProducts: 0
     };
-  } catch (error) {
-    console.error("❌ getProductStats error:", error);
-    return {
+  } catch (error) {return {
       totalProducts: 0,
       totalCategories: 0,
       featuredProducts: 0
@@ -481,9 +458,7 @@ export async function getProductsForSitemap() {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getProductsForSitemap error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -501,9 +476,7 @@ export async function getProductBreadcrumbs(productId) {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getProductBreadcrumbs error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -521,9 +494,7 @@ export async function getProductTags() {
     }
 
     return [];
-  } catch (error) {
-    console.error("❌ getProductTags error:", error);
-    return [];
+  } catch (error) {return [];
   }
 }
 
@@ -571,9 +542,7 @@ export async function getProductsByTag(tag, params = {}) {
       currentPage: params.pageIndex || 1,
       pageSize: params.pageSize || 10,
     };
-  } catch (error) {
-    console.error("❌ getProductsByTag error:", error);
-    return {
+  } catch (error) {return {
       items: [],
       totalCount: 0,
       totalPages: 0,

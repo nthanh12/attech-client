@@ -13,13 +13,16 @@ import LoadingOverlay from "./components/Shared/LoadingOverlay/LoadingOverlay";
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { I18nextProvider } from 'react-i18next';
-import i18n from './i18n';
+import i18n, { checkTranslationsVersion } from './i18n';
 
 const ScrollToTop = ({ children }) => {
   const location = useLocation();
+
   useEffect(() => {
+    // Immediate scroll without delay for smoother experience
     window.scrollTo(0, 0);
-  }, [location]);
+    document.documentElement.scrollTop = 0;
+  }, [location.pathname]);
 
   return children;
 };
@@ -51,6 +54,9 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Check and refresh translations if needed
+    checkTranslationsVersion();
+
     // Nhanh chóng ẩn loading cho trang public
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -89,12 +95,10 @@ const App = () => {
               }
             } catch (err) {
               // Silently handle removal errors
-              console.debug('Element removal error:', err);
             }
           });
         });
       } catch (err) {
-        console.debug('Cleanup error:', err);
       }
     };
 

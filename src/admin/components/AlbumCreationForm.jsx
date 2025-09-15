@@ -45,8 +45,6 @@ const AlbumCreationForm = ({
   useEffect(() => {
     const loadExistingAttachments = async () => {
       if (isEditMode && editingAlbum) {
-        console.log('🔄 Loading existing attachments for edit:', editingAlbum);
-        
         try {
           // Load featured image from imageUrl
           const imageUrl = editingAlbum.imageUrl || editingAlbum.ImageUrl;
@@ -55,19 +53,15 @@ const AlbumCreationForm = ({
               ? imageUrl
               : getApiUrl(imageUrl);
             setFeaturedImagePreview(fullImageUrl);
-            console.log('🖼️ Set featured image preview:', fullImageUrl);
           }
 
           // Set featured image ID from BE response
           if (editingAlbum.featuredImageId !== null && editingAlbum.featuredImageId !== undefined) {
             setFeaturedImageId(editingAlbum.featuredImageId);
-            console.log('🆔 Set featured image ID:', editingAlbum.featuredImageId);
           }
 
           // Use attachments data if available in editingAlbum
           const attachmentImages = editingAlbum.attachments?.images || [];
-          console.log('📎 Found attachment images:', attachmentImages);
-          
           if (attachmentImages.length > 0) {
             const baseUrl = api.defaults.baseURL;
             const transformedImages = attachmentImages.map((img, index) => ({
@@ -81,17 +75,13 @@ const AlbumCreationForm = ({
                 : `${baseUrl}${img.url || `/api/attachments/${img.id}`}`,
               attachmentId: img.id,
             }));
-            
-            console.log('🖼️ Transformed images for gallery:', transformedImages);
             setGalleryImages(transformedImages);
             
             // Update attachmentIds
             const attachmentIds = attachmentImages.map(img => img.id);
-            console.log('🔢 Setting attachment IDs:', attachmentIds);
             handleInputChange("attachmentIds", attachmentIds);
           } else {
             // Fallback to API call if no attachments in editingAlbum
-            console.log('⚠️ No attachments in editingAlbum, trying API call...');
             const response = await albumService.getAlbumAttachments(editingAlbum.id);
             if (response.success && response.data) {
               const baseUrl = api.defaults.baseURL;
@@ -114,9 +104,7 @@ const AlbumCreationForm = ({
               handleInputChange("attachmentIds", attachmentIds);
             }
           }
-        } catch (error) {
-          console.error('❌ Error loading existing attachments:', error);
-        }
+        } catch (error) {}
       }
     };
 
@@ -214,10 +202,6 @@ const AlbumCreationForm = ({
 
             // Cleanup blob URL
             URL.revokeObjectURL(imageInfo.preview);
-
-            console.log(
-              `✅ Album image uploaded: ${imageInfo.name} -> ID: ${attachmentData.id}`
-            );
             return {
               success: true,
               imageInfo,
@@ -227,11 +211,6 @@ const AlbumCreationForm = ({
             throw new Error("Upload failed - invalid response");
           }
         } catch (uploadError) {
-          console.error(
-            `❌ Album image upload failed: ${imageInfo.name}`,
-            uploadError
-          );
-
           // Remove failed image from gallery
           setGalleryImages((prev) =>
             prev.filter((img) => img.id !== imageInfo.id)
@@ -268,7 +247,6 @@ const AlbumCreationForm = ({
         showToast(`${failCount} ảnh upload thất bại`, "error");
       }
     } catch (error) {
-      console.error("Album image upload error:", error);
       showToast("Lỗi khi thêm ảnh vào album", "error");
     } finally {
       setUploadingImages(false);
@@ -278,11 +256,7 @@ const AlbumCreationForm = ({
   const validateForm = () => {
     const newErrors = {};
     
-    console.log('🔍 Validating form with data:', {
-      titleVi: formData.titleVi,
-      galleryImagesCount: galleryImages.length,
-      successfulImagesCount: galleryImages.filter(img => img.attachmentId && !img.uploading).length
-    });
+    // Validating form data
     
     if (!formData.titleVi.trim()) {
       newErrors.titleVi = "Tiêu đề tiếng Việt là bắt buộc";
@@ -292,21 +266,13 @@ const AlbumCreationForm = ({
     if (successfulImages.length === 0) {
       newErrors.attachmentIds = "Cần upload ít nhất 1 ảnh";
     }
-    
-    console.log('🔍 Validation errors:', newErrors);
-    
     setErrors(newErrors);
     const isValid = Object.keys(newErrors).length === 0;
-    console.log('🔍 Form validation result:', isValid);
-    
     return isValid;
   };
 
   const handleSave = async () => {
-    console.log('🚀 Save button clicked, starting validation...');
-    
     if (!validateForm()) {
-      console.log('❌ Form validation failed, stopping submission');
       setToast({
         show: true,
         message: "Vui lòng kiểm tra lại thông tin",
@@ -314,8 +280,6 @@ const AlbumCreationForm = ({
       });
       return;
     }
-    
-    console.log('✅ Form validation passed, proceeding with submission...');
 
     try {
       setLoading(true);
@@ -323,18 +287,7 @@ const AlbumCreationForm = ({
       // Get successful attachment IDs from gallery
       const successfulImages = galleryImages.filter(img => img.attachmentId && !img.uploading);
       const attachmentIds = successfulImages.map(img => img.attachmentId);
-      
-      console.log('🔍 Album form submission data:', {
-        titleVi: formData.titleVi,
-        titleEn: formData.titleEn,
-        descriptionVi: formData.descriptionVi,
-        descriptionEn: formData.descriptionEn,
-        attachmentIds: attachmentIds,
-        featuredImageId: featuredImageId,
-        newsCategoryId: formData.newsCategoryId,
-        isEditMode: isEditMode
-      });
-      
+
       const albumData = {
         titleVi: formData.titleVi,
         titleEn: formData.titleEn,
@@ -344,16 +297,12 @@ const AlbumCreationForm = ({
         // Remove descriptions - not needed for albums
       };
 
-      console.log('📤 Sending album data to API:', albumData);
-
       let response;
       if (isEditMode) {
         response = await albumService.updateAlbum(editingAlbum.id, albumData);
       } else {
         response = await albumService.createAlbum(albumData);
       }
-      
-      console.log('📥 API response:', response);
 
       if (response.success) {
         showToast(
@@ -363,19 +312,16 @@ const AlbumCreationForm = ({
         
         // Call success callback immediately if truly successful  
         if (response.data && (response.data.id || response.data.data?.id)) {
-          console.log('✅ Album created successfully, calling onSuccess callback');
           setTimeout(() => {
             onSuccess();
           }, 1500); // Longer delay to see logs
         } else {
-          console.log('⚠️ API returned success but no data, not calling onSuccess');
           throw new Error('API returned success but no album data');
         }
       } else {
         throw new Error(response.message || "Operation failed");
       }
     } catch (error) {
-      console.error("Error saving album:", error);
       showToast("Lỗi lưu album: " + error.message, "error");
     } finally {
       setLoading(false);

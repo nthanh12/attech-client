@@ -27,14 +27,7 @@ const clientDocumentService = {
         if (queryParams[key] === undefined || queryParams[key] === '') {
           delete queryParams[key];
         }
-      });
-
-      console.log('📡 Fetching client documents:', queryParams);
-      const response = await api.get('/api/client/documents', { params: queryParams });
-      
-      console.log('📨 Client documents response:', response.data);
-
-      if (response.data && response.data.status === 1 && response.data.data) {
+      });const response = await api.get('/api/client/documents', { params: queryParams });if (response.data && response.data.status === 1 && response.data.data) {
         return {
           success: true,
           data: response.data.data
@@ -46,9 +39,7 @@ const clientDocumentService = {
         message: 'Invalid response format',
         data: { items: [], totalItems: 0 }
       };
-    } catch (error) {
-      console.error('❌ Client documents error:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Failed to fetch documents',
         data: { items: [], totalItems: 0 }
@@ -60,9 +51,7 @@ const clientDocumentService = {
    * Get document by slug for public pages
    */
   getDocumentBySlug: async (slug) => {
-    try {
-      console.log('📡 Fetching document by slug:', slug);
-      const response = await api.get(`/api/client/documents/${slug}`);
+    try {const response = await api.get(`/api/client/documents/${slug}`);
       
       if (response.data && response.data.status === 1) {
         return {
@@ -75,9 +64,7 @@ const clientDocumentService = {
         success: false,
         message: 'Document not found'
       };
-    } catch (error) {
-      console.error('❌ Get document by slug error:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Failed to get document'
       };

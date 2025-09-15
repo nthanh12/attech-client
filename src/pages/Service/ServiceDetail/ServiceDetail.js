@@ -28,9 +28,7 @@ const ServiceDetail = () => {
         } else {
           setError("Service not found");
         }
-      } catch (err) {
-        console.error("Error loading service:", err);
-        setError(err.message);
+      } catch (err) {setError(err.message);
       } finally {
         setLoading(false);
       }

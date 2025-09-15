@@ -34,17 +34,7 @@ const NotificationSection = ({ title, notifications, type }) => {
     ? getCategorySlug(currentNotifications[0])
     : type;
 
-  // Debug logging
-  console.log("NotificationSection Debug:", {
-    title,
-    notificationsCount: notifications.length,
-    currentNotificationsCount: currentNotifications.length,
-    firstNotification: currentNotifications[0],
-    categorySlug,
-    currentLanguage,
-  });
-
-  // Early return if no notifications
+  // Debug logging// Early return if no notifications
   if (!notifications || notifications.length === 0) {
     return (
       <div className="notification-section">

@@ -32,10 +32,7 @@ const clientAlbumService = {
         status: 1 // Only published albums
       }).toString();
 
-      const response = await api.get(`/api/client/albums?${queryParams}`);
-      console.log('📸 Album Gallery response:', response.data);
-      
-      // Handle response: { status: 1, data: { items: NewsDto[], totalItems: number, page: number, pageSize: number } }
+      const response = await api.get(`/api/client/albums?${queryParams}`);// Handle response: { status: 1, data: { items: NewsDto[], totalItems: number, page: number, pageSize: number } }
       const responseData = response.data.data || response.data;
       
       return {
@@ -48,9 +45,7 @@ const clientAlbumService = {
         },
         total: responseData.totalItems || 0
       };
-    } catch (error) {
-      console.error('❌ Error fetching client albums:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Lỗi tải danh sách album',
         data: [],
@@ -68,19 +63,14 @@ const clientAlbumService = {
    */
   getAlbumBySlug: async (slug) => {
     try {
-      const response = await api.get(`/api/client/albums/${slug}`);
-      console.log('📸 Album Detail response:', response.data);
-      
-      // Handle response: { status: 1, data: DetailNewsDto }
+      const response = await api.get(`/api/client/albums/${slug}`);// Handle response: { status: 1, data: DetailNewsDto }
       const albumData = response.data.data || response.data;
       
       return {
         success: true,
         data: albumData
       };
-    } catch (error) {
-      console.error('❌ Error fetching album by slug:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Không tìm thấy album',
         data: null
@@ -97,14 +87,8 @@ const clientAlbumService = {
    */
   getAlbumGallery: async (slug) => {
     try {
-      const response = await api.get(`/api/client/albums/${slug}/gallery`);
-      console.log('🖼️ Lightbox/Slider response:', response.data);
-      
-      // Handle response: { status: 1, data: NewsGalleryDto }
-      const galleryData = response.data.data || response.data;
-      console.log('🖼️ Gallery data structure:', galleryData);
-      
-      // Try different possible structures
+      const response = await api.get(`/api/client/albums/${slug}/gallery`);// Handle response: { status: 1, data: NewsGalleryDto }
+      const galleryData = response.data.data || response.data;// Try different possible structures
       let images = [];
       if (galleryData.images && Array.isArray(galleryData.images)) {
         images = galleryData.images;
@@ -112,19 +96,13 @@ const clientAlbumService = {
         images = galleryData.attachments.images;
       } else if (Array.isArray(galleryData)) {
         images = galleryData;
-      }
-      
-      console.log('🖼️ Extracted images:', images);
-      
-      return {
+      }return {
         success: true,
         data: images,
         albumTitle: galleryData.albumTitle,
         albumSlug: galleryData.albumSlug
       };
-    } catch (error) {
-      console.error('❌ Error fetching album gallery:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Lỗi tải thư viện ảnh',
         data: []
@@ -161,9 +139,7 @@ const clientAlbumService = {
         },
         total: responseData.totalItems || 0
       };
-    } catch (error) {
-      console.error('❌ Error searching albums:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: 'Lỗi tìm kiếm album',
         data: [],
@@ -188,10 +164,7 @@ const clientAlbumService = {
         search: params.search || ''
       }).toString();
 
-      const response = await api.get(`/api/client/albums/category/${categorySlug}?${queryParams}`);
-      console.log('📂 Category Albums response:', response.data);
-      
-      // Handle response: { status: 1, data: { items: NewsDto[], totalItems: number } }
+      const response = await api.get(`/api/client/albums/category/${categorySlug}?${queryParams}`);// Handle response: { status: 1, data: { items: NewsDto[], totalItems: number } }
       const responseData = response.data.data || response.data;
       
       return {
@@ -205,9 +178,7 @@ const clientAlbumService = {
         total: responseData.totalItems || 0,
         category: responseData.category || null
       };
-    } catch (error) {
-      console.error('❌ Error fetching category albums:', error);
-      return {
+    } catch (error) {return {
         success: false,
         message: error.response?.data?.message || 'Lỗi tải album theo danh mục',
         data: [],
@@ -225,19 +196,14 @@ const clientAlbumService = {
    */
   getFeaturedAlbums: async (limit = 6) => {
     try {
-      const response = await api.get(`/api/client/albums/featured?limit=${limit}`);
-      console.log('⭐ Featured Albums response:', response.data);
-      
-      // Handle response: { status: 1, data: { items: NewsDto[] } }
+      const response = await api.get(`/api/client/albums/featured?limit=${limit}`);// Handle response: { status: 1, data: { items: NewsDto[] } }
       const responseData = response.data.data || response.data;
       
       return {
         success: true,
         data: responseData.items || []
       };
-    } catch (error) {
-      console.error('❌ Error fetching featured albums:', error);
-      // Fallback to regular albums if featured endpoint doesn't exist
+    } catch (error) {// Fallback to regular albums if featured endpoint doesn't exist
       return await clientAlbumService.getAlbums({ limit });
     }
   },

@@ -103,34 +103,18 @@ const DocumentsList = () => {
         isOutstanding: filters.isOutstanding,
         sortBy: sortConfig.key,
         sortDirection: sortConfig.direction,
-      };
-
-      console.log('🔍 DocumentsList filter params:', params);
-      console.log('🔍 Current filters state:', filters);
-
-      console.log("🔍 Loading documents with params:", params);
-      const response = await documentService.fetchDocuments(params);
-      console.log("📋 Documents response:", response);
-
-      if (response.success) {
+      };const response = await documentService.fetchDocuments(params);if (response.success) {
         let documentsData = Array.isArray(response.data.items) ? response.data.items : [];
 
         // Update pagination info from server response
         setTotalItems(response.data.totalItems || 0);
-        setTotalPages(Math.ceil((response.data.totalItems || 0) / itemsPerPage));
-
-        console.log("📋 Final documents data:", documentsData);
-        setDocuments(documentsData);
-      } else {
-        console.log("❌ Documents response not successful:", response);
-        setDocuments([]);
+        setTotalPages(Math.ceil((response.data.totalItems || 0) / itemsPerPage));setDocuments(documentsData);
+      } else {setDocuments([]);
         setTotalItems(0);
         setTotalPages(0);
         showToast("Lỗi tải danh sách tài liệu", "error");
       }
-    } catch (error) {
-      console.error("Error loading documents:", error);
-      setDocuments([]);
+    } catch (error) {setDocuments([]);
       setTotalItems(0);
       setTotalPages(0);
       showToast("Lỗi tải danh sách tài liệu: " + error.message, "error");
@@ -150,11 +134,9 @@ const DocumentsList = () => {
   const handleEdit = async (documentItem) => {
     try {
       // Call API to get full document detail
-      console.log('🔍 Fetching document detail for edit:', documentItem.id);
       const response = await documentService.getDocumentById(documentItem.id);
-      
+
       if (response.success && response.data) {
-        console.log('✅ Document detail loaded:', response.data);
         setEditMode(true);
         setEditingDocument(response.data);  // Use full detail data
         setShowModal(true);
@@ -162,7 +144,6 @@ const DocumentsList = () => {
         throw new Error('Failed to load document detail');
       }
     } catch (error) {
-      console.error('❌ Error loading document detail:', error);
       showToast('Lỗi khi tải chi tiết tài liệu: ' + error.message, 'error');
     }
   };
@@ -192,9 +173,7 @@ const DocumentsList = () => {
       } else {
         showToast("Thêm tài liệu thành công!", "success");
       }
-    } catch (error) {
-      console.error("Error reloading data:", error);
-      showToast("Có lỗi xảy ra khi tải lại dữ liệu", "error");
+    } catch (error) {showToast("Có lỗi xảy ra khi tải lại dữ liệu", "error");
     }
 
     setShowModal(false);
@@ -209,19 +188,15 @@ const DocumentsList = () => {
   const handleViewDocument = async (documentItem) => {
     try {
       // Call API to get full document detail
-      console.log('🔍 Fetching document detail for view:', documentItem.id);
       const response = await documentService.getDocumentById(documentItem.id);
-      
+
       if (response.success && response.data) {
-        console.log('✅ Document detail loaded for view:', response.data);
         setSelectedDocument(response.data);  // Use full detail data
         setShowDocumentDetail(true);
       } else {
         throw new Error('Failed to load document detail');
       }
-    } catch (error) {
-      console.error('❌ Error loading document detail for view:', error);
-      showToast("Lỗi khi xem chi tiết tài liệu: " + error.message, "error");
+    } catch (error) {showToast("Lỗi khi xem chi tiết tài liệu: " + error.message, "error");
     }
   };
 

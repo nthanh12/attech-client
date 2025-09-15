@@ -57,10 +57,8 @@ const SEOManagement = () => {
         // TODO: Connect to backend SEO service
         // const seoData = await getSEOPages();
         setSeoPages([]);
-        console.log('✅ SEO management data loaded (empty until backend connection)');
-      } catch (error) {
-        console.error('Failed to fetch SEO data:', error);
-        setSeoPages([]);
+        // SEO management data loaded (empty until backend connection)
+      } catch (error) {setSeoPages([]);
       } finally {
         setLoading(false);
       }

@@ -74,9 +74,7 @@ const NotificationSearchBox = ({
             formatNotificationForDisplay(item, currentLanguage)
           );
           setSuggestions(formattedSuggestions);
-        } catch (error) {
-          console.error("Error fetching notification suggestions:", error);
-          setSuggestions([]);
+        } catch (error) {setSuggestions([]);
         } finally {
           setLoading(false);
         }

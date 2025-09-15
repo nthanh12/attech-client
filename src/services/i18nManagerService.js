@@ -16,9 +16,7 @@ class I18nManagerService {
       const enData = await enResponse.json();
 
       return { vi: viData, en: enData };
-    } catch (error) {
-      console.error('Error loading translations:', error);
-      throw new Error('Failed to load translation files');
+    } catch (error) {throw new Error('Failed to load translation files');
     }
   }
 

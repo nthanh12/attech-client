@@ -74,9 +74,7 @@ const SearchBox = ({
             formatNewsForDisplay(item, currentLanguage)
           );
           setSuggestions(formattedSuggestions);
-        } catch (error) {
-          console.error("Error fetching suggestions:", error);
-          setSuggestions([]);
+        } catch (error) {setSuggestions([]);
         } finally {
           setLoading(false);
         }

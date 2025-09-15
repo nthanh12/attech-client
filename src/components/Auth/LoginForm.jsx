@@ -35,15 +35,11 @@ const LoginForm = ({ onLoginSuccess, onSwitchToRegister }) => {
     try {
       const result = await login(formData.username, formData.password);
       
-      if (result.success) {
-        console.log('✅ Login successful:', result);
-        onLoginSuccess(result);
+      if (result.success) {onLoginSuccess(result);
       } else {
         setError(result.message || 'Login failed');
       }
-    } catch (error) {
-      console.error('❌ Login error:', error);
-      setError(error.message || 'Login failed. Please try again.');
+    } catch (error) {setError(error.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

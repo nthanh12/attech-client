@@ -95,9 +95,7 @@ const LanguageContentManager = () => {
       setTotalItems(contentsData.totalItems || 0);
       setTotalPages(contentsData.totalPages || 1);
       setCategories(categoriesData || []);
-    } catch (error) {
-      console.error("Error loading data:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi khi tải dữ liệu",
         type: "error",
@@ -159,9 +157,7 @@ const LanguageContentManager = () => {
       // Reload translations để cập nhật ngay lập tức
       await reloadTranslations('vi');
       await reloadTranslations('en');
-    } catch (error) {
-      console.error("Error saving content:", error);
-      alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
+    } catch (error) {alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
     }
   };
 
@@ -176,9 +172,7 @@ const LanguageContentManager = () => {
       // Reload translations sau khi xóa
       await reloadTranslations('vi');
       await reloadTranslations('en');
-    } catch (error) {
-      console.error("Error deleting content:", error);
-      alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
+    } catch (error) {alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
     }
   };
 

@@ -179,17 +179,8 @@ const NewsCreationForm = ({
             );
             setAttachments(transformedDocs);
           }
-        }
-
-        console.log("✅ Loaded existing attachments:", {
-          featuredImage: editingNews.ImageUrl || editingNews.imageUrl,
-          galleryCount: editingNews.attachments?.images?.length || 0,
-          documentsCount: editingNews.attachments?.documents?.length || 0,
-        });
-      }
-    } catch (error) {
-      console.error("Failed to load existing attachments:", error);
-    }
+        }}
+    } catch (error) {}
   };
 
   // Form handlers
@@ -214,9 +205,7 @@ const NewsCreationForm = ({
     try {
       const translated = await translateViToEn(text);
       handleInputChange(toField, translated);
-    } catch (err) {
-      console.error("Translation failed:", err);
-      setToast({ show: true, message: "Dịch thất bại", type: "error" });
+    } catch (err) {setToast({ show: true, message: "Dịch thất bại", type: "error" });
     } finally {
       setTranslating((prev) => ({ ...prev, [toField]: false }));
     }
@@ -295,12 +284,7 @@ const NewsCreationForm = ({
             );
 
             // Cleanup blob URL
-            URL.revokeObjectURL(imageInfo.preview);
-
-            console.log(
-              `✅ Gallery image uploaded: ${imageInfo.name} -> ID: ${attachmentData.id}`
-            );
-            return {
+            URL.revokeObjectURL(imageInfo.preview);return {
               success: true,
               imageInfo,
               attachmentId: attachmentData.id,
@@ -308,13 +292,7 @@ const NewsCreationForm = ({
           } else {
             throw new Error("Upload failed - invalid response");
           }
-        } catch (uploadError) {
-          console.error(
-            `❌ Gallery image upload failed: ${imageInfo.name}`,
-            uploadError
-          );
-
-          // Remove failed image from gallery
+        } catch (uploadError) {// Remove failed image from gallery
           setGalleryImages((prev) =>
             prev.filter((img) => img.id !== imageInfo.id)
           );
@@ -344,9 +322,7 @@ const NewsCreationForm = ({
           type: "error",
         });
       }
-    } catch (error) {
-      console.error("Gallery image upload error:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi khi thêm ảnh vào gallery",
         type: "error",
@@ -416,9 +392,7 @@ const NewsCreationForm = ({
           } else {
             throw new Error("Upload failed");
           }
-        } catch (uploadError) {
-          console.error("File upload failed:", uploadError);
-          setAttachments((prev) =>
+        } catch (uploadError) {setAttachments((prev) =>
             prev.filter((att) => att.id !== fileInfo.id)
           );
           setToast({
@@ -434,9 +408,7 @@ const NewsCreationForm = ({
         message: `Đang tải lên ${fileArray.length} file...`,
         type: "info",
       });
-    } catch (error) {
-      console.error("File upload error:", error);
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message: "Lỗi khi thêm file đính kèm",
         type: "error",
@@ -507,27 +479,12 @@ const NewsCreationForm = ({
           ],
         }),
       };
-
-      console.log("💾 Saving news with new flow...", { isEditMode });
-      console.log("📤 Data gửi lên BE:", JSON.stringify(newsData, null, 2));
-      console.log("🖼️ Featured image ID:", featuredImageId);
-      console.log("🎨 Gallery images raw:", galleryImages);
-      console.log(
-        "🎨 Gallery attachmentIds:",
-        galleryImages.map((img) => img.attachmentId)
-      );
-      console.log("📎 Attachments raw:", attachments);
-      console.log(
-        "📎 Attachment IDs:",
-        attachments.map((att) => att.attachmentId || att.id)
-      );
+      // Data prepared for backend
 
       // 1. Create or Update news using newsService methods
       const response = isEditMode
         ? await updateNews(editingNews.id, newsData)
         : await createNews(newsData);
-
-      console.log("🔍 BE Response:", response);
 
       if (response?.status === 1 && response?.data?.id) {
         const newsId = response.data.id;
@@ -558,16 +515,7 @@ const NewsCreationForm = ({
         const errorMessage = response?.message || "Lưu thất bại";
         throw new Error(errorMessage);
       }
-    } catch (error) {
-      console.error("Save failed:", error);
-      console.error("Error details:", {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-        url: error.config?.url
-      });
-      
-      setToast({
+    } catch (error) {setToast({
         show: true,
         message:
           error.message || error.response?.data?.message || "Lưu thất bại",

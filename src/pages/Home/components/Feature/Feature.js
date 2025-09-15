@@ -35,9 +35,7 @@ const Feature = () => {
 
         setCategories(categoriesData);
         setFeaturedNews(newsData);
-      } catch (error) {
-        console.error("Error loading featured news:", error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

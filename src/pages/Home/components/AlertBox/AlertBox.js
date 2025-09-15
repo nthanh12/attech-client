@@ -36,9 +36,7 @@ const AlertBox = () => {
 
         setCategories(categoriesData);
         setLatestNews(newsData);
-      } catch (error) {
-        console.error("Error loading latest news:", error);
-      } finally {
+      } catch (error) {} finally {
         setLoading(false);
       }
     };

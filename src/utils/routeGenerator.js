@@ -90,9 +90,7 @@ export const generateRoutes = (routesData) => {
 
         const children = buildRouteTree(routes, route.id);
 
-        if (!Component) {
-          console.warn(`Component ${route.component} not found`);
-          return null;
+        if (!Component) {return null;
         }
 
         const routeElement = (

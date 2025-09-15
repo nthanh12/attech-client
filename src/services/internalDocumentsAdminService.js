@@ -34,14 +34,10 @@ const internalDocumentsAdminService = {
         queryParams.sortDirection = params.sortDirection || "desc";
       }
 
-      console.log("📡 Fetching internal documents (admin):", queryParams);
+      // Fetching internal documents (admin)
       const response = await api.get("/api/internal-documents/find-all", {
         params: queryParams,
-      });
-
-      console.log("📨 Internal documents response:", response.data);
-
-      // Handle API response format
+      });// Handle API response format
       if (response.data && response.data.status === 1 && response.data.data) {
         const dataObj = response.data.data;
         return {
@@ -62,9 +58,7 @@ const internalDocumentsAdminService = {
         success: false,
         message: "Invalid response format",
       };
-    } catch (error) {
-      console.error("❌ Get internal documents error:", error);
-      return {
+    } catch (error) {return {
         success: false,
         message:
           error.response?.data?.message || "Failed to fetch internal documents",
@@ -76,14 +70,9 @@ const internalDocumentsAdminService = {
    * Get internal document by ID (admin view)
    */
   getInternalDocumentById: async (documentId) => {
-    try {
-      console.log("📡 Fetching internal document by ID:", documentId);
-      const response = await api.get(
+    try {const response = await api.get(
         `/api/internal-documents/find-by-id/${documentId}`
-      );
-
-      console.log("✅ Internal document detail fetched successfully");
-      if (response.data && response.data.status === 1) {
+      );if (response.data && response.data.status === 1) {
         return {
           success: true,
           data: response.data.data,
@@ -94,9 +83,7 @@ const internalDocumentsAdminService = {
         success: false,
         message: "Internal document not found",
       };
-    } catch (error) {
-      console.error("❌ Get internal document by ID error:", error);
-      return {
+    } catch (error) {return {
         success: false,
         message:
           error.response?.data?.message ||
@@ -109,39 +96,22 @@ const internalDocumentsAdminService = {
    * Create new internal document
    */
   createInternalDocument: async (documentData) => {
-    try {
-      console.log("🚀 Creating internal document:", documentData);
-
-      const payload = {
+    try {const payload = {
         title: documentData.title,
         description: documentData.description || "",
         category: documentData.category,
         attachmentId: documentData.attachmentId || null, // Single attachmentId now
         status: documentData.status || 1,
         timePosted: documentData.timePosted || null,
-      };
-
-      console.log(
-        "📡 Making API call to /api/internal-documents/create with payload:",
-        payload
-      );
-
-      const response = await api.post(
+      };const response = await api.post(
         "/api/internal-documents/create",
         payload
-      );
-
-      console.log("✅ API response received:", response);
-
-      return {
+      );return {
         success: true,
         data: response.data,
         message: "Tạo tài liệu nội bộ thành công",
       };
-    } catch (error) {
-      console.error("❌ Error creating internal document:", error);
-
-      const errorMessage =
+    } catch (error) {const errorMessage =
         error.response?.data?.message ||
         error.response?.data?.Message ||
         error.message ||
@@ -161,44 +131,22 @@ const internalDocumentsAdminService = {
    * Update internal document
    */
   updateInternalDocument: async (documentId, documentData) => {
-    try {
-      console.log("🔧 Updating internal document:", {
-        documentId,
-        documentData,
-      });
-
-      const payload = {
+    try {const payload = {
         title: documentData.title,
         description: documentData.description || "",
         category: documentData.category,
         attachmentId: documentData.attachmentId || null, // Single attachmentId now
         status: documentData.status || 1,
         timePosted: documentData.timePosted || null,
-      };
-
-      console.log(
-        "📡 Making API call to /api/internal-documents/update/" +
-          documentId +
-          " with payload:",
-        payload
-      );
-
-      const response = await api.put(
+      };const response = await api.put(
         `/api/internal-documents/update/${documentId}`,
         payload
-      );
-
-      console.log("✅ Update API response received:", response);
-
-      return {
+      );return {
         success: true,
         data: response.data,
         message: "Cập nhật tài liệu nội bộ thành công",
       };
-    } catch (error) {
-      console.error("❌ Error updating internal document:", error);
-
-      return {
+    } catch (error) {return {
         success: false,
         message:
           error.response?.data?.message ||
@@ -215,21 +163,14 @@ const internalDocumentsAdminService = {
    * Delete internal document
    */
   deleteInternalDocument: async (documentId) => {
-    try {
-      console.log("📡 Deleting internal document:", documentId);
-      const response = await api.delete(
+    try {const response = await api.delete(
         `/api/internal-documents/delete/${documentId}`
-      );
-
-      console.log("✅ Internal document deleted successfully");
-      return {
+      );return {
         success: true,
         data: response.data,
         message: "Xóa tài liệu nội bộ thành công",
       };
-    } catch (error) {
-      console.error("❌ Delete internal document error:", error);
-      return {
+    } catch (error) {return {
         success: false,
         message:
           error.response?.data?.message || "Failed to delete internal document",
@@ -241,10 +182,7 @@ const internalDocumentsAdminService = {
    * Download internal document
    */
   downloadInternalDocument: async (documentId, filename) => {
-    try {
-      console.log("📡 Downloading internal document:", documentId, filename);
-
-      const response = await api.get(
+    try {const response = await api.get(
         `/api/internal-documents/download/${documentId}`,
         {
           responseType: "blob",
@@ -260,13 +198,8 @@ const internalDocumentsAdminService = {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-
-      console.log("✅ Internal document downloaded successfully");
-      return { success: true };
-    } catch (error) {
-      console.error("❌ Download internal document error:", error);
-      throw new Error(
+      window.URL.revokeObjectURL(url);return { success: true };
+    } catch (error) {throw new Error(
         error.response?.data?.message || "Failed to download internal document"
       );
     }
@@ -326,9 +259,7 @@ const internalDocumentsAdminService = {
         data: [],
         total: 0,
       };
-    } catch (error) {
-      console.error("Error searching internal documents:", error);
-      return {
+    } catch (error) {return {
         success: false,
         message: "Lỗi tìm kiếm tài liệu nội bộ",
         data: [],
