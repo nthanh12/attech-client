@@ -24,7 +24,7 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    
+
     return config;
   },
   (error) => {
@@ -54,24 +54,10 @@ api.interceptors.response.use(
       }
     }
     
+
     if (error.response?.status === 401 && !originalRequest._retry) {
 
       originalRequest._retry = true;
-      
-      
-      // Special handling for specific endpoints that may have UserLevel restrictions
-      const fullUrl = (originalRequest.baseURL || '') + (originalRequest.url || '');
-      
-      if (fullUrl && (
-        fullUrl.includes('/api/news') ||
-        fullUrl.includes('/api/products') ||
-        fullUrl.includes('/api/services') ||
-        fullUrl.includes('/api/notifications') ||
-        fullUrl.includes('/api/notification-category') ||
-        fullUrl.includes('/api/dashboard')
-      )) {
-        return Promise.reject(error);
-      }
       
       
       // Check if we have refresh token
@@ -127,5 +113,6 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 
 export default api;

@@ -9,6 +9,7 @@ import AlbumList from './pages/AlbumList.jsx';
 import DocumentsList from './pages/DocumentsList.jsx';
 import InternalDocumentsList from './pages/InternalDocumentsList.jsx';
 import ContactList from './pages/ContactList.jsx';
+import PhoneBookList from './pages/PhoneBookList.jsx';
 import LanguageContentManager from './pages/LanguageContentManager.jsx';
 
 import NotFound from './pages/NotFound/NotFound';
@@ -42,6 +43,7 @@ const adminRoutesConfig = [
       { path: 'documents', element: DocumentsList },
       { path: 'internal-documents', element: InternalDocumentsList },
       { path: 'contacts', element: ContactList },
+      { path: 'phonebook', element: PhoneBookList },
       { path: 'language-content', element: LanguageContentManager },
       { path: 'users', element: UserManagement },
       { path: 'roles', element: RoleManagement },

@@ -91,13 +91,37 @@ const InternalDocuments = () => {
               <i className="bi bi-folder-fill me-3 text-primary"></i>
               {categoryTitle}
             </h1>
-          </div>
-          <div className="user-header-right">
-            <span className="badge bg-info fs-6 px-3 py-2">
+            <span className="badge bg-info fs-6 px-3 py-2 ms-3">
               {totalItems} tài liệu
             </span>
           </div>
-        </div>
+          <div className="user-header-right">
+            <div className="d-flex gap-2 align-items-center">
+              <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Nhập từ khóa tìm kiếm..."
+                      value={searchTerm}
+                      onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        if (e.target.value === "") {
+                          setCurrentPage(1);
+                          fetchDocumentsByCategory(category, 1, "");
+                        }
+                      }}
+                      onKeyPress={(e) => e.key === "Enter" && handleSearch(e)}
+                      style={{ width: "300px" }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={handleSearch}
+                    >
+                      Tìm kiếm
+                    </button>
+                  </div>
+                </div>
+              </div>
       </div>
       <div className="documents-container">
         {loading && (
@@ -125,44 +149,6 @@ const InternalDocuments = () => {
 
         {!loading && !error && (
           <>
-            {/* Search Section - Always show */}
-            <div className="user-dashboard-header mb-3">
-              <div className="user-header-content">
-                <div className="user-header-left">
-                  <h5 className="mb-0">
-                    <i className="bi bi-search me-2"></i>
-                    Tìm kiếm tài liệu
-                  </h5>
-                </div>
-                <div className="user-header-right">
-                  <div className="d-flex gap-2">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Nhập từ khóa tìm kiếm..."
-                      value={searchTerm}
-                      onChange={(e) => {
-                        setSearchTerm(e.target.value);
-                        if (e.target.value === "") {
-                          setCurrentPage(1);
-                          fetchDocumentsByCategory(category, 1, "");
-                        }
-                      }}
-                      onKeyPress={(e) => e.key === "Enter" && handleSearch(e)}
-                      style={{ width: "300px" }}
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={handleSearch}
-                    >
-                      Tìm kiếm
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div className="recent-documents">
               <div className="section-header">
                 <h3>

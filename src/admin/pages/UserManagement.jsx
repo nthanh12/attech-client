@@ -2,7 +2,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { getRoleColor, getRoleText, getAllRoles } from "../../utils/roleUtils";
 import { canModifyUser } from "../../utils/hierarchyUtils";
-import { fetchUsers, getUsers, createUser, updateUser, deleteUser, getRoleText as getServiceRoleText } from "../../services/userService";
+import {
+  fetchUsers,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  getRoleText as getServiceRoleText,
+} from "../../services/userService";
 import { getRoles } from "../../services/roleService";
 import PageWrapper from "../components/PageWrapper";
 import AdminTable from "../components/AdminTable";
@@ -56,6 +63,7 @@ const UserManagement = () => {
   // Form state
   const [formData, setFormData] = useState({
     username: "",
+    password: "",
     email: "",
     fullName: "",
     phone: "",
@@ -68,15 +76,17 @@ const UserManagement = () => {
   // Simple role filtering based on hierarchy
   const getFilteredRoles = () => {
     if (!roles || roles.length === 0) {
-      return [];
+      // Return default roles if no roles loaded
+      return [
+        { id: 1, name: "SuperAdmin" },
+        { id: 2, name: "Manager" },
+        { id: 3, name: "Editor" },
+        { id: 4, name: "User" },
+      ];
     }
-    
-    // Admin and above can see Admin + Editor + User roles in filter dropdown
-    if (currentUser?.roleId <= ROLES.ADMIN) {
-      return roles.filter(role => role.id >= ROLES.ADMIN);
-    }
-    
-    return roles;
+
+    // Cho phép tất cả 4 roles: 1, 2, 3, 4
+    return roles.filter((role) => [1, 2, 3, 4].includes(role.id));
   };
 
   // Filter config for AdminFilter component
@@ -86,17 +96,17 @@ const UserManagement = () => {
       type: "search",
       label: "Tìm kiếm",
       placeholder: "Nhập tên đăng nhập, email hoặc họ tên...",
-      icon: "fas fa-search"
+      icon: "fas fa-search",
     },
     {
       key: "role",
       type: "select",
       label: "Vai trò",
       icon: "fas fa-user-tag",
-      options: getFilteredRoles().map(role => ({
+      options: getFilteredRoles().map((role) => ({
         value: role.id,
-        label: role.name
-      }))
+        label: role.name,
+      })),
     },
     {
       key: "status",
@@ -105,9 +115,9 @@ const UserManagement = () => {
       icon: "fas fa-toggle-on",
       options: [
         { value: "active", label: "Hoạt động" },
-        { value: "inactive", label: "Tạm khóa" }
-      ]
-    }
+        { value: "inactive", label: "Tạm khóa" },
+      ],
+    },
   ];
 
   // Handle filters change
@@ -115,13 +125,12 @@ const UserManagement = () => {
     setFilters(newFilters);
   };
 
-
   // Debounce search - đợi user gõ xong
   useEffect(() => {
     if (filters.search !== searchDebounce) {
       setIsSearching(true);
     }
-    
+
     const timer = setTimeout(() => {
       setSearchDebounce(filters.search);
       setIsSearching(false);
@@ -137,12 +146,18 @@ const UserManagement = () => {
     }
     try {
       const [usersData, rolesData] = await Promise.all([
-        fetchUsers(currentPage, itemsPerPage, searchDebounce, filters, sortConfig),
-        getRoles({ size: 100 })
+        fetchUsers(
+          currentPage,
+          itemsPerPage,
+          searchDebounce,
+          filters,
+          sortConfig
+        ),
+        getRoles({ size: 100 }),
       ]);
 
       // Handle users data (fetchUsers returns direct data, not wrapped in status/data)
-      const mappedUsers = (usersData?.items || []).map(user => ({
+      const mappedUsers = (usersData?.items || []).map((user) => ({
         id: user.id,
         username: user.username,
         fullName: user.fullName,
@@ -152,18 +167,20 @@ const UserManagement = () => {
         roleName: user.roleName,
         status: user.status,
         lastLogin: user.lastLogin,
-        createdAt: user.createdAt
+        createdAt: user.createdAt,
       }));
-      
+
       setUsers(mappedUsers);
       setTotalItems(usersData?.totalItems || 0);
       setTotalPages(usersData?.totalPages || 0);
 
       // Handle roles data
-      if (rolesData && rolesData.data && rolesData.data.items) {setRoles(rolesData.data.items);
-      } else {}
-
-    } catch (error) {showToast("Tải dữ liệu thất bại: " + error.message, "error");
+      if (rolesData && rolesData.data && rolesData.data.items) {
+        setRoles(rolesData.data.items);
+      } else {
+      }
+    } catch (error) {
+      showToast("Tải dữ liệu thất bại: " + error.message, "error");
     } finally {
       if (showLoadingIndicator) {
         setIsLoading(false);
@@ -185,7 +202,14 @@ const UserManagement = () => {
       // Other filters or pagination changed, show loading
       loadData(true);
     }
-  }, [currentPage, itemsPerPage, searchDebounce, filters.role, filters.status, sortConfig]);
+  }, [
+    currentPage,
+    itemsPerPage,
+    searchDebounce,
+    filters.role,
+    filters.status,
+    sortConfig,
+  ]);
 
   const showToast = (message, type = "info") => {
     setToast({ show: true, message, type });
@@ -198,15 +222,13 @@ const UserManagement = () => {
   const handleCreate = () => {
     setEditMode(false);
     setEditingUser(null);
-    
-    // Get default role - lowest privilege role available to current user
-    const availableRoles = getFilteredRoles();
-    const defaultRoleId = availableRoles.length > 0 
-      ? availableRoles[availableRoles.length - 1].id  // Last role (highest ID = lowest privilege)
-      : 3; // Fallback to Editor if no roles available
-    
+
+    // Get default role - cho phép roleId 1, 2, 3, 4
+    const defaultRoleId = 4; // Default to User role (lowest privilege)
+
     setFormData({
       username: "",
+      password: "",
       email: "",
       fullName: "",
       phone: "",
@@ -228,6 +250,7 @@ const UserManagement = () => {
     setEditingUser(user);
     setFormData({
       username: user.username,
+      password: "", // Don't show existing password
       email: user.email || "",
       fullName: user.fullName || "",
       phone: user.phone || "",
@@ -245,42 +268,45 @@ const UserManagement = () => {
       return;
     }
 
-    if (window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.fullName}"?`)) {
+    if (
+      window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.fullName}"?`)
+    ) {
       try {
         const response = await deleteUser(user.id);
-        
+
         if (response.status === 1) {
           showToast("Xóa người dùng thành công", "success");
           loadData(false); // Reload data from server without loading indicator
         } else {
           throw new Error(response.message || "Xóa thất bại");
         }
-      } catch (error) {showToast(error.message || "Không thể xóa người dùng", "error");
+      } catch (error) {
+        showToast(error.message || "Không thể xóa người dùng", "error");
       }
     }
   };
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.username.trim()) {
       errors.username = "Tên đăng nhập là bắt buộc";
     }
-    
+
     if (!formData.fullName.trim()) {
       errors.fullName = "Họ tên là bắt buộc";
     }
-    
+
     // Email required for create user
     if (!editMode && !formData.email) {
       errors.email = "Email là bắt buộc";
     }
-    
+
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Email không hợp lệ";
     }
 
-    if (!editMode && users.some(u => u.username === formData.username)) {
+    if (!editMode && users.some((u) => u.username === formData.username)) {
       errors.username = "Tên đăng nhập đã tồn tại";
     }
 
@@ -301,11 +327,11 @@ const UserManagement = () => {
           email: formData.email || null,
           phone: formData.phone || null,
           roleId: formData.roleId,
-          status: formData.status === "active" ? 1 : 0
+          status: formData.status === "active" ? 1 : 0,
         };
-        
+
         const response = await updateUser(updateData);
-        
+
         if (response.status === 1) {
           showToast("Cập nhật người dùng thành công", "success");
           loadData(false); // Reload data from server without loading indicator
@@ -314,32 +340,46 @@ const UserManagement = () => {
         }
       } else {
         // Create user - theo CreateUserDto
-        // Get default role if not selected
+        // Get default role if not selected - chỉ cho phép 1, 2, 3
         let roleId = formData.roleId;
         if (!roleId) {
-          const availableRoles = getFilteredRoles();
-          roleId = availableRoles.length > 0 
-            ? availableRoles[availableRoles.length - 1].id  // Lowest privilege role
-            : 3; // Fallback
+          roleId = 4; // Default to role 4 (User - lowest privilege)
         }
-        
+
+        // Validate roleId - chấp nhận 1, 2, 3, 4
+        const validRoleIds = [1, 2, 3, 4];
+        if (!validRoleIds.includes(parseInt(roleId))) {
+          roleId = 4; // Fallback to User role
+        }
+
         const createData = {
-          username: formData.username,
-          password: "123456", // Default password
-          fullName: formData.fullName,
-          email: formData.email, // Required theo document
-          phone: formData.phone || null,
-          roleId: roleId,
-          status: formData.status === "active" ? 1 : 0
+          username: formData.username?.trim(),
+          password: formData.password?.trim(),
+          fullName: formData.fullName?.trim(),
+          email: formData.email?.trim(), // Required theo document
+          phone: formData.phone?.trim() || "",
+          roleId: parseInt(roleId),
+          status: formData.status === "active" ? 1 : 0,
         };
 
-        // Validate email required
-        if (!createData.email) {
-          throw new Error("Email là bắt buộc khi tạo người dùng mới");
+        console.log("Creating user with data:", createData);
+
+        // Validate required fields
+        if (!createData.username) {
+          throw new Error("Tên đăng nhập là bắt buộc");
         }
-        
+        if (!createData.password) {
+          throw new Error("Mật khẩu là bắt buộc");
+        }
+        if (!createData.fullName) {
+          throw new Error("Họ tên là bắt buộc");
+        }
+        if (!createData.email) {
+          throw new Error("Email là bắt buộc");
+        }
+
         const response = await createUser(createData);
-        
+
         if (response.Status === 1) {
           showToast("Tạo người dùng thành công", "success");
           loadData(false); // Reload data from server without loading indicator
@@ -347,9 +387,16 @@ const UserManagement = () => {
           throw new Error(response.Message || "Tạo thất bại");
         }
       }
-      
+
       setShowModal(false);
-    } catch (error) {showToast(error.message || (editMode ? "Không thể cập nhật người dùng" : "Không thể tạo người dùng"), "error");
+    } catch (error) {
+      showToast(
+        error.message ||
+          (editMode
+            ? "Không thể cập nhật người dùng"
+            : "Không thể tạo người dùng"),
+        "error"
+      );
     }
   };
 
@@ -363,22 +410,26 @@ const UserManagement = () => {
       key: "username",
       label: "Tên đăng nhập",
       sortable: true,
+      width: "18%",
     },
     {
       key: "fullName",
       label: "Họ tên",
       sortable: true,
+      width: "20%",
     },
     {
       key: "email",
       label: "Email",
       sortable: true,
+      width: "25%",
       render: (row) => row.email || "Chưa có",
     },
     {
       key: "role",
-      label: "Vai trò", 
+      label: "Vai trò",
       sortable: true,
+      width: "12%",
       render: (row) => {
         const roleId = row.roleId || 3;
         return (
@@ -395,9 +446,14 @@ const UserManagement = () => {
       key: "status",
       label: "Trạng thái",
       sortable: true,
+      width: "10%",
       render: (row) => (
-        <span className={`badge ${row.status === 'active' ? 'bg-success' : 'bg-danger'}`}>
-          {row.status === 'active' ? 'Hoạt động' : 'Tạm khóa'}
+        <span
+          className={`badge ${
+            row.status === "active" ? "bg-success" : "bg-danger"
+          }`}
+        >
+          {row.status === "active" ? "Hoạt động" : "Tạm khóa"}
         </span>
       ),
     },
@@ -405,6 +461,7 @@ const UserManagement = () => {
       key: "lastLogin",
       label: "Đăng nhập cuối",
       sortable: true,
+      width: "15%",
       render: (row) => formatDate(row.lastLogin),
     },
   ];
@@ -502,20 +559,21 @@ const UserManagement = () => {
               label: "Sửa",
               onClick: handleEdit,
               className: "admin-btn admin-btn-xs admin-btn-info",
-              condition: (row) => canModifyUser(currentUser, row).canEdit
+              condition: (row) => canModifyUser(currentUser, row).canEdit,
             },
             {
               label: "Xóa",
               onClick: handleDelete,
               className: "admin-btn admin-btn-xs admin-btn-danger",
-              condition: (row) => canModifyUser(currentUser, row).canDelete
-            }
+              condition: (row) => canModifyUser(currentUser, row).canDelete,
+            },
           ]}
           sortConfig={sortConfig}
           onSort={(key) => {
             setSortConfig((prev) => ({
               key,
-              direction: prev.key === key && prev.direction === "desc" ? "asc" : "desc",
+              direction:
+                prev.key === key && prev.direction === "desc" ? "asc" : "desc",
             }));
           }}
           pagination={{
@@ -523,7 +581,7 @@ const UserManagement = () => {
             totalPages,
             totalItems,
             itemsPerPage,
-            onPageChange: setCurrentPage
+            onPageChange: setCurrentPage,
           }}
           loading={isLoading}
         />
@@ -534,88 +592,190 @@ const UserManagement = () => {
           onClose={() => setShowModal(false)}
           onSubmit={handleSubmit}
           title={editMode ? "Chỉnh sửa người dùng" : "Thêm người dùng mới"}
-          size="lg"
-          submitText={editMode ? "Cập nhật" : "Thêm mới"}
+          size="md"
+          submitText={editMode ? "Cập nhật" : "Tạo tài khoản"}
           loading={isLoading}
         >
-            <div className="form-grid">
-              <div className="form-group">
-                <label>Tên đăng nhập *</label>
-                <input
-                  type="text"
-                  className={`form-control ${formErrors.username ? 'is-invalid' : ''}`}
-                  value={formData.username}
-                  onChange={(e) => setFormData({...formData, username: e.target.value})}
-                />
-                {formErrors.username && (
-                  <div className="invalid-feedback">{formErrors.username}</div>
+          <div className="user-form">
+            <div className="user-form-content">
+              <div className="form-section">
+                <h6 className="section-title">
+                  <i className="bi bi-person"></i>
+                  Thông tin cơ bản
+                </h6>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">
+                      <i className="bi bi-at"></i>
+                      Tên đăng nhập <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className={`form-control ${
+                        formErrors.username ? "is-invalid" : ""
+                      }`}
+                      value={formData.username}
+                      onChange={(e) =>
+                        setFormData({ ...formData, username: e.target.value })
+                      }
+                      placeholder="Nhập tên đăng nhập"
+                      disabled={editMode}
+                    />
+                    {formErrors.username && (
+                      <div className="invalid-feedback">
+                        {formErrors.username}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">
+                      <i className="bi bi-person-badge"></i>
+                      Họ và tên <span className="required">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className={`form-control ${
+                        formErrors.fullName ? "is-invalid" : ""
+                      }`}
+                      value={formData.fullName}
+                      onChange={(e) =>
+                        setFormData({ ...formData, fullName: e.target.value })
+                      }
+                      placeholder="Nhập họ và tên đầy đủ"
+                    />
+                    {formErrors.fullName && (
+                      <div className="invalid-feedback">
+                        {formErrors.fullName}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {!editMode && (
+                  <div className="form-group">
+                    <label className="form-label">
+                      <i className="bi bi-shield-lock"></i>
+                      Mật khẩu <span className="required">*</span>
+                    </label>
+                    <input
+                      type="password"
+                      className={`form-control ${
+                        formErrors.password ? "is-invalid" : ""
+                      }`}
+                      value={formData.password}
+                      onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                      }
+                      placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
+                    />
+                    {formErrors.password && (
+                      <div className="invalid-feedback">
+                        {formErrors.password}
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
-              
-              <div className="form-group">
-                <label>Họ tên *</label>
-                <input
-                  type="text"
-                  className={`form-control ${formErrors.fullName ? 'is-invalid' : ''}`}
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                />
-                {formErrors.fullName && (
-                  <div className="invalid-feedback">{formErrors.fullName}</div>
-                )}
+
+              <div className="form-section">
+                <h6 className="section-title">
+                  <i className="bi bi-envelope"></i>
+                  Thông tin liên hệ
+                </h6>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">
+                      <i className="bi bi-envelope"></i>
+                      Email {!editMode && <span className="required">*</span>}
+                    </label>
+                    <input
+                      type="email"
+                      className={`form-control ${
+                        formErrors.email ? "is-invalid" : ""
+                      }`}
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      placeholder="email@domain.com"
+                      required={!editMode}
+                    />
+                    {formErrors.email && (
+                      <div className="invalid-feedback">{formErrors.email}</div>
+                    )}
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">
+                      <i className="bi bi-telephone"></i>
+                      Số điện thoại
+                    </label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      value={formData.phone}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
+                      placeholder="0xxxxxxxxx"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="form-group">
-                <label>Email {!editMode && <span className="text-danger">*</span>}</label>
-                <input
-                  type="email"
-                  className={`form-control ${formErrors.email ? 'is-invalid' : ''}`}
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  required={!editMode}
-                />
-                {formErrors.email && (
-                  <div className="invalid-feedback">{formErrors.email}</div>
-                )}
-              </div>
+              <div className="form-section">
+                <h6 className="section-title">
+                  <i className="bi bi-gear"></i>
+                  Cài đặt tài khoản
+                </h6>
 
-              <div className="form-group">
-                <label>Số điện thoại</label>
-                <input
-                  type="tel"
-                  className="form-control"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                />
-              </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">
+                      <i className="bi bi-person-gear"></i>
+                      Vai trò
+                    </label>
+                    <select
+                      className="form-control form-select"
+                      value={formData.roleId}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          roleId: parseInt(e.target.value),
+                        })
+                      }
+                    >
+                      {getFilteredRoles().map((role) => (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-              <div className="form-group">
-                <label>Vai trò</label>
-                <select
-                  className="form-control"
-                  value={formData.roleId}
-                  onChange={(e) => setFormData({...formData, roleId: parseInt(e.target.value)})}
-                >
-                  {getFilteredRoles().map((role) => (
-                    <option key={role.id} value={role.id}>
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label>Trạng thái</label>
-                <select
-                  className="form-control"
-                  value={formData.status}
-                  onChange={(e) => setFormData({...formData, status: e.target.value})}
-                >
-                  <option value="active">Hoạt động</option>
-                  <option value="inactive">Tạm khóa</option>
-                </select>
+                  <div className="form-group">
+                    <label className="form-label">
+                      <i className="bi bi-toggle-on"></i>
+                      Trạng thái
+                    </label>
+                    <select
+                      className="form-control form-select"
+                      value={formData.status}
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: e.target.value })
+                      }
+                    >
+                      <option value="active">Hoạt động</option>
+                      <option value="inactive">Tạm khóa</option>
+                    </select>
+                  </div>
+                </div>
               </div>
             </div>
+          </div>
         </FormModal>
 
         <ToastMessage

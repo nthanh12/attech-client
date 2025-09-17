@@ -85,9 +85,15 @@ const LanguageContentManager = () => {
     setIsLoading(true);
     try {
       const [contentsData, categoriesData] = await Promise.all([
-        fetchLanguageContents(currentPage, itemsPerPage, searchDebounce, {
-          category: filters.category || undefined
-        }, sortConfig),
+        fetchLanguageContents(
+          currentPage,
+          itemsPerPage,
+          searchDebounce,
+          {
+            category: filters.category || undefined,
+          },
+          sortConfig
+        ),
         fetchLanguageContentCategories(),
       ]);
 
@@ -95,7 +101,8 @@ const LanguageContentManager = () => {
       setTotalItems(contentsData.totalItems || 0);
       setTotalPages(contentsData.totalPages || 1);
       setCategories(categoriesData || []);
-    } catch (error) {setToast({
+    } catch (error) {
+      setToast({
         show: true,
         message: "Lỗi khi tải dữ liệu",
         type: "error",
@@ -153,11 +160,12 @@ const LanguageContentManager = () => {
 
       closeModal();
       loadContents();
-      
+
       // Reload translations để cập nhật ngay lập tức
-      await reloadTranslations('vi');
-      await reloadTranslations('en');
-    } catch (error) {alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
+      await reloadTranslations("vi");
+      await reloadTranslations("en");
+    } catch (error) {
+      alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
     }
   };
 
@@ -168,11 +176,12 @@ const LanguageContentManager = () => {
       await deleteLanguageContent(id);
       alert("Xóa thành công!");
       loadContents();
-      
+
       // Reload translations sau khi xóa
-      await reloadTranslations('vi');
-      await reloadTranslations('en');
-    } catch (error) {alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
+      await reloadTranslations("vi");
+      await reloadTranslations("en");
+    } catch (error) {
+      alert(`Lỗi: ${error.message || "Có lỗi xảy ra"}`);
     }
   };
 
@@ -198,7 +207,7 @@ const LanguageContentManager = () => {
       {/* Header */}
       <div className="language-content-header">
         <div className="header-info">
-          <h2>Quản lý Thông tin</h2>
+          <h2>Quản lý ngôn ngữ</h2>
           <p>Quản lý nội dung đa ngôn ngữ cho hệ thống</p>
         </div>
         <button className="btn btn-primary" onClick={() => openModal()}>

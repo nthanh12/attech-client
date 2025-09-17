@@ -43,10 +43,13 @@ export const fetchUsers = async (pageNumber = 1, pageSize = 10, keyword = "", fi
     const response = await api.get("/api/user", { params });
     
     if (response.data && response.data.status === 1 && response.data.data) {
+      const totalItems = response.data.data.totalItems || response.data.data.total || 0;
+      const totalPages = Math.ceil(totalItems / pageSize);
+
       return {
         items: response.data.data.items || [],
-        totalItems: response.data.data.totalItems || 0,
-        totalPages: response.data.data.totalPages || 0
+        totalItems: totalItems,
+        totalPages: totalPages
       };
     }
     

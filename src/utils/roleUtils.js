@@ -4,21 +4,22 @@
 
 /**
  * Get color for role badge
- * @param {number} roleId - Role ID (1-3)
+ * @param {number} roleId - Role ID (1-4)
  * @returns {string} Color class
  */
 export const getRoleColor = (roleId) => {
   switch (roleId) {
     case 1: return 'danger';    // Red for SuperAdmin
-    case 2: return 'warning';   // Orange for Admin  
+    case 2: return 'warning';   // Orange for Admin
     case 3: return 'info';      // Blue for Editor
+    case 4: return 'success';   // Green for User
     default: return 'secondary';
   }
 };
 
 /**
  * Get display text for role
- * @param {number} roleId - Role ID (1-3)
+ * @param {number} roleId - Role ID (1-4)
  * @returns {string} Display text
  */
 export const getRoleText = (roleId) => {
@@ -26,13 +27,14 @@ export const getRoleText = (roleId) => {
     case 1: return 'Super Admin';
     case 2: return 'Admin';
     case 3: return 'Editor';
+    case 4: return 'User';
     default: return 'Unknown';
   }
 };
 
 /**
  * Get icon for role
- * @param {number} roleId - Role ID (1-3)
+ * @param {number} roleId - Role ID (1-4)
  * @returns {string} Icon emoji
  */
 export const getRoleIcon = (roleId) => {
@@ -40,6 +42,7 @@ export const getRoleIcon = (roleId) => {
     case 1: return '👑';       // Crown for SuperAdmin
     case 2: return '⚡';      // Lightning for Admin
     case 3: return '📝';       // Pencil for Editor
+    case 4: return '👤';       // Person for User
     default: return '❓';
   }
 };
@@ -54,6 +57,7 @@ export const getRoleClass = (roleId) => {
     case 1: return 'role-superadmin';
     case 2: return 'role-admin';
     case 3: return 'role-editor';
+    case 4: return 'role-user';
     default: return 'role-unknown';
   }
 };
@@ -87,6 +91,14 @@ export const getAllRoles = () => {
       icon: '📝',
       color: 'info',
       description: 'Quản lý content'
+    },
+    {
+      id: 4,
+      name: 'user',
+      label: 'User',
+      icon: '👤',
+      color: 'success',
+      description: 'Người dùng cơ bản'
     }
   ];
 };

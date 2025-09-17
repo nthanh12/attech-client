@@ -58,9 +58,17 @@ const AlbumList = () => {
         const params = {
           page: currentPage,
           limit: itemsPerPage,
-          search: searchFilters.search !== undefined ? searchFilters.search : searchDebounce || "",
-          status: searchFilters.status !== undefined ? searchFilters.status : filters.status,
-        };const response = await albumService.fetchAlbums(params);if (response.success) {
+          search:
+            searchFilters.search !== undefined
+              ? searchFilters.search
+              : searchDebounce || "",
+          status:
+            searchFilters.status !== undefined
+              ? searchFilters.status
+              : filters.status,
+        };
+        const response = await albumService.fetchAlbums(params);
+        if (response.success) {
           let albumsData = Array.isArray(response.data) ? response.data : [];
 
           // Update pagination info from server response
@@ -68,12 +76,14 @@ const AlbumList = () => {
           setTotalPages(Math.ceil((response.total || 0) / itemsPerPage));
 
           // Use server-side data directly (no client-side filtering)setAlbums(albumsData);
-        } else {setAlbums([]);
+        } else {
+          setAlbums([]);
           setTotalItems(0);
           setTotalPages(0);
           showToast("Lỗi tải danh sách album", "error");
         }
-      } catch (error) {setAlbums([]);
+      } catch (error) {
+        setAlbums([]);
         setTotalItems(0);
         setTotalPages(0);
         showToast("Lỗi kết nối server", "error");
@@ -93,7 +103,7 @@ const AlbumList = () => {
     if (filters.search !== searchDebounce) {
       setIsSearching(true);
     }
-    
+
     const timer = setTimeout(() => {
       setSearchDebounce(filters.search);
       setIsSearching(false);
@@ -133,23 +143,28 @@ const AlbumList = () => {
     setShowModal(true);
   };
 
-  const handleEdit = async (item) => {setEditMode(true);
+  const handleEdit = async (item) => {
+    setEditMode(true);
     setShowModal(true);
 
     try {
       // Load full album details with attachments
       const response = await albumService.getAlbumById(item.id);
-      if (response.success) {setEditingItem(response.data);
-      } else {setEditingItem(item); // Fallback to basic item data
+      if (response.success) {
+        setEditingItem(response.data);
+      } else {
+        setEditingItem(item); // Fallback to basic item data
         showToast("Lỗi tải chi tiết album để chỉnh sửa", "error");
       }
-    } catch (error) {setEditingItem(item); // Fallback to basic item data
+    } catch (error) {
+      setEditingItem(item); // Fallback to basic item data
       showToast("Lỗi tải album để chỉnh sửa", "error");
     }
   };
 
   // Handle view album details
-  const handleViewAlbum = async (album) => {setSelectedAlbum(album);
+  const handleViewAlbum = async (album) => {
+    setSelectedAlbum(album);
     setShowAlbumDetail(true);
 
     try {
@@ -158,7 +173,8 @@ const AlbumList = () => {
       if (response.success && response.data.attachments) {
         setAlbumImages(response.data.attachments.images || []);
       }
-    } catch (error) {showToast("Lỗi tải ảnh album", "error");
+    } catch (error) {
+      showToast("Lỗi tải ảnh album", "error");
     }
   };
 
@@ -176,7 +192,8 @@ const AlbumList = () => {
       } else {
         throw new Error(response.message || "Delete failed");
       }
-    } catch (error) {showToast("Lỗi xóa album", "error");
+    } catch (error) {
+      showToast("Lỗi xóa album", "error");
     }
   };
 
@@ -268,7 +285,8 @@ const AlbumList = () => {
                   <i className="fas fa-spinner fa-spin"></i>
                 ) : (
                   <i className="fas fa-search"></i>
-                )} Tìm kiếm
+                )}{" "}
+                Tìm kiếm
               </label>
               <input
                 type="text"
@@ -283,7 +301,9 @@ const AlbumList = () => {
               />
             </div>
             <div className="filter-group">
-              <label><i className="fas fa-flag"></i> Trạng thái</label>
+              <label>
+                <i className="fas fa-flag"></i> Trạng thái
+              </label>
               <select
                 className="form-control"
                 value={filters.status}
@@ -292,9 +312,15 @@ const AlbumList = () => {
                   setCurrentPage(1);
                 }}
               >
-                <option key="all-status" value="">Tất cả trạng thái</option>
-                <option key="visible" value="1">Hiển thị</option>
-                <option key="hidden" value="0">Ẩn</option>
+                <option key="all-status" value="">
+                  Tất cả trạng thái
+                </option>
+                <option key="visible" value="1">
+                  Hiển thị
+                </option>
+                <option key="hidden" value="0">
+                  Ẩn
+                </option>
               </select>
             </div>
             <div className="filter-actions">
@@ -316,17 +342,6 @@ const AlbumList = () => {
           </div>
         </div>
 
-        {/* Results Summary */}
-        {!loading && totalItems > 0 && (
-          <div className="results-summary">
-            <span>
-              Hiển thị {albums.length} trong tổng số {totalItems} album{totalItems > 1 ? 's' : ''}
-              {filters.search && ` - Tìm kiếm: "${filters.search}"`}
-              {filters.status !== "" && ` - Trạng thái: ${filters.status === "1" ? "Hiển thị" : "Ẩn"}`}
-            </span>
-          </div>
-        )}
-
         {/* Table Container */}
         <div className="table-container">
           {/* Album Gallery */}
@@ -346,103 +361,102 @@ const AlbumList = () => {
             </div>
           ) : (
             <div className="album-gallery">
-            <div className="gallery-grid">
-              {albums.map((album) => (
-                <div key={album.id} className="album-card">
-                  <div
-                    className="album-thumbnail clickable"
-                    onClick={() => handleViewAlbum(album)}
-                    title={`Xem tất cả ảnh trong album "${album.titleVi}"`}
-                  >
-                    {album.imageUrl ? (
-                      <div className="featured-image-wrapper">
-                        <img
-                          src={
-                            album.imageUrl.startsWith("http")
-                              ? album.imageUrl
-                              : `${process.env.REACT_APP_API_URL}${album.imageUrl}`
-                          }
-                          alt={album.titleVi}
-                          className="thumbnail-image"
-                        />
-                        <div className="album-overlay">
-                          <div className="album-badge">
-                            <i className="fas fa-images"></i>
-                            <span>ALBUM</span>
+              <div className="gallery-grid">
+                {albums.map((album) => (
+                  <div key={album.id} className="album-card">
+                    <div
+                      className="album-thumbnail clickable"
+                      onClick={() => handleViewAlbum(album)}
+                      title={`Xem tất cả ảnh trong album "${album.titleVi}"`}
+                    >
+                      {album.imageUrl ? (
+                        <div className="featured-image-wrapper">
+                          <img
+                            src={
+                              album.imageUrl.startsWith("http")
+                                ? album.imageUrl
+                                : `${process.env.REACT_APP_API_URL}${album.imageUrl}`
+                            }
+                            alt={album.titleVi}
+                            className="thumbnail-image"
+                          />
+                          <div className="album-overlay">
+                            <div className="album-badge">
+                              <i className="fas fa-images"></i>
+                              <span>ALBUM</span>
+                            </div>
                           </div>
                         </div>
+                      ) : (
+                        <div className="no-image">
+                          <i className="fas fa-images"></i>
+                          <span>Chưa có ảnh</span>
+                        </div>
+                      )}
+                      <div className="album-status">
+                        <span
+                          className={`status-badge ${
+                            album.status === 1 ? "active" : "inactive"
+                          }`}
+                        >
+                          {album.status === 1 ? "Hiển thị" : "Ẩn"}
+                        </span>
                       </div>
-                    ) : (
-                      <div className="no-image">
-                        <i className="fas fa-images"></i>
-                        <span>Chưa có ảnh</span>
-                      </div>
-                    )}
-                    <div className="album-status">
-                      <span
-                        className={`status-badge ${
-                          album.status === 1 ? "active" : "inactive"
-                        }`}
+                    </div>
+                    <div className="album-info">
+                      <h6 className="album-title">
+                        {album.titleVi || "Chưa có tiêu đề"}
+                      </h6>
+                      {album.titleEn && (
+                        <p className="album-title-en">{album.titleEn}</p>
+                      )}
+                      {album.descriptionVi && (
+                        <p className="album-description">
+                          {album.descriptionVi.length > 80
+                            ? album.descriptionVi.substring(0, 80) + "..."
+                            : album.descriptionVi}
+                        </p>
+                      )}
+                    </div>
+                    <div className="album-actions">
+                      <button
+                        className="admin-btn admin-btn-xs admin-btn-outline-primary"
+                        onClick={() => handleEdit(album)}
+                        title="Chỉnh sửa"
                       >
-                        {album.status === 1 ? "Hiển thị" : "Ẩn"}
-                      </span>
+                        <i className="fas fa-edit"></i>
+                      </button>
+                      <button
+                        className="admin-btn admin-btn-xs admin-btn-outline-danger"
+                        onClick={() => handleDelete(album)}
+                        title="Xóa"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
                     </div>
                   </div>
-                  <div className="album-info">
-                    <h6 className="album-title">
-                      {album.titleVi || "Chưa có tiêu đề"}
-                    </h6>
-                    {album.titleEn && (
-                      <p className="album-title-en">{album.titleEn}</p>
-                    )}
-                    {album.descriptionVi && (
-                      <p className="album-description">
-                        {album.descriptionVi.length > 80
-                          ? album.descriptionVi.substring(0, 80) + "..."
-                          : album.descriptionVi}
-                      </p>
-                    )}
-                  </div>
-                  <div className="album-actions">
-                    <button
-                      className="admin-btn admin-btn-xs admin-btn-outline-primary"
-                      onClick={() => handleEdit(album)}
-                      title="Chỉnh sửa"
-                    >
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button
-                      className="admin-btn admin-btn-xs admin-btn-outline-danger"
-                      onClick={() => handleDelete(album)}
-                      title="Xóa"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="pagination-wrapper">
-                <nav>
-                  <ul className="pagination justify-content-center">
-                    <li
-                      className={`page-item ${
-                        currentPage === 1 ? "disabled" : ""
-                      }`}
-                    >
-                      <button
-                        className="page-link"
-                        onClick={() => setCurrentPage(currentPage - 1)}
-                        disabled={currentPage === 1}
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="pagination-wrapper">
+                  <nav>
+                    <ul className="pagination justify-content-center">
+                      <li
+                        className={`page-item ${
+                          currentPage === 1 ? "disabled" : ""
+                        }`}
                       >
-                        Trước
-                      </button>
-                    </li>
-                    {[...Array(totalPages)].map(
-                      (_, index) => (
+                        <button
+                          className="page-link"
+                          onClick={() => setCurrentPage(currentPage - 1)}
+                          disabled={currentPage === 1}
+                        >
+                          Trước
+                        </button>
+                      </li>
+                      {[...Array(totalPages)].map((_, index) => (
                         <li
                           key={index}
                           className={`page-item ${
@@ -456,25 +470,24 @@ const AlbumList = () => {
                             {index + 1}
                           </button>
                         </li>
-                      )
-                    )}
-                    <li
-                      className={`page-item ${
-                        currentPage === totalPages ? "disabled" : ""
-                      }`}
-                    >
-                      <button
-                        className="page-link"
-                        onClick={() => setCurrentPage(currentPage + 1)}
-                        disabled={currentPage === totalPages}
+                      ))}
+                      <li
+                        className={`page-item ${
+                          currentPage === totalPages ? "disabled" : ""
+                        }`}
                       >
-                        Sau
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            )}
+                        <button
+                          className="page-link"
+                          onClick={() => setCurrentPage(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                        >
+                          Sau
+                        </button>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -20,27 +20,30 @@ class ApiBackend {
   }
 
   read(language, namespace, callback) {
-    // Check if user is authenticated first
-    if (!isAuthenticated()) {
-      const fallback = language === 'vi' ? viTranslation : enTranslation;
-      callback(null, fallback);
-      return;
-    }
+    // Always use fallback first to prevent showing keys
+    const fallback = language === 'vi' ? viTranslation : enTranslation;
 
-    // If authenticated, try to load from API with cache busting
-    fetchTranslationsForI18next(language)
-      .then(translations => {
-        // Store timestamp to detect stale cache
-        const cacheKey = `i18n_${language}_timestamp`;
-        localStorage.setItem(cacheKey, Date.now().toString());
-        callback(null, translations);
-      })
-      .catch(error => {
-        console.warn(`Failed to load ${language} translations from API:`, error);
-        // Use fallback JSON files
-        const fallback = language === 'vi' ? viTranslation : enTranslation;
-        callback(null, fallback);
-      });
+    // Return fallback immediately
+    callback(null, fallback);
+
+    // Then try to load from API if authenticated (async update)
+    if (isAuthenticated()) {
+      fetchTranslationsForI18next(language)
+        .then(translations => {
+          // Only update if we actually got translations
+          if (translations && Object.keys(translations).length > 0) {
+            // Store timestamp to detect stale cache
+            const cacheKey = `i18n_${language}_timestamp`;
+            localStorage.setItem(cacheKey, Date.now().toString());
+
+            // Update translations in background
+            i18n.addResourceBundle(language, namespace, translations, true, true);
+          }
+        })
+        .catch(error => {
+          console.warn(`Failed to load ${language} translations from API:`, error);
+        });
+    }
   }
 }
 
@@ -65,44 +68,44 @@ i18n
   .use(initReactI18next)
   // Initialize i18next
   .init({
-    // Remove static resources since we use API backend
-    // resources,
-    
+    // Use fallback resources to prevent showing keys
+    resources,
+
     // Default language
     lng: 'vi', // Vietnamese as default
     fallbackLng: 'vi',
-    
+
     // Supported languages
     supportedLngs: ['vi', 'en'],
-    
+
     // Backend options
     backend: {
       // Backend will use our ApiBackend class
       loadPath: '/api/language-contents/{{lng}}/{{ns}}'  // Template for backend
     },
-    
+
     // Language detection options
     detection: {
       // Order of language detection methods
       order: ['localStorage', 'navigator', 'htmlTag'],
-      
+
       // Cache user language
       caches: ['localStorage']
     },
-    
+
     interpolation: {
       escapeValue: false // React already does escaping
     },
-    
+
     // Development options
-    debug: true, // Enable debug để thấy logs
-    
+    debug: false, // Disable debug để tránh spam logs
+
     // Namespace configuration
     defaultNS: 'translation',
     ns: ['translation'],
-    
-    // Important: Disable resource loading từ resources property
-    initImmediate: false  // Wait for backend to load
+
+    // Load immediately with fallback resources
+    initImmediate: true
   });
 
 // Function to reload translations from API (call after admin changes)

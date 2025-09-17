@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { getRoleText } from "../../utils/roleUtils";
 import "./AdminLayout.css";
 import "../admin-common.css";
 
@@ -43,7 +44,9 @@ const AdminLayout = () => {
 
   // Handle authentication state
   useEffect(() => {
-    const authStatus = isAuthenticated();if (!loading && !authStatus) {navigate("/dang-nhap", { replace: true });
+    const authStatus = isAuthenticated();
+    if (!loading && !authStatus) {
+      navigate("/dang-nhap", { replace: true });
     }
   }, [loading, isAuthenticated, navigate, location.pathname, user]);
 
@@ -82,39 +85,23 @@ const AdminLayout = () => {
         requiredRoleId: ROLES.EDITOR, // All roles can see dashboard
       },
 
-      // News Management
+      // Category Management
       {
-        path: "/admin/news",
-        label: "Quản lý tin tức",
-        icon: "bi bi-newspaper",
+        path: "/admin/categories",
+        label: "Quản lý danh mục",
+        icon: "bi bi-collection",
         requiredRoleId: ROLES.EDITOR,
         subItems: [
           {
-            path: "/admin/news",
-            label: "Danh sách tin tức",
-            icon: "bi bi-newspaper",
+            path: "/admin/product-category",
+            label: "Danh mục sản phẩm",
+            icon: "bi bi-collection",
             requiredRoleId: ROLES.EDITOR,
           },
           {
             path: "/admin/news-category",
             label: "Danh mục tin tức",
             icon: "bi bi-collection",
-            requiredRoleId: ROLES.EDITOR,
-          },
-        ],
-      },
-
-      // Notification Management
-      {
-        path: "/admin/notifications",
-        label: "Quản lý thông báo",
-        icon: "bi bi-bell",
-        requiredRoleId: ROLES.EDITOR,
-        subItems: [
-          {
-            path: "/admin/notifications",
-            label: "Danh sách thông báo",
-            icon: "bi bi-bell",
             requiredRoleId: ROLES.EDITOR,
           },
           {
@@ -126,39 +113,35 @@ const AdminLayout = () => {
         ],
       },
 
-      // Product Management
+      // Content Management
       {
-        path: "/admin/products",
-        label: "Quản lý sản phẩm",
-        icon: "bi bi-box",
+        path: "/admin/content",
+        label: "Quản lý nội dung",
+        icon: "bi bi-file-text",
         requiredRoleId: ROLES.EDITOR,
         subItems: [
           {
             path: "/admin/products",
-            label: "Danh sách sản phẩm",
+            label: "Quản lý sản phẩm",
             icon: "bi bi-box",
             requiredRoleId: ROLES.EDITOR,
           },
           {
-            path: "/admin/product-category",
-            label: "Danh mục sản phẩm",
-            icon: "bi bi-collection",
+            path: "/admin/services",
+            label: "Quản lý dịch vụ",
+            icon: "bi bi-gear",
             requiredRoleId: ROLES.EDITOR,
           },
-        ],
-      },
-
-      // Service Management
-      {
-        path: "/admin/services",
-        label: "Quản lý dịch vụ",
-        icon: "bi bi-gear",
-        requiredRoleId: ROLES.EDITOR,
-        subItems: [
           {
-            path: "/admin/services",
-            label: "Danh sách dịch vụ",
-            icon: "bi bi-gear",
+            path: "/admin/news",
+            label: "Quản lý tin tức",
+            icon: "bi bi-newspaper",
+            requiredRoleId: ROLES.EDITOR,
+          },
+          {
+            path: "/admin/notifications",
+            label: "Quản lý thông báo",
+            icon: "bi bi-bell",
             requiredRoleId: ROLES.EDITOR,
           },
         ],
@@ -195,7 +178,7 @@ const AdminLayout = () => {
         requiredRoleId: ROLES.EDITOR,
       },
 
-      // Document Management
+      // Public Documents
       {
         path: "/admin/documents",
         label: "Quản lý tài liệu",
@@ -203,74 +186,66 @@ const AdminLayout = () => {
         requiredRoleId: ROLES.EDITOR,
       },
 
-      // Internal Document Management
+      // Internal Management
       {
-        path: "/admin/internal-documents",
+        path: "/admin/internal",
         label: "Quản lý nội bộ",
-        icon: "bi bi-file-earmark-lock",
+        icon: "bi bi-files",
         requiredRoleId: ROLES.ADMIN,
+        subItems: [
+          {
+            path: "/admin/internal-documents",
+            label: "Tài liệu nội bộ",
+            icon: "bi bi-file-earmark-lock",
+            requiredRoleId: ROLES.ADMIN,
+          },
+          {
+            path: "/admin/phonebook",
+            label: "Danh bạ điện thoại",
+            icon: "bi bi-telephone-fill",
+            requiredRoleId: ROLES.ADMIN,
+          },
+        ],
       },
-      
+
       // Contact Management
       {
         path: "/admin/contacts",
         label: "Quản lý liên hệ",
         icon: "bi bi-envelope",
-        requiredRoleId: ROLES.ADMIN, // Allow editors to view contacts
+        requiredRoleId: ROLES.ADMIN,
       },
 
       // Translation Management
       {
         path: "/admin/language-content",
-        label: "Quản lý Thông tin",
+        label: "Quản lý ngôn ngữ",
         icon: "bi bi-translate",
         requiredRoleId: ROLES.ADMIN,
       },
 
-      // System Management
+      // Image Display Management
       {
-        path: "/admin/system",
-        label: "Cài đặt hệ thống",
-        icon: "bi bi-gear-fill",
+        path: "/admin/config",
+        label: "Quản lý hiển thị ảnh",
+        icon: "bi bi-sliders",
         requiredRoleId: ROLES.ADMIN,
-        subItems: [
-          {
-            path: "/admin/config",
-            label: "Cấu hình Banner",
-            icon: "bi bi-sliders",
-            requiredRoleId: ROLES.ADMIN,
-          },
-          {
-            path: "/admin/system-settings",
-            label: "Cài đặt hệ thống",
-            icon: "bi bi-gear",
-            requiredRoleId: ROLES.ADMIN,
-          },
-          {
-            path: "/admin/routes",
-            label: "Quản lý Route",
-            icon: "bi bi-signpost",
-            requiredRoleId: ROLES.SUPERADMIN,
-          },
-          {
-            path: "/admin/api-endpoints",
-            label: "Quản lý API Endpoint",
-            icon: "bi bi-plug",
-            requiredRoleId: ROLES.SUPERADMIN,
-          },
-          {
-            path: "/admin/seo",
-            label: "Quản lý SEO",
-            icon: "bi bi-search",
-            requiredRoleId: ROLES.SUPERADMIN,
-          },
-          {
-            path: "/admin/menu",
-            label: "Quản lý Menu",
-            icon: "bi bi-list-ul",
-            requiredRoleId: ROLES.ADMIN,
-          },
-        ],
+      },
+
+      // Menu Management
+      {
+        path: "/admin/menu",
+        label: "Quản lý Menu",
+        icon: "bi bi-list-ul",
+        requiredRoleId: ROLES.SUPERADMIN,
+      },
+
+      // System Management (SUPERADMIN only)
+      {
+        path: "/admin/seo",
+        label: "Quản lý SEO",
+        icon: "bi bi-search",
+        requiredRoleId: ROLES.SUPERADMIN,
       },
     ];
 
@@ -341,7 +316,7 @@ const AdminLayout = () => {
       "/admin/documents": "Quản lý tài liệu",
       "/admin/internal-documents": "Quản lý nội bộ",
       "/admin/contacts": "Quản lý liên hệ",
-      "/admin/language-content": "Quản lý Thông tin",
+      "/admin/language-content": "Quản lý ngôn ngữ",
       "/admin/seo": "Quản lý SEO",
       "/admin/menu": "Quản lý Menu",
     };
@@ -766,7 +741,7 @@ const AdminLayout = () => {
                       {user?.email || ""}
                     </div>
                     <div style={{ fontSize: "0.75rem", color: "#6b7280" }}>
-                      {user?.roleName || "editor"}
+                      {getRoleText(user?.roleId) || user?.roleName || "Editor"}
                     </div>
                   </div>
                   <button

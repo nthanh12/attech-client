@@ -12,3 +12,30 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Global fix: Prevent mobile zoom on input focus */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"],
+  textarea,
+  select,
+  .form-control,
+  .form-select {
+    font-size: 16px !important;
+  }
+
+  /* Prevent horizontal scroll caused by zoom */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Ensure viewport stays fixed */
+  html {
+    overflow-x: hidden;
+  }
+}

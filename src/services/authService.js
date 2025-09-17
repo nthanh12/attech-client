@@ -15,28 +15,41 @@ import api from '../api';
  */
 export const register = async (userData) => {
   try {
+    console.log('Register request data:', userData);
     const response = await api.post("/api/auth/register", userData);
-    
-    
+
+    console.log('Register response:', response.data);
     if (response.data.status === 1) {
-      
+
       return {
         success: true,
         data: response.data.data,
         message: response.data.message || "User registration successful"
       };
     }
-    
+
     return {
       success: false,
       message: response.data.message || "User registration failed"
     };
-    
+
   } catch (error) {
-    
+    console.error('Register error:', error);
+    console.error('Error response:', error.response?.data);
+    console.error('Error status:', error.response?.status);
+    console.error('Validation errors:', error.response?.data?.errors);
+
+    // Log each validation error for debugging
+    if (error.response?.data?.errors) {
+      Object.keys(error.response.data.errors).forEach(field => {
+        console.error(`Validation error for ${field}:`, error.response.data.errors[field]);
+      });
+    }
+
     return {
       success: false,
-      message: error.response?.data?.Message || error.message || "User registration failed"
+      message: error.response?.data?.message || error.response?.data?.Message || error.message || "User registration failed",
+      errors: error.response?.data?.errors
     };
   }
 };

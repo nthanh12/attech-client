@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import DashboardStats from './DashboardStats';
-import DashboardCharts from './DashboardCharts';
-import './Dashboard.css';
+import React, { useState } from "react";
+import DashboardStats from "./DashboardStats";
+import DashboardCharts from "./DashboardCharts";
+import "./Dashboard.css";
 
 const Dashboard = () => {
-  const [activeView, setActiveView] = useState('overview');
+  const [activeView, setActiveView] = useState("overview");
 
   const ViewSelector = () => (
     <div className="view-selector">
       <button
-        className={`view-btn ${activeView === 'overview' ? 'active' : ''}`}
-        onClick={() => setActiveView('overview')}
+        className={`view-btn ${activeView === "overview" ? "active" : ""}`}
+        onClick={() => setActiveView("overview")}
       >
         <i className="bi bi-grid-3x3-gap"></i>
         <span>Overview</span>
       </button>
       <button
-        className={`view-btn ${activeView === 'stats' ? 'active' : ''}`}
-        onClick={() => setActiveView('stats')}
+        className={`view-btn ${activeView === "stats" ? "active" : ""}`}
+        onClick={() => setActiveView("stats")}
       >
         <i className="bi bi-bar-chart"></i>
         <span>Statistics</span>
       </button>
       <button
-        className={`view-btn ${activeView === 'charts' ? 'active' : ''}`}
-        onClick={() => setActiveView('charts')}
+        className={`view-btn ${activeView === "charts" ? "active" : ""}`}
+        onClick={() => setActiveView("charts")}
       >
         <i className="bi bi-graph-up"></i>
         <span>Analytics</span>
@@ -48,17 +48,16 @@ const Dashboard = () => {
       <div className="dashboard-header">
         <div className="header-content">
           <div className="header-title">
-            <h1>🚀 Advanced Dashboard</h1>
-            <p>Comprehensive analytics and monitoring for your application</p>
+            <h1>Advanced Dashboard</h1>
           </div>
           <ViewSelector />
         </div>
       </div>
 
       <div className="dashboard-content">
-        {activeView === 'overview' && <OverviewView />}
-        {activeView === 'stats' && <DashboardStats />}
-        {activeView === 'charts' && <DashboardCharts />}
+        {activeView === "overview" && <OverviewView />}
+        {activeView === "stats" && <DashboardStats />}
+        {activeView === "charts" && <DashboardCharts />}
       </div>
 
       {/* Dashboard Footer */}
@@ -78,7 +77,10 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="footer-actions">
-          <button className="footer-btn" onClick={() => window.location.reload()}>
+          <button
+            className="footer-btn"
+            onClick={() => window.location.reload()}
+          >
             <i className="bi bi-arrow-clockwise"></i>
             Refresh Data
           </button>

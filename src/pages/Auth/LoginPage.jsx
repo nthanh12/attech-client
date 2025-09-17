@@ -65,11 +65,7 @@ const LoginPage = () => {
       <div className="login-container">
         <div className="login-card">
           <div className="login-header">
-            <div className="company-logo">
-              <i className="bi bi-person-circle"></i>
-            </div>
             <h1>Đăng nhập</h1>
-            <p>Trang nội bộ - Chào mừng bạn quay trở lại</p>
           </div>
 
           <form className="login-form" onSubmit={handleSubmit}>
@@ -147,27 +143,23 @@ const LoginPage = () => {
           </form>
 
           <div className="login-footer">
-            <div className="back-to-home">
-              <button
-                type="button"
-                className="btn btn-link"
-                onClick={() => navigate("/")}
-              >
-                <i className="bi bi-arrow-left"></i>
-                Quay về trang chủ
-              </button>
-            </div>
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={() => navigate("/")}
+            >
+              <i className="bi bi-arrow-left"></i>
+              Quay về trang chủ
+            </button>
 
-            <div className="switch-login">
-              <button
-                type="button"
-                className="btn btn-outline-primary"
-                onClick={() => navigate("/admin-login")}
-              >
-                <i className="bi bi-shield-check"></i>
-                Đăng nhập quản trị
-              </button>
-            </div>
+            <button
+              type="button"
+              className="btn btn-outline-primary"
+              onClick={() => navigate("/admin-login")}
+            >
+              <i className="bi bi-shield-check"></i>
+              Đăng nhập quản trị
+            </button>
           </div>
         </div>
       </div>
