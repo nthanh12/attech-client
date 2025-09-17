@@ -96,7 +96,7 @@
   padding: 0.6rem 1rem;
   font-size: 0.85rem;
   font-weight: 500;
-  color: #002a5c;
+  color: #0a407c;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -106,8 +106,8 @@
 
 .service-detail-btn:hover {
   background: #f8fafc;
-  border-color: #002a5c;
-  color: #002a5c;
+  border-color: #0a407c;
+  color: #0a407c;
 }
 
 /* Responsive */

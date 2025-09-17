@@ -52,15 +52,8 @@ const NavbarTop = ({
 }) => {
   const mobileMenuRef = useRef(null);
 
-  useEffect(() => {
-    if (mobileOpen) {
-      document.body.classList.add("mobile-menu-open");
-    } else {
-      document.body.classList.remove("mobile-menu-open");
-    }
-  }, [mobileOpen]);
 
-  useClickOutside(mobileMenuRef, () => {
+  useClickOutside(mobileMenuRef, (event) => {
     if (mobileOpen) {
       closeMobileMenu();
     }
@@ -271,14 +264,14 @@ const NavbarBottom = ({
         ☰
       </button>
       <ul
-        className={`nav-menu${mobileOpen ? " open" : ""}`}
+        className="nav-menu"
         id="main-menu"
         role="menubar"
         key={`navbar-menu-${language}`} // Force re-render with language
       >
         <MenuItems
           menuItems={rawMenuData}
-          isMobile={isMobile}
+          isMobile={false}
           closeMobileMenu={closeMobileMenu}
         />
       </ul>
@@ -328,9 +321,25 @@ const Navbar = () => {
   }, [isHomePage]);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "auto";
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.height = "100vh";
+      document.body.classList.add("mobile-menu-open");
+    } else {
+      document.body.style.overflow = "auto";
+      document.body.style.position = "static";
+      document.body.style.width = "auto";
+      document.body.style.height = "auto";
+      document.body.classList.remove("mobile-menu-open");
+    }
     return () => {
       document.body.style.overflow = "auto";
+      document.body.style.position = "static";
+      document.body.style.width = "auto";
+      document.body.style.height = "auto";
+      document.body.classList.remove("mobile-menu-open");
     };
   }, [mobileOpen]);
 
@@ -370,16 +379,14 @@ const Navbar = () => {
         menuData={rawMenuData}
         logoUrl={logoUrl}
       />
-      {!isMobile && (
-        <NavbarBottom
-          mobileOpen={mobileOpen}
-          toggleMobileMenu={toggleMobileMenu}
-          isMobile={isMobile}
-          closeMobileMenu={closeMobileMenu}
-          language={currentLanguage}
-          menuData={rawMenuData}
-        />
-      )}
+      <NavbarBottom
+        mobileOpen={mobileOpen}
+        toggleMobileMenu={toggleMobileMenu}
+        isMobile={false}
+        closeMobileMenu={closeMobileMenu}
+        language={currentLanguage}
+        menuData={rawMenuData}
+      />
       <GlobalSearch
         isOpen={isGlobalSearchOpen}
         onClose={handleGlobalSearchClose}

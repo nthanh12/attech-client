@@ -68,8 +68,8 @@
 
 .page-product .product-content .attech-filter-toggle-btn:hover {
     background: #f8f9fa;
-    border-color: #002a5c;
-    color: #002a5c;
+    border-color: #0a407c;
+    color: #0a407c;
 }
 
 .page-product .product-content .attech-filter-toggle-btn i {
@@ -102,7 +102,7 @@
 
 .page-product .product-content .attech-search-input:focus {
     outline: none;
-    border-color: #002a5c;
+    border-color: #0a407c;
     background: #fff;
     box-shadow: 0 0 0 3px rgba(0, 42, 92, 0.1);
 }
@@ -126,7 +126,7 @@
 
 .page-product .product-content .attech-sort-select:focus {
     outline: none;
-    border-color: #002a5c;
+    border-color: #0a407c;
     box-shadow: 0 0 0 3px rgba(0, 42, 92, 0.1);
 }
 
@@ -147,13 +147,13 @@
 
 .page-product .product-content .attech-view-btn:hover {
     background: #f8f9fa;
-    border-color: #002a5c;
-    color: #002a5c;
+    border-color: #0a407c;
+    color: #0a407c;
 }
 
 .page-product .product-content .attech-view-btn.active {
-    background: #002a5c;
-    border-color: #002a5c;
+    background: #0a407c;
+    border-color: #0a407c;
     color: #fff;
 }
 
@@ -233,13 +233,13 @@
 
 .page-product .product-content .attech-pagination-button:hover:not(:disabled) {
     background: #f8f9fa;
-    border-color: #002a5c;
-    color: #002a5c;
+    border-color: #0a407c;
+    color: #0a407c;
 }
 
 .page-product .product-content .attech-pagination-button.active {
-    background: #002a5c;
-    border-color: #002a5c;
+    background: #0a407c;
+    border-color: #0a407c;
     color: #fff;
 }
 
@@ -373,7 +373,7 @@
     }
 
     .page-product .product-content .attech-product-list-container {
-        padding: 60px 0px;
+        padding: 0;
         margin-top: 0;
     }
     
@@ -390,6 +390,7 @@
         grid-template-columns: 1fr !important;
         gap: 12px;
         padding: 5px;
+        margin-top: 100px;
     }
     
     .page-product .product-content .attech-controls-inner {
@@ -437,9 +438,9 @@
 }
 
 .page-product .product-content .attech-category-btn.active {
-    background: #002a5c;
+    background: #0a407c;
     color: white;
-    border-color: #002a5c;
+    border-color: #0a407c;
 }
 
 @keyframes fadeIn {
@@ -548,7 +549,7 @@
     div.attech-product-grid-inner.grid {
         grid-template-columns: 1fr !important;
         gap: 12px !important;
-        padding: 8px !important;
+        padding: 0 !important;
         max-width: 100% !important;
     }
 }

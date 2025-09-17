@@ -743,7 +743,7 @@
   .news-detail-page .news-detail-container {
     border-radius: 0;
     box-shadow: none;
-    padding: 16px 8px;
+    padding: 0;
   }
   .news-detail-page .article-image {
     width: 100%;
@@ -934,14 +934,14 @@ html {
     line-height: 1.4;
   }
   .news-detail-page .article-header {
-    padding: 1rem;
+    padding: 0.8rem;
   }
   .news-detail-page .article-description {
-    padding: 1rem;
+    padding: 0.8rem;
   }
   .news-detail-page .breadcrumb-nav {
     font-size: 0.9rem;
-    margin: 1rem;
+    margin: 0.8rem;
     color: #6c757d;
   }
   .news-detail-page {

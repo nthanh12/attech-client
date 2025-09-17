@@ -79,7 +79,6 @@ const LoginPage = () => {
             <div className="form-group">
               <label>Tên đăng nhập</label>
               <div className="input-group">
-                <i className="bi bi-person"></i>
                 <input
                   type="text"
                   value={credentials.username}
@@ -89,7 +88,7 @@ const LoginPage = () => {
                   className={`form-control ${
                     errors.username ? "is-invalid" : ""
                   }`}
-                  placeholder="Nhập tên đăng nhập thành viên"
+                  placeholder="Nhập tên đăng nhập"
                   disabled={loading}
                 />
               </div>
@@ -101,7 +100,6 @@ const LoginPage = () => {
             <div className="form-group">
               <label>Mật khẩu</label>
               <div className="input-group">
-                <i className="bi bi-lock"></i>
                 <input
                   type="password"
                   value={credentials.password}
@@ -136,7 +134,7 @@ const LoginPage = () => {
               ) : (
                 <>
                   <i className="bi bi-box-arrow-in-right"></i>
-                  <span>Đăng nhập thành viên</span>
+                  <span>Đăng nhập</span>
                 </>
               )}
             </button>

@@ -25,7 +25,8 @@ const NewsSection = () => {
 
         setCategories(categoriesData);
         setTrendingNews(featuredNewsData);
-      } catch (error) {} finally {
+      } catch (error) {
+      } finally {
         setLoading(false);
       }
     };
@@ -47,7 +48,7 @@ const NewsSection = () => {
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path
                       d="M4 12l4-4 4 4 4-8"
-                      stroke="#002a5c"
+                      stroke="#0a407c"
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"

@@ -186,7 +186,7 @@
   
   @media (max-width: 480px) {
     #newsSection {
-      padding: 0 15px;
+      padding: 0 10px;
     }
   
     .latest_newsarea p {
@@ -322,7 +322,7 @@
 
 .trend-link {
   margin: 0 20px;
-  color: #002a5c;
+  color: #0a407c;
   text-decoration: none;
   font-weight: 300;
   font-size: 14px;
@@ -330,7 +330,7 @@
 }
 
 .trend-link:hover {
-  color: #002a5c;
+  color: #0a407c;
 }
 
 .trend-ticker:hover .trend-list {
@@ -350,7 +350,7 @@
 
 .trend-label {
   font-weight: 600;
-  color: #002a5c;
+  color: #0a407c;
   font-size: 15px;
   margin-right: 8px;
 }

@@ -1,7 +1,6 @@
 .financial-page {
-  background: #f4f8fb;
   min-height: 100vh;
-  padding: 20px;
+  padding: 0;
 }
 .financial-header {
   display: flex;

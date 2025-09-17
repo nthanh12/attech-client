@@ -654,7 +654,7 @@ const AdminLayout = () => {
                 alignItems: "center",
                 gap: "0.5rem",
                 padding: "0.5rem 0.75rem",
-                background: "#315851ff",
+                background: "#4e73aa",
                 color: "#ffffff",
                 border: "none",
                 borderRadius: "8px",

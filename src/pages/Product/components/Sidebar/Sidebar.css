@@ -29,7 +29,7 @@
   top: 0.7rem;
   right: 1rem;
   border: none;
-  color: #002a5c;
+  color: #0a407c;
   padding: 0.2rem;
   cursor: pointer;
   border-radius: 50%;
@@ -57,7 +57,7 @@
 .sidebar-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #002a5c;
+  color: #0a407c;
   font-weight: 600;
 }
 
@@ -78,7 +78,7 @@
 }
 
 .close-btn:hover {
-  color: #002a5c;
+  color: #0a407c;
   background: #f8f9fa;
 }
 
@@ -113,14 +113,14 @@
 
 .menu-item:hover {
   background: #f8f9fa;
-  color: #002a5c;
-  border-left-color: #002a5c;
+  color: #0a407c;
+  border-left-color: #0a407c;
 }
 
 .menu-item.active {
   background: #f8f9fa;
-  color: #002a5c;
-  border-left-color: #002a5c;
+  color: #0a407c;
+  border-left-color: #0a407c;
   font-weight: 500;
 }
 
@@ -152,8 +152,8 @@
 
 .submenu-item:hover {
   background: #fff;
-  color: #002a5c;
-  border-left-color: #002a5c;
+  color: #0a407c;
+  border-left-color: #0a407c;
 }
 @media (max-width: 1024px) {
   .product-sidebar {

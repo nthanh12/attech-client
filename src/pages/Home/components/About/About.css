@@ -307,7 +307,7 @@
 
 @media (max-width: 768px) {
   .about-hero {
-    padding: 40px 0;
+    padding: 10px 0;
   }
   .about-hero .swiper-button-prev,
   .about-hero .swiper-button-next {
@@ -353,9 +353,12 @@
   .about-hero-overlay .about-content-title {
     color: #0f172a;
     text-shadow: none;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-bottom: 0.5rem;
     padding-bottom: 0.5rem;
+  }
+  .about-main-title {
+    font-size: 1.5rem;
   }
 
   .about-hero-overlay p {

@@ -4,7 +4,7 @@
 .news-container {
     max-width: 1320px;
     margin: 0 auto;
-    padding: 15px;
+    padding: 0;
 }
 .news-page a{
     color: #000000;

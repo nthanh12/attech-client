@@ -520,6 +520,25 @@ body .tox-fullscreen iframe[id*="tiny-react"] {
 }
 
 /* —— Responsive Design —— */
+@media (max-width: 768px) {
+  .attech-admin-header {
+    padding: 0 1rem !important;
+    height: 60px !important;
+  }
+
+  .attech-admin-header-left h1 {
+    font-size: 0.8rem !important;
+  }
+
+  .attech-admin-header-right {
+    gap: 0.5rem !important;
+  }
+
+  .attech-admin-header-right a span {
+    display: none !important;
+  }
+}
+
 @media (max-width: 600px) {
   .admin-layout .header {
     padding: 0 1rem;
@@ -534,5 +553,31 @@ body .tox-fullscreen iframe[id*="tiny-react"] {
   .admin-layout .breadcrumb {
     font-size: 0.8rem;
     padding: 0.5rem 0.875rem;
+  }
+
+  .attech-admin-header {
+    padding: 0 0.75rem !important;
+  }
+
+  .attech-admin-header-right a {
+    padding: 0.5rem !important;
+  }
+
+  .attech-admin-actions-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  .attech-admin-page-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+  }
+
+  .attech-admin-page-actions button,
+  .attech-admin-page-actions a {
+    width: 100% !important;
+    justify-content: center !important;
   }
 }

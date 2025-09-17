@@ -2,9 +2,9 @@
   --color-primary: #0a3781;
   --color-primary-hover: #0f9fdb;
   --color-white: #fff;
-  --color-navy: #002a5c;
+  --color-navy: #0a407c;
   --color-gray-light: #f5f7fa;
-  --color-navy-transparent: #002a5c;
+  --color-navy-transparent: #0a407c;
   --spacing-unit: 8px;
   --transition-duration: 0.3s;
   --navbar-height: 90px;
@@ -38,7 +38,7 @@
 .navbar-top {
   width: 100%;
   height: 90px;
-  background-color: #002a5c;
+  background-color: #0a407c;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   justify-content: center;
@@ -52,7 +52,7 @@
 .navbar-menu-wrapper {
   width: 100%;
   height: 56px;
-  background-color: #002a5c;
+  background-color: #0a407c;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   justify-content: center;
@@ -164,7 +164,7 @@
 }
 
 .navbar.scrolled .nav-link {
-  color: #002a5c;
+  color: #0a407c;
 }
 
 .nav-link:hover {
@@ -220,7 +220,7 @@
 }
 
 .navbar.scrolled .nav-link:focus {
-  color: #002a5c !important;
+  color: #0a407c !important;
 }
 
 .navbar .nav-link:focus::after {
@@ -233,7 +233,7 @@
   top: 100%;
   left: 0;
   background: #fff;
-  color: #002a5c;
+  color: #0a407c;
   min-width: 210px;
   padding: 8px 0;
   border-radius: 4px;
@@ -264,7 +264,7 @@
 }
 
 .dropdown-menu .nav-link {
-  color: #002a5c;
+  color: #0a407c;
   padding: 10px 20px;
   font-size: 1em;
   border-bottom: none;
@@ -353,10 +353,12 @@
   .navbar.scrolled .logo img {
     height: 24px;
   }
+  /* Commented out to keep horizontal menu visible
   .navbar-menu-wrapper,
   .nav-menu {
     display: none !important;
   }
+  */
 }
 
 @media (max-width: 600px) {

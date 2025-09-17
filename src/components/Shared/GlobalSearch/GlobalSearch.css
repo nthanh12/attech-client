@@ -73,6 +73,29 @@
   outline: none;
 }
 
+/* Override global mobile CSS that might affect input */
+@media (max-width: 1024px) {
+  .global-search-input:hover,
+  .global-search-input:active,
+  .global-search-input:focus {
+    width: 100% !important;
+    max-width: none !important;
+    transform: none !important;
+    contain: none !important;
+    height: 50px !important;
+    padding: 0 50px 0 50px !important;
+  }
+
+  .global-search-container:hover,
+  .global-search-container:active,
+  .global-search-container:focus {
+    width: 90% !important;
+    max-width: 700px !important;
+    transform: none !important;
+    contain: none !important;
+  }
+}
+
 .global-search-input:focus {
   border-color: #3b82f6;
   background: white;

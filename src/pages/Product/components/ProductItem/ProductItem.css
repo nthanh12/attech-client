@@ -74,12 +74,12 @@
 
 .action-btn:hover {
   background: #fff;
-  color: #002a5c;
+  color: #0a407c;
   transform: scale(1.1);
 }
 
 .action-btn.active {
-  background: #002a5c;
+  background: #0a407c;
   color: #fff;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .product-title a {
-  color: #002a5c;
+  color: #0a407c;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -129,7 +129,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #002a5c;
+  color: #0a407c;
   text-decoration: none;
   font-weight: 500;
   font-size: 13px;
@@ -278,7 +278,7 @@
   gap: 10px;
   font-size: 1rem;
   font-weight: 500;
-  color: #002a5c;
+  color: #0a407c;
 }
 
 .discounted-price {
@@ -302,7 +302,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(45deg, #002a5c, #004080);
+  background: linear-gradient(45deg, #0a407c, #004080);
   /* Gradient nút */
   border: none;
   border-radius: 50px;
@@ -447,7 +447,7 @@
 .page-product .product-content .attech-product-title {
   font-size: 16px;
   font-weight: 600;
-  color: #002a5c;
+  color: #0a407c;
   height: 44px;
   line-height: 22px;
   margin-bottom: 12px;
@@ -472,7 +472,7 @@
 
 .page-product .product-content .attech-product-link {
   text-decoration: none;
-  color: #002a5c;
+  color: #0a407c;
   font-weight: 500;
   font-size: 14px;
   display: inline-flex;
@@ -542,6 +542,7 @@
 @media (max-width: 768px) {
   .page-product .product-content .attech-product-item {
     height: 400px;
+    background-color: #b1d3e9;
   }
 
   .page-product .product-content .attech-product-image-wrapper {

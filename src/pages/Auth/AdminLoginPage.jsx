@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import './LoginPage.css';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
+import "./LoginPage.css";
 
 const AdminLoginPage = () => {
   const [credentials, setCredentials] = useState({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -14,24 +14,24 @@ const AdminLoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = location.state?.from?.pathname || '/admin';
+  const from = location.state?.from?.pathname || "/admin";
 
   const handleInputChange = (field, value) => {
-    setCredentials(prev => ({ ...prev, [field]: value }));
+    setCredentials((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
+
     if (!credentials.username.trim()) {
-      newErrors.username = 'Vui lòng nhập tên đăng nhập hoặc email';
+      newErrors.username = "Vui lòng nhập tên đăng nhập hoặc email";
     }
-    
+
     if (!credentials.password.trim()) {
-      newErrors.password = 'Vui lòng nhập mật khẩu';
+      newErrors.password = "Vui lòng nhập mật khẩu";
     }
 
     setErrors(newErrors);
@@ -40,13 +40,13 @@ const AdminLoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setLoading(true);
     try {
       const result = await login(credentials);
-      
+
       if (result.success) {
         // Redirect to admin panel
         navigate(from, { replace: true });
@@ -54,7 +54,7 @@ const AdminLoginPage = () => {
         setErrors({ general: result.error });
       }
     } catch (error) {
-      setErrors({ general: 'Đã xảy ra lỗi. Vui lòng thử lại.' });
+      setErrors({ general: "Đã xảy ra lỗi. Vui lòng thử lại." });
     } finally {
       setLoading(false);
     }
@@ -83,43 +83,56 @@ const AdminLoginPage = () => {
             <div className="form-group">
               <label>Tên đăng nhập quản trị</label>
               <div className="input-group">
-                <i className="bi bi-person-badge"></i>
                 <input
                   type="text"
                   value={credentials.username}
-                  onChange={(e) => handleInputChange('username', e.target.value)}
-                  className={`form-control ${errors.username ? 'is-invalid' : ''}`}
+                  onChange={(e) =>
+                    handleInputChange("username", e.target.value)
+                  }
+                  className={`form-control ${
+                    errors.username ? "is-invalid" : ""
+                  }`}
                   placeholder="Nhập tên đăng nhập admin"
                   disabled={loading}
                 />
               </div>
-              {errors.username && <div className="invalid-feedback">{errors.username}</div>}
+              {errors.username && (
+                <div className="invalid-feedback">{errors.username}</div>
+              )}
             </div>
 
             <div className="form-group">
               <label>Mật khẩu quản trị</label>
               <div className="input-group">
-                <i className="bi bi-shield-lock"></i>
                 <input
                   type="password"
                   value={credentials.password}
-                  onChange={(e) => handleInputChange('password', e.target.value)}
-                  className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                  onChange={(e) =>
+                    handleInputChange("password", e.target.value)
+                  }
+                  className={`form-control ${
+                    errors.password ? "is-invalid" : ""
+                  }`}
                   placeholder="Nhập mật khẩu admin"
                   disabled={loading}
                 />
               </div>
-              {errors.password && <div className="invalid-feedback">{errors.password}</div>}
+              {errors.password && (
+                <div className="invalid-feedback">{errors.password}</div>
+              )}
             </div>
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn btn-primary btn-login"
               disabled={loading}
             >
               {loading ? (
                 <>
-                  <span className="spinner-border spinner-border-sm" role="status"></span>
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                  ></span>
                   <span>Đang đăng nhập...</span>
                 </>
               ) : (
@@ -133,24 +146,24 @@ const AdminLoginPage = () => {
 
           <div className="login-footer">
             <div className="back-to-home">
-              <button 
+              <button
                 type="button"
                 className="btn btn-link"
-                onClick={() => navigate('/')}
+                onClick={() => navigate("/")}
               >
                 <i className="bi bi-arrow-left"></i>
                 Quay về trang chủ
               </button>
             </div>
-            
+
             <div className="switch-login">
-              <button 
+              <button
                 type="button"
                 className="btn btn-outline-secondary"
-                onClick={() => navigate('/dang-nhap')}
+                onClick={() => navigate("/dang-nhap")}
               >
                 <i className="bi bi-person"></i>
-                Đăng nhập thành viên
+                Đăng nhập
               </button>
             </div>
           </div>

@@ -25,7 +25,7 @@
     .company-content.sidebar-expanded,
     .company-content.sidebar-collapsed {
         margin-left: 0;
-        padding: 10px;
+        padding: 0;
     }
     
     /* Hide sidebar on mobile or make it overlay */

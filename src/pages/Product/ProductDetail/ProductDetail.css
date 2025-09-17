@@ -58,7 +58,7 @@
 .product-detail-title {
   font-size: 2rem;
   font-weight: 700;
-  color: #002a5c;
+  color: #0a407c;
   margin: 0 0 0.7rem 0;
   text-align: center;
 }
@@ -369,7 +369,7 @@
 
 @media (max-width: 768px) {
   .product-content-wrap {
-    padding: 15px;
+    padding: 0;
   }
 
   .article-content {

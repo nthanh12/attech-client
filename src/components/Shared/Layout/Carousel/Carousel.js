@@ -34,13 +34,14 @@ const Carousel = () => {
   };
 
   return (
-    <div className="container-fluid overflow-hidden px-0" style={carouselStyle}>
+    <div className="w-100" style={carouselStyle}>
       <div
         id="carouselId"
-        className="carousel slide"
+        className="carousel slide w-100"
         data-bs-ride="carousel"
         data-bs-pause="hover"
         data-bs-interval="5000"
+        style={{width: '100%'}}
       >
         <div className="carousel-inner" role="listbox">
           {slides.map((slide, index) => (

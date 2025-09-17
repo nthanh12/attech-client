@@ -29,7 +29,7 @@ body {
 }
 
 :root {
-  /* --mainColor: #002a5c; */
+  /* --mainColor: #0a407c; */
   --mainColor: rgba(45, 94, 134, 1);
   --header-height: 80px;
 }
@@ -147,7 +147,6 @@ a:focus {
 /* Global responsive padding for consistent mobile spacing - Override Bootstrap */
 @media (max-width: 768px) {
   .container,
-  .container-fluid,
   .container-sm,
   .container-md,
   .container-lg,
@@ -230,7 +229,7 @@ p, div, span {
 .back-to-top {
   position: fixed;
   display: none;
-  background: #002a5c;
+  background: #0a407c;
   color: #121518;
   width: 44px;
   height: 44px;
@@ -244,7 +243,7 @@ p, div, span {
 }
 
 .back-to-top:hover {
-  color: #002a5c;
+  color: #0a407c;
   background: #121518;
 }
 

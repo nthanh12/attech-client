@@ -26,7 +26,7 @@ const SearchButton = ({
     borderLeft: "none",
     backgroundColor: currentVariant.backgroundColor,
     cursor: "pointer",
-    fontSize: 14,
+    fontSize: 16,
     color: currentVariant.color,
     transition: "background-color 0.18s",
     flexShrink: 0,

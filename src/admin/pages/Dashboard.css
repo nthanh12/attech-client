@@ -151,6 +151,9 @@
   .admin-quick-access-grid {
     grid-template-columns: 1fr;
   }
+  .simple-admin-welcome {
+    padding: 0;
+  }
 }
 
 /* Dashboard Header */

@@ -1,5 +1,4 @@
 .newslist-minimal {
-  background: #f8f9fa;
   padding: 32px 40px;
 }
 .page-title-minimal {
@@ -203,7 +202,7 @@
   }
   .page-title-minimal {
     font-size: 1.1rem;
-    margin-bottom: 10px;
+    margin: 0 10px 10px;
   }
   .pagination-btn-minimal {
     padding: 5px 10px;

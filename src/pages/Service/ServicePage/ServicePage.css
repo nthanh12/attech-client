@@ -94,7 +94,7 @@
 
 @media (max-width: 480px) {
   .page-service .service-content {
-    padding: 1rem;
+    padding: 0;
   }
 
   .section-header {

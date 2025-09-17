@@ -289,11 +289,10 @@
 
 @media (max-width: 600px) {
   .part_news__container {
-    padding: 0 1rem;
+    padding: 0;
   }
   
   .news__card {
-    margin: 0 -0.5rem;
   }
   
   .news__card-header,

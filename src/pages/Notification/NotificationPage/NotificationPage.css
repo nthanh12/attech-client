@@ -94,7 +94,7 @@
 
 @media (max-width: 480px) {
   .notification {
-    padding: 12px;
+    padding: 0;
   }
 
   .notification-header {
