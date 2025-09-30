@@ -10,7 +10,7 @@ const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const api = axios.create({
   baseURL: getApiBaseUrl(),
-  timeout: process.env.NODE_ENV === 'production' ? 30000 : 15000, // Increased timeout to 15s dev, 30s prod
+  timeout: 60000, // Tăng timeout lên 60s để test
   headers: {
     "Content-Type": "application/json",
   },
@@ -43,14 +43,16 @@ api.interceptors.response.use(
     
     // Handle timeout and network errors with retry logic
     if (error.code === 'ECONNABORTED' || error.message.includes('timeout') || error.code === 'ERR_NETWORK') {
-      
+      console.log('🔴 Network Error:', error.code, error.message, originalRequest.url);
+
       originalRequest._retryCount = (originalRequest._retryCount || 0) + 1;
-      
+
       if (originalRequest._retryCount <= MAX_RETRIES) {
-        
+        console.log(`🔄 Retry ${originalRequest._retryCount}/${MAX_RETRIES} for:`, originalRequest.url);
         await wait(RETRY_DELAY * originalRequest._retryCount);
         return api(originalRequest);
       } else {
+        console.log('❌ Max retries reached for:', originalRequest.url);
       }
     }
     

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, Suspense, lazy } from "react";
 import { useParams } from "react-router-dom";
 import { useI18n } from "../../../hooks/useI18n";
 import * as clientServiceService from "../../../services/clientServiceService";
@@ -7,7 +7,54 @@ import ErrorPage from "../../../components/Shared/ErrorPage";
 import sanitizeHtml from "sanitize-html";
 import { getApiBaseUrl } from "../../../config/apiConfig";
 import "./ServiceDetail.css";
-// Fixed webpack hot reload issue
+
+// Lazy load heavy components
+const ServiceAttachments = lazy(() => import('./components/ServiceAttachments'));
+
+// Optimized sanitization options
+const SANITIZE_OPTIONS = {
+  allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "figure", "figcaption"]),
+  allowedAttributes: {
+    ...sanitizeHtml.defaults.allowedAttributes,
+    img: ["src", "alt", "title", "class", "width", "height", "loading"],
+    figure: ["class"],
+    figcaption: ["class"],
+    div: ["style", "class"],
+    p: ["style", "class"],
+    span: ["style", "class"],
+    a: ["href", "target", "rel"]
+  },
+  allowedStyles: {
+    "*": {
+      color: [/^#(0x)?[0-9a-f]+$/i, /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/],
+      "text-align": [/^left$/, /^right$/, /^center$/, /^justify$/],
+      "font-size": [/^\d+(?:px|em|%)$/],
+      "font-weight": [/^(?:normal|bold|bolder|lighter|[1-9]00)$/]
+    }
+  }
+};
+
+// Enhanced loading component
+const ServiceLoader = () => (
+  <div className="service-loader">
+    <div className="loader-container">
+      <div className="loader-spinner"></div>
+      <span className="loader-text">Đang tải dịch vụ...</span>
+    </div>
+  </div>
+);
+
+// Optimized content component
+const ServiceContent = React.memo(({ content, sanitizeOptions }) => {
+  const sanitizedContent = useMemo(
+    () => sanitizeHtml(content || '', sanitizeOptions),
+    [content, sanitizeOptions]
+  );
+
+  return (
+    <div className="article-content" dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+  );
+});
 
 const ServiceDetail = () => {
   const { slug: serviceSlug } = useParams();
@@ -15,13 +62,32 @@ const ServiceDetail = () => {
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  // Memoized content getter - moved before early returns
+  const displayContent = useMemo(() => {
+    if (!service) return '';
+    return service.displayContent || (currentLanguage === "vi" ? service.contentVi : service.contentEn);
+  }, [service, currentLanguage]);
+
+  // Memoized image URL - moved before early returns
+  const imageUrl = useMemo(() => {
+    if (!service?.imageUrl) return null;
+    return service.imageUrl.startsWith('http') ? service.imageUrl : `${getApiBaseUrl()}${service.imageUrl}`;
+  }, [service?.imageUrl]);
+
+  // Memoized attachments check - moved before early returns
+  const hasAttachments = useMemo(() => {
+    return service?.attachments &&
+           (service.attachments.images?.length > 0 || service.attachments.documents?.length > 0);
+  }, [service?.attachments]);
 
   useEffect(() => {
     const loadService = async () => {
       try {
         setLoading(true);
         const serviceData = await clientServiceService.getServiceBySlug(serviceSlug);
-        
+
         if (serviceData) {
           const formattedService = clientServiceService.formatServiceForDisplay(serviceData, currentLanguage);
           setService({ ...serviceData, ...formattedService });
@@ -40,13 +106,7 @@ const ServiceDetail = () => {
   }, [serviceSlug, currentLanguage]);
 
   if (loading) {
-    return (
-      <div className="text-center p-5">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
+    return <ServiceLoader />;
   }
 
   if (error || !service) {
@@ -68,27 +128,8 @@ const ServiceDetail = () => {
     );
   }
 
-  const getContent = () => {
-    return service.displayContent || (currentLanguage === "vi" ? service.contentVi : service.contentEn);
-  };
-
-  const formatFileSize = (bytes) => {
-    if (!bytes || bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
-
-  const getFileTypeDisplay = (contentType) => {
-    if (!contentType) return 'Unknown';
-    if (contentType.includes('pdf')) return 'PDF';
-    if (contentType.includes('word')) return 'Word';
-    if (contentType.includes('excel') || contentType.includes('spreadsheet')) return 'Excel';
-    if (contentType.includes('powerpoint') || contentType.includes('presentation')) return 'PowerPoint';
-    if (contentType.includes('image')) return 'Image';
-    if (contentType.includes('text')) return 'Text';
-    return contentType.split('/')[1]?.toUpperCase() || 'File';
+  const handleImageLoad = () => {
+    setImageLoaded(true);
   };
 
   return (
@@ -104,13 +145,19 @@ const ServiceDetail = () => {
 
       {/* Card chính */}
       <div className="service-detail-card">
-        {/* Ảnh đại diện */}
-        {service.imageUrl && (
+        {/* Ảnh đại diện với lazy loading */}
+        {imageUrl && (
           <div className="service-detail-imgbox">
-            <img 
-              src={service.imageUrl.startsWith('http') ? service.imageUrl : `${getApiBaseUrl()}${service.imageUrl}`} 
-              alt={service.displayTitle} 
-              className="service-detail-img" 
+            {!imageLoaded && <div className="image-placeholder"></div>}
+            <img
+              src={imageUrl}
+              alt={service.displayTitle}
+              className={`service-detail-img ${imageLoaded ? 'loaded' : 'loading'}`}
+              loading="lazy"
+              onLoad={handleImageLoad}
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
             />
           </div>
         )}
@@ -119,115 +166,17 @@ const ServiceDetail = () => {
         <h1 className="service-detail-title">{service.displayTitle}</h1>
         <p className="service-detail-desc">{service.displayDescription}</p>
         
-        {/* Nội dung chi tiết */}
-        <div className="article-content">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: sanitizeHtml(getContent(), {
-                allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-                  "img",
-                  "figure",
-                  "figcaption",
-                ]),
-                allowedAttributes: {
-                  ...sanitizeHtml.defaults.allowedAttributes,
-                  img: [
-                    "src",
-                    "alt",
-                    "title",
-                    "class",
-                    "width",
-                    "height",
-                    "loading",
-                  ],
-                  figure: ["class"],
-                  figcaption: ["class"],
-                  div: ["style", "class"],
-                  p: ["style", "class"],
-                  span: ["style", "class"],
-                  a: ["href", "target", "rel"],
-                },
-                allowedStyles: {
-                  "*": {
-                    color: [/^\#(0x)?[0-9a-f]+$/i, /^rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)$/],
-                    "text-align": [/^left$/, /^right$/, /^center$/, /^justify$/],
-                    "font-size": [/^\d+(?:px|em|%)$/],
-                    "font-weight": [/^(?:normal|bold|bolder|lighter|[1-9]00)$/],
-                  },
-                },
-              }),
-            }}
-          />
-        </div>
+        {/* Nội dung chi tiết - Optimized */}
+        <ServiceContent content={displayContent} sanitizeOptions={SANITIZE_OPTIONS} />
 
-        {/* Attachments Section */}
-        {service.attachments && (service.attachments.images?.length > 0 || service.attachments.documents?.length > 0) && (
-          <div className="service-attachments">
-            <h3>{currentLanguage === 'vi' ? 'Tài liệu đính kèm' : 'Attachments'}</h3>
-            
-            {/* Images Gallery */}
-            {service.attachments.images?.length > 0 && (
-              <div className="attachment-section">
-                <h4>{currentLanguage === 'vi' ? 'Hình ảnh' : 'Images'}</h4>
-                <div className="images-gallery">
-                  {service.attachments.images.map((image, index) => (
-                    <div key={image.id} className="gallery-item">
-                      <img
-                        src={`${getApiBaseUrl()}${image.url}`}
-                        alt={image.originalFileName}
-                        className="gallery-image"
-                        loading="lazy"
-                        onClick={() => window.open(`${getApiBaseUrl()}${image.url}`, '_blank')}
-                      />
-                      <div className="image-info">
-                        <span className="file-name">{image.originalFileName}</span>
-                        <span className="file-size">{formatFileSize(image.fileSize)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Documents List */}
-            {service.attachments.documents?.length > 0 && (
-              <div className="attachment-section">
-                <h4>{currentLanguage === 'vi' ? 'Tài liệu' : 'Documents'}</h4>
-                <div className="documents-list">
-                  {service.attachments.documents.map((doc, index) => (
-                    <div key={doc.id} className="document-item">
-                      <div className="doc-icon">
-                        <i className={`fas ${doc.contentType.includes('pdf') ? 'fa-file-pdf' : 'fa-file'}`}></i>
-                      </div>
-                      <div className="doc-info">
-                        <a
-                          href={`${getApiBaseUrl()}${doc.url}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="doc-name"
-                        >
-                          {doc.originalFileName}
-                        </a>
-                        <div className="doc-meta">
-                          <span className="doc-type">{getFileTypeDisplay(doc.contentType)}</span>
-                          <span className="doc-size">{formatFileSize(doc.fileSize)}</span>
-                        </div>
-                      </div>
-                      <a
-                        href={`${getApiBaseUrl()}${doc.url}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="download-btn"
-                        aria-label={`Download ${doc.originalFileName}`}
-                      >
-                        <i className="fas fa-download"></i>
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+        {/* Attachments Section - Lazy loaded */}
+        {hasAttachments && (
+          <Suspense fallback={<div className="attachments-loader">Đang tải tài liệu...</div>}>
+            <ServiceAttachments
+              attachments={service.attachments}
+              currentLanguage={currentLanguage}
+            />
+          </Suspense>
         )}
         
         {/* Nút quay lại */}

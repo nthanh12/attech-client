@@ -25,9 +25,6 @@ const ServiceItem = ({ id, slug, title, description, image }) => {
             e.target.src = "";
           }}
         />
-        <div className="service-overlay">
-          <p>{description}</p>
-        </div>
       </div>
       <div className="card-body">
         <h3 className="service-title">{title}</h3>

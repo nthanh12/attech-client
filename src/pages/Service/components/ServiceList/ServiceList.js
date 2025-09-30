@@ -4,6 +4,7 @@ import ServiceItem from "../ServiceItem/ServiceItem";
 import "../ServiceList/ServiceList.css";
 import { getServices } from "../../../../services/clientServiceService";
 import { useI18n } from "../../../../hooks/useI18n";
+import { getApiBaseUrl } from "../../../../config/apiConfig";
 
 const ServiceList = () => {
   const { t, currentLanguage } = useI18n();
@@ -27,7 +28,9 @@ const ServiceList = () => {
                 currentLanguage === "vi"
                   ? service.descriptionVi
                   : service.descriptionEn,
-              image: service.imageUrl,
+              image: service.imageUrl
+                ? (service.imageUrl.startsWith('http') ? service.imageUrl : `${getApiBaseUrl()}${service.imageUrl}`)
+                : '/images/default-service.jpg',
               status: service.status,
             };
           });

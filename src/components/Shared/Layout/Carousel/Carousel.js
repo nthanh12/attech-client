@@ -29,19 +29,19 @@ const Carousel = () => {
 
   // Remove inline marginTop - use CSS only
   const carouselStyle = {
-    transition: 'none',
-    animation: 'none'
+    transition: "none",
+    animation: "none",
   };
 
   return (
     <div className="w-100" style={carouselStyle}>
       <div
         id="carouselId"
-        className="carousel slide w-100"
+        className="carousel slide w-100 mt-120"
         data-bs-ride="carousel"
         data-bs-pause="hover"
         data-bs-interval="5000"
-        style={{width: '100%'}}
+        style={{ width: "100%" }}
       >
         <div className="carousel-inner" role="listbox">
           {slides.map((slide, index) => (

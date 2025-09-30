@@ -13,6 +13,7 @@
 
 #carouselId {
     transition: none !important;
+    margin-top: 120px;
 }
 
 @keyframes subtle-zoom {
@@ -51,6 +52,7 @@
         margin-left: -50vw;
         margin-right: -50vw;
         width: 100vw;
+        margin-top: 0;
     }
 
     #carouselId .carousel-inner {
@@ -87,6 +89,10 @@
     .carousel .carousel-inner .carousel-item::after {
         margin-top: 48px;
     }
+    #carouselId {
+    margin-top: 60px;
+}
+
 }
 
 .carousel .carousel-inner .carousel-item::after {
@@ -172,7 +178,7 @@
 
 /* Tùy chỉnh vị trí cho từng ảnh */
 .carousel-img-1 {
-    object-position: 50% 50%; /* Ảnh 1: căn giữa */
+    object-position: 60% 80%; /* Ảnh 1: căn giữa */
 }
 
 .carousel-img-2 {
@@ -184,7 +190,7 @@
 }
 @media (max-width: 768px) {
     .carousel-img-1 {
-        object-position: 80% 100%; /* Ảnh 3: căn trên */
+        object-position: 80% 100%;
     } 
     .carousel-img-3 {
         object-position: 50% 100%; /* Ảnh 3: căn trên */

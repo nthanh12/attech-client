@@ -6,6 +6,7 @@ import ProductItem from "../ProductItem/ProductItem";
 import Sidebar from "../Sidebar/Sidebar";
 import "../ProductList/ProductList.css";
 import { getProducts, getProductCategories } from "../../../../services/clientProductService";
+import { getApiBaseUrl } from "../../../../config/apiConfig";
 
 
 // CategoryNav component with i18n
@@ -95,7 +96,9 @@ const ProductList = () => {
             fullTitle: currentLanguage === "vi" ? product.titleVi : product.titleEn,
             category: currentLanguage === "vi" ? product.productCategoryTitleVi : product.productCategoryTitleEn,
             description: currentLanguage === "vi" ? product.descriptionVi : product.descriptionEn,
-            image: product.imageUrl || '/images/default-product.jpg',
+            image: product.imageUrl
+              ? (product.imageUrl.startsWith('http') ? product.imageUrl : `${getApiBaseUrl()}${product.imageUrl}`)
+              : '/images/default-product.jpg',
             categorySlug: currentLanguage === "vi" ? product.productCategorySlugVi : product.productCategorySlugEn,
             status: product.status
           }));

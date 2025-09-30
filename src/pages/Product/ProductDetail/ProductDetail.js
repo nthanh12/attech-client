@@ -14,6 +14,8 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -71,6 +73,32 @@ const ProductDetail = () => {
     return product.displayContent || (currentLanguage === "vi" ? product.contentVi : product.contentEn);
   };
 
+  // Combine main product image with gallery images
+  const getAllImages = () => {
+    const images = [];
+
+    // Add main product image first if exists
+    if (product.imageUrl) {
+      images.push({
+        id: 'main',
+        url: product.imageUrl.startsWith('http') ? product.imageUrl : product.imageUrl,
+        originalFileName: product.displayTitle + ' - Ảnh chính',
+        fileSize: 0,
+        isMainImage: true
+      });
+    }
+
+    // Add gallery images
+    if (product.attachments?.images?.length > 0) {
+      images.push(...product.attachments.images.map(img => ({
+        ...img,
+        isMainImage: false
+      })));
+    }
+
+    return images;
+  };
+
   const formatFileSize = (bytes) => {
     if (!bytes || bytes === 0) return '0 B';
     const k = 1024;
@@ -103,21 +131,64 @@ const ProductDetail = () => {
 
       {/* Card chính */}
       <div className="product-detail-card">
-        {/* Ảnh đại diện */}
-        {product.imageUrl && (
-          <div className="product-detail-imgbox">
-            <img 
-              src={product.imageUrl.startsWith('http') ? product.imageUrl : `${getApiBaseUrl()}${product.imageUrl}`} 
-              alt={product.displayTitle} 
-              className="product-detail-img" 
-            />
+        {/* Header Section */}
+        <div className="product-header">
+          {/* Combined Image Gallery */}
+          {getAllImages().length > 0 && (
+            <div className="product-main-gallery">
+              <div className="product-gallery">
+                {/* Main Image */}
+                <div className="main-image-container">
+                  <img
+                    src={getAllImages()[currentImageIndex].url.startsWith('http')
+                      ? getAllImages()[currentImageIndex].url
+                      : `${getApiBaseUrl()}${getAllImages()[currentImageIndex].url}`}
+                    alt={getAllImages()[currentImageIndex].originalFileName}
+                    className="main-image"
+                    onClick={() => setSelectedImage(getAllImages()[currentImageIndex])}
+                  />
+                  {getAllImages().length > 1 && (
+                    <div className="image-counter">
+                      {currentImageIndex + 1} / {getAllImages().length}
+                    </div>
+                  )}
+                </div>
+
+                {/* Thumbnail Images */}
+                {getAllImages().length > 1 && (
+                  <div className="thumbnail-container">
+                    {getAllImages().map((image, index) => (
+                      <div
+                        key={image.id}
+                        className={`thumbnail-item ${index === currentImageIndex ? 'active' : ''}`}
+                        onClick={() => setCurrentImageIndex(index)}
+                      >
+                        <img
+                          src={image.url.startsWith('http') ? image.url : `${getApiBaseUrl()}${image.url}`}
+                          alt={image.originalFileName}
+                          className="thumbnail-image"
+                          loading="lazy"
+                        />
+                        {image.isMainImage && (
+                          <div className="main-badge">Chính</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Product Info */}
+          <div className="product-info">
+            <h1 className="product-detail-title">{product.displayTitle}</h1>
+            {product.displayDescription && (
+              <p className="product-detail-desc">{product.displayDescription}</p>
+            )}
           </div>
-        )}
-        
-        {/* Tiêu đề & mô tả */}
-        <h1 className="product-detail-title">{product.displayTitle}</h1>
-        <p className="product-detail-desc">{product.displayDescription}</p>
-        
+        </div>
+
         {/* Nội dung chi tiết */}
         <div className="article-content">
           <div
@@ -159,34 +230,10 @@ const ProductDetail = () => {
           />
         </div>
 
-        {/* Attachments Section */}
-        {product.attachments && (product.attachments.images?.length > 0 || product.attachments.documents?.length > 0) && (
+        {/* Attachments Section - Documents Only */}
+        {product.attachments && product.attachments.documents?.length > 0 && (
           <div className="product-attachments">
-            <h3>{currentLanguage === 'vi' ? 'Tài liệu đính kèm' : 'Attachments'}</h3>
-            
-            {/* Images Gallery */}
-            {product.attachments.images?.length > 0 && (
-              <div className="attachment-section">
-                <h4>{currentLanguage === 'vi' ? 'Hình ảnh' : 'Images'}</h4>
-                <div className="images-gallery">
-                  {product.attachments.images.map((image, index) => (
-                    <div key={image.id} className="gallery-item">
-                      <img
-                        src={`${getApiBaseUrl()}${image.url}`}
-                        alt={image.originalFileName}
-                        className="gallery-image"
-                        loading="lazy"
-                        onClick={() => window.open(`${getApiBaseUrl()}${image.url}`, '_blank')}
-                      />
-                      <div className="image-info">
-                        <span className="file-name">{image.originalFileName}</span>
-                        <span className="file-size">{formatFileSize(image.fileSize)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+            <h3>{currentLanguage === 'vi' ? 'Tài liệu đính kèm' : 'Documents'}</h3>
 
             {/* Documents List */}
             {product.attachments.documents?.length > 0 && (
@@ -239,6 +286,32 @@ const ProductDetail = () => {
           </LocalizedLink>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div
+          className="image-modal"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="image-modal-close"
+              onClick={() => setSelectedImage(null)}
+            >
+              <i className="fas fa-times"></i>
+            </button>
+            <img
+              src={`${getApiBaseUrl()}${selectedImage.url}`}
+              alt={selectedImage.originalFileName}
+              className="image-modal-img"
+            />
+            <div className="image-modal-info">
+              <h4>{selectedImage.originalFileName}</h4>
+              <p>{formatFileSize(selectedImage.fileSize)}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
