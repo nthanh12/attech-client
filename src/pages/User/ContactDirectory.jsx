@@ -155,7 +155,6 @@ const ContactDirectory = () => {
           <div className="row g-3">
             <div className="col-md-8">
               <div className="search-box">
-                <i className="bi bi-search"></i>
                 <input
                   type="text"
                   className="form-control"

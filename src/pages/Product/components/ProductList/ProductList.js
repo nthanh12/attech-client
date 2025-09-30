@@ -5,9 +5,11 @@ import { useLocalizedRouting } from "../../../../hooks/useLocalizedRouting";
 import ProductItem from "../ProductItem/ProductItem";
 import Sidebar from "../Sidebar/Sidebar";
 import "../ProductList/ProductList.css";
-import { getProducts, getProductCategories } from "../../../../services/clientProductService";
+import {
+  getProducts,
+  getProductCategories,
+} from "../../../../services/clientProductService";
 import { getApiBaseUrl } from "../../../../config/apiConfig";
-
 
 // CategoryNav component with i18n
 const CategoryNav = ({ categories, selectedCategory, onSelectCategory, t }) => {
@@ -73,8 +75,8 @@ const ProductList = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Load products and categories from API
@@ -82,34 +84,55 @@ const ProductList = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        
+
         // Load products - use category slug if selected
         const productsParams = { limit: 50 };
         if (category) {
           productsParams.categorySlug = category;
         }
-        const productsResponse = await getProducts(productsParams);if (productsResponse.status === 1 && productsResponse.data?.items?.length > 0) {
-          const formattedProducts = productsResponse.data.items.map(product => ({
-            id: product.id,
-            slug: currentLanguage === "vi" ? product.slugVi : product.slugEn,
-            title: currentLanguage === "vi" ? product.titleVi : product.titleEn,
-            fullTitle: currentLanguage === "vi" ? product.titleVi : product.titleEn,
-            category: currentLanguage === "vi" ? product.productCategoryTitleVi : product.productCategoryTitleEn,
-            description: currentLanguage === "vi" ? product.descriptionVi : product.descriptionEn,
-            image: product.imageUrl
-              ? (product.imageUrl.startsWith('http') ? product.imageUrl : `${getApiBaseUrl()}${product.imageUrl}`)
-              : '/images/default-product.jpg',
-            categorySlug: currentLanguage === "vi" ? product.productCategorySlugVi : product.productCategorySlugEn,
-            status: product.status
-          }));
-          const finalProducts = formattedProducts.filter(p => p.status === 1);setProducts(finalProducts);
-        } else {setProducts([]);
+        const productsResponse = await getProducts(productsParams);
+        if (
+          productsResponse.status === 1 &&
+          productsResponse.data?.items?.length > 0
+        ) {
+          const formattedProducts = productsResponse.data.items.map(
+            (product) => ({
+              id: product.id,
+              slug: currentLanguage === "vi" ? product.slugVi : product.slugEn,
+              title:
+                currentLanguage === "vi" ? product.titleVi : product.titleEn,
+              fullTitle:
+                currentLanguage === "vi" ? product.titleVi : product.titleEn,
+              category:
+                currentLanguage === "vi"
+                  ? product.productCategoryTitleVi
+                  : product.productCategoryTitleEn,
+              description:
+                currentLanguage === "vi"
+                  ? product.descriptionVi
+                  : product.descriptionEn,
+              image: product.imageUrl
+                ? product.imageUrl.startsWith("http")
+                  ? product.imageUrl
+                  : `${getApiBaseUrl()}${product.imageUrl}`
+                : "/images/default-product.jpg",
+              categorySlug:
+                currentLanguage === "vi"
+                  ? product.productCategorySlugVi
+                  : product.productCategorySlugEn,
+              status: product.status,
+            })
+          );
+          const finalProducts = formattedProducts.filter((p) => p.status === 1);
+          setProducts(finalProducts);
+        } else {
+          setProducts([]);
         }
 
         // Load categories
         const categoriesResponse = await getProductCategories();
         if (categoriesResponse.success && categoriesResponse.data?.length > 0) {
-          const formattedCategories = categoriesResponse.data.map(cat => ({
+          const formattedCategories = categoriesResponse.data.map((cat) => ({
             name: currentLanguage === "vi" ? cat.titleVi : cat.titleEn,
             slug: currentLanguage === "vi" ? cat.slugVi : cat.slugEn,
           }));
@@ -117,7 +140,8 @@ const ProductList = () => {
         } else {
           setCategories([]);
         }
-      } catch (error) {setProducts([]);
+      } catch (error) {
+        setProducts([]);
         setCategories([]);
       } finally {
         setLoading(false);
@@ -132,12 +156,15 @@ const ProductList = () => {
     setSelectedCategory(category || "");
   }, [category]);
 
-  useEffect(() => {let result = [...products];
+  useEffect(() => {
+    let result = [...products];
 
-    if (selectedCategory) {const beforeFilter = result.length;
+    if (selectedCategory) {
+      const beforeFilter = result.length;
       result = result.filter(
         (product) => product.categorySlug === selectedCategory
-      );}
+      );
+    }
 
     if (searchTerm) {
       const searchLower = searchTerm.toLowerCase();
@@ -146,7 +173,8 @@ const ProductList = () => {
         (product) =>
           product.title.toLowerCase().includes(searchLower) ||
           product.description.toLowerCase().includes(searchLower)
-      );}
+      );
+    }
 
     result.sort((a, b) => {
       switch (sortBy) {
@@ -157,7 +185,8 @@ const ProductList = () => {
         default:
           return 0;
       }
-    });setFilteredProducts(result);
+    });
+    setFilteredProducts(result);
     setCurrentPage(1);
   }, [products, selectedCategory, searchTerm, sortBy]);
 
@@ -278,7 +307,8 @@ const ProductList = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };if (loading) {
+  };
+  if (loading) {
     return (
       <div className="text-center" style={{ padding: "50px" }}>
         <div className="spinner-border" role="status">
@@ -290,8 +320,10 @@ const ProductList = () => {
   }
 
   return (
-    <div className="attech-product-list-container" style={{ paddingTop: "20px" }}>
-      
+    <div
+      className="attech-product-list-container"
+      style={{ paddingTop: "20px", backgroundColor: "#ffffff" }}
+    >
       <div className="attech-controls-wrapper">
         <div className="attech-controls-inner">
           <div className="attech-controls-top">
@@ -360,12 +392,15 @@ const ProductList = () => {
         </div>
       </div>
 
-      <div 
+      <div
         className={`attech-product-grid ${viewMode} ${
-          windowWidth <= 480 ? 'force-mobile-tiny' 
-          : windowWidth <= 768 ? 'force-mobile' 
-          : windowWidth <= 992 ? 'force-tablet' 
-          : 'force-desktop'
+          windowWidth <= 480
+            ? "force-mobile-tiny"
+            : windowWidth <= 768
+            ? "force-mobile"
+            : windowWidth <= 992
+            ? "force-tablet"
+            : "force-desktop"
         }`}
       >
         {loading ? (
@@ -388,7 +423,10 @@ const ProductList = () => {
             </div>
           ))
         ) : (
-          <div className="attech-no-products" style={{ padding: "40px", textAlign: "center" }}>
+          <div
+            className="attech-no-products"
+            style={{ padding: "40px", textAlign: "center" }}
+          >
             <i className="fas fa-box-open"></i>
             <p>{t("frontend.products.noProductsFound")}</p>
           </div>

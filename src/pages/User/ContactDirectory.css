@@ -5,7 +5,7 @@
   margin: 0 auto;
 }
 
-.directory-controls {
+.contact-directory .directory-controls {
   background: white;
   padding: 20px;
   border-radius: 10px;
@@ -13,29 +13,64 @@
   margin-bottom: 30px;
 }
 
-.search-box {
+.contact-directory .directory-controls .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.contact-directory .directory-controls .col-md-8,
+.contact-directory .directory-controls .col-md-4 {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.contact-directory .directory-controls .col-md-8 {
+  flex-basis: 65%;
+}
+
+.contact-directory .directory-controls .col-md-4 {
+  flex-basis: 30%;
+}
+
+.contact-directory .search-box {
   position: relative;
+  width: 100%;
 }
 
-.search-box i {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #6c757d;
-  z-index: 2;
+.contact-directory .search-box i {
+  display: none;
 }
 
-.search-box input {
-  padding-left: 45px;
+.contact-directory .search-box input {
+  width: 100%;
+  padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
+  box-sizing: border-box;
 }
 
-.search-box input:focus {
+.contact-directory .search-box input:focus {
   border-color: #3498db;
   box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+  outline: none;
+}
+
+.contact-directory .directory-controls .form-select {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+.contact-directory .directory-controls .form-select option {
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  line-height: 1.2;
 }
 
 .contacts-grid {
@@ -370,6 +405,16 @@
 }
 
 /* ContactDirectory Mobile responsive fixes */
+@media (max-width: 992px) {
+  .contact-directory .directory-controls .col-md-8 {
+    flex-basis: 60%;
+  }
+
+  .contact-directory .directory-controls .col-md-4 {
+    flex-basis: 35%;
+  }
+}
+
 @media (max-width: 768px) {
   .contact-directory {
     padding: 0 10px;
@@ -378,36 +423,38 @@
   .contact-directory .directory-controls {
     padding: 15px;
     margin-bottom: 20px;
+    border-radius: 8px;
   }
 
   .contact-directory .directory-controls .row {
-    margin: 0;
+    flex-direction: column;
+    gap: 12px;
   }
 
   .contact-directory .directory-controls .col-md-8,
   .contact-directory .directory-controls .col-md-4 {
-    padding: 0 5px;
-    margin-bottom: 15px;
-  }
-
-  .contact-directory .search-box {
+    flex-basis: 100% !important;
     width: 100%;
+    max-width: 100%;
   }
 
   .contact-directory .search-box input {
-    width: 100%;
-    padding: 12px 15px 12px 45px;
-    font-size: 16px; /* Prevent mobile zoom */
+    padding: 12px 15px;
+    font-size: 13px !important;
   }
 
   .contact-directory .search-box i {
-    left: 15px;
+    display: none;
   }
 
-  .contact-directory .form-select {
-    width: 100%;
+  .contact-directory .directory-controls .form-select {
     padding: 12px 15px;
-    font-size: 0.9rem;
+    font-size: 13px !important;
+  }
+
+  .contact-directory .directory-controls .form-select option {
+    font-size: 13px !important;
+    padding: 6px 8px;
   }
 }
 
@@ -417,53 +464,84 @@
   }
 
   .contact-directory .directory-controls {
-    padding: 12px;
+    padding: 10px;
     margin-bottom: 15px;
+    border-radius: 6px;
   }
 
-  .contact-directory .directory-controls .col-md-8,
-  .contact-directory .directory-controls .col-md-4 {
-    padding: 0;
-    margin-bottom: 12px;
-    width: 100%;
+  .contact-directory .directory-controls .row {
+    gap: 10px;
   }
 
   .contact-directory .search-box input {
-    padding: 10px 12px 10px 40px;
-    font-size: 0.85rem;
+    padding: 10px 12px;
+    font-size: 13px;
+    border-radius: 6px;
   }
 
   .contact-directory .search-box i {
-    left: 12px;
-    font-size: 0.9rem;
+    display: none;
   }
 
-  .contact-directory .form-select {
+  .contact-directory .directory-controls .form-select {
     padding: 10px 12px;
-    font-size: 0.85rem;
+    font-size: 13px;
+    border-radius: 6px;
   }
 
-  .contact-directory .contact-item-tree {
+  .contact-directory .directory-controls .form-select option {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  /* Contact items mobile layout */
+  .contact-item-tree {
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    padding: 15px;
+    padding: 12px;
   }
 
-  .contact-directory .contact-main-info {
+  .contact-main-info {
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
+    gap: 0.5rem;
   }
 
-  .contact-directory .contact-details-simple {
+  .contact-name-pos {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .contact-details-simple {
     flex-direction: column;
     gap: 8px;
+    width: 100%;
   }
 
-  .contact-directory .contact-actions {
-    align-self: flex-end;
-    margin-top: 10px;
+  .contact-actions {
+    width: 100%;
+    justify-content: flex-start;
+    margin-top: 8px;
+  }
+
+  /* Tree view mobile adjustments */
+  .organization-header {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .organization-header h4 {
+    font-size: 0.85rem;
+  }
+
+  .department-header {
+    padding: 0.5rem 0.8rem;
+  }
+
+  .department-header h5 {
+    font-size: 0.8rem;
   }
 }
 
