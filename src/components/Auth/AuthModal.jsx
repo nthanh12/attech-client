@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import ReactModal from 'react-modal';
-import LoginForm from './LoginForm';
-import RegisterForm from './RegisterForm';
-import { isAuthenticated, getCurrentUser, logout } from '../../services/authService';
-import './AuthModal.css';
+import React, { useState, useEffect } from "react";
+import ReactModal from "react-modal";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
+import {
+  isAuthenticated,
+  getCurrentUser,
+  logout,
+} from "../../services/authService";
+import "./AuthModal.css";
 
-const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
+const AuthModal = ({ isOpen, onClose, defaultMode = "login" }) => {
   const [mode, setMode] = useState(defaultMode);
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
@@ -17,54 +21,56 @@ const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
   const checkAuthStatus = () => {
     const authenticated = isAuthenticated();
     const currentUser = getCurrentUser();
-    
+
     setIsAuth(authenticated);
     setUser(currentUser);
   };
 
-  const handleLoginSuccess = (result) => {checkAuthStatus();
+  const handleLoginSuccess = (result) => {
+    checkAuthStatus();
     onClose();
-    
+
     // Show success notification
     setTimeout(() => {
-      alert(`Welcome back, ${result.token ? 'User' : 'Guest'}! 🎉`);
+      alert(`Welcome back, ${result.token ? "User" : "Guest"}! 🎉`);
     }, 100);
   };
 
-  const handleRegisterSuccess = (result) => {setMode('login');
+  const handleRegisterSuccess = (result) => {
+    setMode("login");
     // Don't close modal, let user login
   };
 
   const handleLogout = () => {
     logout();
     checkAuthStatus();
-    alert('You have been logged out successfully! 👋');
+    alert("You have been logged out successfully!");
   };
 
   const modalStyles = {
     overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      backgroundColor: "rgba(0, 0, 0, 0.8)",
       zIndex: 10000,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
     },
     content: {
-      position: 'relative',
-      top: 'auto',
-      left: 'auto',
-      right: 'auto',
-      bottom: 'auto',
-      border: 'none',
-      background: 'transparent',
-      overflow: 'visible',
+      position: "relative",
+      top: "auto",
+      left: "auto",
+      right: "auto",
+      bottom: "auto",
+      border: "none",
+      background: "transparent",
+      overflow: "visible",
       borderRadius: 0,
-      outline: 'none',
+      outline: "none",
       padding: 0,
       margin: 0,
-      maxWidth: '100vw',
-      maxHeight: '100vh'
-    }
+      maxWidth: "100vw",
+      maxHeight: "100vh",
+    },
   };
 
   if (isAuth && user) {
@@ -109,19 +115,18 @@ const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
               <div className="stat-item">
                 <span className="stat-label">Expires</span>
                 <span className="stat-value">
-                  {user.exp ? new Date(user.exp * 1000).toLocaleString() : 'N/A'}
+                  {user.exp
+                    ? new Date(user.exp * 1000).toLocaleString()
+                    : "N/A"}
                 </span>
               </div>
             </div>
 
             <div className="profile-actions">
-              <button 
-                className="profile-button primary"
-                onClick={onClose}
-              >
+              <button className="profile-button primary" onClick={onClose}>
                 Continue Working
               </button>
-              <button 
+              <button
                 className="profile-button secondary"
                 onClick={handleLogout}
               >
@@ -129,7 +134,7 @@ const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
               </button>
             </div>
 
-            <button 
+            <button
               className="modal-close-button"
               onClick={onClose}
               aria-label="Close"
@@ -153,21 +158,21 @@ const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
       <div className="auth-modal-content">
         <div className="auth-modal-header">
           <div className="mode-switcher">
-            <button 
-              className={`mode-button ${mode === 'login' ? 'active' : ''}`}
-              onClick={() => setMode('login')}
+            <button
+              className={`mode-button ${mode === "login" ? "active" : ""}`}
+              onClick={() => setMode("login")}
             >
               Sign In
             </button>
-            <button 
-              className={`mode-button ${mode === 'register' ? 'active' : ''}`}
-              onClick={() => setMode('register')}
+            <button
+              className={`mode-button ${mode === "register" ? "active" : ""}`}
+              onClick={() => setMode("register")}
             >
               Sign Up
             </button>
           </div>
-          
-          <button 
+
+          <button
             className="modal-close-button"
             onClick={onClose}
             aria-label="Close"
@@ -176,15 +181,15 @@ const AuthModal = ({ isOpen, onClose, defaultMode = 'login' }) => {
           </button>
         </div>
 
-        {mode === 'login' ? (
-          <LoginForm 
+        {mode === "login" ? (
+          <LoginForm
             onLoginSuccess={handleLoginSuccess}
-            onSwitchToRegister={() => setMode('register')}
+            onSwitchToRegister={() => setMode("register")}
           />
         ) : (
-          <RegisterForm 
+          <RegisterForm
             onRegisterSuccess={handleRegisterSuccess}
-            onSwitchToLogin={() => setMode('login')}
+            onSwitchToLogin={() => setMode("login")}
           />
         )}
       </div>

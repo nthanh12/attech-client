@@ -267,7 +267,7 @@ const NewsDetailPage = () => {
           <aside className="news-sidebar">
             {/* Search Box */}
             <div className="sidebar-search">
-              <h3>Tìm kiếm tin tức</h3>
+              <h3>{tNews("frontend.news.searchNews")}</h3>
               <SearchBox
                 value={searchTerm}
                 onChange={handleSearchChange}

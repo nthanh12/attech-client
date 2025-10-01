@@ -362,8 +362,6 @@ const UserManagement = () => {
           status: formData.status === "active" ? 1 : 0,
         };
 
-        console.log("Creating user with data:", createData);
-
         // Validate required fields
         if (!createData.username) {
           throw new Error("Tên đăng nhập là bắt buộc");

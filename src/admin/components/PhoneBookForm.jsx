@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { createPhoneBookEntry, updatePhoneBookEntry } from "../../services/phoneBookService";
+import {
+  createPhoneBookEntry,
+  updatePhoneBookEntry,
+} from "../../services/phoneBookService";
 
 const PhoneBookForm = ({
   entry = null,
   organizations = [],
   departments = {},
   onSave,
-  onCancel
+  onCancel,
 }) => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -51,25 +54,25 @@ const PhoneBookForm = ({
       setAvailableDepartments(departments[formData.organization]);
       // Reset department if current one is not in new organization
       if (!departments[formData.organization].includes(formData.department)) {
-        setFormData(prev => ({ ...prev, department: "" }));
+        setFormData((prev) => ({ ...prev, department: "" }));
       }
     } else {
       setAvailableDepartments([]);
-      setFormData(prev => ({ ...prev, department: "" }));
+      setFormData((prev) => ({ ...prev, department: "" }));
     }
   }, [formData.organization, departments]);
 
   // Handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     }));
 
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
@@ -144,10 +147,8 @@ const PhoneBookForm = ({
         position: formData.position?.trim(),
         organization: formData.organization?.trim(),
         department: formData.department?.trim(),
-        order: parseInt(formData.order) || 0
+        order: parseInt(formData.order) || 0,
       };
-
-      console.log('Cleaned data to send:', cleanedData);
 
       const result = entry
         ? await updatePhoneBookEntry(entry.id, cleanedData)
@@ -157,7 +158,7 @@ const PhoneBookForm = ({
         onSave();
       } else {
         // Handle server validation errors
-        if (result.errors && typeof result.errors === 'object') {
+        if (result.errors && typeof result.errors === "object") {
           setErrors(result.errors);
         } else {
           alert(result.message || "Có lỗi xảy ra");
@@ -172,7 +173,10 @@ const PhoneBookForm = ({
   };
 
   return (
-    <div className="modal show d-block" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+    <div
+      className="modal show d-block"
+      style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+    >
       <div className="modal-dialog modal-lg">
         <div className="modal-content">
           <div className="modal-header">
@@ -197,7 +201,9 @@ const PhoneBookForm = ({
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${errors.fullName ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.fullName ? "is-invalid" : ""
+                    }`}
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleChange}
@@ -216,7 +222,9 @@ const PhoneBookForm = ({
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${errors.position ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.position ? "is-invalid" : ""
+                    }`}
                     name="position"
                     value={formData.position}
                     onChange={handleChange}
@@ -234,19 +242,25 @@ const PhoneBookForm = ({
                     Tổ chức <span className="text-danger">*</span>
                   </label>
                   <select
-                    className={`form-select ${errors.organization ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      errors.organization ? "is-invalid" : ""
+                    }`}
                     name="organization"
                     value={formData.organization}
                     onChange={handleChange}
                     disabled={saving}
                   >
                     <option value="">Chọn tổ chức</option>
-                    {organizations.map(org => (
-                      <option key={org} value={org}>{org}</option>
+                    {organizations.map((org) => (
+                      <option key={org} value={org}>
+                        {org}
+                      </option>
                     ))}
                   </select>
                   {errors.organization && (
-                    <div className="invalid-feedback">{errors.organization}</div>
+                    <div className="invalid-feedback">
+                      {errors.organization}
+                    </div>
                   )}
                 </div>
 
@@ -256,15 +270,19 @@ const PhoneBookForm = ({
                     Phòng ban <span className="text-danger">*</span>
                   </label>
                   <select
-                    className={`form-select ${errors.department ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      errors.department ? "is-invalid" : ""
+                    }`}
                     name="department"
                     value={formData.department}
                     onChange={handleChange}
                     disabled={saving || !formData.organization}
                   >
                     <option value="">Chọn phòng ban</option>
-                    {availableDepartments.map(dept => (
-                      <option key={dept} value={dept}>{dept}</option>
+                    {availableDepartments.map((dept) => (
+                      <option key={dept} value={dept}>
+                        {dept}
+                      </option>
                     ))}
                   </select>
                   {errors.department && (
@@ -277,7 +295,9 @@ const PhoneBookForm = ({
                   <label className="form-label">Điện thoại cố định</label>
                   <input
                     type="text"
-                    className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.phone ? "is-invalid" : ""
+                    }`}
                     name="phone"
                     value={formData.phone}
                     onChange={handleChange}
@@ -308,7 +328,9 @@ const PhoneBookForm = ({
                   <label className="form-label">Email</label>
                   <input
                     type="email"
-                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
@@ -325,7 +347,9 @@ const PhoneBookForm = ({
                   <label className="form-label">Di động</label>
                   <input
                     type="text"
-                    className={`form-control ${errors.mobile ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.mobile ? "is-invalid" : ""
+                    }`}
                     name="mobile"
                     value={formData.mobile}
                     onChange={handleChange}

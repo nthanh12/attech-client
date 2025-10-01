@@ -1,9 +1,34 @@
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "./Business.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import SEO from "../../../../components/SEO/SEO";
+import { useI18n } from "../../../../hooks/useI18n";
 
 const Business = () => {
+  const { currentLanguage } = useI18n();
+  const location = useLocation();
+
+  const seoContent = {
+    vi: {
+      title: "Ngành nghề kinh doanh | ATTECH",
+      description:
+        "Tìm hiểu về các ngành nghề kinh doanh và lĩnh vực hoạt động của ATTECH, bao gồm dịch vụ hỗ trợ hàng không, CNS, sản xuất thiết bị và nhiều lĩnh vực khác.",
+      keywords:
+        "ngành nghề kinh doanh ATTECH, business fields, lĩnh vực hoạt động, aviation services",
+    },
+    en: {
+      title: "Business Fields | ATTECH",
+      description:
+        "Learn about ATTECH's business fields and areas of operation, including aviation support services, CNS, equipment manufacturing and more.",
+      keywords:
+        "ATTECH business fields, aviation services, business activities, company operations",
+    },
+  };
+
+  const currentSEO = seoContent[currentLanguage] || seoContent.vi;
+
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -184,102 +209,111 @@ const Business = () => {
   ];
 
   return (
-    <div className="business-fields">
-      <section className="certificate-section">
-        <div className="certificate-header" data-aos="fade-up">
-          <h1>{companyInfo.authority}</h1>
-          <hr className="divider" />
-          <p>{companyInfo.motto}</p>
-          <hr className="divider" />
-        </div>
-        <div
-          className="certificate-info"
-          data-aos="fade-up"
-          data-aos-delay="100"
-        >
-          <h2>{companyInfo.certificate.title}</h2>
-          <p>
-            <strong>Mã số doanh nghiệp:</strong>{" "}
-            {companyInfo.certificate.enterpriseCode}
-          </p>
-          <p>
-            <strong>Đăng ký lần đầu:</strong>{" "}
-            {companyInfo.certificate.firstRegistration}
-          </p>
-          <p>
-            <strong>{companyInfo.certificate.lastChange}</strong>
-          </p>
-        </div>
-        <div
-          className="company-details"
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <h3>1. Tên Công Ty</h3>
-          <p>
-            <strong>Tiếng Việt:</strong> {companyInfo.name.vietnamese}
-          </p>
-          <p>
-            <strong>Quốc tế:</strong> {companyInfo.name.international}
-          </p>
-          <p>
-            <strong>Viết tắt:</strong> {companyInfo.name.short}
-          </p>
+    <>
+      <SEO
+        title={currentSEO.title}
+        description={currentSEO.description}
+        keywords={currentSEO.keywords}
+        url={location.pathname}
+        lang={currentLanguage}
+      />
+      <div className="business-fields">
+        <section className="certificate-section">
+          <div className="certificate-header" data-aos="fade-up">
+            <h1>{companyInfo.authority}</h1>
+            <hr className="divider" />
+            <p>{companyInfo.motto}</p>
+            <hr className="divider" />
+          </div>
+          <div
+            className="certificate-info"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <h2>{companyInfo.certificate.title}</h2>
+            <p>
+              <strong>Mã số doanh nghiệp:</strong>{" "}
+              {companyInfo.certificate.enterpriseCode}
+            </p>
+            <p>
+              <strong>Đăng ký lần đầu:</strong>{" "}
+              {companyInfo.certificate.firstRegistration}
+            </p>
+            <p>
+              <strong>{companyInfo.certificate.lastChange}</strong>
+            </p>
+          </div>
+          <div
+            className="company-details"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <h3>1. Tên Công Ty</h3>
+            <p>
+              <strong>Tiếng Việt:</strong> {companyInfo.name.vietnamese}
+            </p>
+            <p>
+              <strong>Quốc tế:</strong> {companyInfo.name.international}
+            </p>
+            <p>
+              <strong>Viết tắt:</strong> {companyInfo.name.short}
+            </p>
 
-          <h3>2. Địa Chỉ Trụ Sở Chính</h3>
-          <p>{companyInfo.address.full}</p>
-          <p>
-            <strong>Điện thoại:</strong> {companyInfo.address.phone}{" "}
-            <strong>Fax:</strong> {companyInfo.address.fax}
-          </p>
-          <p>
-            <strong>Email:</strong> {companyInfo.address.email}{" "}
-            <strong>Website:</strong>{" "}
-            <a
-              href={`https://${companyInfo.address.website}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {companyInfo.address.website}
-            </a>
-          </p>
-        </div>
-      </section>
+            <h3>2. Địa Chỉ Trụ Sở Chính</h3>
+            <p>{companyInfo.address.full}</p>
+            <p>
+              <strong>Điện thoại:</strong> {companyInfo.address.phone}{" "}
+              <strong>Fax:</strong> {companyInfo.address.fax}
+            </p>
+            <p>
+              <strong>Email:</strong> {companyInfo.address.email}{" "}
+              <strong>Website:</strong>{" "}
+              <a
+                href={`https://${companyInfo.address.website}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {companyInfo.address.website}
+              </a>
+            </p>
+          </div>
+        </section>
 
-      <section className="fields-section">
-        <h3 data-aos="fade-up">3. Ngành, Nghề Kinh Doanh</h3>
-        <div className="fields-list">
-          {businessFields.map((field, index) => (
-            <div
-              key={field.id}
-              className="field-item"
-              data-aos="fade-up"
-              data-aos-delay={index * 50}
-            >
-              <p>
-                <strong>{field.id}.</strong> {field.name}
-              </p>
-              {field.details && (
-                <div className="field-details">
-                  <p>
-                    <strong>Chi tiết:</strong>
-                  </p>
-                  <ul>
-                    {field.details.map((detail, idx) => (
-                      <li key={idx}>{detail}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-        <p className="note" data-aos="fade-up">
-          (Đối với các ngành nghề kinh doanh có điều kiện, Doanh nghiệp chỉ kinh
-          doanh khi có đủ điều kiện theo quy định của pháp luật)
-        </p>
-      </section>
-    </div>
+        <section className="fields-section">
+          <h3 data-aos="fade-up">3. Ngành, Nghề Kinh Doanh</h3>
+          <div className="fields-list">
+            {businessFields.map((field, index) => (
+              <div
+                key={field.id}
+                className="field-item"
+                data-aos="fade-up"
+                data-aos-delay={index * 50}
+              >
+                <p>
+                  <strong>{field.id}.</strong> {field.name}
+                </p>
+                {field.details && (
+                  <div className="field-details">
+                    <p>
+                      <strong>Chi tiết:</strong>
+                    </p>
+                    <ul>
+                      {field.details.map((detail, idx) => (
+                        <li key={idx}>{detail}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+          <p className="note" data-aos="fade-up">
+            (Đối với các ngành nghề kinh doanh có điều kiện, Doanh nghiệp chỉ
+            kinh doanh khi có đủ điều kiện theo quy định của pháp luật)
+          </p>
+        </section>
+      </div>
+    </>
   );
 };
 

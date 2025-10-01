@@ -1,11 +1,34 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 import { submitContactForm } from "../../../services/contactService";
 import "../ContactPage/ContactPage.css";
-import picture_mail from "../../../assets/img/img-01.png";
+import SEO from "../../../components/SEO/SEO";
+import { useI18n } from "../../../hooks/useI18n";
 
 const ContactPage = () => {
   const { t } = useTranslation();
+  const { currentLanguage } = useI18n();
+  const location = useLocation();
+
+  const seoContent = {
+    vi: {
+      title: "Trang liên hệ | ATTECH",
+      description:
+        "Liên hệ với ATTECH để được tư vấn về các giải pháp kỹ thuật hàng không, dịch vụ CNS và bay kiểm tra hiệu chuẩn.",
+      keywords:
+        "liên hệ ATTECH, contact ATTECH, tư vấn hàng không, aviation consulting",
+    },
+    en: {
+      title: "Contact | ATTECH",
+      description:
+        "Contact ATTECH for consultation on aviation technical solutions, CNS services and flight inspection calibration.",
+      keywords:
+        "contact ATTECH, aviation consulting, CNS services, flight inspection",
+    },
+  };
+
+  const currentSEO = seoContent[currentLanguage] || seoContent.vi;
 
   // State cho form
   const [form, setForm] = useState({
@@ -32,10 +55,10 @@ const ContactPage = () => {
   // Validate email
   const validateEmail = (email) =>
     /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
-    
+
   // Validate phone
   const validatePhone = (phone) =>
-    /^[\d\s\+\-\(\)]{8,15}$/.test(phone.replace(/\s/g, ''));
+    /^[\d\s\+\-\(\)]{8,15}$/.test(phone.replace(/\s/g, ""));
 
   // Xử lý submit
   const handleSubmit = async (e) => {
@@ -63,25 +86,26 @@ const ContactPage = () => {
       try {
         // Gửi form đến server
         const result = await submitContactForm(form);
-        
+
         // Hiển thị thông báo thành công
-        setNotification(result.message || t("frontend.contact.form.successMessage"));
+        setNotification(
+          result.message || t("frontend.contact.form.successMessage")
+        );
         setNotificationType("success");
-        
+
         // Reset form sau khi gửi thành công
         setForm({ name: "", email: "", phone: "", subject: "", message: "" });
-        
+
         // Ẩn thông báo sau 5s
         setTimeout(() => {
           setNotification("");
           setNotificationType("");
         }, 5000);
-        
       } catch (error) {
         // Hiển thị thông báo lỗi
         setNotification(error.message || "Có lỗi xảy ra khi gửi liên hệ");
         setNotificationType("error");
-        
+
         // Ẩn thông báo lỗi sau 5s
         setTimeout(() => {
           setNotification("");
@@ -99,6 +123,13 @@ const ContactPage = () => {
 
   return (
     <>
+      <SEO
+        title={currentSEO.title}
+        description={currentSEO.description}
+        keywords={currentSEO.keywords}
+        url={location.pathname}
+        lang={currentLanguage}
+      />
       <section className="contact" id="contact">
         <div className="container">
           <div className="heading text-center">
@@ -107,7 +138,11 @@ const ContactPage = () => {
           </div>
           {/* Thông báo dạng toast nổi, không làm nhảy layout */}
           {notification && (
-            <div className={`attech-toast ${notificationType === "error" ? "attech-toast-error" : ""}`}>
+            <div
+              className={`attech-toast ${
+                notificationType === "error" ? "attech-toast-error" : ""
+              }`}
+            >
               {notification}
             </div>
           )}
@@ -236,8 +271,8 @@ const ContactPage = () => {
                     {errors.message || "\u00A0"}
                   </span>
                 </div>
-                <button 
-                  className="btn btn-block" 
+                <button
+                  className="btn btn-block"
                   type="submit"
                   disabled={isSubmitting}
                 >

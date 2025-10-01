@@ -221,13 +221,13 @@ const NotificationDetailPage = () => {
           <aside className="notification-sidebar">
             {/* Search Box */}
             <div className="sidebar-search">
-              <h3>Tìm kiếm thông báo</h3>
+              <h3>{tNotifications("frontend.notifications.searchNotifications")}</h3>
               <SearchBox
                 value={searchTerm}
                 onChange={handleSearchChange}
                 onSearch={handleSearch}
                 onSelectSuggestion={handleSelectSuggestion}
-                placeholder="Tìm kiếm thông báo..."
+                placeholder={tNotifications("frontend.notifications.searchNotifications")}
                 style={{ minWidth: "100%", fontSize: 14 }}
               />
             </div>

@@ -1,12 +1,15 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { fetchTranslationsForI18next, clearTranslationsCache } from '../services/languageContentService';
-import { isAuthenticated } from '../services/authService';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import {
+  fetchTranslationsForI18next,
+  clearTranslationsCache,
+} from "../services/languageContentService";
+import { isAuthenticated } from "../services/authService";
 
 // Import fallback language resources (in case API fails)
-import viTranslation from './locales/vi.json';
-import enTranslation from './locales/en.json';
+import viTranslation from "./locales/vi.json";
+import enTranslation from "./locales/en.json";
 
 // API Backend để load translations từ database
 class ApiBackend {
@@ -21,7 +24,7 @@ class ApiBackend {
 
   read(language, namespace, callback) {
     // Always use fallback first to prevent showing keys
-    const fallback = language === 'vi' ? viTranslation : enTranslation;
+    const fallback = language === "vi" ? viTranslation : enTranslation;
 
     // Return fallback immediately
     callback(null, fallback);
@@ -29,7 +32,7 @@ class ApiBackend {
     // Then try to load from API if authenticated (async update)
     if (isAuthenticated()) {
       fetchTranslationsForI18next(language)
-        .then(translations => {
+        .then((translations) => {
           // Only update if we actually got translations
           if (translations && Object.keys(translations).length > 0) {
             // Store timestamp to detect stale cache
@@ -37,26 +40,35 @@ class ApiBackend {
             localStorage.setItem(cacheKey, Date.now().toString());
 
             // Update translations in background
-            i18n.addResourceBundle(language, namespace, translations, true, true);
+            i18n.addResourceBundle(
+              language,
+              namespace,
+              translations,
+              true,
+              true
+            );
           }
         })
-        .catch(error => {
-          console.warn(`Failed to load ${language} translations from API:`, error);
+        .catch((error) => {
+          console.warn(
+            `Failed to load ${language} translations from API:`,
+            error
+          );
         });
     }
   }
 }
 
 // Register the backend
-ApiBackend.type = 'backend';
+ApiBackend.type = "backend";
 
 const resources = {
   vi: {
-    translation: viTranslation  // Fallback
+    translation: viTranslation, // Fallback
   },
   en: {
-    translation: enTranslation  // Fallback
-  }
+    translation: enTranslation, // Fallback
+  },
 };
 
 i18n
@@ -72,40 +84,40 @@ i18n
     resources,
 
     // Default language
-    lng: 'vi', // Vietnamese as default
-    fallbackLng: 'vi',
+    lng: "vi", // Vietnamese as default
+    fallbackLng: "vi",
 
     // Supported languages
-    supportedLngs: ['vi', 'en'],
+    supportedLngs: ["vi", "en"],
 
     // Backend options
     backend: {
       // Backend will use our ApiBackend class
-      loadPath: '/api/language-contents/{{lng}}/{{ns}}'  // Template for backend
+      loadPath: "/api/language-contents/{{lng}}/{{ns}}", // Template for backend
     },
 
     // Language detection options
     detection: {
       // Order of language detection methods
-      order: ['localStorage', 'navigator', 'htmlTag'],
+      order: ["localStorage", "navigator", "htmlTag"],
 
       // Cache user language
-      caches: ['localStorage']
+      caches: ["localStorage"],
     },
 
     interpolation: {
-      escapeValue: false // React already does escaping
+      escapeValue: false, // React already does escaping
     },
 
     // Development options
     debug: false, // Disable debug để tránh spam logs
 
     // Namespace configuration
-    defaultNS: 'translation',
-    ns: ['translation'],
+    defaultNS: "translation",
+    ns: ["translation"],
 
     // Load immediately with fallback resources
-    initImmediate: true
+    initImmediate: true,
   });
 
 // Function to reload translations from API (call after admin changes)
@@ -122,11 +134,16 @@ export const reloadTranslations = async (language = null) => {
     const translations = await fetchTranslationsForI18next(currentLang);
 
     // Update i18n with new translations
-    i18n.addResourceBundle(currentLang, 'translation', translations, true, true);
+    i18n.addResourceBundle(
+      currentLang,
+      "translation",
+      translations,
+      true,
+      true
+    );
 
     return true;
   } catch (error) {
-    console.error('Failed to reload translations:', error);
     return false;
   }
 };
@@ -134,41 +151,32 @@ export const reloadTranslations = async (language = null) => {
 // Function to check if translations need refresh based on admin updates
 export const checkTranslationsVersion = async () => {
   try {
-    const currentLang = i18n.language || 'vi';
+    const currentLang = i18n.language || "vi";
     const lastUpdate = localStorage.getItem(`i18n_${currentLang}_timestamp`);
 
     // Force clear if there's stale data or missing timestamp
-    const isStale = !lastUpdate || (Date.now() - parseInt(lastUpdate)) > 3600000;
+    const isStale = !lastUpdate || Date.now() - parseInt(lastUpdate) > 3600000;
 
     if (isStale) {
       // Force clear all i18n cache
       clearTranslationsCache();
-      console.log('🔄 Clearing stale i18n cache and reloading translations...');
       await reloadTranslations();
     }
-  } catch (error) {
-    console.error('Failed to check translations version:', error);
-  }
+  } catch (error) {}
 };
 
 // Force clear function for immediate use
 export const forceReloadTranslations = async () => {
   try {
-    console.log('🔄 Force reloading all translations...');
-
     // Clear everything
     clearTranslationsCache();
 
     // Reload both languages
-    await Promise.all([
-      reloadTranslations('vi'),
-      reloadTranslations('en')
-    ]);
+    await Promise.all([reloadTranslations("vi"), reloadTranslations("en")]);
 
     // Force page reload to ensure clean state
     window.location.reload();
   } catch (error) {
-    console.error('Failed to force reload translations:', error);
     // Fallback: just reload the page
     window.location.reload();
   }
