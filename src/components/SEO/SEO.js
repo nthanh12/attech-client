@@ -4,16 +4,16 @@ const SEO = ({
   title = "ATTECH - Công ty TNHH Kỹ thuật Quản lý bay",
   description = "ATTECH là công ty hàng đầu trong lĩnh vực kỹ thuật hàng không, cung cấp dịch vụ CNS, bay kiểm tra hiệu chuẩn và sản xuất thiết bị hàng không chất lượng cao.",
   keywords = "ATTECH, kỹ thuật hàng không, CNS, quản lý bay, bay kiểm tra, thiết bị hàng không, Vietnam aviation",
-  image = "/assets/images/header/attech-bo-cuc-dau-trang-chu.png",
+  image = null,
   url = "",
   type = "website",
   locale = "vi_VN",
   siteName = "ATTECH Vietnam",
 }) => {
   const fullUrl = `${window.location.origin}${url}`;
-  const fullImageUrl = image.startsWith("http")
-    ? image
-    : `${window.location.origin}${image}`;
+  const fullImageUrl = image
+    ? (image.startsWith("http") ? image : `${window.location.origin}${image}`)
+    : null;
 
   useEffect(() => {
     // Update document title
@@ -61,7 +61,7 @@ const SEO = ({
     updateMetaTag("og:type", type, true);
     updateMetaTag("og:title", title, true);
     updateMetaTag("og:description", description, true);
-    updateMetaTag("og:image", fullImageUrl, true);
+    if (fullImageUrl) updateMetaTag("og:image", fullImageUrl, true);
     updateMetaTag("og:url", fullUrl, true);
     updateMetaTag("og:site_name", siteName, true);
     updateMetaTag("og:locale", locale, true);
@@ -70,7 +70,7 @@ const SEO = ({
     updateMetaTag("twitter:card", "summary_large_image");
     updateMetaTag("twitter:title", title);
     updateMetaTag("twitter:description", description);
-    updateMetaTag("twitter:image", fullImageUrl);
+    if (fullImageUrl) updateMetaTag("twitter:image", fullImageUrl);
 
     // Structured Data
     const structuredData = {
@@ -78,7 +78,7 @@ const SEO = ({
       "@type": "Organization",
       name: "ATTECH - Công ty TNHH Kỹ thuật Quản lý bay",
       url: "https://attech.com.vn",
-      logo: fullImageUrl,
+      ...(fullImageUrl && { logo: fullImageUrl }),
       description: description,
       contactPoint: {
         "@type": "ContactPoint",

@@ -119,7 +119,6 @@ const BannerUploadItem = ({
     <div className="banner-upload-item">
       <div className="banner-item-header">
         <h3 className="banner-item-title">{title}</h3>
-        <p className="banner-item-description">{description}</p>
         {uploadedAt && (
           <p className="banner-upload-date">
             Cập nhật: {formatUploadDate(uploadedAt)}

@@ -15,8 +15,10 @@ export const useBannerSettings = () => {
       try {
         setLoading(true);
         const data = await getAllBannerSettings();
+        console.log('Fetched banner settings:', data);
         setBannerSettings(data);
       } catch (err) {
+        console.error('Error fetching banner settings:', err);
         setError(err);
         // Use empty object so components fall back to default images
         setBannerSettings({});
@@ -29,16 +31,26 @@ export const useBannerSettings = () => {
   }, []);
 
   /**
-   * Get banner URL with fallback to default image
+   * Get banner URL from API only (no fallback)
    * @param {string} key - Banner key (carousel_1, feature_cns, etc.)
-   * @param {string} defaultImage - Default image path to use as fallback
-   * @returns {string} - Image URL
+   * @returns {string|null} - Image URL from API or null
    */
-  const getBannerUrl = (key, defaultImage) => {
-    
-    // Try different key formats (carousel_1, Carousel_1, etc.)
+  const getBannerUrl = (key) => {
+    // Direct key lookup first
+    if (bannerSettings[key]?.url) {
+      const rawUrl = bannerSettings[key].url;
+
+      // Xử lý URL giống admin - dùng getApiUrl cho relative paths
+      let fullUrl = rawUrl;
+      if (rawUrl && !rawUrl.startsWith('http') && !rawUrl.startsWith('data:')) {
+        fullUrl = getApiUrl(rawUrl);
+      }
+
+      return fullUrl;
+    }
+
+    // Try different key formats as fallback
     const possibleKeys = [
-      key,
       key.charAt(0).toUpperCase() + key.slice(1),
       key.toLowerCase()
     ];
@@ -46,89 +58,100 @@ export const useBannerSettings = () => {
     for (const possibleKey of possibleKeys) {
       if (bannerSettings[possibleKey]?.url) {
         const rawUrl = bannerSettings[possibleKey].url;
-        
+
         // Xử lý URL giống admin - dùng getApiUrl cho relative paths
         let fullUrl = rawUrl;
         if (rawUrl && !rawUrl.startsWith('http') && !rawUrl.startsWith('data:')) {
           fullUrl = getApiUrl(rawUrl);
         }
-        
+
         return fullUrl;
       }
     }
 
-    // Fallback to default image
-    return defaultImage;
+    // No fallback - return null if not found in API
+    console.warn(`Banner key not found: ${key}`);
+    return null;
   };
 
   /**
-   * Get carousel images with fallbacks (sử dụng banner1,2,3)
+   * Get carousel images from API only
    */
   const getCarouselImages = () => {
     return [
       {
-        img: getBannerUrl('Banner1', '/assets/images/banner/banner_attech_1.webp'),
+        img: getBannerUrl('Banner1'),
         className: 'carousel-img-1',
       },
       {
-        img: getBannerUrl('Banner2', '/assets/images/banner/banner_attech_2.jpg'),
+        img: getBannerUrl('Banner2'),
         className: 'carousel-img-2',
       },
       {
-        img: getBannerUrl('Banner3', '/assets/images/banner/banner_attech_3.jpg'),
+        img: getBannerUrl('Banner3'),
         className: 'carousel-img-3',
       },
-    ];
+    ].filter(item => item.img); // Remove null images
   };
 
   /**
-   * Get feature background images
+   * Get feature background images from API only
    */
   const getFeatureBackgrounds = () => {
     return {
-      cns: getBannerUrl('HomeFeatCns', '/assets/images/cns_atm/anh-dai-dien-cns.jpg'),
-      bhc: getBannerUrl('HomeFeatBhc', '/assets/images/bhc/bhc_2.webp'),
-      cnhk: getBannerUrl('HomeFeatCnhk', '/assets/images/cnhk/cnhk_6.webp'),
+      cns: getBannerUrl('HomeFeatCns'),
+      bhc: getBannerUrl('HomeFeatBhc'),
+      cnhk: getBannerUrl('HomeFeatCnhk'),
     };
   };
 
   /**
-   * Get fact event image
+   * Get fact event image from API only
    */
   const getFactImage = () => {
-    return getBannerUrl('HomeFactEvent', '/assets/images/event/thong_tin_1.webp');
+    return getBannerUrl('HomeFactEvent');
   };
 
   /**
-   * Get About gallery images
+   * Get About gallery images from API only
    */
   const getAboutGalleries = () => {
+    console.log('getAboutGalleries - bannerSettings:', bannerSettings);
+
+    const cnsAtmImages = [
+      getBannerUrl('AboutCns1'),
+      getBannerUrl('AboutCns2'),
+      getBannerUrl('AboutCns3'),
+      getBannerUrl('AboutCns4'),
+      getBannerUrl('AboutCns5'),
+      getBannerUrl('AboutCns6'),
+    ].filter(Boolean);
+
+    const bhcImages = [
+      getBannerUrl('AboutBhc1'),
+      getBannerUrl('AboutBhc2'),
+      getBannerUrl('AboutBhc3'),
+      getBannerUrl('AboutBhc4'),
+      getBannerUrl('AboutBhc5'),
+    ].filter(Boolean);
+
+    const cnhkImages = [
+      getBannerUrl('AboutCnhk1'),
+      getBannerUrl('AboutCnhk2'),
+      getBannerUrl('AboutCnhk3'),
+      getBannerUrl('AboutCnhk4'),
+      getBannerUrl('AboutCnhk5'),
+      getBannerUrl('AboutCnhk6'),
+      getBannerUrl('AboutCnhk7'),
+      getBannerUrl('AboutCnhk8'),
+    ].filter(Boolean);
+
+    console.log('Gallery images:', { cnsAtmImages, bhcImages, cnhkImages });
+
     return {
-      cnsAtmImages: [
-        getBannerUrl('AboutCns1', '/assets/images/cns_atm/cns_atm_1.webp'),
-        getBannerUrl('AboutCns2', '/assets/images/cns_atm/cns_atm_2.webp'),
-        getBannerUrl('AboutCns3', '/assets/images/cns_atm/cns_atm_3.webp'),
-        getBannerUrl('AboutCns4', '/assets/images/cns_atm/dvor_dme_da_nang.webp'),
-        getBannerUrl('AboutCns5', '/assets/images/cns_atm/dvor_dme_dien_bien.webp'),
-        getBannerUrl('AboutCns6', '/assets/images/cns_atm/dvor_dme_van_don.webp'),
-      ],
-      bhcImages: [
-        getBannerUrl('AboutBhc1', '/assets/images/bhc/bkthc_1.jpg'),
-        getBannerUrl('AboutBhc2', '/assets/images/bhc/bkthc_2.jpg'),
-        getBannerUrl('AboutBhc3', '/assets/images/bhc/bkthc_3.jpg'),
-        getBannerUrl('AboutBhc4', '/assets/images/bhc/bkthc_4.jpg'),
-        getBannerUrl('AboutBhc5', '/assets/images/bhc/bkthc_5.jpg'),
-      ],
-      cnhkImages: [
-        getBannerUrl('AboutCnhk1', '/assets/images/cnhk/cnhk_1.webp'),
-        getBannerUrl('AboutCnhk2', '/assets/images/cnhk/cnhk_2.webp'),
-        getBannerUrl('AboutCnhk3', '/assets/images/cnhk/cnhk_3.webp'),
-        getBannerUrl('AboutCnhk4', '/assets/images/cnhk/cnhk_4.webp'),
-        getBannerUrl('AboutCnhk5', '/assets/images/cnhk/cnhk_5.webp'),
-        getBannerUrl('AboutCnhk6', '/assets/images/cnhk/cnhk_6.webp'),
-        getBannerUrl('AboutCnhk7', '/assets/images/cnhk/cnhk_7.webp'),
-        getBannerUrl('AboutCnhk8', '/assets/images/cnhk/cnhk_8.webp'),
-      ],
+      cnsAtmImages,
+      bhcImages,
+      cnhkImages,
     };
   };
 

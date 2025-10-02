@@ -57,9 +57,9 @@ const getProductsWithDynamicImages = (t, currentLanguage, aboutGalleries) => [
 
 export default function About() {
   const { t, currentLanguage } = useI18n();
-  const { getAboutGalleries } = useBannerSettings();
-  
-  // Get dynamic gallery images with fallbacks
+  const { getAboutGalleries, loading } = useBannerSettings();
+
+  // Get dynamic gallery images - wait for loading to complete
   const aboutGalleries = getAboutGalleries();
   const products = getProductsWithDynamicImages(t, currentLanguage, aboutGalleries);
   const [currentIndices, setCurrentIndices] = useState(products.map(() => 0));
@@ -72,10 +72,13 @@ export default function About() {
       once: true,
     });
 
-    // Image carousel interval
+    // Image carousel interval - only if images exist
     const interval = setInterval(() => {
       setCurrentIndices((prev) =>
-        prev.map((index, i) => (index + 1) % products[i].images.length)
+        prev.map((index, i) => {
+          const imageCount = products[i].images.length;
+          return imageCount > 0 ? (index + 1) % imageCount : 0;
+        })
       );
     }, 5000);
 
@@ -88,6 +91,20 @@ export default function About() {
   //     prev.map((val, i) => (i === productIdx ? imgIdx : val))
   //   );
   // };
+
+  // Show loading state while fetching images
+  if (loading) {
+    return (
+      <section className="about-hero">
+        <div className="about-hero-content">
+          <h1 className="about-main-title">
+            {t("frontend.home.featuredServices")}
+          </h1>
+        </div>
+        <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>
+      </section>
+    );
+  }
 
   return (
     <section className="about-hero">

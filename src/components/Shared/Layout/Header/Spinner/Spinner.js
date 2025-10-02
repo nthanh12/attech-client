@@ -8,7 +8,7 @@ const Spinner = () => {
       if (spinner) {
         spinner.classList.remove("show");
       }
-    }, 1);
+    }, 800); // Tăng thời gian loading từ 1ms lên 800ms
 
     return () => clearTimeout(timer);
   }, []);

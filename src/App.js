@@ -57,10 +57,10 @@ const App = () => {
     // Check and refresh translations if needed
     checkTranslationsVersion();
 
-    // Nhanh chóng ẩn loading cho trang public
+    // Tăng thời gian loading để đợi app load xong
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 500); // Chỉ loading 500ms
+    }, 1500); // Loading 1.5 giây để đợi ảnh và data load xong
 
     // Safe cleanup function
     const cleanupLoadingElements = () => {

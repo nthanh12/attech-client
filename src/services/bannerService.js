@@ -308,38 +308,38 @@ export const getBannerKeys = () => {
     { key: 'Logo', label: 'Logo website', description: 'Logo chính hiển thị trên header', category: 'settings' },
     
     // === HOME CONTENT - Tab "Ảnh trang chủ" ===
-    // Feature service backgrounds  
-    { key: 'HomeFeatCns', label: 'CNS/ATM Service Background', description: 'Ảnh nền dịch vụ CNS/ATM', category: 'homecontent' },
-    { key: 'HomeFeatBhc', label: 'Bay hiệu chuẩn Background', description: 'Ảnh nền dịch vụ Bay hiệu chuẩn', category: 'homecontent' },
-    { key: 'HomeFeatCnhk', label: 'CNHK Service Background', description: 'Ảnh nền dịch vụ Công nghệ hàng không', category: 'homecontent' },
-    
+    // Feature service backgrounds
+    { key: 'HomeFeatCns', label: 'Ảnh nền CNS', description: 'Ảnh nền dịch vụ CNS/ATM', category: 'homecontent' },
+    { key: 'HomeFeatBhc', label: 'Ảnh nền BHC', description: 'Ảnh nền dịch vụ Bay hiệu chuẩn', category: 'homecontent' },
+    { key: 'HomeFeatCnhk', label: 'Ảnh nền CNHK', description: 'Ảnh nền dịch vụ Công nghệ hàng không', category: 'homecontent' },
+
     // Fact/Event image
-    { key: 'HomeFactEvent', label: 'Ảnh sự kiện trang chủ', description: 'Ảnh thông tin sự kiện hiển thị trên trang chủ', category: 'homecontent' },
-    
+    { key: 'HomeFactEvent', label: 'Ảnh sự kiện thông tin', description: 'Ảnh thông tin sự kiện hiển thị trên trang chủ', category: 'homecontent' },
+
     // About CNS/ATM Gallery (6 ảnh)
-    { key: 'AboutCns1', label: 'CNS/ATM Gallery 1', description: 'Ảnh thư viện CNS/ATM số 1', category: 'homecontent' },
-    { key: 'AboutCns2', label: 'CNS/ATM Gallery 2', description: 'Ảnh thư viện CNS/ATM số 2', category: 'homecontent' },
-    { key: 'AboutCns3', label: 'CNS/ATM Gallery 3', description: 'Ảnh thư viện CNS/ATM số 3', category: 'homecontent' },
-    { key: 'AboutCns4', label: 'DVOR DME Đà Nẵng', description: 'Ảnh DVOR DME Đà Nẵng', category: 'homecontent' },
-    { key: 'AboutCns5', label: 'DVOR DME Điện Biên', description: 'Ảnh DVOR DME Điện Biên', category: 'homecontent' },
-    { key: 'AboutCns6', label: 'DVOR DME Vân Đồn', description: 'Ảnh DVOR DME Vân Đồn', category: 'homecontent' },
-    
+    { key: 'AboutCns1', label: 'Ảnh CNS/ATM 1', description: 'Ảnh thư viện CNS/ATM số 1', category: 'homecontent' },
+    { key: 'AboutCns2', label: 'Ảnh CNS/ATM 2', description: 'Ảnh thư viện CNS/ATM số 2', category: 'homecontent' },
+    { key: 'AboutCns3', label: 'Ảnh CNS/ATM 3', description: 'Ảnh thư viện CNS/ATM số 3', category: 'homecontent' },
+    { key: 'AboutCns4', label: 'Ảnh CNS/ATM 4', description: 'Ảnh DVOR DME Đà Nẵng', category: 'homecontent' },
+    { key: 'AboutCns5', label: 'Ảnh CNS/ATM 5', description: 'Ảnh DVOR DME Điện Biên', category: 'homecontent' },
+    { key: 'AboutCns6', label: 'Ảnh CNS/ATM 6', description: 'Ảnh DVOR DME Vân Đồn', category: 'homecontent' },
+
     // About BHC Gallery (5 ảnh)
-    { key: 'AboutBhc1', label: 'Bay hiệu chuẩn Gallery 1', description: 'Ảnh bay kiểm tra hiệu chuẩn số 1', category: 'homecontent' },
-    { key: 'AboutBhc2', label: 'Bay hiệu chuẩn Gallery 2', description: 'Ảnh bay kiểm tra hiệu chuẩn số 2', category: 'homecontent' },
-    { key: 'AboutBhc3', label: 'Bay hiệu chuẩn Gallery 3', description: 'Ảnh bay kiểm tra hiệu chuẩn số 3', category: 'homecontent' },
-    { key: 'AboutBhc4', label: 'Bay hiệu chuẩn Gallery 4', description: 'Ảnh bay kiểm tra hiệu chuẩn số 4', category: 'homecontent' },
-    { key: 'AboutBhc5', label: 'Bay hiệu chuẩn Gallery 5', description: 'Ảnh bay kiểm tra hiệu chuẩn số 5', category: 'homecontent' },
-    
+    { key: 'AboutBhc1', label: 'Ảnh BHC 1', description: 'Ảnh bay kiểm tra hiệu chuẩn số 1', category: 'homecontent' },
+    { key: 'AboutBhc2', label: 'Ảnh BHC 2', description: 'Ảnh bay kiểm tra hiệu chuẩn số 2', category: 'homecontent' },
+    { key: 'AboutBhc3', label: 'Ảnh BHC 3', description: 'Ảnh bay kiểm tra hiệu chuẩn số 3', category: 'homecontent' },
+    { key: 'AboutBhc4', label: 'Ảnh BHC 4', description: 'Ảnh bay kiểm tra hiệu chuẩn số 4', category: 'homecontent' },
+    { key: 'AboutBhc5', label: 'Ảnh BHC 5', description: 'Ảnh bay kiểm tra hiệu chuẩn số 5', category: 'homecontent' },
+
     // About CNHK Gallery (8 ảnh)
-    { key: 'AboutCnhk1', label: 'CNHK Gallery 1', description: 'Ảnh công nghệ hàng không số 1', category: 'homecontent' },
-    { key: 'AboutCnhk2', label: 'CNHK Gallery 2', description: 'Ảnh công nghệ hàng không số 2', category: 'homecontent' },
-    { key: 'AboutCnhk3', label: 'CNHK Gallery 3', description: 'Ảnh công nghệ hàng không số 3', category: 'homecontent' },
-    { key: 'AboutCnhk4', label: 'CNHK Gallery 4', description: 'Ảnh công nghệ hàng không số 4', category: 'homecontent' },
-    { key: 'AboutCnhk5', label: 'CNHK Gallery 5', description: 'Ảnh công nghệ hàng không số 5', category: 'homecontent' },
-    { key: 'AboutCnhk6', label: 'CNHK Gallery 6', description: 'Ảnh công nghệ hàng không số 6', category: 'homecontent' },
-    { key: 'AboutCnhk7', label: 'CNHK Gallery 7', description: 'Ảnh công nghệ hàng không số 7', category: 'homecontent' },
-    { key: 'AboutCnhk8', label: 'CNHK Gallery 8', description: 'Ảnh công nghệ hàng không số 8', category: 'homecontent' }
+    { key: 'AboutCnhk1', label: 'Ảnh CNHK 1', description: 'Ảnh công nghệ hàng không số 1', category: 'homecontent' },
+    { key: 'AboutCnhk2', label: 'Ảnh CNHK 2', description: 'Ảnh công nghệ hàng không số 2', category: 'homecontent' },
+    { key: 'AboutCnhk3', label: 'Ảnh CNHK 3', description: 'Ảnh công nghệ hàng không số 3', category: 'homecontent' },
+    { key: 'AboutCnhk4', label: 'Ảnh CNHK 4', description: 'Ảnh công nghệ hàng không số 4', category: 'homecontent' },
+    { key: 'AboutCnhk5', label: 'Ảnh CNHK 5', description: 'Ảnh công nghệ hàng không số 5', category: 'homecontent' },
+    { key: 'AboutCnhk6', label: 'Ảnh CNHK 6', description: 'Ảnh công nghệ hàng không số 6', category: 'homecontent' },
+    { key: 'AboutCnhk7', label: 'Ảnh CNHK 7', description: 'Ảnh công nghệ hàng không số 7', category: 'homecontent' },
+    { key: 'AboutCnhk8', label: 'Ảnh CNHK 8', description: 'Ảnh công nghệ hàng không số 8', category: 'homecontent' }
   ];
 };
 

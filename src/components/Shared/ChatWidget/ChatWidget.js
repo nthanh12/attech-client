@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './ChatWidget.css';
 import { aiEngine } from './aiEngine';
+import { useBannerSettings } from '../../../hooks/useBannerSettings';
 
 const ChatWidget = () => {
+  const { getBannerUrl } = useBannerSettings();
   const [isOpen, setIsOpen] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
   const [isLiveChat, setIsLiveChat] = useState(false);
@@ -171,7 +173,7 @@ const ChatWidget = () => {
           {/* Header */}
           <div className="chat-widget-header">
             <div className="chat-widget-title">
-              <img src="/assets/images/header/attech-bo-cuc-dau-trang-chu.png" alt="ATTECH Logo" className="chat-widget-logo" />
+              {getBannerUrl('Logo') && <img src={getBannerUrl('Logo')} alt="ATTECH Logo" className="chat-widget-logo" />}
               <div className="chat-widget-title-text">
                 <h3>{isLiveChat ? 'Bộ phận hỗ trợ ATTECH' : 'Trợ lý ảo ATTECH'}</h3>
                 <span>{isLiveChat ? 'Đang trực tuyến' : 'Thường trả lời trong vài phút'}</span>
