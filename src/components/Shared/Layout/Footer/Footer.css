@@ -290,21 +290,25 @@
     }
 }
 
-.contact-info p {
+.footer-contact-info {
+    text-align: left;
+}
+
+.footer-contact-info p {
     display: flex;
     align-items: flex-start;
     margin-bottom: 15px;
     color: #ccc;
 }
 
-.contact-info i {
+.footer-contact-info i {
     margin-right: 10px;
     color: #007bff;
     font-size: 16px;
     margin-top: 4px;
 }
 
-.contact-info span {
+.footer-contact-info span {
     line-height: 1.5;
 }
 

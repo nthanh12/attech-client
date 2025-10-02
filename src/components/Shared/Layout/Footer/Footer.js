@@ -18,13 +18,13 @@ const Footer = () => {
             {useTranslationT("frontend.company.nameSecondary")}
           </h3>
         </div>
-        <div className="row g-4 justify-content-center">
+        <div className="row g-4">
           <div className="col-md-6 col-lg-4">
             <div className="footer-contact">
               <p className="footer-title">
                 {useTranslationT("footer.contactTitle")}
               </p>
-              <div className="contact-info">
+              <div className="footer-contact-info">
                 <p>
                   <i className="fa fa-map-marker-alt"></i>
                   <span>{useTranslationT("footer.address")}</span>
