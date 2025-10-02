@@ -2,14 +2,7 @@
 // This file serves as a central export point for all mock data
 
 // Import all mock data
-import { mockNews } from "./mockNews.js";
-import { mockProducts } from "./mockProducts.js";
-import { mockServices } from "./mockServices.js";
 import { mockRoutes } from "./mockRoutes.js";
-import { mockSystemSettings } from "./mockSystemSettings.js";
-
-// Import categories
-import { mockProductCategories } from "./mockProductCategories.js";
 
 // Import utilities
 import { generateSlug, validateSlug } from "./slugGenerator.js";
@@ -18,80 +11,12 @@ import { generateRoutes } from "./routeGenerator.js";
 // Export all mock data
 export {
   // Main data
-  mockNews,
-  mockProducts,
-  mockServices,
   mockRoutes,
-  mockSystemSettings,
-
-  // Categories
-  mockProductCategories,
 
   // Utilities
   generateSlug,
   validateSlug,
   generateRoutes,
-};
-
-// Mock banner config
-export const mockBannerConfig = {
-  homepage: {
-    slides: [
-      {
-        id: 1,
-        titleVi: "Banner chính trang chủ",
-        titleEn: "Main homepage banner",
-        descriptionVi: "Banner giới thiệu công ty",
-        descriptionEn: "Company introduction banner",
-        imageUrl: "https://picsum.photos/1200/400?random=1",
-        link: "/about",
-        order: 1,
-        isActive: true,
-      },
-      {
-        id: 2,
-        titleVi: "Banner sản phẩm",
-        titleEn: "Product banner",
-        descriptionVi: "Banner giới thiệu sản phẩm",
-        descriptionEn: "Product introduction banner",
-        imageUrl: "https://picsum.photos/1200/400?random=2",
-        link: "/products",
-        order: 2,
-        isActive: true,
-      },
-      {
-        id: 3,
-        titleVi: "Banner dịch vụ",
-        titleEn: "Service banner",
-        descriptionVi: "Banner giới thiệu dịch vụ",
-        descriptionEn: "Service introduction banner",
-        imageUrl: "https://picsum.photos/1200/400?random=3",
-        link: "/services",
-        order: 3,
-        isActive: true,
-      },
-    ],
-  },
-  about: {
-    slides: [
-      {
-        id: 4,
-        titleVi: "Banner giới thiệu",
-        titleEn: "About banner",
-        descriptionVi: "Banner trang giới thiệu",
-        descriptionEn: "About page banner",
-        imageUrl: "https://picsum.photos/1200/400?random=4",
-        link: "/about",
-        order: 1,
-        isActive: true,
-      },
-    ],
-  },
-};
-
-// Utility functions
-export const getSystemSetting = (key) => {
-  return mockSystemSettings[key] || null;
 };
 
 export const getCategoryById = (categories, id) => {

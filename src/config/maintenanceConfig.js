@@ -8,7 +8,7 @@
 
 export const MAINTENANCE_MODE = {
   // Bật/tắt maintenance mode
-  enabled: true, // ← Đổi thành true để bật maintenance mode
+  enabled: false, // ← Đổi thành true để bật maintenance mode
 
   // Thông báo hiển thị
   message: {
