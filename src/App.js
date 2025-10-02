@@ -34,21 +34,6 @@ const AppContent = () => {
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isUserDashboard = location.pathname === "/trang-noi-bo" || location.pathname === "/en/internal";
 
-  // Kiểm tra maintenance mode
-  if (MAINTENANCE_MODE.enabled) {
-    // Nếu allowAdminAccess = true, cho phép admin vào
-    if (MAINTENANCE_MODE.allowAdminAccess && isAdminRoute) {
-      return (
-        <Routes>
-          <Route path="/admin/*" element={<AdminRoutes />} />
-        </Routes>
-      );
-    }
-
-    // Các route khác hiển thị trang maintenance
-    return <MaintenancePage />;
-  }
-
   return (
     <>
       <Routes>
@@ -68,74 +53,41 @@ const AppContent = () => {
 };
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  // Chỉ load 1 lần duy nhất khi app khởi động
+  const [isLoading, setIsLoading] = useState(() => {
+    // Kiểm tra xem đã load lần đầu chưa
+    return !window.__APP_LOADED__;
+  });
 
   useEffect(() => {
-    // Check and refresh translations if needed
-    checkTranslationsVersion();
+    // Đánh dấu app đã load
+    if (!window.__APP_LOADED__) {
+      // Check and refresh translations if needed
+      checkTranslationsVersion();
 
-    // Progressive loading strategy:
-    // - Tối thiểu 800ms để tránh flash
-    // - Tối đa 5s để tránh user chờ quá lâu nếu API lỗi
-    const minLoadingTime = 800;
-    const maxLoadingTime = 5000;
+      // Progressive loading strategy:
+      // - Tối thiểu 800ms để tránh flash
+      const minLoadingTime = 800;
 
-    const minTimer = setTimeout(() => {
-      setIsLoading(false);
-    }, minLoadingTime);
+      const minTimer = setTimeout(() => {
+        setIsLoading(false);
+        window.__APP_LOADED__ = true; // Đánh dấu đã load
+      }, minLoadingTime);
 
-    const maxTimer = setTimeout(() => {
-      setIsLoading(false);
-    }, maxLoadingTime);
-
-    // Safe cleanup function
-    const cleanupLoadingElements = () => {
-      try {
-        // Remove by ID safely
-        const elementsById = ['spinner'];
-        elementsById.forEach(id => {
-          const el = document.getElementById(id);
-          if (el && el.parentNode) {
-            el.parentNode.removeChild(el);
-          }
-        });
-
-        // Remove by class selectors - safer approach
-        const selectors = [
-          '.spinner',
-          '.loading-spinner', 
-          '.spinner-border',
-          '.admin-loading-spinner'
-        ];
-
-        selectors.forEach(selector => {
-          const elements = document.querySelectorAll(selector);
-          elements.forEach(el => {
-            try {
-              // Don't remove React-managed components or LoadingOverlay
-              if (!el.closest('.loading-overlay') && 
-                  !el.closest('[data-reactroot]') && 
-                  !el.closest('#root') &&
-                  el.parentNode) {
-                el.parentNode.removeChild(el);
-              }
-            } catch (err) {
-              // Silently handle removal errors
-            }
-          });
-        });
-      } catch (err) {
-      }
-    };
-
-    // Disabled cleanup to avoid interfering with React components
-    // setTimeout(cleanupLoadingElements, 100);
-
-    return () => {
-      clearTimeout(minTimer);
-      clearTimeout(maxTimer);
-    };
+      return () => {
+        clearTimeout(minTimer);
+      };
+    }
   }, []);
+
+  // Kiểm tra maintenance mode - chặn tất cả
+  if (MAINTENANCE_MODE.enabled) {
+    return (
+      <I18nextProvider i18n={i18n}>
+        <MaintenancePage />
+      </I18nextProvider>
+    );
+  }
 
   return (
     <I18nextProvider i18n={i18n}>

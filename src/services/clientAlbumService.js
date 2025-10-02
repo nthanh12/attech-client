@@ -1,4 +1,5 @@
 import api from '../api';
+import { getApiUrl } from '../config/apiConfig';
 
 /**
  * Client Album Service - Public APIs for company gallery
@@ -210,24 +211,19 @@ const clientAlbumService = {
 
   /**
    * Helper: Get full image URL
-   * 
+   *
    * @param {string} imageUrl - Image URL from API
    * @returns {string} Full image URL
    */
   getImageUrl: (imageUrl) => {
     if (!imageUrl) return null;
-    
+
     if (imageUrl.startsWith('http')) {
       return imageUrl;
     }
-    
-    // Build API URL from environment variables
-    const protocol = process.env.REACT_APP_API_PROTOCOL || 'http';
-    const host = process.env.REACT_APP_API_HOST || 'localhost';
-    const port = process.env.REACT_APP_API_PORT || '5232';
-    const baseUrl = `${protocol}://${host}:${port}`;
-    
-    return `${baseUrl}${imageUrl}`;
+
+    // Dùng getApiUrl từ apiConfig để xử lý đúng cả dev và production
+    return getApiUrl(imageUrl);
   },
 
   /**
