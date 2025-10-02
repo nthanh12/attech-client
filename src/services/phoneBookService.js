@@ -45,7 +45,6 @@ export const getPhoneBookEntries = async (params = {}) => {
       message: response.data?.message || "Failed to fetch phone book entries",
     };
   } catch (error) {
-    console.error("Error fetching phone book entries:", error);
     return {
       success: false,
       message:
@@ -106,13 +105,6 @@ export const createPhoneBookEntry = async (entryData) => {
       errors: response.data?.errors,
     };
   } catch (error) {
-    console.error("Error creating phone book entry:", error);
-    console.error("Error response status:", error.response?.status);
-    console.error("Error response headers:", error.response?.headers);
-    console.error("Error response data:", error.response?.data);
-    console.error("Validation errors:", error.response?.data?.errors);
-    console.error("Full error response:", error.response);
-
     return {
       success: false,
       message:
@@ -144,7 +136,6 @@ export const updatePhoneBookEntry = async (id, entryData) => {
       message: response.data?.message || "Failed to update phone book entry",
     };
   } catch (error) {
-    console.error("Error updating phone book entry:", error);
     return {
       success: false,
       message:
@@ -174,7 +165,6 @@ export const deletePhoneBookEntry = async (id) => {
       message: response.data?.message || "Failed to delete phone book entry",
     };
   } catch (error) {
-    console.error("Error deleting phone book entry:", error);
     return {
       success: false,
       message:
@@ -214,7 +204,6 @@ export const importPhoneBookExcel = async (file) => {
       message: response.data?.message || "Import failed",
     };
   } catch (error) {
-    console.error("Error importing phone book:", error);
     return {
       success: false,
       message:
@@ -254,7 +243,6 @@ export const exportPhoneBookExcel = async () => {
       message: "Export completed successfully",
     };
   } catch (error) {
-    console.error("Error exporting phone book:", error);
     return {
       success: false,
       message:
@@ -287,10 +275,6 @@ export const downloadImportTemplate = async () => {
       message: "Tải mẫu thành công",
     };
   } catch (error) {
-    console.error("Error downloading template:", error);
-    console.error("Response status:", error.response?.status);
-    console.error("Response data:", error.response?.data);
-
     return {
       success: false,
       message:
@@ -322,7 +306,6 @@ export const updatePhoneBookOrder = async (orderData) => {
       message: response.data?.message || "Failed to update order",
     };
   } catch (error) {
-    console.error("Error updating order:", error);
     return {
       success: false,
       message:
@@ -353,7 +336,6 @@ export const togglePhoneBookStatus = async (id) => {
       message: response.data?.message || "Failed to update status",
     };
   } catch (error) {
-    console.error("Error updating status:", error);
     return {
       success: false,
       message:

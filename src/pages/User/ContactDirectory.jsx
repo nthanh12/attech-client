@@ -45,7 +45,6 @@ const ContactDirectory = () => {
         setDepartments(uniqueDepartments);
       }
     } catch (error) {
-      console.error("Error loading contacts:", error);
     } finally {
       setLoading(false);
     }

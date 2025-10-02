@@ -57,10 +57,20 @@ const App = () => {
     // Check and refresh translations if needed
     checkTranslationsVersion();
 
-    // Tăng thời gian loading để đợi app load xong
-    const timer = setTimeout(() => {
+    // Hybrid loading: Tối thiểu 1s, tối đa 3s
+    const minLoadingTime = 1000; // 1s minimum
+    const maxLoadingTime = 3000; // 3s maximum
+    const startTime = Date.now();
+
+    // Minimum loading time
+    const minTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 1500); // Loading 1.5 giây để đợi ảnh và data load xong
+    }, minLoadingTime);
+
+    // Maximum loading time (safety fallback)
+    const maxTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, maxLoadingTime);
 
     // Safe cleanup function
     const cleanupLoadingElements = () => {
@@ -106,7 +116,8 @@ const App = () => {
     // setTimeout(cleanupLoadingElements, 100);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(minTimer);
+      clearTimeout(maxTimer);
     };
   }, []);
 

@@ -15,12 +15,9 @@ export const useBannerSettings = () => {
       try {
         setLoading(true);
         const data = await getAllBannerSettings();
-        console.log('Fetched banner settings:', data);
         setBannerSettings(data);
       } catch (err) {
-        console.error('Error fetching banner settings:', err);
         setError(err);
-        // Use empty object so components fall back to default images
         setBannerSettings({});
       } finally {
         setLoading(false);
@@ -70,7 +67,6 @@ export const useBannerSettings = () => {
     }
 
     // No fallback - return null if not found in API
-    console.warn(`Banner key not found: ${key}`);
     return null;
   };
 
@@ -116,8 +112,6 @@ export const useBannerSettings = () => {
    * Get About gallery images from API only
    */
   const getAboutGalleries = () => {
-    console.log('getAboutGalleries - bannerSettings:', bannerSettings);
-
     const cnsAtmImages = [
       getBannerUrl('AboutCns1'),
       getBannerUrl('AboutCns2'),
@@ -145,8 +139,6 @@ export const useBannerSettings = () => {
       getBannerUrl('AboutCnhk7'),
       getBannerUrl('AboutCnhk8'),
     ].filter(Boolean);
-
-    console.log('Gallery images:', { cnsAtmImages, bhcImages, cnhkImages });
 
     return {
       cnsAtmImages,

@@ -101,7 +101,7 @@ export default function About() {
             {t("frontend.home.featuredServices")}
           </h1>
         </div>
-        <div style={{ textAlign: 'center', padding: '40px' }}>Loading...</div>
+        <div style={{ textAlign: 'center', padding: '40px', color: '#999' }}>Đang tải...</div>
       </section>
     );
   }

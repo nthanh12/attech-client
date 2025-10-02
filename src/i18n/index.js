@@ -49,12 +49,7 @@ class ApiBackend {
             );
           }
         })
-        .catch((error) => {
-          console.warn(
-            `Failed to load ${language} translations from API:`,
-            error
-          );
-        });
+        .catch((error) => {});
     }
   }
 }

@@ -118,12 +118,7 @@ const PhoneBookList = () => {
     } else {
       loadData(true);
     }
-  }, [
-    currentPage,
-    itemsPerPage,
-    searchDebounce,
-    sortConfig,
-  ]);
+  }, [currentPage, itemsPerPage, searchDebounce, sortConfig]);
 
   // Load phone book entries
   const loadData = useCallback(
@@ -150,7 +145,6 @@ const PhoneBookList = () => {
           setEntries([]);
         }
       } catch (error) {
-        console.error("Error loading phone book entries:", error);
         showToast("Có lỗi xảy ra khi tải dữ liệu", "error");
         setEntries([]);
       } finally {
@@ -189,7 +183,6 @@ const PhoneBookList = () => {
         showToast(result.message, "error");
       }
     } catch (error) {
-      console.error("Error deleting entry:", error);
       showToast("Có lỗi xảy ra khi xóa", "error");
     }
   };
@@ -205,7 +198,6 @@ const PhoneBookList = () => {
         showToast(result.message, "error");
       }
     } catch (error) {
-      console.error("Error toggling status:", error);
       showToast("Có lỗi xảy ra khi thay đổi trạng thái", "error");
     }
   };
@@ -246,7 +238,6 @@ const PhoneBookList = () => {
         showToast(result.message, "error");
       }
     } catch (error) {
-      console.error("Error importing:", error);
       showToast("Có lỗi xảy ra khi import", "error");
     } finally {
       setImporting(false);
@@ -263,7 +254,6 @@ const PhoneBookList = () => {
         showToast(result.message, "error");
       }
     } catch (error) {
-      console.error("Error exporting:", error);
       showToast("Có lỗi xảy ra khi export", "error");
     }
   };
@@ -278,7 +268,6 @@ const PhoneBookList = () => {
         showToast(result.message, "error");
       }
     } catch (error) {
-      console.error("Error downloading template:", error);
       showToast("Có lỗi xảy ra khi tải mẫu", "error");
     }
   };
@@ -298,7 +287,6 @@ const PhoneBookList = () => {
   if (!currentUser || currentUser.roleId > ROLES.ADMIN) {
     return <AccessDenied />;
   }
-
 
   // Table columns - Simple CRUD
   const columns = [
@@ -333,7 +321,9 @@ const PhoneBookList = () => {
       label: "Trạng thái",
       width: "10%",
       render: (item) => (
-        <span className={`badge ${item.isActive ? "bg-success" : "bg-secondary"}`}>
+        <span
+          className={`badge ${item.isActive ? "bg-success" : "bg-secondary"}`}
+        >
           {item.isActive ? "Active" : "Inactive"}
         </span>
       ),
@@ -398,7 +388,6 @@ const PhoneBookList = () => {
       ]}
       actions={pageActions}
     >
-
       {/* Simple Search */}
       <div className="card mb-3">
         <div className="card-body">
@@ -409,7 +398,9 @@ const PhoneBookList = () => {
                 className="form-control"
                 placeholder="Tìm kiếm theo tên, chức danh, số điện thoại..."
                 value={filters.search}
-                onChange={(e) => setFilters({...filters, search: e.target.value})}
+                onChange={(e) =>
+                  setFilters({ ...filters, search: e.target.value })
+                }
               />
             </div>
           </div>
@@ -446,7 +437,6 @@ const PhoneBookList = () => {
           },
         ]}
       />
-
 
       {/* Form Modal */}
       {showModal && (

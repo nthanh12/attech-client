@@ -30,19 +30,9 @@ export const register = async (userData) => {
       message: response.data.message || "User registration failed",
     };
   } catch (error) {
-    console.error("Register error:", error);
-    console.error("Error response:", error.response?.data);
-    console.error("Error status:", error.response?.status);
-    console.error("Validation errors:", error.response?.data?.errors);
-
     // Log each validation error for debugging
     if (error.response?.data?.errors) {
-      Object.keys(error.response.data.errors).forEach((field) => {
-        console.error(
-          `Validation error for ${field}:`,
-          error.response.data.errors[field]
-        );
-      });
+      Object.keys(error.response.data.errors).forEach((field) => {});
     }
 
     return {

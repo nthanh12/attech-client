@@ -7,38 +7,46 @@ let cachedCategories = null;
 let translationsCache = {
   data: null,
   timestamp: null,
-  expiry: 30 * 60 * 1000 // 30 phút cache
+  expiry: 30 * 60 * 1000, // 30 phút cache
 };
 
 // Get all language contents with pagination and filters
-export async function fetchLanguageContents(pageNumber = 1, pageSize = 20, keyword = "", filters = {}, sortConfig = null) {
+export async function fetchLanguageContents(
+  pageNumber = 1,
+  pageSize = 20,
+  keyword = "",
+  filters = {},
+  sortConfig = null
+) {
   try {
     const params = {
       pageNumber,
       pageSize,
-      keyword
+      keyword,
     };
 
     // Add sorting if provided
     if (sortConfig?.key) {
       params.sortBy = sortConfig.key;
-      params.sortDirection = sortConfig.direction || 'desc';
+      params.sortDirection = sortConfig.direction || "desc";
     }
 
     // Add filters if provided
     if (filters.category) {
       // If category is a number (ID), use it directly
       // If category is a string (name), find the corresponding ID from categories API
-      if (typeof filters.category === 'number') {
+      if (typeof filters.category === "number") {
         params.categoryId = filters.category;
-      } else if (typeof filters.category === 'string') {
+      } else if (typeof filters.category === "string") {
         try {
           // Get categories to map name to ID (with caching)
           if (!cachedCategories) {
             cachedCategories = await fetchLanguageContentCategories();
           }
-          
-          const categoryItem = cachedCategories.find(cat => cat.name === filters.category);
+
+          const categoryItem = cachedCategories.find(
+            (cat) => cat.name === filters.category
+          );
           if (categoryItem && categoryItem.id) {
             params.categoryId = categoryItem.id;
           } else {
@@ -49,14 +57,12 @@ export async function fetchLanguageContents(pageNumber = 1, pageSize = 20, keywo
       }
     }
 
-    const response = await api.get("/api/language-contents/find-all", { params });
+    const response = await api.get("/api/language-contents/find-all", {
+      params,
+    });
 
     // Handle BE response format
-    if (
-      response.data &&
-      response.data.status === 1 &&
-      response.data.data
-    ) {
+    if (response.data && response.data.status === 1 && response.data.data) {
       const dataObj = response.data.data;
       const result = {
         items: dataObj.items || [],
@@ -78,7 +84,7 @@ export async function fetchLanguageContents(pageNumber = 1, pageSize = 20, keywo
 export async function fetchLanguageContentCategories() {
   try {
     const response = await api.get("/api/language-content-categories/find-all");
-    
+
     if (
       response.data &&
       response.data.status === 1 &&
@@ -87,27 +93,27 @@ export async function fetchLanguageContentCategories() {
     ) {
       return response.data.data.items;
     }
-    
+
     // Return default categories if API fails
     return [
-      { id: 1, name: 'common', displayName: 'Common' },
-      { id: 2, name: 'navigation', displayName: 'Navigation' },
-      { id: 3, name: 'auth', displayName: 'Authentication' },
-      { id: 4, name: 'admin', displayName: 'Admin' },
-      { id: 5, name: 'frontend', displayName: 'Frontend' },
-      { id: 6, name: 'validation', displayName: 'Validation' },
-      { id: 7, name: 'errors', displayName: 'Errors' }
+      { id: 1, name: "common", displayName: "Common" },
+      { id: 2, name: "navigation", displayName: "Navigation" },
+      { id: 3, name: "auth", displayName: "Authentication" },
+      { id: 4, name: "admin", displayName: "Admin" },
+      { id: 5, name: "frontend", displayName: "Frontend" },
+      { id: 6, name: "validation", displayName: "Validation" },
+      { id: 7, name: "errors", displayName: "Errors" },
     ];
   } catch (error) {
     // Return default categories on error
     return [
-      { id: 1, name: 'common', displayName: 'Common' },
-      { id: 2, name: 'navigation', displayName: 'Navigation' },
-      { id: 3, name: 'auth', displayName: 'Authentication' },
-      { id: 4, name: 'admin', displayName: 'Admin' },
-      { id: 5, name: 'frontend', displayName: 'Frontend' },
-      { id: 6, name: 'validation', displayName: 'Validation' },
-      { id: 7, name: 'errors', displayName: 'Errors' }
+      { id: 1, name: "common", displayName: "Common" },
+      { id: 2, name: "navigation", displayName: "Navigation" },
+      { id: 3, name: "auth", displayName: "Authentication" },
+      { id: 4, name: "admin", displayName: "Admin" },
+      { id: 5, name: "frontend", displayName: "Frontend" },
+      { id: 6, name: "validation", displayName: "Validation" },
+      { id: 7, name: "errors", displayName: "Errors" },
     ];
   }
 }
@@ -115,12 +121,15 @@ export async function fetchLanguageContentCategories() {
 // Create new language content
 export async function createLanguageContent(contentData) {
   try {
-    const response = await api.post("/api/language-contents/create", contentData);
-    
+    const response = await api.post(
+      "/api/language-contents/create",
+      contentData
+    );
+
     if (response.data && response.data.status === 1) {
       return response.data.data;
     }
-    
+
     throw new Error(response.data?.message || "Create failed");
   } catch (error) {
     throw error;
@@ -130,12 +139,15 @@ export async function createLanguageContent(contentData) {
 // Update language content
 export async function updateLanguageContent(id, contentData) {
   try {
-    const response = await api.put(`/api/language-contents/update/${id}`, contentData);
-    
+    const response = await api.put(
+      `/api/language-contents/update/${id}`,
+      contentData
+    );
+
     if (response.data && response.data.status === 1) {
       return response.data.data;
     }
-    
+
     throw new Error(response.data?.message || "Update failed");
   } catch (error) {
     throw error;
@@ -146,11 +158,11 @@ export async function updateLanguageContent(id, contentData) {
 export async function deleteLanguageContent(id) {
   try {
     const response = await api.delete(`/api/language-contents/delete/${id}`);
-    
+
     if (response.data && response.data.status === 1) {
       return response.data.data;
     }
-    
+
     throw new Error(response.data?.message || "Delete failed");
   } catch (error) {
     throw error;
@@ -162,11 +174,7 @@ export async function fetchLanguageContentById(id) {
   try {
     const response = await api.get(`/api/language-contents/find-by-id/${id}`);
 
-    if (
-      response.data &&
-      response.data.status === 1 &&
-      response.data.data
-    ) {
+    if (response.data && response.data.status === 1 && response.data.data) {
       return response.data.data;
     }
 
@@ -181,11 +189,7 @@ export async function fetchLanguageContentByIdClient(id) {
   try {
     const response = await api.get(`/api/language-contents/client/${id}`);
 
-    if (
-      response.data &&
-      response.data.status === 1 &&
-      response.data.result
-    ) {
+    if (response.data && response.data.status === 1 && response.data.result) {
       return response.data.result;
     }
 
@@ -200,12 +204,13 @@ export async function loadAllTranslations() {
   try {
     // Check cache first
     const now = Date.now();
-    if (translationsCache.data &&
-        translationsCache.timestamp &&
-        (now - translationsCache.timestamp) < translationsCache.expiry) {
+    if (
+      translationsCache.data &&
+      translationsCache.timestamp &&
+      now - translationsCache.timestamp < translationsCache.expiry
+    ) {
       return translationsCache.data;
     }
-
 
     // Use new client endpoint - loads all translations at once (no pagination)
     const response = await api.get("/api/language-contents/client/find-all");
@@ -234,7 +239,7 @@ export async function loadAllTranslations() {
 export async function getTranslationByKey(key) {
   try {
     const translations = await loadAllTranslations();
-    return translations.find(t => t.contentKey === key);
+    return translations.find((t) => t.contentKey === key);
   } catch (error) {
     return null;
   }
@@ -247,36 +252,33 @@ export function clearTranslationsCache() {
 
   // Also clear localStorage cache for i18n
   try {
-    localStorage.removeItem('i18nextLng');
-    ['vi', 'en'].forEach(lang => {
+    localStorage.removeItem("i18nextLng");
+    ["vi", "en"].forEach((lang) => {
       localStorage.removeItem(`i18n_${lang}_timestamp`);
     });
 
     // Clear any other i18n related cache
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith('i18next') || key.startsWith('i18n_')) {
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith("i18next") || key.startsWith("i18n_")) {
         localStorage.removeItem(key);
       }
     });
-  } catch (error) {
-    console.warn('Could not clear localStorage cache:', error);
-  }
+  } catch (error) {}
 }
 
 // Get translations for i18next (export format) using client endpoint with caching
-export async function fetchTranslationsForI18next(language = 'vi') {
+export async function fetchTranslationsForI18next(language = "vi") {
   try {
-
     // Use cached loading function
     const items = await loadAllTranslations();
     let allTranslations = {};
 
     // Convert to nested object format for i18next
-    items.forEach(item => {
-      const value = language === 'vi' ? item.valueVi : item.valueEn;
+    items.forEach((item) => {
+      const value = language === "vi" ? item.valueVi : item.valueEn;
       if (value) {
         // Handle nested keys like "auth.login" -> { auth: { login: "value" } }
-        const keys = item.contentKey.split('.');
+        const keys = item.contentKey.split(".");
         let current = allTranslations;
 
         for (let i = 0; i < keys.length - 1; i++) {
@@ -292,7 +294,6 @@ export async function fetchTranslationsForI18next(language = 'vi') {
 
     return allTranslations;
   } catch (error) {
-
     // Return empty object on error to prevent i18next from breaking
     return {};
   }
@@ -302,21 +303,21 @@ export async function fetchTranslationsForI18next(language = 'vi') {
 export async function fetchLanguageContentStats() {
   try {
     const response = await api.get("/api/language-contents/stats");
-    
+
     if (response.data && response.data.status === 1) {
       return response.data.data;
     }
-    
+
     return {
       total: 0,
       byCategory: {},
-      completionRate: { vi: 0, en: 0 }
+      completionRate: { vi: 0, en: 0 },
     };
   } catch (error) {
     return {
       total: 0,
       byCategory: {},
-      completionRate: { vi: 0, en: 0 }
+      completionRate: { vi: 0, en: 0 },
     };
   }
 }

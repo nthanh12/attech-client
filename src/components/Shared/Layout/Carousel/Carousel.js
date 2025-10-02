@@ -33,6 +33,33 @@ const Carousel = () => {
     animation: "none",
   };
 
+  // Show skeleton while loading
+  if (loading || slides.length === 0) {
+    return (
+      <div className="w-100 mt-120" style={carouselStyle}>
+        <div
+          className="carousel-skeleton"
+          style={{
+            width: "100%",
+            height: "500px",
+            backgroundColor: "#f0f0f0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            animation: "pulse 1.5s ease-in-out infinite",
+          }}
+        >
+          <div style={{ textAlign: "center", color: "#999" }}>
+            <div className="spinner-border text-secondary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+            <p className="mt-3">Đang tải ...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-100" style={carouselStyle}>
       <div

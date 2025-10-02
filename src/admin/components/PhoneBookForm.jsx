@@ -165,7 +165,6 @@ const PhoneBookForm = ({
         }
       }
     } catch (error) {
-      console.error("Error saving phone book entry:", error);
       alert("Có lỗi xảy ra khi lưu dữ liệu");
     } finally {
       setSaving(false);
