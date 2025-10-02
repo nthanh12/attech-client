@@ -298,8 +298,8 @@ const Navbar = () => {
   const { rawMenuData, loading: menuLoading } = useMenuData(currentLanguage);
   const { getBannerUrl } = useBannerSettings();
   
-  // Get logo URL from API only
-  const logoUrl = getBannerUrl('Logo');
+  // Get logo URL from API, fallback to local if not available
+  const logoUrl = getBannerUrl('Logo') || '/assets/images/header/attech-bo-cuc-dau-trang-chu.png';
 
   // Debug menu data
 

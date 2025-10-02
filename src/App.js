@@ -57,17 +57,16 @@ const App = () => {
     // Check and refresh translations if needed
     checkTranslationsVersion();
 
-    // Hybrid loading: Tối thiểu 1s, tối đa 3s
-    const minLoadingTime = 1000; // 1s minimum
-    const maxLoadingTime = 3000; // 3s maximum
-    const startTime = Date.now();
+    // Progressive loading strategy:
+    // - Tối thiểu 800ms để tránh flash
+    // - Tối đa 5s để tránh user chờ quá lâu nếu API lỗi
+    const minLoadingTime = 800;
+    const maxLoadingTime = 5000;
 
-    // Minimum loading time
     const minTimer = setTimeout(() => {
       setIsLoading(false);
     }, minLoadingTime);
 
-    // Maximum loading time (safety fallback)
     const maxTimer = setTimeout(() => {
       setIsLoading(false);
     }, maxLoadingTime);

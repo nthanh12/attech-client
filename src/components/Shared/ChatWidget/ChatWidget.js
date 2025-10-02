@@ -173,7 +173,7 @@ const ChatWidget = () => {
           {/* Header */}
           <div className="chat-widget-header">
             <div className="chat-widget-title">
-              {getBannerUrl('Logo') && <img src={getBannerUrl('Logo')} alt="ATTECH Logo" className="chat-widget-logo" />}
+              <img src={getBannerUrl('Logo') || '/assets/images/header/attech-bo-cuc-dau-trang-chu.png'} alt="ATTECH Logo" className="chat-widget-logo" />
               <div className="chat-widget-title-text">
                 <h3>{isLiveChat ? 'Bộ phận hỗ trợ ATTECH' : 'Trợ lý ảo ATTECH'}</h3>
                 <span>{isLiveChat ? 'Đang trực tuyến' : 'Thường trả lời trong vài phút'}</span>
