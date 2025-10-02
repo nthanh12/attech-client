@@ -10,7 +10,7 @@ import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import ViewAllButton from "../../../../components/ViewAllButton/ViewAllButton";
 import {
-  getNewsByCategory,
+  getNewsByCategorySlug,
   getNewsCategories,
   formatNewsForDisplay,
   CATEGORY_IDS,
@@ -19,6 +19,7 @@ import {
 const TrendingArea = () => {
   const { t, currentLanguage } = useI18n();
   const [newsData, setNewsData] = useState([]);
+  const [trendingRight, setTrendingRight] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,18 +30,28 @@ const TrendingArea = () => {
         const categoriesData = await getNewsCategories();
         setCategories(categoriesData);
 
-        // Use Company Activities category ID directly
-        const newsResponse = await getNewsByCategory(
-          CATEGORY_IDS.COMPANY_ACTIVITIES,
-          {
+        const categorySlug = currentLanguage === "vi" ? "hoat-dong-cong-ty" : "company-activities";
+
+        // Gọi API 2 lần song song
+        const [mainNews, rightNews] = await Promise.all([
+          // Top + Bottom: 6 tin đầu
+          getNewsByCategorySlug(categorySlug, {
             pageIndex: 1,
-            pageSize: 15, // Get enough for all sections
+            pageSize: 6,
             sortBy: "timePosted",
             sortDirection: "desc",
-          }
-        );
+          }),
+          // Right: Lấy hết tin từ trang 2 trở đi
+          getNewsByCategorySlug(categorySlug, {
+            pageIndex: 2,
+            pageSize: 100,
+            sortBy: "timePosted",
+            sortDirection: "desc",
+          }),
+        ]);
 
-        setNewsData(newsResponse.items);
+        setNewsData(mainNews.items || []);
+        setTrendingRight(rightNews.items || []);
       } catch (error) {} finally {
         setLoading(false);
       }
@@ -62,7 +73,6 @@ const TrendingArea = () => {
 
   const trendingTop = newsData.slice(0, 3);
   const trendingBottom = newsData.slice(3, 6);
-  const trendingRight = newsData.slice(6);
   return (
     <div className="trending-area">
       <div className="container">

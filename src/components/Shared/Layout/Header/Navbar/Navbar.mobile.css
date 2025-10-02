@@ -783,6 +783,7 @@
   /* Adjust max-width for nav links in tablet view */
   .mobile-menu .nav-link {
     max-width: 460px !important;
+    color: #ffffff !important;
   }
   
   .mobile-menu .dropdown-menu .nav-link,

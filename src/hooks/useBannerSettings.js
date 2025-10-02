@@ -5,20 +5,42 @@ import { getApiUrl } from '../config/apiConfig';
 /**
  * Custom hook to get banner settings with fallback to default images
  */
+// Cache banners in memory
+let cachedBanners = null;
+let cacheTimestamp = null;
+const CACHE_DURATION = 2 * 60 * 60 * 1000; // 2 giờ
+
 export const useBannerSettings = () => {
-  const [bannerSettings, setBannerSettings] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [bannerSettings, setBannerSettings] = useState(cachedBanners || {});
+  const [loading, setLoading] = useState(!cachedBanners);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchBannerSettings = async () => {
+      // Nếu có cache và chưa hết hạn → dùng cache
+      if (cachedBanners && cacheTimestamp && (Date.now() - cacheTimestamp < CACHE_DURATION)) {
+        setBannerSettings(cachedBanners);
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const data = await getAllBannerSettings();
+
+        // Lưu vào cache
+        cachedBanners = data;
+        cacheTimestamp = Date.now();
+
         setBannerSettings(data);
       } catch (err) {
         setError(err);
-        setBannerSettings({});
+        // Nếu lỗi nhưng có cache cũ → dùng cache cũ
+        if (cachedBanners) {
+          setBannerSettings(cachedBanners);
+        } else {
+          setBannerSettings({});
+        }
       } finally {
         setLoading(false);
       }
@@ -71,12 +93,12 @@ export const useBannerSettings = () => {
   };
 
   /**
-   * Get carousel images from API only
+   * Get carousel images with fallback for first image
    */
   const getCarouselImages = () => {
     return [
       {
-        img: getBannerUrl('Banner1'),
+        img: getBannerUrl('Banner1') || '/assets/images/banner/banner_attech_1.webp',
         className: 'carousel-img-1',
       },
       {

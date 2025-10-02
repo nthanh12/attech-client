@@ -10,10 +10,12 @@ import { useLocation } from "react-router-dom";
 import ChatWidget from "./components/Shared/ChatWidget/ChatWidget";
 import BackToTopButton from "./components/Shared/Navigation/BackToTopButton/BackToTopButton";
 import LoadingOverlay from "./components/Shared/LoadingOverlay/LoadingOverlay";
+import MaintenancePage from "./components/MaintenancePage/MaintenancePage";
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { I18nextProvider } from 'react-i18next';
 import i18n, { checkTranslationsVersion } from './i18n';
+import { MAINTENANCE_MODE } from './config/maintenanceConfig';
 
 const ScrollToTop = ({ children }) => {
   const location = useLocation();
@@ -31,7 +33,22 @@ const AppContent = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
   const isUserDashboard = location.pathname === "/trang-noi-bo" || location.pathname === "/en/internal";
-  
+
+  // Kiểm tra maintenance mode
+  if (MAINTENANCE_MODE.enabled) {
+    // Nếu allowAdminAccess = true, cho phép admin vào
+    if (MAINTENANCE_MODE.allowAdminAccess && isAdminRoute) {
+      return (
+        <Routes>
+          <Route path="/admin/*" element={<AdminRoutes />} />
+        </Routes>
+      );
+    }
+
+    // Các route khác hiển thị trang maintenance
+    return <MaintenancePage />;
+  }
+
   return (
     <>
       <Routes>

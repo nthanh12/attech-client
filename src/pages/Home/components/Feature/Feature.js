@@ -8,7 +8,7 @@ import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import { LocalizedTitle } from "../../../../components/Shared/LocalizedContent";
 import {
-  getFeaturedNews,
+  getOutstandingNews,
   getNewsCategories,
   formatNewsForDisplay,
 } from "../../../../services/clientNewsService";
@@ -30,11 +30,16 @@ const Feature = () => {
         setLoading(true);
         const [categoriesData, newsData] = await Promise.all([
           getNewsCategories(),
-          getFeaturedNews(10),
+          getOutstandingNews({
+            pageIndex: 1,
+            pageSize: 10,
+            sortBy: "timePosted",
+            sortDirection: "desc",
+          }),
         ]);
 
         setCategories(categoriesData);
-        setFeaturedNews(newsData);
+        setFeaturedNews(newsData.items || []);
       } catch (error) {} finally {
         setLoading(false);
       }

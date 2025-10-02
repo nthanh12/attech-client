@@ -5,6 +5,7 @@ import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import {
   getNews,
+  getNewsByCategorySlug,
   getNewsCategories,
   formatNewsForDisplay,
   CATEGORY_IDS,
@@ -53,68 +54,45 @@ const WeeklyNews = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const categoriesData = await getNewsCategories();// NEW STRATEGY: Load all news first, then distribute by category
-        const allNewsData = await getNews({
-          pageIndex: 1,
-          pageSize: 100, // Get more items to ensure coverage for all 3 categories
-          sortBy: "timePosted",
-          sortDirection: "desc",
-        });
-        // Processing all news items
+        const categoriesData = await getNewsCategories();
 
-        // Group news by category
-        const newsByCategory = {};
-        allNewsData.items.forEach((item) => {
-          const catId = item.newsCategoryId;
-          if (!newsByCategory[catId]) {
-            newsByCategory[catId] = [];
-          }
-          newsByCategory[catId].push(item);
-        });
-
-        // Analyzing news distribution by category
-
-        // Create grouped news for each target category
+        // Load tin cho TỪNG category riêng biệt bằng API category slug
         const grouped = {};
 
-        childCategoryIds.forEach((categoryId) => {
-          const categoryNews = newsByCategory[categoryId] || [];
-          const newsToShow = categoryNews.slice(0, 5); // Take first 5 news items
-
-          // Processing category news
-
-          // Find category data from API or use fallback
-          const category = categoriesData.find(
-            (cat) => cat.id === categoryId
-          ) || {
-            id: categoryId,
-            slugVi: getCategorySlugById(categoryId, "vi"),
-            slugEn: getCategorySlugById(categoryId, "en"),
-            titleVi: getCategoryTitleById(categoryId, "vi"),
-            titleEn: getCategoryTitleById(categoryId, "en"),
-          };
-
-          const categorySlug =
-            currentLanguage === "vi" ? category.slugVi : category.slugEn;
-
-          // Only add to grouped if we have news OR want to show placeholder
-          if (newsToShow.length > 0) {
-            grouped[categorySlug] = {
-              category: category,
-              news: newsToShow,
+        await Promise.all(
+          childCategoryIds.map(async (categoryId) => {
+            // Find category data from API or use fallback
+            const category = categoriesData.find(
+              (cat) => cat.id === categoryId
+            ) || {
+              id: categoryId,
+              slugVi: getCategorySlugById(categoryId, "vi"),
+              slugEn: getCategorySlugById(categoryId, "en"),
+              titleVi: getCategoryTitleById(categoryId, "vi"),
+              titleEn: getCategoryTitleById(categoryId, "en"),
             };
-          } else {}
-        });
+
+            const categorySlug = category.slugVi;
+
+            // Gọi API lấy tin theo slug
+            const categoryNewsData = await getNewsByCategorySlug(categorySlug, {
+              pageIndex: 1,
+              pageSize: 5, // Lấy 5 tin mới nhất (hiển thị 4, dự phòng 1)
+              sortBy: "timePosted",
+              sortDirection: "desc",
+            });
+
+            // Only add to grouped if we have news
+            if (categoryNewsData.items.length > 0) {
+              grouped[categorySlug] = {
+                category: category,
+                news: categoryNewsData.items,
+              };
+            }
+          })
+        );
 
         setGroupedNews(grouped);
-
-        // Final grouped categories processed
-        const processedCategories = Object.keys(grouped).map((slug) => ({
-          slug,
-          newsCount: grouped[slug].news.length,
-          firstNewsId: grouped[slug].news[0]?.id,
-          title: grouped[slug].news[0]?.titleVi?.substring(0, 40) + "...",
-        }));
       } catch (error) {} finally {
         setLoading(false);
       }

@@ -20,10 +20,9 @@ export const submitContactForm = async (formData) => {
     }
 
     throw new Error(response.data?.message || "Gửi liên hệ thất bại");
-  } catch (error) {throw {
-      success: false,
-      message: error.response?.data?.message || error.message || "Có lỗi xảy ra khi gửi liên hệ"
-    };
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || error.message || "Có lỗi xảy ra khi gửi liên hệ";
+    throw new Error(errorMessage);
   }
 };
 

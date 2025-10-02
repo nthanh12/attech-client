@@ -7,8 +7,9 @@
 }
 
 .section-title {
-  text-align: center;
+  text-align: center !important;
   margin-bottom: 5rem;
+  width: 100%;
 }
 
 .section-title h2 {

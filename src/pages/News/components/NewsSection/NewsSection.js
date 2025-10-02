@@ -3,7 +3,7 @@ import "../NewsSection/NewsSection.css";
 import { useI18n } from "../../../../hooks/useI18n";
 import LocalizedLink from "../../../../components/Shared/LocalizedLink";
 import {
-  getFeaturedNews,
+  getOutstandingNews,
   getNewsCategories,
   formatNewsForDisplay,
 } from "../../../../services/clientNewsService";
@@ -18,13 +18,18 @@ const NewsSection = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        const [categoriesData, featuredNewsData] = await Promise.all([
+        const [categoriesData, outstandingNewsData] = await Promise.all([
           getNewsCategories(),
-          getFeaturedNews(7),
+          getOutstandingNews({
+            pageIndex: 1,
+            pageSize: 7,
+            sortBy: "timePosted",
+            sortDirection: "desc",
+          }),
         ]);
 
         setCategories(categoriesData);
-        setTrendingNews(featuredNewsData);
+        setTrendingNews(outstandingNewsData.items || []);
       } catch (error) {
       } finally {
         setLoading(false);

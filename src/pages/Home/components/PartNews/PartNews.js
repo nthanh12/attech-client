@@ -11,6 +11,7 @@ import "aos/dist/aos.css";
 import {
   getNews,
   getNewsByCategory,
+  getNewsByCategorySlug,
   getNewsCategories,
   formatNewsForDisplay,
   CATEGORY_IDS,
@@ -56,52 +57,44 @@ const PartNews = () => {
           return;
         }
 
-        // Step 2: Load all recent news to distribute by category
-        const allNewsData = await getNews({
-          pageIndex: 1,
-          pageSize: 8, // Chỉ cần 8 tin cho 4 categories (dự phòng)
-          sortBy: "timePosted",
-          sortDirection: "desc",
-        });
-
-        // Step 3: Group news by category
-        const newsByCategory = {};
-        allNewsData.items.forEach((item) => {
-          const catId = item.newsCategoryId;
-          if (!newsByCategory[catId]) {
-            newsByCategory[catId] = [];
-          }
-          newsByCategory[catId].push(item);
-        });
-
-
-        // Step 4: Lấy 4 categories cố định cho trang chủ (ID: 2,3,4,5)
+        // Step 2: Lấy 4 categories cố định cho trang chủ (ID: 2,3,4,5)
         const featuredCategoryIds = [2, 3, 4, 5]; // Hoạt động công ty, Đảng bộ, Công đoàn, Đoàn TN
 
-        const newsGroupsWithData = featuredCategoryIds
-          .map((categoryId) => categories.find((cat) => cat.id === categoryId))
-          .filter((category) => category) // Loại bỏ nếu không tìm thấy category
-          .map((category) => {
-            const categoryNews = newsByCategory[category.id] || [];
-            const featuredNews =
-              categoryNews.length > 0 ? categoryNews[0] : null;
+        // Step 3: Load tin cho TỪNG category riêng biệt bằng API category slug
+        const newsGroupsWithData = await Promise.all(
+          featuredCategoryIds
+            .map((categoryId) => categories.find((cat) => cat.id === categoryId))
+            .filter((category) => category)
+            .map(async (category) => {
+              // Gọi API lấy tin theo slug của category
+              const categorySlug = category.slugVi;
+              const categoryNewsData = await getNewsByCategorySlug(categorySlug, {
+                pageIndex: 1,
+                pageSize: 1, // Chỉ cần 1 tin mới nhất
+                sortBy: "timePosted",
+                sortDirection: "desc",
+              });
 
+              const featuredNews = categoryNewsData.items.length > 0
+                ? categoryNewsData.items[0]
+                : null;
 
-            // Get title key for translation
-            const titleKey =
-              getCategoryTitleKey(category.slugVi) ||
-              getCategoryTitleKey(category.slugEn);
+              // Get title key for translation
+              const titleKey =
+                getCategoryTitleKey(category.slugVi) ||
+                getCategoryTitleKey(category.slugEn);
 
-            return {
-              id: category.id,
-              slugVi: category.slugVi,
-              slugEn: category.slugEn,
-              titleKey,
-              featuredNews,
-              categoryData: category,
-              hasNews: !!featuredNews,
-            };
-          });
+              return {
+                id: category.id,
+                slugVi: category.slugVi,
+                slugEn: category.slugEn,
+                titleKey,
+                featuredNews,
+                categoryData: category,
+                hasNews: !!featuredNews,
+              };
+            })
+        );
 
         setNewsGroups(newsGroupsWithData);
       } catch (error) {} finally {

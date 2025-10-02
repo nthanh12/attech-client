@@ -133,7 +133,7 @@ export async function getNewsCategories() {
   }
 }
 
-// Get featured/outstanding news
+// Get featured/outstanding news (using find-all with isOutstanding param)
 export async function getFeaturedNews(limit = 5) {
   try {
     const response = await api.get("/api/news/client/find-all", {
@@ -156,6 +156,58 @@ export async function getFeaturedNews(limit = 5) {
 
     return [];
   } catch (error) {return [];
+  }
+}
+
+// Get outstanding news (using dedicated outstanding endpoint)
+export async function getOutstandingNews(params = {}) {
+  try {
+    const {
+      pageIndex = 1,
+      pageSize = 10,
+      sortBy = "timePosted",
+      sortDirection = "desc"
+    } = params;
+
+    const response = await api.get("/api/news/client/outstanding", {
+      params: {
+        pageIndex,
+        pageSize,
+        sortBy,
+        sortDirection
+      }
+    });
+
+    if (
+      response.data &&
+      response.data.status === 1 &&
+      response.data.data
+    ) {
+      const dataObj = response.data.data;
+      return {
+        items: dataObj.items || [],
+        totalCount: dataObj.totalItems || 0,
+        totalPages: Math.ceil((dataObj.totalItems || 0) / pageSize),
+        currentPage: pageIndex,
+        pageSize,
+      };
+    }
+
+    return {
+      items: [],
+      totalCount: 0,
+      totalPages: 0,
+      currentPage: pageIndex,
+      pageSize,
+    };
+  } catch (error) {
+    return {
+      items: [],
+      totalCount: 0,
+      totalPages: 0,
+      currentPage: params.pageIndex || 1,
+      pageSize: params.pageSize || 10,
+    };
   }
 }
 

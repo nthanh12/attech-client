@@ -322,7 +322,7 @@ const ProductList = () => {
   return (
     <div
       className="attech-product-list-container"
-      style={{ paddingTop: "20px", backgroundColor: "#ffffff" }}
+      style={{ paddingTop: "20px" }}
     >
       <div className="attech-controls-wrapper">
         <div className="attech-controls-inner">
